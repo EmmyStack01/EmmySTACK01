@@ -1,0 +1,628 @@
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Stay on top of everything */
+}
+
+.dna-container {
+    position: relative;
+    width: 100px;
+    height: 160px;
+}
+
+.dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-color);
+    border-radius: 50%;
+}
+
+.loader-text {
+    margin-top: 20px;
+    color: var(--white);
+    font-family: 'Orbitron';
+    letter-spacing: 2px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Initially hide hero text to prevent "flash" */
+.line-one, .line-two, .content-p, .hero-cta, .small-package-container,
+ .card, .price-card, .package-section h2, .small-package-container, .feature{
+    visibility: hidden;
+}
+ 
+.small-package-container{
+    will-change: transform, opacity; /* Optimizes performance for smooth scrolling */
+} 
+
+
+*::selection {background-color: var(--accent-color); color: var(--bg-dark);}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+    -moz-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+:root {
+  /* Brand Colors */
+  --primary-color: #2d66b4;
+  --secondary-color: #22386e;
+  --accent-color: #00ccff;
+
+  /* Backgrounds */
+  --bg-dark: #000000;
+  --bg-light: #0a111f;
+
+  /* Typography */
+  --text-main: #ffffff;
+  --text-muted: #a0aec0;
+  --white: #ffffff;
+}
+html{
+    scroll-behavior: smooth;
+}
+
+/*NAV SECTION*/
+.nav{
+    z-index: 1000;
+    padding: 10px 20px;
+    gap: 20;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.015);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+
+}
+
+.logo, .nav-links{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.nav-links{
+    margin-right: 20px;
+}
+
+.nav-links a{
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.nav-links a.nav-link-scrolled{
+    color: var(--primary-color)! important;
+}
+
+
+.nav-links a:hover{
+    transition: all 1s ease-in-out;
+    color: var(--accent-color);
+}
+
+.nav-list{
+    list-style: none;
+    padding: 15px;
+    
+}
+
+/*HERO SECTION*/
+.video-background {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Fills the screen height */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1; /* Puts video behind content */
+  transform: translate(-50%, -50%);
+  object-fit: cover; /* Ensures it fills the space without stretching */
+}
+/* Optional: Dark overlay to make text pop */
+.video-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* 40% black tint */
+  z-index: 0;
+}
+.content {
+  position: relative;
+  z-index: 1;
+  color: #ffffff;
+  text-align: center;
+}
+
+h1{
+    letter-spacing: 2%;
+    margin-bottom: 35px;
+}
+h1 span{
+    display: block;
+}
+.line-one{
+    font-family: 'Nova Square';
+    font-size: 61.04px;
+    text-transform: uppercase;
+    color: var(--primary-color);
+}
+.line-two{
+    font-family: 'Orbitron';
+    color: var(--white);
+}
+
+.content p{
+    font-weight: 500;
+    line-height: 1.5em;
+    max-width: 790px;
+    color: var(--white);
+}
+
+
+.hero-cta{
+    color: var(--text-main);
+    background-color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;  
+}
+.hero-cta:hover{
+    transition: all 1s ease-in-out;
+    box-shadow: 0 4px 15px var(--accent-color);
+}
+
+/*PACKAGE-SECTION*/
+.package-section{
+    background-color: var(--white);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+}
+.package-section h2{
+    font-size: 48.83px;
+    font-family: 'Orbitron';
+    color: var(--secondary-color);
+    padding: 20px;
+}
+.package-container {
+    display: grid;
+    /* Forces exactly 2 columns of equal width */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px; /* Added gap for better spacing */
+    justify-content: center;
+    padding: 20px;
+    max-width: 800px; /* Optional: keeps the whole grid from getting too wide */
+    margin: 0 auto;
+}
+
+.small-package-container {
+    width: 100%;
+    /* Reduced size to make it feel "small" */
+    max-width: 400px; 
+    min-height: 400px; 
+    border-radius: 20px;
+    box-shadow: 0 4px 15px var(--bg-dark);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #fff; /* Ensuring visibility */
+}
+
+@media screen and (min-width: 1600px){
+.package-container{
+    grid-template-columns: repeat(4, 1fr);}
+}
+@media screen and (max-width: 800px){
+.package-container{
+    grid-template-columns: repeat(1, 1fr);}
+}
+.small-package-container:hover{
+    transform: translateY(-3px)! important;
+    box-shadow: 0 4px 15px var(--accent-color);
+}
+
+.package{
+    max-width: 350px;
+    padding: 10px 20px;    
+}
+
+.package .header-icon{
+    display: flex;
+    justify-self: flex-start;
+    align-self: center;
+    margin: 20px;
+    padding: 10px 20px;
+    background-color: #22376e2a;
+    border-radius: 20px;
+}
+.package .header-icon:hover h3, .package .header-icon:hover i{
+    color: var(--accent-color);
+    transition: color 0.3s ease;
+}
+
+mark{
+    background-color: #22376e2a;
+}
+.package .header-icon i{
+    color: var(--secondary-color);
+    justify-self: left;
+    align-self: center;
+    padding-right: 10px;
+    font-size: 24px;
+}
+.package .header-icon h3{
+    justify-self: right;
+    align-self: center;
+    text-align: left;
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.package ul li{
+    padding: 10px;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.package-section h3 span{
+    display: block;
+}
+.package-section h3{
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    justify-self: left;
+    align-self: center;
+    line-height: 1.4;
+    max-width: 800px;
+    padding: 10px;
+}
+
+ /* The container for the swapping text */
+.feature-text {
+    display: inline-flex;
+    flex-direction: column;
+    color: var(--primary-color);
+    vertical-align: top;
+    position: relative;
+    min-width: 300px;
+    height: 1.4em;
+    text-align: left;
+    overflow: hidden;
+}
+
+/* Animation Styles */
+.word {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    font-size: 24px;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    white-space: nowrap;
+}
+
+.word.visible {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative; /* Takes up space when visible */
+}
+
+.word.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    position: absolute; /* Moves out of the flow when disappearing */
+}
+
+/*DEMO-SECTION*/
+:root {
+    --stack-offset: 15px; 
+    --card-width: 250px;
+    --card-height: 380px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --stack-offset: 35px;
+        --card-width: 300px;
+        --card-height: 420px;
+    }
+}
+
+.demo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    z-index: 1;
+    overflow-x: hidden;
+}
+
+.demo-section h2{
+    font-size: 48.83px;
+    font-family: 'Orbitron';
+    color: var(--text-main);
+    margin-bottom: 100px;
+}
+
+.container {
+    position: relative;
+    width: var(--card-width);
+    height: var(--card-height);
+    margin-bottom: 50px;
+}
+
+/* 1. Add a base transition for all transforms */
+.card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.326);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    /* Improve transition for smoother movement */
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), z-index 0s, opacity 0.5s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Ensure the card doesn't block clicks to cards behind it if not active */
+    pointer-events: auto;
+}
+
+/* 2. Update Stacking Logic to use a Variable */
+.card:nth-child(1) { --offset: calc(var(--stack-offset) * -2.5); transform: translateX(var(--offset)) scale(0.9); z-index: 3; }
+.card:nth-child(2) { --offset: calc(var(--stack-offset) * -1.5); transform: translateX(var(--offset)) scale(0.93); z-index: 4; }
+.card:nth-child(3) { --offset: calc(var(--stack-offset) * -0.5); transform: translateX(var(--offset)) scale(0.96); z-index: 5; }
+.card:nth-child(4) { --offset: calc(var(--stack-offset) * 0.5);  transform: translateX(var(--offset)) scale(1); z-index: 6; }
+.card:nth-child(5) { --offset: calc(var(--stack-offset) * 1.5);  transform: translateX(var(--offset)) scale(1.03); z-index: 7; }
+.card:nth-child(6) { --offset: calc(var(--stack-offset) * 2.5);  transform: translateX(var(--offset)) scale(1.06); z-index: 8; }
+
+/* 3. The Pop-Out State: COMBINE the offset with the vertical move */
+.card.active {
+    z-index: 100 !important;
+    /* We keep the horizontal --offset and add the translateY */
+    transform: translateX(var(--offset)) translateY(-70px) scale(1.15) !important;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    border-width: 3px;
+}
+
+/* 4. Ensure Button is clickable and has feedback */
+.cta-button {
+    position: relative;
+    z-index: 10; /* Sits above the card internal layers */
+    margin-top: auto;
+    padding: 12px;
+    background: #fff;
+    color: #000;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.chloe:hover{
+    background: #ccff00;
+    transform: scale(1.02);
+}
+.alex:hover{
+    background: #38bdf8;
+    transform: scale(1.02);
+}
+.jordan:hover{
+    background: #00f5d4;
+    transform: scale(1.02);
+}
+.kofi:hover{
+    background: #ffb703;
+    transform: scale(1.02);
+}
+.aisha:hover{
+    background: #d4af37;
+    transform: scale(1.02);
+}
+.amara:hover{
+    background: #48cae4;
+    transform: scale(1.02);
+}
+
+.cta-button:active {
+    transform: scale(0.95);
+}
+
+/* Internal Styling */
+.gif-area img {
+    width: 100%;
+    max-height: 310px;
+    background: #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ri-arrow-left-s-line, .ri-arrow-right-s-line{
+    font-size: 5em;
+    font-weight: 900;
+    margin: 20px;
+    color: var(--white);
+}
+.ri-arrow-left-s-line:active, .ri-arrow-right-s-line:active{
+    background-color: rgba(0, 0, 0, 0.326);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+}
+
+/*PRICING-SECTION*/
+.pricing-section{
+    background-color: var(--bg-dark);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+}
+
+.pricing-section h2{
+    font-size: 48.83px;
+    font-family: 'Orbitron';
+    color: var(--secondary-color);
+    padding: 20px;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+}
+
+.pricing-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+@media screen and (max-width: 670px){
+.pricing-container{grid-template-columns: repeat(1, 1fr);}
+}
+
+.price-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+}
+.price{
+    font-size: 16px;
+    background-color: var(--secondary-color);
+}
+.pricing-section h3{
+    color: var(--text-main);
+    font-size: 20px;
+}
+.pricing-section p{
+    color: var(--text-main);
+}
+.pricing-button{
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: var(--text-main);
+    border-radius: 20px;
+    margin-top: 8px;
+    text-decoration: none;
+}
+.pricing-button:hover{
+    transition: all 1s ease-in-out;
+    box-shadow: 0 4px 15px var(--accent-color);
+    transform: translateY(-3px);
+}
+
+
+/*FOOTER-SECTION*/
+.footer-section{
+    background-color: var(--bg-dark);
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+}
+.footer{
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+.line{    
+    border: none;
+    border-top: 1px solid #444;
+    margin: 30px 0;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    width: 300px;
+}
+.ownership{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.copyright{
+    color: var(--text-muted);
+    text-align: center;
+}
+.socials{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-muted);
+    gap: 20px;
+    
+}
+.socials a{
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10px;
+    height: 10px;
+    color: rgba(255, 255, 255, 0.473);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.socials a:hover{
+    color: rgba(255, 255, 255, 0.4);
+}
+.socials a i{
+    font-size: 24px;
+}
