@@ -1,0 +1,23 @@
+# 1. Global Rules - Apply to all bots
+User-agent: *
+# Disallow things bots don't need to index
+Disallow: /style/*.map
+Disallow: /README.md
+Disallow: /LICENSE
+Allow: /
+
+# 2. Specific AI Crawler Invitations
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# 3. Sitemap location
+Sitemap: https://emmystack01.github.io/EmmySTACK01/sitemap.xml
