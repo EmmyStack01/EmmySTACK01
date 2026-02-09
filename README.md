@@ -35,15 +35,15 @@ A custom pre-loader built with GSAP modifiers that simulates a rotating double h
 ---
 
 ## 📂 Project Structure
-`text
-[EmmySTACK01.com/](https://EmmySTACK01.com/)
-├── asset/              # Project media (GIFs, MP4, PNGs, Favicons)
-├── script/             # GSAP & Custom interaction logic
-├── style/              # CSS Architecture (Index & Product styles)
-├── index.html          # Main Landing Page
-├── product.html        # Detailed Product Page
-├── robots.txt          # SEO Crawl Instructions
-├── sitemap.xml         # Search Engine Roadmap
+| File/Folder | Purpose |
+| :--- | :--- |
+| `asset/` | Project media (GIFs, MP4, PNGs, Favicons). |
+| `script/` | GSAP & Custom interaction logic. |
+| `style/` | CSS Architecture (Index & Product styles). |
+| `index.html` | Main Landing Page. |
+| `product.html` | Detailed Product Page. |
+| `robots.txt` | SEO Crawl Instructions. |
+| `sitemap.xml` | Search Engine Roadmap. |
 
 ---
 
@@ -62,3 +62,4 @@ Emmy STACK01 - Follow Me: [https://x.com/Emmy_STACK01]
 
 
 Built with ⚡️ by Emmy STACK01
+
