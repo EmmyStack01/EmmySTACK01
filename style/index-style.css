@@ -193,12 +193,41 @@ h1 span{
 /*MENU SECTION*/
 .menu-section{
     background-color: var(--white);
-    position: sticky;
-    z-index: 1;
+    position: relative;
     width: 100%;
     height: auto;
+}
+@media screen and (min-width: 860.1px){
+    .menu-section{
+    position: sticky;
     overflow-y: auto;
+    z-index: 1;
     top: 0;
+}
+}
+@media screen and (max-width: 860px) {
+    /* Apply shared properties to both */
+    .personal-container, .business-container {
+        position: sticky; /* Both must be sticky to stack */
+        top: 20px;
+        background-color: #f4f4f4; /* OR your specific white/off-white color */
+        margin-bottom: 50px;
+        min-width: 280px;
+        max-width: 90%;
+        border-radius: 20px; /* Keep your rounded corners */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Adds depth to the "stack" */
+    }
+
+    .personal-container {
+        z-index: 1;
+        /* Ensure text color is dark if background is light */
+        color: #333; 
+    }
+
+    .business-container {
+        z-index: 2; /* Higher z-index covers the personal container */
+        color: #333;
+    }
 }
 .menu-section h2{
     font-size: 48.83px;
@@ -287,7 +316,7 @@ h1 span{
 .pricing-section{
     background-color: var(--secondary-color);
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     height: auto;
     padding: 10px 20px;
@@ -306,9 +335,11 @@ h1 span{
   from {opacity: 0;}
   to {opacity: 1;}
 }
-@media screen and (max-width: 830px){
+@media screen and (max-width: 1150px){
 .pricing-logo{display: none;}
 }
+
+
 
 .pricing-info{
     display: flex;
@@ -325,32 +356,53 @@ h1 span{
 }
 
 .pricing-section p{
-    color: var(--white);
+    color: #c9d7e8;
     font-weight: 600;
     margin-bottom: 15px;
 }
 
-.pricing-details {
-    padding: 10px 20px;
-    margin: 5px;
-    border: 1px solid var(--text-muted);
-    background-color: var(--secondary-color);
-    color: var(--white);
-    text-decoration: none;
-    border-radius: 5px;
-    transition: var(--transition-fast);
-    cursor: pointer;
+.rate-card-grid {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
-.pricing-details:hover {
-    background: var(--primary-color);
+.download-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 25px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
+.icon, .text, .text p{
+    color: var(--white);
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.download-card .icon {
+    font-size: 24px;
+    margin-right: 15px;
+    text-align: center;
+}
+
 
 /*PRODUCT SECTION*/
 .product-section{
     background-color: var(--white);
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     height: auto;
     padding: 10px 20px;
@@ -420,7 +472,7 @@ h1 span{
 .faq-section{
     background-color: var(--bg-dark);
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     height: auto;
 }
@@ -472,7 +524,7 @@ h1 span{
 .footer-section{
     background-color: var(--bg-dark);
     position: relative;
-    z-index: 2;
+    z-index: 3;
     width: 100%;
     height: auto;
     padding-top: 20px;
