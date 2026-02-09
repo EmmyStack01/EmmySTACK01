@@ -43,7 +43,7 @@ A custom pre-loader built with GSAP modifiers that simulates a rotating double h
 ├── index.html          # Main Landing Page
 ├── product.html        # Detailed Product Page
 ├── robots.txt          # SEO Crawl Instructions
-└── sitemap.xml         # Search Engine Roadmap
+├── sitemap.xml         # Search Engine Roadmap
 
 ---
 
@@ -59,5 +59,6 @@ Emmy STACK01 - Follow Me: [https://x.com/Emmy_STACK01]
 "Let's build your Digital DNA."
 
 ---
+
 
 Built with ⚡️ by Emmy STACK01
