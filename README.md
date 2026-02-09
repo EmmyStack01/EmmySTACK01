@@ -37,7 +37,8 @@ A custom pre-loader built with GSAP modifiers that simulates a rotating double h
 ## 📂 Project Structure
 | File/Folder | Purpose |
 | :--- | :--- |
-| `asset/` | Project media (GIFs, MP4, PNGs, Favicons). |
+| `asset/` | Project media (GIFs, MP4, PNGs). |
+| `favicon_io/` | Favicons (Different sizes). |
 | `script/` | GSAP & Custom interaction logic. |
 | `style/` | CSS Architecture (Index & Product styles). |
 | `index.html` | Main Landing Page. |
@@ -62,4 +63,5 @@ Emmy STACK01 - Follow Me: [https://x.com/Emmy_STACK01]
 
 
 Built with ⚡️ by Emmy STACK01
+
 
