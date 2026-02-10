@@ -68,52 +68,163 @@
 }
 
 /*NAV SECTION*/
-.nav{
-    z-index: 1000;
-    padding: 10px 20px;
-    gap: 20px;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.015);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    position: fixed;
-    width: 100%;
-    box-sizing: border-box;
-}
-.logo, .nav-links{
-    display: flex;
-    flex-direction: row;
-    
+/*FLAT NAV*/
+@media screen and (min-width: 500.01px){
+    .navbar{display: none;}
+    .nav{
+        z-index: 1000;
+        padding: 10px 20px;
+        gap: 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .logo, .nav-links{
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .nav-links{
+        margin-right: 20px;
+    }
+
+    .nav-links a{
+        text-decoration: none;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a.nav-link-scrolled{
+        color: var(--primary-color)! important;
+    }
+
+
+    .nav-links a:hover{
+        transition: all 1s ease-in-out;
+        color: var(--accent-color);
+    }
+
+    .nav-list{
+        list-style: none;
+        padding: 15px;   
+    }
 }
 
-.nav-links{
-    margin-right: 20px;
-}
+/* TOOGLE NAVBAR */
+@media screen and (max-width: 500px) {
+    .nav{display: none;}
+    /* Main Header Bar */
+    .navbar {
+        z-index: 1001; /* Highest z-index to stay on top */
+        padding: 10px 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        height: 70px;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
 
-.nav-links a{
-    text-decoration: none;
-    color: white;
-    transition: color 0.3s ease;
-}
+    /* The Sidebar Menu */
+    .nav-link {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: -100%; /* Fully hidden to the right */
+        width: 80%;   /* Adjust width as needed */
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.89);
+        -webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        transition: right 0.4s ease-in-out; /* Smooth slide effect */
+    }
 
-.nav-links a.nav-link-scrolled{
-    color: var(--primary-color)! important;
-}
+    /* Blue Sidebar Decoration (From your image) */
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 15%; /* The blue stripe width */
+        height: 100%;
+        background-color: rgba(59, 88, 151, 0.3);
+        z-index: -1;
+    }
 
+    /* State for OPEN Navigation */
+    .nav-link.open {
+        right: 0; /* Slides into view */
+    }
 
-.nav-links a:hover{
-    transition: all 1s ease-in-out;
-    color: var(--accent-color);
-}
+    .nav-list {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+    }
 
-.nav-list{
-    list-style: none;
-    padding: 15px;
-    
+    .nav-link a {
+        text-decoration: none;
+        color: var(--white);
+        font-size: 24px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    /* 1. Burger Button */
+    .nav-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1002; /* Ensure toggle stays above the sidebar */
+        padding: 10px;
+    }
+
+    .nav-toggle .line {
+        display: block;
+        width: 28px;
+        height: 3px;
+        margin: 6px 0;
+        background-color: var(--white); /* Dark color for visibility */
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* 2. X transformation */
+    .nav-toggle.open .line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .nav-toggle.open .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.open .line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
 }
 
 /*HERO SECTION*/
@@ -466,6 +577,8 @@ h1 span{
 .product-image img{
     width: 100%;
     max-width: 500px;
+    height: 100%;
+    max-height: 500px;
 }
 }
 
@@ -582,4 +695,3 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
-
