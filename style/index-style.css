@@ -321,7 +321,8 @@ h1 span{
     /* Apply shared properties to both */
     .personal-container, .business-container {
         position: sticky; /* Both must be sticky to stack */
-        top: 20px;
+        overflow-y: auto;
+        top: 0;
         background-color: #f4f4f4; /* OR your specific white/off-white color */
         margin-bottom: 50px;
         min-width: 280px;
@@ -695,3 +696,4 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
+
