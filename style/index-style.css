@@ -312,7 +312,7 @@ h1 span{
     .menu-section{
     position: sticky;
     z-index: 1;
-    top: 0;
+    top: 70px;
 }
 }
 @media screen and (max-width: 860px) {
@@ -693,5 +693,6 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
+
 
 
