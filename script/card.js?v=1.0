@@ -28,4 +28,5 @@ function moveManual(direction) {
     }
 
     cards[cardIndex].classList.add('active');
+
 }
