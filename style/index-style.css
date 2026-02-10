@@ -303,46 +303,20 @@ h1 span{
 }
 
 /*MENU SECTION*/
-@media screen and (min-width: 860.1px){
-    .menu-section{
+.menu-section{
     background-color: var(--white);
+    position: sticky;
+    overflow-y: auto;
     width: 100%;
     height: auto;
-    position: sticky;
+    top: 0;
     z-index: 1;
-    top: 70px;
 }
-}
+
 @media screen and (max-width: 860px) {
     .menu-section{
-    background-color: var(--white);
-    width: 100%;
-    height: auto;
-    position: relative;
-    z-index: 1;
-    top: 70px;
-    
-    /* Apply shared properties to both */
-    .personal-container, .business-container {
-        position: sticky; /* Both must be sticky to stack */
-        top: 0;
-        background-color: #f4f4f4; /* OR your specific white/off-white color */
-        margin-bottom: 50px;
-        min-width: 280px;
-        max-width: 90%;
-        border-radius: 20px; /* Keep your rounded corners */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Adds depth to the "stack" */
-    }
-
-    .personal-container {
-        z-index: 1;
-        /* Ensure text color is dark if background is light */
-        color: #333; 
-    }
-
-    .business-container {
-        z-index: 2; /* Higher z-index covers the personal container */
-        color: #333;
+        position: relative;
+        z-index: 2;
     }
 }
 .menu-section h2{
@@ -367,6 +341,7 @@ h1 span{
     max-width: 400px;
     height: auto;
     min-height: 400px;
+    background-color: #f4f4f4;
     border-radius: 20px;
     box-shadow: 0 4px 15px var(--bg-dark);
     margin-bottom: 15px;
@@ -432,7 +407,7 @@ h1 span{
 .pricing-section{
     background-color: var(--secondary-color);
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     height: auto;
     padding: 10px 20px;
@@ -518,7 +493,7 @@ h1 span{
 .product-section{
     background-color: var(--white);
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     height: auto;
     padding: 10px 20px;
@@ -590,7 +565,7 @@ h1 span{
 .faq-section{
     background-color: var(--bg-dark);
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     height: auto;
 }
@@ -642,7 +617,7 @@ h1 span{
 .footer-section{
     background-color: var(--bg-dark);
     position: relative;
-    z-index: 3;
+    z-index: 2;
     width: 100%;
     height: auto;
     padding-top: 20px;
@@ -699,7 +674,3 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
-
-
-
-
