@@ -353,7 +353,7 @@ h1 span{
     flex-direction: column;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    background-color: #fff; /* Ensuring visibility */
+    background-color: #f4f4f4; /* Ensuring visibility */
 }
 
 @media screen and (min-width: 1600px){
@@ -739,4 +739,5 @@ mark{
 .socials a i{
     font-size: 24px;
 }
+
 
