@@ -627,7 +627,7 @@ mark{
 .pricing-section h2{
     font-size: 48.83px;
     font-family: 'Orbitron';
-    color: var(--secondary-color);
+    color: var(--white);
     padding: 20px;
     display: flex;
     align-self: center;
@@ -739,3 +739,4 @@ mark{
 .socials a i{
     font-size: 24px;
 }
+
