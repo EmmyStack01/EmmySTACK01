@@ -306,19 +306,43 @@ h1 span{
 /*MENU SECTION*/
 .menu-section{
     background-color: var(--white);
-    position: sticky;
+    position: relative;
     width: 100%;
     height: auto;
-    top: 0;
     z-index: 1;
 }
-
-@media screen and (max-width: 860px) {
+@media screen and (min-width: 860.1px){
     .menu-section{
-        position: relative;
-        z-index: 2;
+    position: sticky;
+    z-index: 1;
+    top: 20px;
+}
+}
+@media screen and (max-width: 860px) {
+    /* Apply shared properties to both */
+    .personal-container, .business-container {
+        position: sticky; /* Both must be sticky to stack */
+        top: 20px;
+        background-color: #f4f4f4; /* OR your specific white/off-white color */
+        margin-bottom: 50px;
+        min-width: 280px;
+        max-width: 90%;
+        border-radius: 20px; /* Keep your rounded corners */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Adds depth to the "stack" */
+    }
+
+    .personal-container {
+        z-index: 1;
+        /* Ensure text color is dark if background is light */
+        color: #333; 
+    }
+
+    .business-container {
+        z-index: 2; /* Higher z-index covers the personal container */
+        color: #333;
     }
 }
+
 .menu-section h2{
     font-size: 48.83px;
     font-family: 'Orbitron';
@@ -674,6 +698,7 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
+
 
 
 
