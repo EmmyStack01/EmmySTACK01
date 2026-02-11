@@ -227,6 +227,12 @@
     }
 }
 
+body, html {
+    overflow-x: hidden; /* Prevents side-scrolling entirely */
+    width: 100%;
+}
+
+
 /*HERO SECTION*/
 .video-background {
   position: relative;
@@ -306,7 +312,6 @@ h1 span{
 .menu-section{
     background-color: var(--white);
     position: sticky;
-    overflow-y: auto;
     width: 100%;
     height: auto;
     top: 0;
@@ -674,3 +679,4 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
+
