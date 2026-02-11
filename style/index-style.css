@@ -227,6 +227,9 @@
     }
 }
 
+body, html {
+    width: 100%;
+}
 
 /*HERO SECTION*/
 .video-background {
@@ -676,6 +679,7 @@ h1 span{
 .socials a i{
     font-size: 24px;
 }
+
 
 
 
