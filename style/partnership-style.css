@@ -1,0 +1,283 @@
+:root {
+    --primary-color: #2d66b4;
+    --secondary-color: #22386e;
+    --accent-color: #00ccff;
+    --glass-bg: rgba(255, 255, 255, 0.05); 
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --text-main: #ffffff;
+    --text-muted: #a0aec0;
+}
+
+body { 
+    font-family: 'Montserrat'; 
+    color: var(--text-main); 
+    margin: 0; 
+    padding: 0;
+    overflow-x: hidden;
+    background: #000;
+}
+
+/* Glassmorphism utility */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.container { 
+    max-width: 900px; 
+    margin: auto; 
+    padding: 40px 20px;
+    text-align: center;
+}
+
+/* Navigation */
+.header-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+}
+
+.back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px;
+            height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+.pill-nav {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    gap: 15px;
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+}
+
+.pill-nav:hover { transform: scale(1.02); }
+
+.nav-text {
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    cursor: default;
+}
+
+/* Headings */
+h1 {
+  display: inline-block;
+  cursor: default;  
+  font-weight: bold;
+
+  position: relative;
+  color: transparent;
+  background-image: repeating-linear-gradient(45deg, #f1f1f1 0px, #f1f1f1 144px, gray 144px, gray 288px, #bebebe 288px, #bebebe 432px);
+  background-size: 250%;
+  background-position: 0%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-animation: stripeAnimation 3s linear infinite;
+  animation: stripeAnimation 3s linear infinite;
+  animation-play-state: running;
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
+
+h1:hover {
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+}
+
+@keyframes stripeAnimation {
+  100% {
+    background-position: 165%;
+  }
+}
+h1 {
+    font-family: 'Orbitron';
+    font-size: clamp(1.8rem, 5vw, 3rem); /* Responsive font size */
+    margin-bottom: 40px;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Main Links (Refined) */
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.link-active, .link {
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 20px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.link-active {
+    color: white;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.link-active:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.link {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: white;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px)
+}
+
+
+
+.faq-section { padding: 50px 20px; color: white; }
+.faq-container { max-width: 800px; margin: 0 auto; }
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 204, 255, 0.1);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 20px;
+    background: none;
+    border: none;
+    color: #00ccff;
+    text-align: left;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding: 10px 20px 20px 20px;
+}
+
+/*FOOTER-SECTION*/
+.footer-section{
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+}
+.footer{
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.line{    
+    border: none;
+    border-top: 1px solid #444;
+    margin: 5px 0;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    width: 300px;
+}
+.ownership{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.branding, .policy-link {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+.branding a, .policy-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+.branding a:hover, .policy-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer & Socials */
+.socials{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: var(--text-muted);
+    gap: 20px;
+    
+}
+
+.socials a {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px; /* Bigger touch target */
+    height: 45px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    color: white;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    background: var(--primary-color);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 800px) {
+    h1 { font-size: 1.8rem; }
+    .back-btn { position: static; transform: none; margin-bottom: 10px; }
+    .link-active, .link { font-size: 1.2rem; }
+}

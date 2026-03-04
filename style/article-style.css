@@ -1,0 +1,414 @@
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Stay on top of everything */
+}
+
+.dna-container {
+    position: relative;
+    width: 100px;
+    height: 160px;
+}
+
+.dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-color);
+    border-radius: 50%;
+}
+
+.loader-text {
+    margin-top: 20px;
+    color: var(--white);
+    font-family: 'Orbitron';
+    letter-spacing: 2px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+*::selection {background-color: var(--accent-color); color: var(--bg-dark);}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+    -moz-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+:root {
+  /* Brand Colors */
+  --primary-color: #2d66b4;
+  --secondary-color: #22386e;
+  --accent-color: #00ccff;
+
+  /* Backgrounds */
+  --bg-dark: #000000;
+  --bg-light: #0a111f;
+
+  /* Typography */
+  --text-main: #ffffff;
+  --text-muted: #a0aec0;
+  --white: #ffffff;
+}
+
+body{background-color: var(--bg-dark);}
+
+/*NAV SECTION*/
+.badge-earn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;           /* Keeps it small and elegant */
+    font-weight: 700;
+    color: #00ccff;               /* Your signature blue */
+    border: 1px solid #00ccff;    /* Thin tech-style border */
+    padding: 2px 6px;
+    border-radius: 4px;           /* Slightly rounded corners */
+    margin-left: 8px;             /* Space between text and badge */
+    vertical-align: middle;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;    /* Smooth hover effect */
+}
+
+/* Optional: Make the badge glow when the user hovers over the link */
+.nav-link:hover .badge-earn {
+    background-color: #00ccff;
+    color: #000;                  /* Flips to black for contrast */
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
+}
+/*FLAT NAV*/
+@media screen and (min-width: 900.01px){
+    .navbar{display: none;}
+    .nav{
+        z-index: 1000;
+        padding: 10px 20px;
+        gap: 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .logo, .nav-links{
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .nav-links{
+        margin-right: 20px;
+    }
+
+    .nav-links a{
+        text-decoration: none;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a.nav-link-scrolled{
+        color: var(--primary-color)! important;
+    }
+
+
+    .nav-links a:hover{
+        transition: all 1s ease-in-out;
+        color: var(--accent-color);
+    }
+
+    .nav-list{
+        list-style: none;
+        padding: 15px;   
+    }
+}
+
+/* TOOGLE NAVBAR */
+@media screen and (max-width: 900px) {
+    .nav{display: none;}
+    /* Main Header Bar */
+    .navbar {
+        z-index: 1001; /* Highest z-index to stay on top */
+        padding: 10px 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        height: 70px;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* The Sidebar Menu */
+    .nav-link {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: -100%; /* Fully hidden to the right */
+        width: 80%;   /* Adjust width as needed */
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.89);
+        -webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        transition: right 0.4s ease-in-out; /* Smooth slide effect */
+    }
+
+    /* Blue Sidebar Decoration (From your image) */
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 15%; /* The blue stripe width */
+        height: 100%;
+        background-color: rgba(59, 88, 151, 0.3);
+        z-index: -1;
+    }
+
+    /* State for OPEN Navigation */
+    .nav-link.open {
+        right: 0; /* Slides into view */
+    }
+
+    .nav-list {
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .nav-link a {
+        text-decoration: none;
+        color: var(--white);
+        font-size: 24px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    /* 1. Burger Button */
+    .nav-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1002; /* Ensure toggle stays above the sidebar */
+        padding: 10px;
+    }
+
+    .nav-toggle .line {
+        display: block;
+        width: 28px;
+        height: 3px;
+        margin: 6px 0;
+        background-color: var(--white); /* Dark color for visibility */
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* 2. X transformation */
+    .nav-toggle.open .line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .nav-toggle.open .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.open .line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
+
+body, html {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Articles Page Specifics */
+.articles-intro {
+    text-align: center;
+    margin: 150px 0 40px;
+}
+
+.glow-text {
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+    font-size: 2.5rem;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+
+/* The Article Card */
+.article-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 204, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    /*To change after adding more articles*/
+    max-width: 500px;
+    align-self: center;
+    justify-self: center;
+}
+
+.article-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(0, 204, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 204, 255, 0.1);
+}
+
+.card-tag {
+    background: rgba(0, 204, 255, 0.1);
+    color: #00ccff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    border-radius: 50px;
+    width: fit-content;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.article-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.article-card p {
+    color: #bbb;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 15px;
+}
+
+.card-footer span {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.read-more {
+    color: #00ccff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.read-more:hover {
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #00ccff;
+}
+
+
+/*FOOTER-SECTION*/
+.footer-section{
+    background-color: var(--bg-dark);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+    margin-top: 50px;
+}
+.footer{
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+.line{    
+    border: none;
+    border-top: 1px solid #444;
+    margin: 30px 0;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    width: 300px;
+}
+.ownership{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.copyright{
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 0.88em;
+}
+.socials{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-muted);
+    gap: 20px;
+    
+}
+.socials a{
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10px;
+    height: 10px;
+    color: rgba(255, 255, 255, 0.473);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.socials a:hover{
+    color: rgba(255, 255, 255, 0.4);
+}
+.socials a i{
+    font-size: 24px;
+}
