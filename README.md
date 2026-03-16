@@ -3,7 +3,7 @@
 Welcome to the official repository for Emmy STACK01. This is a premium, high-performance landing page designed to showcase digital identity through "Digital DNA." It features ultra-smooth GSAP animations, a custom card-stacking engine, and a fully responsive architectural build.
 
 ## 🚀 Live Demo
-Check out the live site here: [https://emmystack01.github.io/EmmySTACK01/](https://emmystack01.github.io/EmmySTACK01/)
+Check out the live site here: [https://emmystack01.com/](https://emmystack01.com/)
 
 ---
 
@@ -55,7 +55,7 @@ This project is licensed under the CC-BY-NC-ND 4.0 License.
 * NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.
 
 ### 📧 Contact
-Emmy STACK01 - [Email Me](millise112@gmail.com)
+Emmy STACK01 - [Email Me](hello@emmystack01.com)
 Emmy STACK01 - [Follow Me](https://x.com/Emmy_STACK01)
 "Let's build your Digital DNA."
 
