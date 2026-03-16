@@ -55,7 +55,7 @@ This project is licensed under the CC-BY-NC-ND 4.0 License.
 * NoDerivatives — If you remix, transform, or build upon the material, you may not distribute the modified material.
 
 ### 📧 Contact
-Emmy STACK01 - [Email Me]hello@emmystack01.com]
+Emmy STACK01 - [Email Me][hello@emmystack01.com]
 Emmy STACK01 - [Follow Me](https://x.com/Emmy_STACK01)
 "Let's build your Digital DNA."
 
