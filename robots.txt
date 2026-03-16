@@ -20,4 +20,4 @@ User-agent: Bingbot
 Allow: /
 
 # 3. Sitemap location
-Sitemap: https://emmystack01.github.io/EmmySTACK01/sitemap.xml
+Sitemap: https://emmystack01.com/sitemap.xml
