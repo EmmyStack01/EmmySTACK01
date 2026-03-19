@@ -269,7 +269,7 @@ function toggleLogin(showLogin) {
     loginForm.style.display = showLogin ? 'block' : 'none';
 }
 
-/* 3. REGISTRATION & SHORTENING */
+/* 3. REGISTRATION & SHORTENING (With Duplicate Email Check) */
 document.getElementById('rewardForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -280,14 +280,27 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
     const btnText = document.getElementById('btnText');
     const btnLoader = document.getElementById('btnLoader');
 
+    // 1. Initial UI Feedback
     submitBtn.disabled = true;
     if(btnLoader) btnLoader.style.display = "inline-block";
-    btnText.innerText = "Processing...";
+    btnText.innerText = "Checking email...";
 
     try {
+        // --- STEP A: CHECK FOR DUPLICATES ---
+        const checkResponse = await fetch(`https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f/search?Email=${email}`);
+        const existingUsers = await checkResponse.json();
+
+        if (existingUsers.length > 0) {
+            alert("This email is already registered! Please log in instead.");
+            toggleLogin(true); // Switches UI to Login form
+            return; 
+        }
+
+        // --- STEP B: GENERATE CODE & SHORT LINK ---
+        btnText.innerText = "Generating Link...";
         const getResponse = await fetch("https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f");
-        const existingData = await getResponse.json();
-        const nextNumber = (existingData.length + 1).toString().padStart(3, '0');
+        const allData = await getResponse.json();
+        const nextNumber = (allData.length + 1).toString().padStart(3, '0');
         
         let code = (fName.substring(0, 2) + nextNumber + lName.substring(0, 2)).toUpperCase();
 
@@ -300,6 +313,7 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
             if (tinyResponse.ok) finalShortLink = await tinyResponse.text();
         } catch (err) { console.error("Shortener failed"); }
 
+        // --- STEP C: PREPARE DATA ---
         const data = {
             "First Name": fName,
             "Last Name": lName,
@@ -316,6 +330,9 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
             "Messages Received": "0",
             "Confirmed Orders": "0"
         };
+
+        // --- STEP D: POST TO SHEET ---
+        btnText.innerText = "Saving Profile...";
         const sheetResponse = await fetch("https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f", {
             method: "POST",
             mode: "cors",
@@ -324,10 +341,12 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
         });
 
         if (!sheetResponse.ok) throw new Error("Database error");
+        
         alert("Welcome, " + fName + "! Redirecting to your dashboard.");
         showDashboard(code, finalShortLink, "0", "0", email);
 
     } catch (error) {
+        console.error(error);
         alert("Connection Error. Please check your internet.");
     } finally {
         submitBtn.disabled = false;
