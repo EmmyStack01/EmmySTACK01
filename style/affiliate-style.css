@@ -84,9 +84,7 @@ h1:hover {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            padding: 20px 0;
-            min-height: 60px;
+            padding-bottom: 20px;
         }
 
         .back-btn {
@@ -526,4 +524,59 @@ button:disabled {
     color: #00ccff;
     display: block;
     margin-bottom: 2px;
+}
+
+.toolkit-container {
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.toolkit-btn {
+    /* Layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 600px; /* Prevents it from being too wide on ultra-wide screens */
+    
+    /* Sizing: Responsive padding and font */
+    padding: clamp(12px, 3vw, 18px); 
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    
+    /* Branding & Glassmorphism */
+    background: rgba(0, 204, 255, 0.05);
+    border: 1px solid rgba(0, 204, 255, 0.3);
+    border-radius: 12px;
+    color: var(--accent-color);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.toolkit-btn i {
+    font-size: 1.2rem;
+}
+
+/* Hover State: The "Glow" Effect */
+.toolkit-btn:hover {
+    background: rgba(0, 204, 255, 0.15);
+    border-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 0 20px rgba(0, 204, 255, 0.4);
+}
+
+/* Mobile Specific Tweak */
+@media (max-width: 480px) {
+    .toolkit-btn {
+        flex-direction: row; /* Keep icon and text side-by-side */
+        letter-spacing: 1px;
+        border-radius: 10px;
+    }
 }
