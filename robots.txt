@@ -4,6 +4,7 @@ User-agent: *
 Disallow: /style/*.map
 Disallow: /README.md
 Disallow: /LICENSE
+Disallow: /thank-you.html
 Allow: /
 
 # 2. Specific AI Crawler Invitations
