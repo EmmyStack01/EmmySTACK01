@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You | Emmy STACK01</title>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="logo"><img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+        <h1>Redirecting to WhatsApp...</h1>
+        <p>Thank you for choosing Emmy STACK01. Your chat will open in a moment.</p>
+
+        <div class="status-box">
+            <h2 id="status-text">Initializing Secure Chat...</h2>
+            <div class="loader-bar">
+                <div class="progress"></div>
+            </div>
+            <p class="subtext">Connecting you to our WhatsApp business portal.</p>
+        </div>
+        
+        <div class="trust-preview">
+            <p>While you wait, see why clients trust us:</p>
+            <div class="stars">★★★★★</div>
+            <a href="https://www.trustpilot.com/review/emmystack01.com" target="_blank">View Trustpilot Profile</a>
+        </div>
+    </div>
+
+<style>
+    body {
+        background-color: #0a0a0a; /* Deep Black */
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .redirect-container { text-align: center; max-width: 400px; padding: 20px; }
+    .loader-bar { width: 100%; height: 4px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+    .progress { width: 0%; height: 100%; background: #2d66b4; animation: load 2.5s forwards; }
+    @keyframes load { to { width: 100%; } }
+    .subtext { font-size: 0.8rem; color: #888; }
+    .trust-preview { margin-top: 50px; border-top: 1px solid #222; padding-top: 20px; }
+    .stars { color: #ffb400; font-size: 1.2rem; margin-bottom: 5px; }
+    a { color: #00ff88; text-decoration: none; font-size: 0.9rem; }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-123456789"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // This line tracks for Google Ads
+      gtag('config', 'AW-123456789'); 
+      // This line tracks for Google Analytics
+      gtag('config', 'G-XXXXXXXXXX'); 
+    </script>
+
+    <script>
+      gtag('event', 'conversion', {
+          'send_to': 'AW-123456789/LABEL_CODE',
+          'value': 1.0,
+          'currency': 'NGN'
+      });
+    </script>
+    <script>
+        // 1. Get the 'type' from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type');
+
+        // 2. Define the different WhatsApp messages
+        const links = {
+            project: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20website.",
+            global: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card.%20I%27m%20an%20international%20customer.",
+            local: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card,%20Nigeria%20Price."
+        };
+
+        // 3. Redirect after 2 seconds (gives Google Ads time to track the visit)
+        setTimeout(() => {
+            if (links[type]) {
+                window.location.href = links[type];
+            } else {
+                // Fallback if no type is found
+                window.location.href = "https://wa.me/2349076991076";
+            }
+        }, 2000); 
+    </script>
+</body>
+</html>
