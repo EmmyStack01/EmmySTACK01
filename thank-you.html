@@ -66,26 +66,26 @@
       });
     </script>
     <script>
-        // 1. Get the 'type' from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('type');
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Get the 'type' from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
 
-        // 2. Define the different WhatsApp messages
-        const links = {
-            project: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20website.",
-            global: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card.%20I%27m%20an%20international%20customer.",
-            local: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card,%20Nigeria%20Price."
-        };
+            const links = {
+                project: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20website.",
+                global: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card.%20I%27m%20an%20international%20customer.",
+                local: "https://wa.me/2349076991076?text=Hey,%20I%20need%20a%20Digital%20Business%20Card,%20Nigeria%20Price."
+            };
 
-        // 3. Redirect after 2 seconds (gives Google Ads time to track the visit)
-        setTimeout(() => {
-            if (links[type]) {
-                window.location.href = links[type];
-            } else {
-                // Fallback if no type is found
-                window.location.href = "https://wa.me/2349076991076";
-            }
-        }, 2000); 
+            // 2. 4-second delay to ensure UI visibility and Google Tag firing
+            setTimeout(() => {
+                if (links[type]) {
+                    window.location.href = links[type];
+                } else {
+                    window.location.href = "https://wa.me/2349076991076";
+                }
+            }, 4000); 
+        });
     </script>
 </body>
 </html>
