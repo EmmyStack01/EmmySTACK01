@@ -246,84 +246,69 @@ VANTA.DOTS({
     showLines: false
 });
 
+/* --- EMMY STACK01 CONFIGURATION --- */
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxGNMSMg8MaN7LNtSeO9_k5PATZuGRWRlGUD0uBI-kOFIx7YlMz-3OARvjnoP1sFBjU/exec';
+
 /* 1. PERSISTENCE CHECK (Auto-Login) */
 window.addEventListener('DOMContentLoaded', () => {
     const savedCode = localStorage.getItem('emmyAffiliateCode');
     const savedEmail = localStorage.getItem('emmyEmail');
     
-    // If we have saved data, jump to dashboard and use stored stats
+    // Check if we have an existing session to jump to dashboard
     if (savedCode && savedEmail) {
         const leads = localStorage.getItem('emmyLeads') || "0";
         const orders = localStorage.getItem('emmyOrders') || "0";
-        const link = localStorage.getItem('emmyShortLink') || "";
-        showDashboard(savedCode, link, leads, orders, savedEmail);
+        const clicks = localStorage.getItem('emmyClicks') || "0";
+        const link = localStorage.getItem('emmyShortLink') || `https://emmystack01.com/go/${savedCode}`;
+        
+        showDashboard(savedCode, link, leads, orders, savedEmail, clicks);
     }
 });
 
 /* 2. UI TOGGLES */
 function togglePanel() {
     const panel = document.getElementById("earningPanel");
-    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    if(panel) panel.style.display = (panel.style.display === "block") ? "none" : "block";
 }
 
 function toggleDetails() {
     const method = document.getElementById('paymentMethod').value;
-    document.getElementById('bankDetails').style.display = (method === 'bank') ? 'block' : 'none';
-    document.getElementById('cryptoDetails').style.display = (method === 'crypto') ? 'block' : 'none';
+    const bankDiv = document.getElementById('bankDetails');
+    const cryptoDiv = document.getElementById('cryptoDetails');
+    
+    if(bankDiv) bankDiv.style.display = (method === 'bank') ? 'block' : 'none';
+    if(cryptoDiv) cryptoDiv.style.display = (method === 'crypto') ? 'block' : 'none';
 }
 
 function toggleLogin(showLogin) {
     const signupForm = document.getElementById('rewardForm');
     const loginForm = document.getElementById('loginForm');
-    signupForm.style.display = showLogin ? 'none' : 'block';
-    loginForm.style.display = showLogin ? 'block' : 'none';
+    if(signupForm && loginForm) {
+        signupForm.style.display = showLogin ? 'none' : 'block';
+        loginForm.style.display = showLogin ? 'block' : 'none';
+    }
 }
 
-/* 3. REGISTRATION & SHORTENING (With Duplicate Email Check) */
+/* 3. REGISTRATION LOGIC */
 document.getElementById('rewardForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    
     const fName = document.getElementById('firstName').value.trim();
     const lName = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const btnLoader = document.getElementById('btnLoader');
 
-    // 1. Initial UI Feedback
     submitBtn.disabled = true;
-    if(btnLoader) btnLoader.style.display = "inline-block";
-    btnText.innerText = "Checking email...";
+    if(btnText) btnText.innerText = "Syncing Digital DNA...";
 
     try {
-        // --- STEP A: CHECK FOR DUPLICATES ---
-        const checkResponse = await fetch(`https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f/search?Email=${email}`);
-        const existingUsers = await checkResponse.json();
+        const nextNumber = Math.floor(100 + Math.random() * 899);
+        const code = (fName.substring(0, 2) + nextNumber + lName.substring(0, 2)).toUpperCase();
+        const waLink = `https://wa.me/2349076991076?text=${encodeURIComponent("Hey, I need a Website. I'm using " + code + " for 5% off.")}`;
+        const brandedLink = `https://emmystack01.com/go/?id=${code};`;
 
-        if (existingUsers.length > 0) {
-            alert("This email is already registered! Please log in instead.");
-            toggleLogin(true); // Switches UI to Login form
-            return; 
-        }
-
-        // --- STEP B: GENERATE CODE & SHORT LINK ---
-        btnText.innerText = "Generating Link...";
-        const getResponse = await fetch("https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f");
-        const allData = await getResponse.json();
-        const nextNumber = (allData.length + 1).toString().padStart(3, '0');
-        
-        let code = (fName.substring(0, 2) + nextNumber + lName.substring(0, 2)).toUpperCase();
-
-        const customerMsg = `Hey, I need a Website, I'm Using ${code} for 5% off.`;
-        const fullUrl = "https://wa.me/2349076991076?text=" + encodeURIComponent(customerMsg);
-        
-        let finalShortLink = fullUrl;
-        try {
-            const tinyResponse = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(fullUrl)}`);
-            if (tinyResponse.ok) finalShortLink = await tinyResponse.text();
-        } catch (err) { console.error("Shortener failed"); }
-
-        // --- STEP C: PREPARE DATA ---
+        // Capture all payment details regardless of choice for Sheet sync
         const data = {
             "First Name": fName,
             "Last Name": lName,
@@ -336,135 +321,110 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
             "Blockchain (Network)": document.querySelector('input[placeholder="Blockchain (Network)"]')?.value || "N/A",
             "Wallet Address": document.querySelector('input[placeholder="Wallet Address"]')?.value || "N/A",
             "Generated Affiliate Code": code,
-            "Shortened Link": finalShortLink,
+            "Shortened Link": waLink,
             "Messages Received": "0",
-            "Confirmed Orders": "0"
+            "Confirmed Orders": "0",
+            "Clicks": "0"
         };
 
-        // --- STEP D: POST TO SHEET ---
-        btnText.innerText = "Saving Profile...";
-        const sheetResponse = await fetch("https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f", {
-            method: "POST",
-            mode: "cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify([data]), 
-        });
-
-        if (!sheetResponse.ok) throw new Error("Database error");
-        
-        alert("Welcome, " + fName + "! Redirecting to your dashboard.");
-        showDashboard(code, finalShortLink, "0", "0", email);
-
-    } catch (error) {
-        console.error(error);
-        alert("Connection Error. Please check your internet.");
+        const response = await fetch(scriptURL, { method: "POST", body: JSON.stringify(data) });
+        const result = await response.json();
+        if (result.result === "success") {
+            showDashboard(code, brandedLink, "0", "0", email, "0");
+        } else if (result.error === "Email already registered") {
+            alert("This identity already exists. Redirecting to Login...");
+            toggleLogin(true);
+        }
+    } catch (err) {
+        alert("Sync Error. Check connectivity.");
     } finally {
         submitBtn.disabled = false;
-        if(btnLoader) btnLoader.style.display = "none";
-        btnText.innerText = "Submit & Generate Code";
+        if(btnText) btnText.innerText = "Join Program";
     }
 });
 
-/* 4. LOGIN SYSTEM (Updated for Stats) */
-async function processLogin() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const loginBtn = document.getElementById('loginBtn');
-    
-    if (!email) return alert("Please enter your registered email.");
+/* 4 & 5. LOGIN & REFRESH SYSTEM */
+async function processLogin(isRefresh = false) {
+    const email = isRefresh ? localStorage.getItem('emmyEmail') : document.getElementById('loginEmail').value.trim();
+    if (!email) return;
 
-    loginBtn.innerText = "Verifying...";
-    loginBtn.disabled = true;
+    const btn = isRefresh ? document.getElementById('refreshBtn') : document.getElementById('loginBtn');
+    const originalText = btn.innerText;
+
+    btn.disabled = true;
+    btn.innerText = "Verifying...";
+    if(isRefresh) btn.classList.add('spinning');
 
     try {
-        const response = await fetch(`https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f/search?Email=${email}`);
-        const data = await response.json();
+        const response = await fetch(`${scriptURL}?email=${encodeURIComponent(email)}`);
+        const res = await response.json();
 
-        if (data.length > 0) {
-            const user = data[0];
-            showDashboard(
-                user["Generated Affiliate Code"], 
-                user["Shortened Link"], 
-                user["Messages Received"] || "0", 
-                user["Confirmed Orders"] || "0",
-                email
-            );
-        } else {
-            alert("Email not found. Please register first.");
+        if (res.result === "success") {
+            const u = res.data;
+            const branded = `https://emmystack01.com/go/${u["Generated Affiliate Code"]}`;
+            showDashboard(u["Generated Affiliate Code"], branded, u["Messages Received"], u["Confirmed Orders"], email, u["Clicks"]);
+        } else if (!isRefresh) {
+            alert("Partner Digital DNA not found. Please register.");
         }
-    } catch (error) {
-        alert("Login failed. Check your connection.");
-    } finally {
-        loginBtn.innerText = "Access Dashboard";
-        loginBtn.disabled = false;
+    } catch (e) { 
+        console.error("API Error:", e);
+    } finally { 
+        btn.disabled = false;
+        btn.innerText = originalText;
+        if(isRefresh) btn.classList.remove('spinning'); 
     }
 }
 
-/* 5. REFRESH STATS FUNCTION */
-async function refreshStats() {
-    const email = localStorage.getItem('emmyEmail');
-    const btn = document.getElementById('refreshBtn');
-    if (!email) return;
+function refreshStats() { processLogin(true); }
 
-    btn.classList.add('spinning');
-    try {
-        const res = await fetch(`https://api.sheetbest.com/sheets/c19aacf4-3da1-4a13-a7ee-d26a18cbf73f/search?Email=${email}`);
-        const data = await res.json();
-        if (data.length > 0) {
-            const leads = data[0]["Messages Received"] || "0";
-            const orders = data[0]["Confirmed Orders"] || "0";
-            
-            document.getElementById('dashLeads').innerText = leads;
-            document.getElementById('dashOrders').innerText = orders;
-            
-            localStorage.setItem('emmyLeads', leads);
-            localStorage.setItem('emmyOrders', orders);
-        }
-    } catch (e) { console.error("Sync failed"); }
-    finally { btn.classList.remove('spinning'); }
-}
-
-/* 6. DASHBOARD CONTROL */
-function showDashboard(userCode, shortUrl = "", leads = "0", orders = "0", email = "") {
-    // Save to LocalStorage to save API requests on refresh
+/* 6. DASHBOARD CONTROL ENGINE */
+function showDashboard(userCode, displayLink, leads, orders, email, clicks) {
+    // 1. Persist data to LocalStorage for Auto-Login
     localStorage.setItem('emmyAffiliateCode', userCode);
-    if(email) localStorage.setItem('emmyEmail', email);
+    localStorage.setItem('emmyEmail', email);
     localStorage.setItem('emmyLeads', leads);
     localStorage.setItem('emmyOrders', orders);
-    if(shortUrl) localStorage.setItem('emmyShortLink', shortUrl);
-    
-    // UI Transitions
-    document.getElementById('registrationGrid').style.display = 'none';
-    document.getElementById('affiliateDashboard').style.display = 'block';
-    
-    if(document.querySelector('header h1')) document.querySelector('header h1').style.display = 'none';
+    localStorage.setItem('emmyClicks', clicks);
+    localStorage.setItem('emmyShortLink', displayLink);
 
-    // Update Stats & UI
+    // 2. Transition UI
+    const regGrid = document.getElementById('registrationGrid');
+    const dash = document.getElementById('affiliateDashboard');
+    if(regGrid) regGrid.style.display = 'none';
+    if(dash) dash.style.display = 'block';
+    
+    // 3. Update Text and Stats
     document.getElementById('displayCodeDash').innerText = userCode;
     document.getElementById('dashLeads').innerText = leads;
     document.getElementById('dashOrders').innerText = orders;
+    document.getElementById('dashClicks').innerText = clicks || "0";
     
-    if (!shortUrl) {
-        shortUrl = localStorage.getItem('emmyShortLink') || `https://wa.me/2349076991076?text=Hey, I'm using ${userCode}`;
+    // 4. Update Inputs and Links
+    const linkInput = document.getElementById('shortLink');
+    if(linkInput) linkInput.value = displayLink;
+
+    // 5. Dynamic Support Link Fix
+    const supportLink = document.getElementById('supportLink');
+    if(supportLink) {
+        const supportMsg = encodeURIComponent(`Hey Emmy, I'm an affiliate (Code: ${userCode}). I need help.`);
+        supportLink.href = `https://wa.me/2349076991076?text=${supportMsg}`;
     }
-    document.getElementById('shortLink').value = shortUrl;
-    const supportMsg = encodeURIComponent(`Hey Emmy, I'm an affiliate (Code: ${userCode}). I need help.`);
-    document.getElementById('supportLink').href = `https://wa.me/2349076991076?text=${supportMsg}`;
 }
 
 /* 7. UTILITIES */
 function copyLink() {
     const linkInput = document.getElementById("shortLink");
     linkInput.select();
-    navigator.clipboard.writeText(linkInput.value).then(() => alert("Link copied!"));
+    navigator.clipboard.writeText(linkInput.value).then(() => alert("Affiliate Link Copied!"));
 }
 
 function copyCode() {
     const codeVal = document.getElementById('displayCodeDash').innerText;
-    navigator.clipboard.writeText(codeVal).then(() => alert("Code copied: " + codeVal));
+    navigator.clipboard.writeText(codeVal).then(() => alert("Partner Code Copied: " + codeVal));
 }
 
 function logoutPartner() {
-    if(confirm("Sign out of dashboard?")) {
+    if(confirm("Sign out of the Emmy STACK01 Dashboard?")) {
         localStorage.clear();
         location.reload();
     }
