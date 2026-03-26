@@ -20,7 +20,7 @@
 
         if (partnerId) {
             // Forward to Apps Script for the Hit Counter + WhatsApp Redirect
-            window.location.href = `${apiURL}?partner=${partnerId}`;
+            window.location.replace(`${apiURL}?partner=${partnerId}`);
         } else {
             // Fallback if no ID is provided
             window.location.href = "https://emmystack01.com";
