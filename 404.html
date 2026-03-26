@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Expired or Invalid | Emmy STACK01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #000;
-            color: #00ccff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -17,24 +19,41 @@
             margin: 0;
             text-align: center;
         }
-        h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 10px #00ccff; }
-        p { font-size: 1.2rem; opacity: 0.8; }
+        h1 { font-family: 'Orbitron'; font-size: 3rem; margin-bottom: 10px;}
+        h1 {
+        background: linear-gradient(90deg, #2d66b4, #00ccff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        }
+        p { font-size: 1.2rem; opacity: 0.8; color: #a0aec0; font-family: 'Montserrat'; }
         .btn {
+            font-family: 'Montserrat';
             margin-top: 25px;
             padding: 12px 30px;
             background: transparent;
-            border: 1px solid #00ccff;
-            color: #00ccff;
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: 0.3s;
             cursor: pointer;
+            color: #000;
+            font-weight: 500;
+            position: relative;
         }
-        .btn:hover { background: #00ccff; color: #000; box-shadow: 0 0 20px #00ccff; }
+
+        .btn::before {
+        content:"";
+        position:absolute; inset:-2px;
+        background:linear-gradient(90deg, #2d66b4, #00ccff);
+        z-index:-1;
+        border-radius:inherit;
+        }
+        .btn:hover { box-shadow: 0 0 25px #00ccff; }
     </style>
 </head>
 <body>
+    <img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="30px" width="auto" class="nav-logo">
     <h1>SYSTEM ERROR 404</h1>
     <p>The Digital DNA sequence for this partner could not be verified.</p>
     <p>The link may be mistyped or the partner is no longer active.</p>
