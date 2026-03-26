@@ -310,7 +310,7 @@ document.getElementById('rewardForm').addEventListener('submit', async function(
         const nextNumber = Math.floor(100 + Math.random() * 899);
         const code = (fName.substring(0, 2) + nextNumber + lName.substring(0, 2)).toUpperCase();
         const waLink = `https://wa.me/2349076991076?text=${encodeURIComponent("Hey, I need a Website. I'm using " + code + " for 5% off.")}`;
-        const brandedLink = `https://emmystack01.com/go/?id=${code};`;
+        const brandedLink = `https://emmystack01.com/go/?id=${code}`;
 
         // Capture all payment details regardless of choice for Sheet sync
         const data = {
@@ -356,8 +356,15 @@ async function processLogin(isRefresh = false) {
     const originalText = btn.innerText;
 
     btn.disabled = true;
-    btn.innerText = "Verifying...";
-    if(isRefresh) btn.classList.add('spinning');
+
+    // --- SMART UI LOGIC ---
+    if (isRefresh) {
+        // For the Refresh Button: Just add the spin (Don't touch innerText!)
+        btn.classList.add('spinning');
+    } else {
+        // For the Login Button: Show the "Verifying..." text you like
+        btn.innerText = "Verifying...";
+    }
 
     try {
         const response = await fetch(`${scriptURL}?email=${encodeURIComponent(email)}`);
@@ -365,17 +372,33 @@ async function processLogin(isRefresh = false) {
 
         if (res.result === "success") {
             const u = res.data;
-            const branded = `https://emmystack01.com/go/?id=${u["Generated Affiliate Code"]}`;
-            showDashboard(u["Generated Affiliate Code"], branded, u["Messages Received"], u["Confirmed Orders"], email, u["Clicks"]);
+            const code = u["Generated Affiliate Code"];
+            const branded = `https://emmystack01.com/go/?id=${code}`;
+            
+            showDashboard(
+                code, 
+                branded, 
+                u["Messages Received"] || "0", 
+                u["Confirmed Orders"] || "0", 
+                email, 
+                u["Clicks"] || "0"
+            );
         } else if (!isRefresh) {
-            alert("Partner Digital DNA not found. Please register.");
+            alert("Partner DNA not found.");
         }
     } catch (e) { 
         console.error("API Error:", e);
     } finally { 
-        btn.disabled = false;
-        btn.innerText = originalText;
-        if(isRefresh) btn.classList.remove('spinning'); 
+        setTimeout(() => {
+            btn.disabled = false;
+            if (isRefresh) {
+                // Stop the spin, icon stays safe because we never touched innerText
+                btn.classList.remove('spinning');
+            } else {
+                // Put back "ACCESS DASHBOARD" for the login button
+                btn.innerText = originalText;
+            }
+        }, 500); 
     }
 }
 
