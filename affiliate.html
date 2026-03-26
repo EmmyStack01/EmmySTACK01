@@ -365,7 +365,7 @@ async function processLogin(isRefresh = false) {
 
         if (res.result === "success") {
             const u = res.data;
-            const branded = `https://emmystack01.com/go/${u["Generated Affiliate Code"]}`;
+            const branded = `https://emmystack01.com/go/?id=${u["Generated Affiliate Code"]}`;
             showDashboard(u["Generated Affiliate Code"], branded, u["Messages Received"], u["Confirmed Orders"], email, u["Clicks"]);
         } else if (!isRefresh) {
             alert("Partner Digital DNA not found. Please register.");
