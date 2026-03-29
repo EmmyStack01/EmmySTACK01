@@ -75,7 +75,7 @@
         <header id="headerSection">
             <h1>Earn by Spreading the Word</h1>
 
-            <button class="accordion" onclick="togglePanel()">Earning Breakdown ▾</button>
+            <button class="accordion button" onclick="togglePanel()">Earning Breakdown ▾</button>
             <div id="earningPanel" class="panel">
                 <p>
                     <b>How it works:</b>
@@ -99,9 +99,9 @@
                 <div class="card">
                     <form id="rewardForm">
                         <h2>Partner Registration</h2>
-                        <input type="text" id="firstName" placeholder="First Name" required>
-                        <input type="text" id="lastName" placeholder="Last Name" required>
-                        <input type="email" id="email" placeholder="Email" required>
+                        <input class="main-input" type="text" id="firstName" placeholder="First Name" required>
+                        <input class="main-input" type="text" id="lastName" placeholder="Last Name" required>
+                        <input class="main-input" type="email" id="email" placeholder="Email" required>
                         
                         <select id="paymentMethod" onchange="toggleDetails()">
                             <option value="">Select Payment Method</option>
@@ -110,20 +110,19 @@
                         </select>
 
                         <div id="bankDetails" style="display:none;">
-                            <input type="text" placeholder="Bank Name">
-                            <input type="text" placeholder="Account Name">
-                            <input type="text" placeholder="Account Number">
+                            <input class="main-input" type="text" placeholder="Bank Name">
+                            <input class="main-input" type="text" placeholder="Account Name">
+                            <input class="main-input" type="text" placeholder="Account Number">
                         </div>
 
                         <div id="cryptoDetails" style="display:none;">
-                            <input type="text" placeholder="Crypto Name">
-                            <input type="text" placeholder="Blockchain (Network)">
-                            <input type="text" placeholder="Wallet Address">
+                            <input class="main-input" type="text" placeholder="Crypto Name">
+                            <input class="main-input" type="text" placeholder="Blockchain (Network)">
+                            <input class="main-input" type="text" placeholder="Wallet Address">
                             <p class="warning">Important Disclaimer: Please ensure your Wallet Address and Network (Blockchain) are 100% accurate. Emmy STACK01 is not responsible for funds lost due to incorrect address entry. Transactions on the blockchain are irreversible.</p>
                         </div>
 
-                        <button type="submit" id="submitBtn">
-                            <span id="btnLoader" style="display:none;" class="loader"></span>
+                        <button type="submit" id="submitBtn" class="button">
                             <span id="btnText">Join Program</span>
                         </button>
 
@@ -135,8 +134,8 @@
                     <div id="loginForm" style="display: none;">
                         <h2>Partner Login</h2>
                         <p>Enter your registered email to access your dashboard.</p>
-                        <input type="email" id="loginEmail" placeholder="Your Email Address" required>
-                        <button onclick="processLogin()" id="loginBtn">Access Dashboard</button>
+                        <input class="main-input" type="email" id="loginEmail" placeholder="Your Email Address" required>
+                        <button onclick="processLogin()" id="loginBtn" class="button">Access Dashboard</button>
                         <p style="margin-top:15px; font-size:0.8rem;">
                             New here? <a href="#" onclick="toggleLogin(false)" class="loginBtn">Register instead</a>
                         </p>
@@ -149,70 +148,90 @@
             <div class="dashboard-header">
                 <h3>Affiliate Command Center</h3>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <span class="status-pill">Active Partner</span>
+                    <span class="status-pill badge">Active Partner</span>
                     <button onclick="refreshStats()" id="refreshBtn" class="mini-btn">
                         <i class="ri-refresh-line"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <p>Link Clicks</p>
-                    <h4 id="dashClicks">0</h4>
-                </div>
-                <div class="stat-card">
-                    <p>Total Leads (Messages)</p>
-                    <h4 id="dashLeads">0</h4>
-                </div>
-                <div class="stat-card">
-                    <p>Confirmed Orders</p>
-                    <h4 id="dashOrders">0</h4>
-                </div>
-            </div>
+            <div class="dashboard-grid">
 
-            <div class="referral-section">
-                <p>Your Unique Referral Link</p>
-                <div class="link-box">
-                    <input type="text" id="shortLink" readonly placeholder="Generating link...">
-                    <button onclick="copyLink()">Copy Link</button>
-                </div>
-                <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">
-                    Code: <span id="displayCodeDash">------</span>
-                </p>
-            </div>
+                <div class="stack">
+                    <div class="stats-grid">
+                        <div class="stat-card stat-item">
+                            <p class="label">
+                                Clicks
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Number of times your link was clicked.</span>
+                                </span>
+                            </p>
+                            <h4 id="dashClicks" class="value">0</h4>
+                        </div>
 
-            <div class="resource-section" style="margin: 25px 0; text-align: center;">
-                <p style="font-size: 0.9rem; color: #888;">MARKETING ASSETS</p>
-                <div class="toolkit-container">
-                    <a href="https://emmystack01.com/partner-kit.html" class="toolkit-btn">
-                        <i class="ri-tools-line"></i>
-                        <span>ACCESS SOCIAL MEDIA TOOLKIT</span>
-                    </a>
+                        <div class="stat-card stat-item">
+                            <p class="label">
+                                Leads
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Number of times your link was used to message Emmy.</span>
+                                </span>
+                            </p>
+                            <h4 id="dashLeads" class="value">0</h4>
+                        </div>
+
+                        <div class="stat-card stat-item">
+                            <p class="label">
+                                Orders
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Number of orders completed with your link.</span>
+                                </span>
+                            </p>
+                            <h4 id="dashOrders" class="value">0</h4>
+                        </div>
+                    </div>
+
+                    <div class="quick-link">
+                        <p class="label" style="margin-bottom: 0.75rem;">Quick Actions</p>
+                        <div class="stack" style="gap: 0.5rem;">
+                            <a href="https://emmystack01.com/partner-kit.html" class="toolkit-btn btn-action">
+                                <i class="ri-tools-line"></i>
+                                <span>Access Social Media Toolkit</span>
+                            </a>
+                            <a href="asset/Emmy_STACK01_Partner_Handbook.pdf" download="Emmy_STACK01_Handbook" class="download-btn btn-action">
+                                <i class="ri-file-download-line"></i> Download Partner Handbook (PDF)
+                            </a>
+                        <a href="#" id="supportLink" class="btn-support btn-action"><i class="ri-customer-service-2-fill"></i>Chat with Support</a>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="resource-section" style="margin: 25px 0; text-align: center;">
-                <p style="font-size: 0.9rem; color: #888; margin-bottom: 10px;">New to the program?</p>
-                <a href="asset/Emmy_STACK01_Partner_Handbook.pdf" download="Emmy_STACK01_Handbook" class="download-btn">
-                    <i class="ri-file-download-line"></i> Download Partner Handbook (PDF)
-                </a>
-            </div>
-            <div class="conversion-notice">
-                <i class="ri-information-line"></i>
-                <span>
-                    <strong>Currency Note:</strong> Commissions are calculated on the final sale amount. 
-                    Cross-currency payouts (e.g., NGN to USDT) use the market rate at the time of transfer.
-                </span>
-            </div>
-            <div class="support-footer">
-                <p>Need help or want to change payment info?</p>
-                <a href="#" id="supportLink" class="btn-support">Chat with Support</a>
-                <br>
-                <button onclick="logoutPartner()" class="logout-btn">Sign Out</button>
-            </div>
+
+                <div class="stack">
+                    <div class="referral-section">
+                        <p>Your Unique Referral Link</p>
+                        <div class="link-box btn-primary">
+                            <input class="input" type="text" id="shortLink" readonly placeholder="Generating link...">
+                            <button onclick="copyLink()">Copy Link</button>
+                        </div>
+                        <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">
+                            Code: <span id="displayCodeDash" class="code-display">------</span>
+                        </p>
+                    </div>
+
+                    <div class="conversion-notice">
+                        <i class="ri-information-line"></i>
+                        <span>
+                            <strong>Currency Note:</strong> Commissions are calculated on the final sale amount. 
+                            Cross-currency payouts (e.g., NGN to USDT) use the market rate at the time of transfer.
+                        </span>
+                    </div>
+
+                    <button onclick="logoutPartner()" class="logout-btn btn-outline-danger">Sign Out</button>
+
+                </div>
+            </div>    
         </main>
-
 
         <footer class="footer-section">
             <hr class="line">
