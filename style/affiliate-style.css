@@ -2,19 +2,25 @@
             --primary-color: #2d66b4;
             --secondary-color: #22386e;
             --accent-color: #00ccff;
+            --danger: #ff4d4d;
             --glass-bg: rgba(255, 255, 255, 0.08); /* The "Glass" tint */
             --glass-border: rgba(255, 255, 255, 0.2); /* The "Edge" of the glass */
             --text-main: #ffffff;
             --text-muted: #a0aec0;
         }
 
-        body { 
-            font-family: 'Montserrat'; 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 0;
-            overflow-x: hidden;
-            background: #000; /* Fallback */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+        font-family: 'Montserrat';
+        margin: 0; 
+        padding: 0;
+        color: var(--text-main);
+        background: #000;
+        line-height: 1.5;
+        overflow-x: hidden;
         }
 
         #vanta-canvas {
@@ -151,7 +157,7 @@ h1:hover {
         }
 
         /* --- Form Elements --- */
-        input, select { 
+        .main-input, select { 
             width: 100%; 
             margin: 10px 0; 
             /* Increased the second value (horizontal padding) to 20px */
@@ -169,7 +175,7 @@ h1:hover {
             font-size: 16px; /* Improves readability on mobile */
         }
 
-        button { 
+        .button { 
             background: var(--primary-color); 
             color: white; 
             border: none; 
@@ -182,7 +188,7 @@ h1:hover {
             text-decoration: none;
         }
 
-        button:hover { background: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
+        .button:hover { background: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
         /* --- Typography --- */
         h1 {font-family: 'Orbitron'; font-size: 2.5rem; margin-bottom: 10px; }
         h2 { font-size: 1.3rem; color: var(--accent-color); margin-top: 0; }
@@ -191,26 +197,10 @@ h1:hover {
 
 
         
-/* The Loading Spinner */
-.loader {
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid var(--accent-color);
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    animation: spin 1s linear infinite;
-    display: inline-block;
-    margin-right: 8px;
-    vertical-align: middle;
-}
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 
 /* Gray out button when disabled */
-button:disabled {
+.button:disabled {
     background-color: #444;
     cursor: not-allowed;
     opacity: 0.7;
@@ -298,95 +288,308 @@ button:disabled {
     transform: translateY(-3px);
 }
 
-/* 10000. Dashboard Container (The Glass Portal) */
+/* --- LAYOUT: GLASS PORTAL --- */
 .glass-portal {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.03); /* Subtle glass tint */
-    backdrop-filter: blur(15px); /* Frosty effect */
-    border: 1px solid rgba(0, 204, 255, 0.2);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 204, 255, 0.1);
-    animation: fadeIn 0.8s ease-out;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 204, 255, 0.1);
+  animation: fadeIn 0.8s ease-out;
 }
 
-/* 2. Status Pill (The "Active" indicator) */
-.status-pill {
-    background: rgba(0, 255, 157, 0.1);
-    color: #00ff9d;
-    padding: 6px 16px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 1px;
-    border: 1px solid rgba(0, 255, 157, 0.3);
-    box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
-    text-transform: uppercase;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 3. Stats Grid (Earnings & Attribution) */
+/* --- HEADER & BADGES --- */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.badge {
+  background: rgba(0, 255, 157, 0.1);
+  color: #00ff9d;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+  text-transform: uppercase;
+}
+@media (max-width: 750px) {
+  .badge{display: none;}
+}
+
+.mini-btn {
+  background: rgba(0, 204, 255, 0.1);
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  color: var(--accent-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mini-btn:hover {
+  background: transparent;
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* --- GRID SYSTEM --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* --- STAT CARDS --- */
 .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin: 30px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
 }
 
 .stat-card {
-    background: rgba(0, 204, 255, 0.05);
-    padding: 20px;
-    border-radius: 16px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 204, 255, 0.05);
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.stat-card p { font-size: 0.8rem; color: #888; margin-bottom: 5px; }
-.stat-card h4 { font-family: 'Orbitron', sans-serif; color: #00ccff; font-size: 1.4rem; }
+.stat-card .label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+/* Container to keep the popup positioned relative to the icon */
+.info-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+}
 
-#displayCodeDash {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    color: #fff;
-    letter-spacing: 3px;
+.info-icon {
+  cursor: help;
+  font-size: 1rem;
+  color: var(--accent-color);
+  transition: opacity 0.3s;
+  opacity: 0.7;
+}
+
+.info-icon:hover {
+  opacity: 1;
+}
+
+/* The Popup Box */
+.info-box {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 125%; /* Positions it above the icon */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  width: 180px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; /* Prevents flickering */
+}
+
+/* Triangle arrow at the bottom of the box */
+.info-box::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--glass-border) transparent transparent transparent;
+}
+
+/* Show on Hover */
+.info-wrapper:hover .info-box {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.stat-card .value {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* --- ACTION BUTTONS --- */
+.btn-action {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  text-align: left;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.toolkit-btn {
+  background: rgba(0, 204, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-main);
+}
+
+.download-btn {
+  background: rgba(0, 204, 255, 0.05);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+
+.btn-support {
+  background: rgba(0, 204, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-main);
+}
+
+.toolkit-btn:hover, .download-btn:hover, .btn-support:hover {
+  background: rgba(0, 204, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+}
+
+/* --- REFERRAL SECTION --- */
+.referral-section p {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.link-box {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  margin: 10px 0;
+}
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--accent-color);
+  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  outline: none;
+  width: 100%;
+}
+
+.link-box button {
+  background: var(--accent-color);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 7px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.code-display {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  letter-spacing: 3px;
+}
+
+/* --- FOOTER ELEMENTS --- */
+.conversion-notice {
+  background: rgba(0, 204, 255, 0.05);
+  border: 1px solid rgba(0, 204, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.8rem;
+  color: #ccc;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.conversion-notice i, .conversion-notice strong {
+  color: var(--accent-color);
 }
 
 .logout-btn {
-    margin-top: 20px;
-    background: transparent;
-    color: #ff4d4d;
-    border: 1px solid rgba(255, 77, 77, 0.3);
-    padding: 8px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: 0.3s;
+  width: 100%;
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  transition: 0.3s;
+  text-transform: uppercase;
 }
 
 .logout-btn:hover {
-    background: rgba(255, 77, 77, 0.1);
-    border-color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  border-color: var(--danger);
 }
 
-/* 5. Animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+/*buttonssss*/
 .loginBtn{
-    text-decoration: none;
-    color: #00ccff;
-}
-
-.btn-support{
     text-decoration: none;
     color: #00ccff;
 }
 
 
 /* Unified Button Styling */
-#submitBtn, #loginBtn, .btn-support{
+#submitBtn, #loginBtn{
     width: 100%;
     padding: 12px;
     border-radius: 8px;
@@ -416,49 +619,6 @@ button:disabled {
     transform: translateY(-2px);
 }
 
-/* Dashboard Link Box Styling */
-.link-box {
-    display: flex;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 5px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 204, 255, 0.3);
-    margin: 15px 0;
-}
-
-.link-box input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: #00ccff;
-    padding: 10px;
-    font-family: 'Montserrat', sans-serif;
-    outline: none;
-}
-
-.link-box button {
-    background: #00ccff;
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 7px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
-.mini-btn {
-    background: rgba(0, 204, 255, 0.1);
-    border: 1px solid rgba(0, 204, 255, 0.3);
-    color: #00ccff;
-    padding: 3px 5px;
-    max-width: 80px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.mini-btn:hover {background-color: transparent;}
 
 @keyframes spin {
     from { transform: rotate(0deg); }
@@ -468,115 +628,4 @@ button:disabled {
 .spinning i {
     display: inline-block;
     animation: spin 1s linear infinite;
-}
-
-
-.download-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(0, 255, 157, 0.1);
-    color: #00ff9d;
-    padding: 12px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border: 1px solid rgba(0, 255, 157, 0.3);
-    transition: all 0.3s ease;
-    width: 90%;
-    justify-content: center;
-}
-
-.download-btn:hover {
-    background: rgba(0, 255, 157, 0.2);
-    border-color: #00ff9d;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 255, 157, 0.1);
-}
-
-.download-btn i {
-    font-size: 1.2rem;
-}
-
-
-.conversion-notice {
-    background: rgba(0, 204, 255, 0.05);
-    border: 1px solid rgba(0, 204, 255, 0.2);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 20px 0;
-    font-size: 0.8rem;
-    color: #ccc;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    text-align: left;
-}
-
-.conversion-notice i {
-    color: #00ccff;
-    font-size: 1.1rem;
-}
-
-.conversion-notice strong {
-    color: #00ccff;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.toolkit-container {
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-}
-
-.toolkit-btn {
-    /* Layout */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    max-width: 600px; /* Prevents it from being too wide on ultra-wide screens */
-    
-    /* Sizing: Responsive padding and font */
-    padding: clamp(12px, 3vw, 18px); 
-    font-size: clamp(0.7rem, 2vw, 0.9rem);
-    
-    /* Branding & Glassmorphism */
-    background: rgba(0, 204, 255, 0.05);
-    border: 1px solid rgba(0, 204, 255, 0.3);
-    border-radius: 12px;
-    color: var(--accent-color);
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.toolkit-btn i {
-    font-size: 1.2rem;
-}
-
-/* Hover State: The "Glow" Effect */
-.toolkit-btn:hover {
-    background: rgba(0, 204, 255, 0.15);
-    border-color: var(--accent-color);
-    color: #fff;
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 0 20px rgba(0, 204, 255, 0.4);
-}
-
-/* Mobile Specific Tweak */
-@media (max-width: 480px) {
-    .toolkit-btn {
-        flex-direction: row; /* Keep icon and text side-by-side */
-        letter-spacing: 1px;
-        border-radius: 10px;
-    }
 }
