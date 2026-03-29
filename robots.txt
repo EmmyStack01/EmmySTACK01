@@ -5,6 +5,8 @@ Disallow: /style/*.map
 Disallow: /README.md
 Disallow: /LICENSE
 Disallow: /thank-you.html
+Disallow: /404.html
+Disallow: /go/
 Allow: /
 
 # 2. Specific AI Crawler Invitations
