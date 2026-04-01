@@ -11,6 +11,32 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
     <style>
+        .back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 800px) {
+            .back-btn { position: static; margin-bottom: 10px; }
+        }
+        
         .payment-card {
             max-width: 500px;
             margin: 100px auto;
@@ -61,6 +87,9 @@
 <body>
     <div id="vanta-canvas"></div>
     <div class="container">
+        <a href="https://emmystack01.com/" title="back" class="back-btn">
+            <span>&#8592;</span> 
+        </a>
         <div class="payment-card glass">
             <h1 style="font-size: 1.5rem;">Secure Payment</h1>
             <p style="color: var(--text-muted);">Support Emmy or Pay for a Service</p>
