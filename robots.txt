@@ -6,6 +6,7 @@ Disallow: /README.md
 Disallow: /LICENSE
 Disallow: /thank-you.html
 Disallow: /404.html
+Disallow: /success.html
 Disallow: /go/
 Allow: /
 
