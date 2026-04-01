@@ -86,6 +86,55 @@ body{background-color: var(--bg-dark);}
     color: #000;                  /* Flips to black for contrast */
     box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
 }
+/*new*/
+/* Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: rgba(10, 15, 30, 0.95); /* Deep dark glass */
+    backdrop-filter: blur(15px);
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+/* Hover effect for dropdown links */
+.dropdown-content a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+/* Show the menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Rotate the arrow on hover */
+.dropdown:hover .ri-arrow-down-s-line {
+    transform: rotate(180deg);
+    transition: 0.3s;
+}
 /*FLAT NAV*/
 @media screen and (min-width: 900.01px){
     .navbar{display: none;}
