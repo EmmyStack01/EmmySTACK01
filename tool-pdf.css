@@ -1,0 +1,352 @@
+/* ==========================================================================
+   1. CORE VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --primary-color: #2d66b4;
+    --secondary-color: #22386e;
+    --accent-color: #00ccff;
+    --danger: #ff4d4d;
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-main: #ffffff;
+    --text-muted: #a0aec0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: 'Montserrat', sans-serif; 
+    margin: 0; 
+    background: #000; 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+#vanta-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+}
+
+/* ==========================================================================
+   2. LAYOUT & GLASS COMPONENTS
+   ========================================================================== */
+.container { 
+    max-width: 1100px; 
+    margin: auto; 
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+    position: relative;
+    cursor: default;
+}
+
+/* Navigation */
+.back-btn {
+    position: absolute;
+    left: 0;
+    width: 45px; height: 45px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.pill-nav {
+    display: flex;
+    align-items: center;
+    padding: 8px 20px;
+    gap: 15px;
+    border-radius: 50px;
+    transition: transform 0.3s ease;
+}
+
+.pill-nav:hover { transform: scale(1.02); }
+
+.nav-text {
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   3. TYPOGRAPHY & ANIMATIONS
+   ========================================================================== */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive size */
+    text-align: center;
+    margin-bottom: 10px;
+    cursor: default;
+    color: transparent;
+    background-image: repeating-linear-gradient(45deg, #f1f1f1 0px, #f1f1f1 144px, gray 144px, gray 288px, #bebebe 288px, #bebebe 432px);
+    background-size: 250%;
+    background-position: 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: stripeAnimation 3s linear infinite paused;
+}
+
+h1:hover { animation-play-state: running; }
+
+@keyframes stripeAnimation {
+    100% { background-position: 165%; }
+}
+
+h2 { font-family: 'Orbitron'; font-size: 1.3rem; color: var(--primary-color); margin-top: 0; }
+b { color: var(--primary-color); }
+
+/* ==========================================================================
+   4. PDF TOOLBARS & WORKSPACE
+   ========================================================================== */
+.toolbar1, .toolbar2 { 
+    background: #2c2c2c; 
+    color: white; 
+    padding: 10px 20px; 
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.toolbar1 { justify-content: space-between; }
+.toolbar2 { justify-content: center; }
+
+#pdf-container { 
+    position: relative; 
+    margin: 20px auto; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.2); 
+    background: white;
+    user-select: none;
+    max-width: 100%;
+}
+
+#pdf-render-canvas { 
+    display: block; 
+    max-width: 100%; 
+    height: auto !important; 
+}
+
+/* Signature Overlay */
+#signature-overlay {
+    position: absolute;
+    box-sizing: border-box;
+    top: 50px; left: 50px;
+    width: 150px; height: 80px;
+    border: 2px dashed var(--primary-color);
+    cursor: move;
+    display: none;
+    z-index: 50;
+    touch-action: none; /* Prevents scrolling while dragging on mobile */
+    border: 2px dashed #007bff; /* Clean blue dashed line */
+}
+
+
+
+#delete-sig {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: 24px;
+    height: 24px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%; /* This makes it a perfect circle */
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 101;
+}
+
+#delete-sig:hover {
+    background: #cc0000;
+}
+
+#signature-overlay img { width: 100%; height: 100%; pointer-events: none; }
+
+/* Change .resize-handle to #resize-handle */
+#resize-handle {
+    width: 15px; 
+    height: 15px;
+    background: var(--accent-color); /* Make sure this variable is defined */
+    position: absolute;
+    bottom: -7px; 
+    right: -7px;
+    cursor: nwse-resize;
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 102;
+}
+
+/* ==========================================================================
+   5. MODALS & BUTTONS
+   ========================================================================== */
+.modal { 
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+}
+
+.modal-content { 
+    background: linear-gradient(90deg, #000, #2c2c2c);
+    border: 1px solid var(--glass-border);
+    padding: 25px; 
+    border-radius: 12px; 
+    text-align: center; 
+    width: 90%;
+    max-width: 550px;
+}
+
+#sig-pad { 
+    border: 2px solid #ccc; 
+    cursor: crosshair; 
+    background: #fafafa; 
+    margin-bottom: 15px; 
+    max-width: 100%;
+}
+
+button {
+    margin: 2px; 
+    border: 0; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+#save-sig-btn, #download-btn {
+    background: var(--primary-color); 
+    color: white;
+}
+
+button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ==========================================================================
+   6. COFFEE SECTION (FLOATING)
+   ========================================================================== */
+.coffee-section {
+    position: fixed;
+    bottom: 30px; right: 30px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+}
+
+.coffee {
+    font-size: 30px;
+    color: #f1f1f1;
+    background: rgba(20, 20, 20, 0.6);
+    border: 2px solid var(--glass-border);
+    border-radius: 50%;
+    padding: 12px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    animation: coffee-float 4s ease-in-out infinite;
+}
+
+@keyframes coffee-float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-5px, -10px) rotate(-2deg); }
+}
+
+.shake-coffee { animation: coffee-shake 0.5s ease-in-out !important; }
+
+@keyframes coffee-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.coffee-info {
+    visibility: hidden; opacity: 0;
+    position: absolute; bottom: 125%; right: 0;
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(10px);
+    color: #fff; padding: 10px; border-radius: 8px;
+    width: 160px; font-size: 0.75rem; text-align: center;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+
+.coffee-section:hover .coffee-info { visibility: visible; opacity: 1; }
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+.footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
+.line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
+.ownership { text-align: center; margin-bottom: 10px; }
+.branding { font-size: 0.9rem; color: #94a3b8; }
+.branding a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
+
+.socials { display: flex; justify-content: center; gap: 20px; }
+.socials a {
+    text-decoration: none;
+    display: flex; justify-content: center; align-items: center;
+    width: 45px; height: 45px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    color: white;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    background: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* ==========================================================================
+   8. MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 800px) {
+    .header-wrapper { flex-direction: column; gap: 15px; }
+    .back-btn { position: static; margin-bottom: 10px; }
+    .toolbar1 { flex-direction: column; text-align: center; width: 100%; }
+    .coffee-section { bottom: 20px; right: 20px; }
+}

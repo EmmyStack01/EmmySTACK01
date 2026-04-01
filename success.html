@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Emmy STACK01</title>
+    <link rel="stylesheet" href="style/tool-pdf.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <style>
+        .success-wrapper {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            text-align: center;
+            border-radius: 24px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .check-icon {
+            font-size: 80px;
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    
+    <div class="container">
+        <div class="success-wrapper glass">
+            <div class="check-icon">
+                <i class="ri-checkbox-circle-fill"></i>
+            </div>
+            
+            <h1>Payment Received!</h1>
+            <p>Thank you for choosing <b>Emmy STACK01</b>. Your transaction was processed successfully. A formal receipt has been sent to your email address.</p>
+
+            <div class="action-btns">
+                <a href="https://emmystack01.com/" class="btn-primary">Return to Home</a>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 Logo" style="width: 120px; opacity: 0.8;">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script>
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true, touchControls: true, gyroControls: false,
+            minHeight: 200.00, minWidth: 200.00,
+            scale: 1.00, scaleMobile: 1.00,
+            color: 0x2d66b4, backgroundColor: 0x0
+        })
+    </script>
+</body>
+</html>
