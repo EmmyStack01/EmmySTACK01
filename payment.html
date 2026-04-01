@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Payment | Emmy STACK01</title>
+    <link rel="stylesheet" href="style/tool-pdf.css"> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <style>
+        .payment-card {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: 'Montserrat';
+        }
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            background: #00bb77; /* Paystack Green */
+            color: white;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        .payment-type-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .type-btn {
+            flex: 1;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px;
+        }
+        .type-btn.active {
+            background: var(--primary-color);
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    <div class="container">
+        <div class="payment-card glass">
+            <h1 style="font-size: 1.5rem;">Secure Payment</h1>
+            <p style="color: var(--text-muted);">Support Emmy or Pay for a Service</p>
+
+            <div class="payment-type-toggle">
+                <button class="type-btn active" onclick="setType('coffee')">☕ Buy Coffee</button>
+                <button class="type-btn" onclick="setType('project')">💻 Project Pay</button>
+            </div>
+
+            <form id="paymentForm">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email-address" required placeholder="email@example.com">
+                </div>
+
+                <div class="input-group" id="amount-group">
+                    <label>Amount (NGN)</label>
+                    <input type="number" id="amount" required placeholder="Enter Amount">
+                </div>
+
+                <button type="submit" class="pay-btn" id="pay-now">
+                    <i class="ri-secure-payment-fill"></i> Pay with Paystack
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="script/payment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script>
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true, touchControls: true, gyroControls: false,
+            minHeight: 200.00, minWidth: 200.00,
+            scale: 1.00, scaleMobile: 1.00,
+            color: 0x2d66b4, backgroundColor: 0x0
+        })
+    </script>
+</body>
+</html>
