@@ -135,6 +135,10 @@ body{background-color: var(--bg-dark);}
     transform: rotate(180deg);
     transition: 0.3s;
 }
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
 /*FLAT NAV*/
 @media screen and (min-width: 900.01px){
     .navbar{display: none;}
