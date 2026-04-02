@@ -1,16 +1,15 @@
 /**
  * EmmySign Master JS 
- * Version: 2.1 (Multi-Signature + Zoom + Resize + Drag)
- * Optimized for: Emmy STACK01
+ * Version: 2.3 (Final Fixes: Mobile Stability + Deep Memory Cloning)
  */
 
 // --- Global State ---
 let pdfDoc = null;
 let currentPage = 1;
-let currentPdfBytes = null;
+let currentPdfBytes = null; 
 let pdfScale = 1.0; 
-let signatures = []; // Array to hold all signature objects
-let currentStrokeColor = "#000000"; // Default Black
+let signatures = []; 
+let currentStrokeColor = "#000000";
 
 // --- 1. PDF Rendering & Zoom Engine ---
 const pdfUpload = document.getElementById('pdf-upload');
@@ -21,10 +20,10 @@ if (pdfUpload) {
         if (!file) return;
         const buffer = await file.arrayBuffer();
         
-        // CLONE THE BUFFER to prevent "Detached ArrayBuffer" errors
-        currentPdfBytes = new Uint8Array(buffer); 
+        // DEEP CLONE: Ensures the original data stays in memory for the 'Bake'
+        currentPdfBytes = new Uint8Array(buffer.slice(0)); 
         
-        const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(currentPdfBytes) });
+        const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(currentPdfBytes.slice(0)) });
         pdfDoc = await loadingTask.promise;
         document.getElementById('total-pages').textContent = pdfDoc.numPages;
         renderPage(1);
@@ -48,16 +47,10 @@ async function renderPage(num) {
 
     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
     document.getElementById('current-page').textContent = num;
-    
     renderAllSignatures(); 
 }
 
-window.changeZoom = (delta) => {
-    pdfScale = Math.min(Math.max(0.5, pdfScale + delta), 3.0);
-    renderPage(currentPage);
-};
-
-// --- 2. Signature Pad Logic ---
+// --- 2. Signature Pad & Mobile Stability ---
 const sigPad = document.getElementById('sig-pad');
 const sigCtx = sigPad ? sigPad.getContext('2d') : null;
 let isDrawing = false;
@@ -70,58 +63,42 @@ if (sigPad) {
             y: (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top
         };
     };
+
+    // Prevent scrolling when touching the signature pad
+    const preventScroll = (e) => { if (e.target === sigPad) e.preventDefault(); };
+    sigPad.addEventListener('touchstart', preventScroll, { passive: false });
+    sigPad.addEventListener('touchmove', preventScroll, { passive: false });
+
     sigPad.addEventListener('pointerdown', (e) => {
         isDrawing = true;
         const pos = getPos(e);
         sigCtx.beginPath();
-        sigCtx.strokeStyle = currentStrokeColor; // <--- Set color here
-        sigCtx.lineWidth = 2;
+        sigCtx.strokeStyle = currentStrokeColor;
+        sigCtx.lineWidth = 2.5; // Slightly thicker for mobile visibility
         sigCtx.lineCap = "round";
         sigCtx.moveTo(pos.x, pos.y);
         sigPad.setPointerCapture(e.pointerId);
     });
+
     sigPad.addEventListener('pointermove', (e) => {
         if (!isDrawing) return;
         const pos = getPos(e);
         sigCtx.lineTo(pos.x, pos.y);
         sigCtx.stroke();
     });
+
     window.addEventListener('pointerup', () => isDrawing = false);
-    // Add this inside your color button click logic
-    sigPad.style.cursor = `crosshair`;
 }
 
-// Map all color buttons
-document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.onclick = () => {
-        currentStrokeColor = btn.getAttribute('data-color');
-        sigCtx.strokeStyle = currentStrokeColor;
-        
-        // Optional: Visual feedback for active color
-        document.querySelectorAll('.color-btn').forEach(b => b.style.border = "none");
-        btn.style.border = "2px solid #3498db";
-    };
-});
-
-document.getElementById('open-sig-btn').onclick = () => document.getElementById('sig-modal').style.display = 'flex';
-document.getElementById('close-modal').onclick = () => document.getElementById('sig-modal').style.display = 'none';
-document.getElementById('clear-pad').onclick = () => sigCtx.clearRect(0, 0, sigPad.width, sigPad.height);
-
-// --- 3. Multi-Signature, Drag, & Resize Logic ---
+// --- 3. Multi-Signature, Drag, & Resize ---
 document.getElementById('save-sig-btn').onclick = () => {
     const dataURL = sigPad.toDataURL();
-    
-    // Create new signature object
     signatures.push({
         id: Date.now(),
         dataURL: dataURL,
         page: currentPage,
-        left: 50, 
-        top: 50, 
-        width: 150, 
-        height: 75
+        left: 50, top: 50, width: 150, height: 75
     });
-    
     renderAllSignatures();
     document.getElementById('sig-modal').style.display = 'none';
     sigCtx.clearRect(0, 0, sigPad.width, sigPad.height);
@@ -134,95 +111,62 @@ function renderAllSignatures() {
     signatures.filter(s => s.page === currentPage).forEach(sig => {
         const sigEl = document.createElement('div');
         sigEl.className = 'sig-instance';
-        
-        // Inline styles mapped here to avoid missing CSS issues
-        sigEl.style.cssText = `
-            position: absolute; 
-            left: ${sig.left}px; 
-            top: ${sig.top}px; 
-            width: ${sig.width}px; 
-            height: ${sig.height}px; 
-            cursor: move; 
-            touch-action: none; 
-            z-index: 10; 
-            border: 1px dashed #3498db;
-        `;
+        sigEl.style.cssText = `position: absolute; left:${sig.left}px; top:${sig.top}px; width:${sig.width}px; height:${sig.height}px; cursor:move; touch-action:none; z-index:10; border:1px dashed #3498db;`;
         
         sigEl.innerHTML = `
             <img src="${sig.dataURL}" style="width:100%; height:100%; pointer-events:none;">
-            <div class="resizer" style="position:absolute; width:15px; height:15px; background:#3498db; bottom:-7px; right:-7px; cursor:nwse-resize; border-radius:50%;"></div>
+            <div class="resizer" style="position:absolute; width:18px; height:18px; background:#3498db; bottom:-9px; right:-9px; cursor:nwse-resize; border-radius:50%; border:2px solid white;"></div>
             <div class="delete-sig" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:24px; height:24px; text-align:center; cursor:pointer; line-height:24px; font-weight:bold;">×</div>
         `;
 
-        // Delete Logic
         sigEl.querySelector('.delete-sig').onpointerdown = (e) => {
-            e.stopPropagation(); // Stop drag from firing
+            e.stopPropagation();
             signatures = signatures.filter(s => s.id !== sig.id);
             renderAllSignatures();
         };
 
-        // Unified Drag & Resize Logic
         sigEl.onpointerdown = (e) => {
             const isResizing = e.target.classList.contains('resizer');
-            const startX = e.clientX;
-            const startY = e.clientY;
-            const startW = sig.width;
-            const startH = sig.height;
-            const startL = sig.left;
-            const startT = sig.top;
+            const startX = e.clientX; const startY = e.clientY;
+            const startW = sig.width; const startH = sig.height;
+            const startL = sig.left; const startT = sig.top;
 
             sigEl.setPointerCapture(e.pointerId);
-
             sigEl.onpointermove = (em) => {
-                const dx = em.clientX - startX;
-                const dy = em.clientY - startY;
-
                 if (isResizing) {
-                    // Update scale measurements
-                    sig.width = Math.max(50, startW + dx);
-                    sig.height = Math.max(25, startH + dy);
-                    sigEl.style.width = `${sig.width}px`;
-                    sigEl.style.height = `${sig.height}px`;
+                    sig.width = Math.max(50, startW + (em.clientX - startX));
+                    sig.height = Math.max(25, startH + (em.clientY - startY));
                 } else {
-                    // Update drag measurements
-                    sig.left = startL + dx;
-                    sig.top = startT + dy;
-                    sigEl.style.left = `${sig.left}px`;
-                    sigEl.style.top = `${sig.top}px`;
+                    sig.left = startL + (em.clientX - startX);
+                    sig.top = startT + (em.clientY - startY);
                 }
+                renderAllSignatures(); // Re-render for visual feedback
             };
-
-            sigEl.onpointerup = () => {
-                sigEl.onpointermove = null;
-                sigEl.releasePointerCapture(e.pointerId);
-            };
+            sigEl.onpointerup = () => { sigEl.onpointermove = null; sigEl.releasePointerCapture(e.pointerId); };
         };
         container.appendChild(sigEl);
     });
 }
 
-// --- 4. Precise PDF Export ---
+// --- 4. Fixed PDF Export (ArrayBuffer Clone Fix) ---
 document.getElementById('download-btn').onclick = async () => {
-    if (!currentPdfBytes || signatures.length === 0) return alert("Add at least one signature first!");
-    
+    if (!currentPdfBytes || signatures.length === 0) return alert("Add a signature first!");
     try {
-        const pdfDocLib = await PDFLib.PDFDocument.load(currentPdfBytes);
+        // ALWAYS slice the buffer when passing to PDFLib to prevent detachment
+        const pdfDocLib = await PDFLib.PDFDocument.load(currentPdfBytes.slice(0));
         const pages = pdfDocLib.getPages();
-        const canvas = document.getElementById('pdf-render-canvas');
-        const canvRect = canvas.getBoundingClientRect();
+        const canvRect = document.getElementById('pdf-render-canvas').getBoundingClientRect();
 
         for (const sig of signatures) {
             const page = pages[sig.page - 1];
             const { width, height } = page.getSize();
             const sigImage = await pdfDocLib.embedPng(sig.dataURL);
-            
-            // Coordinate scaling (Screen pixels to PDF points)
             const scaleX = width / canvRect.width;
             const scaleY = height / canvRect.height;
 
             page.drawImage(sigImage, {
                 x: sig.left * scaleX,
-                y: (canvRect.height - sig.top - sig.height) * scaleY, // Flip Y coordinate
+                y: (canvRect.height - sig.top - sig.height) * scaleY,
                 width: sig.width * scaleX,
                 height: sig.height * scaleY,
             });
@@ -231,21 +175,15 @@ document.getElementById('download-btn').onclick = async () => {
         const pdfBytes = await pdfDocLib.save();
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const downloadUrl = URL.createObjectURL(blob);
-        
         const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = "EmmySign_Signed.pdf";
-        document.body.appendChild(link);
-        link.click();
-        
+        link.href = downloadUrl; link.download = "EmmySign_Signed.pdf";
+        document.body.appendChild(link); link.click();
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
-    } catch (err) {
-        console.error(err);
-        alert("Bake failed. Check console for details.");
-    }
+    } catch (err) { console.error(err); alert("Bake failed: " + err.message); }
 };
 
 // --- 5. Navigation ---
 document.getElementById('next-page').onclick = () => { if (pdfDoc && currentPage < pdfDoc.numPages) renderPage(currentPage + 1); };
 document.getElementById('prev-page').onclick = () => { if (pdfDoc && currentPage > 1) renderPage(currentPage - 1); };
+document.getElementById('clear-pad').onclick = () => sigCtx.clearRect(0, 0, sigPad.width, sigPad.height);
