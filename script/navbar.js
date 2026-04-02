@@ -22,3 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+/*Sub-Menu*/
+document.querySelector('.dropbtn').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevents the '#' from jumping the page
+    this.parentElement.classList.toggle('active');
+});
