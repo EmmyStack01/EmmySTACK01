@@ -86,6 +86,7 @@ body{background-color: var(--bg-dark);}
     color: #000;                  /* Flips to black for contrast */
     box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
 }
+
 /*new*/
 /* Dropdown Container */
 .dropdown {
@@ -114,7 +115,7 @@ body{background-color: var(--bg-dark);}
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat';
     font-size: 0.9rem;
     transition: 0.3s;
 }
@@ -125,18 +126,22 @@ body{background-color: var(--bg-dark);}
     color: var(--accent-color);
 }
 
-/* Show the menu on hover */
-.dropdown:hover .dropdown-content {
+.dropdown.active .dropdown-content {
     display: block;
 }
 
-/* Rotate the arrow on hover */
-.dropdown:hover .ri-arrow-down-s-line {
-    transform: rotate(180deg);
-    transition: 0.3s;
-}
-.dropdown.active .dropdown-content {
+/* Ensure the dropdown stays open when the class is active */
+.dropdown.show-menu .dropdown-content {
     display: block;
+    position: relative; /* Stacks links vertically on mobile */
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    box-shadow: none;
+}
+
+/* Optional: Rotate the arrow when open */
+.dropdown.show-menu .ri-arrow-down-s-line {
+    transform: rotate(180deg);
 }
 
 /*FLAT NAV*/
