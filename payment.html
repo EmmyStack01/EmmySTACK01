@@ -123,7 +123,7 @@
                 <button class="type-btn" onclick="setType('project', event)">💻 Project Pay</button>
             </div>
 
-            <form id="paymentForm" onsubmit="processPayment(event)">
+            <form id="paymentForm">
                 <div class="input-group">
                     <label>Email Address</label>
                     <input type="email" id="email-address" required placeholder="email@example.com">
@@ -136,7 +136,7 @@
 
                 <div id="paystack-apple-pay"></div>
 
-                <button type="button" class="pay-btn" id="paystack-other-channels" onclick="processPayment()">
+                <button type="button" class="pay-btn" id="paystack-other-channels">
                     <i class="ri-secure-payment-fill"></i> Pay with Paystack
                 </button>
             </form>
