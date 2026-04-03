@@ -1,14 +1,19 @@
 const paymentForm = document.getElementById('paymentForm');
-const paystackPop = new PaystackPop(); // Create one instance
-let currentType = 'coffee';
+const paystackPop = new PaystackPop(); 
+let currentType = 'coffee'; // Default type
 
-// 1. Handle UI Selection (Coffee vs Project)
-function setType(type) {
+/**
+ * 1. UI Selection Logic
+ * Handles switching between "Buy Coffee" and "Project Pay"
+ */
+function setType(type, event) {
     currentType = type;
+    
+    // Update active button styles
     const btns = document.querySelectorAll('.type-btn');
     btns.forEach(btn => btn.classList.remove('active'));
     
-    // Ensure we find the button even if a span inside it was clicked
+    // Safety check for the clicked element
     const clickedBtn = event.currentTarget || event.target.closest('.type-btn');
     if(clickedBtn) clickedBtn.classList.add('active');
     
@@ -22,7 +27,11 @@ function setType(type) {
     }
 }
 
-// 2. The Combined Payment Logic
+/**
+ * 2. Integrated Payment Logic
+ * This single function initializes Apple Pay visibility 
+ * AND handles the manual Paystack button click.
+ */
 async function processPayment(e) {
     if (e) e.preventDefault();
 
@@ -30,19 +39,22 @@ async function processPayment(e) {
     const amountValue = document.getElementById("amount").value;
 
     if (!email || !amountValue) {
-        alert("Please fill in all fields.");
+        alert("Please fill in your email and amount.");
         return;
     }
 
-    // Trigger the combined request (Apple Pay + Standard Checkout)
+    // Trigger the integrated request
     await paystackPop.paymentRequest({
         key: 'pk_live_aeec89eec2bf1d7aa2d009951872e81e9e5329e5', 
         email: email,
-        amount: amountValue * 100, 
+        amount: amountValue * 100, // Conversion to Kobo
         currency: "NGN",
         ref: 'ES' + Math.floor((Math.random() * 1000000000) + 1),
-        container: 'paystack-apple-pay', // Where the Apple Pay button appears
-        loadPaystackCheckoutButton: 'paystack-other-channels', // Your existing green button ID
+        
+        // UI Container Hooks
+        container: 'paystack-apple-pay', 
+        loadPaystackCheckoutButton: 'paystack-other-channels', 
+
         metadata: {
             custom_fields: [
                 {
@@ -62,21 +74,19 @@ async function processPayment(e) {
             }
         },
         onSuccess(response) {
-            console.log('Success!', response);
+            console.log('Transaction Successful:', response);
             window.location.href = "success.html";
         },
         onCancel() {
-            console.log('Payment window closed.');
+            console.log('User closed the payment window.');
         },
         onError(error) {
-            console.error('Payment Error:', error);
+            console.error('Paystack Error:', error);
+            alert("Something went wrong with the payment initialization.");
         }
     });
 }
 
-// 3. Attach event listeners
+// 3. Attach the form listener
 paymentForm.addEventListener("submit", processPayment);
-
-// Optional: Call processPayment() on page load to initialize the Apple Pay button visibility
-// though Paystack usually handles this via the container ID.
-        
+    
