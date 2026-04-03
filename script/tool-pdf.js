@@ -86,7 +86,7 @@ if (sigPad) {
 }
 
 // Color Selection Logic
-document.querySelectorAll('.color-opt').forEach(btn => {
+document.querySelectorAll('.color-btn').forEach(btn => {
     btn.onclick = () => {
         currentStrokeColor = btn.getAttribute('data-color');
         document.querySelectorAll('.color-btn').forEach(b => b.style.border = 'none');
