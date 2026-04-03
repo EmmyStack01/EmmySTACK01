@@ -1,7 +1,8 @@
 /**
  * EmmySign Master JS 
- * Version: 2.1 (Refined Multi-Signature + Zoom + Resize + Drag)
+ * Version: 2.4 (Final Production - Multi-Signature + Zoom + Resize + Drag)
  * Optimized for: Emmy STACK01
+ * Dependencies: PDF-Lib, PDF.js
  */
 
 // --- Global State ---
@@ -9,7 +10,7 @@ let pdfDoc = null;
 let currentPage = 1;
 let currentPdfBytes = null;
 let pdfScale = 1.0; 
-let signatures = []; // Array to hold all signature objects
+let signatures = []; // Array of signature objects
 let currentStrokeColor = "#000000"; 
 
 // --- 1. PDF Rendering & Zoom Engine ---
@@ -21,7 +22,7 @@ if (pdfUpload) {
         if (!file) return;
         const buffer = await file.arrayBuffer();
         
-        // Clone the buffer to prevent "Detached ArrayBuffer" errors
+        // Clone buffer to prevent "Detached ArrayBuffer" errors on re-renders
         currentPdfBytes = new Uint8Array(buffer); 
         
         const loadingTask = pdfjsLib.getDocument({ data: currentPdfBytes });
@@ -39,22 +40,27 @@ async function renderPage(num) {
     const container = document.getElementById('pdf-container');
     
     const unscaledViewport = page.getViewport({ scale: 1 });
-    // Calculate scale relative to container width and global zoom
     const fitScale = (container.clientWidth / unscaledViewport.width) * pdfScale;
     const viewport = page.getViewport({ scale: fitScale });
     
     const ctx = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+    
+    // Support for High-DPI / Retina displays
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = viewport.width * dpr;
+    canvas.height = viewport.height * dpr;
+    canvas.style.width = `${viewport.width}px`;
+    canvas.style.height = `${viewport.height}px`;
+    ctx.scale(dpr, dpr);
 
     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
     document.getElementById('current-page').textContent = num;
     
-    // Refresh signatures for the current page
     renderAllSignatures(); 
 }
 
 window.changeZoom = (delta) => {
+    // Clamp zoom between 50% and 300%
     pdfScale = Math.min(Math.max(0.5, pdfScale + delta), 3.0);
     renderPage(currentPage);
 };
@@ -95,7 +101,7 @@ if (sigPad) {
     sigPad.style.cursor = `crosshair`;
 }
 
-// Color Controls
+// Color Management
 document.querySelectorAll('.color-btn').forEach(btn => {
     btn.onclick = () => {
         currentStrokeColor = btn.getAttribute('data-color');
@@ -110,7 +116,7 @@ document.getElementById('open-sig-btn').onclick = () => document.getElementById(
 document.getElementById('close-modal').onclick = () => document.getElementById('sig-modal').style.display = 'none';
 document.getElementById('clear-pad').onclick = () => sigCtx.clearRect(0, 0, sigPad.width, sigPad.height);
 
-// --- 3. Multi-Signature Management ---
+// --- 3. Multi-Signature UI Logic ---
 document.getElementById('save-sig-btn').onclick = () => {
     const dataURL = sigPad.toDataURL();
     
@@ -155,14 +161,14 @@ function renderAllSignatures() {
             <div class="delete-sig" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:24px; height:24px; text-align:center; cursor:pointer; line-height:24px; font-weight:bold;">×</div>
         `;
 
-        // Delete Button
+        // Handle Signature Removal
         sigEl.querySelector('.delete-sig').onpointerdown = (e) => {
             e.stopPropagation();
             signatures = signatures.filter(s => s.id !== sig.id);
             renderAllSignatures();
         };
 
-        // Pointer Events for Move/Resize
+        // Integrated Drag and Resize
         sigEl.onpointerdown = (e) => {
             if (e.target.classList.contains('delete-sig')) return;
             
@@ -181,8 +187,8 @@ function renderAllSignatures() {
                 const dy = em.clientY - startY;
 
                 if (isResizing) {
-                    sig.width = Math.max(50, startW + dx);
-                    sig.height = Math.max(25, startH + dy);
+                    sig.width = Math.max(40, startW + dx);
+                    sig.height = Math.max(20, startH + dy);
                 } else {
                     sig.left = startL + dx;
                     sig.top = startT + dy;
@@ -203,31 +209,31 @@ function renderAllSignatures() {
     });
 }
 
-// --- 4. Precise PDF Export ---
+// --- 4. Production PDF Export (The "Bake") ---
 document.getElementById('download-btn').onclick = async () => {
-    if (!currentPdfBytes || signatures.length === 0) return alert("Add at least one signature first!");
+    if (!currentPdfBytes || signatures.length === 0) return alert("Please add at least one signature.");
     
     try {
         const pdfDocLib = await PDFLib.PDFDocument.load(currentPdfBytes);
         const pages = pdfDocLib.getPages();
         const canvas = document.getElementById('pdf-render-canvas');
         
-        // Use rendered canvas dimensions for coordinate ratio
-        const canvWidth = canvas.width;
-        const canvHeight = canvas.height;
+        // Accurate viewport dimensions for scaling
+        const displayWidth = parseFloat(canvas.style.width);
+        const displayHeight = parseFloat(canvas.style.height);
 
         for (const sig of signatures) {
             const page = pages[sig.page - 1];
             const { width, height } = page.getSize();
             const sigImage = await pdfDocLib.embedPng(sig.dataURL);
             
-            // Ratio between screen display pixels and PDF points
-            const ratioX = width / canvWidth;
-            const ratioY = height / canvHeight;
+            // Calculate ratios between screen CSS pixels and PDF points
+            const ratioX = width / displayWidth;
+            const ratioY = height / displayHeight;
 
             page.drawImage(sigImage, {
                 x: sig.left * ratioX,
-                // Invert Y: PDF origin is bottom-left
+                // PDF coordinates start at bottom-left, so we flip the Y axis
                 y: height - ((sig.top + sig.height) * ratioY), 
                 width: sig.width * ratioX,
                 height: sig.height * ratioY,
@@ -240,17 +246,18 @@ document.getElementById('download-btn').onclick = async () => {
         
         const link = document.createElement('a');
         link.href = downloadUrl;
-        link.download = "EmmySign_Final.pdf";
+        link.download = `Signed_Document_${Date.now()}.pdf`;
         link.click();
         
-        setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+        // Cleanup memory
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 2000);
     } catch (err) {
-        console.error(err);
-        alert("Bake failed. Check console.");
+        console.error("Export Error:", err);
+        alert("Signature embedding failed. Check console for details.");
     }
 };
 
-// --- 5. Navigation ---
+// --- 5. Pagination ---
 document.getElementById('next-page').onclick = () => { 
     if (pdfDoc && currentPage < pdfDoc.numPages) renderPage(currentPage + 1); 
 };
