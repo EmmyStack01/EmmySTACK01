@@ -1,5 +1,3 @@
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script>
 const paymentForm = document.getElementById('paymentForm');
 const paystackPop = new PaystackPop(); // Create one instance
 let currentType = 'coffee';
@@ -81,5 +79,4 @@ paymentForm.addEventListener("submit", processPayment);
 
 // Optional: Call processPayment() on page load to initialize the Apple Pay button visibility
 // though Paystack usually handles this via the container ID.
-</script>
         
