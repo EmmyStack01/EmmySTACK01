@@ -1,6 +1,7 @@
+let currentType = 'coffee'; // Default type
 const paymentForm = document.getElementById('paymentForm');
 const paystackPop = new PaystackPop(); 
-let currentType = 'coffee'; // Default type
+
 
 /**
  * 1. UI Selection Logic
