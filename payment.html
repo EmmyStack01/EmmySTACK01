@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make a Payment | Emmy STACK01</title>
-    <link rel="stylesheet" href="style/tool-pdf.css"> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/tool-pdf.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
     <meta name="robots" content="noindex, nofollow">
 
     <meta property="og:url" content="https://emmystack01.com/payment.html">
     <meta property="og:image" content="https://emmystack01.com/asset/Emmy STACK01_Paystack.png">
     <meta property="twitter:url" content="https://emmystack01.com/payment.html">
-    <meta property="twitter:image" content="https://eemmystack01.com/asset/Emmy STACK01_Paystack.png">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/Emmy STACK01_Paystack.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    
     <style>
         .back-btn {
             position: absolute;
@@ -70,8 +72,15 @@
             background: #00bb77; /* Paystack Green */
             color: white;
             font-size: 1.1rem;
-            margin-top: 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Orbitron';
+            transition: 0.3s;
         }
+        .pay-btn:hover { opacity: 0.9; }
+
         .payment-type-toggle {
             display: flex;
             gap: 10px;
@@ -83,10 +92,19 @@
             border: 1px solid var(--glass-border);
             color: white;
             padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
         }
         .type-btn.active {
-            background: var(--primary-color);
-            border-color: var(--accent-color);
+            background: #2d66b4; /* Matching your Vanta color */
+            border-color: #ffffff;
+        }
+
+        /* Container for the Apple Pay button */
+        #paystack-apple-pay {
+            width: 100%;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -98,11 +116,11 @@
         </a>
         <div class="payment-card glass">
             <h1 style="font-size: 1.5rem;">Secure Payment</h1>
-            <p style="color: var(--text-muted);">Support Emmy or Pay for a Service</p>
+            <p style="color: rgba(255,255,255,0.6);">Support Emmy or Pay for a Service</p>
 
             <div class="payment-type-toggle">
-                <button class="type-btn active" onclick="setType('coffee')">☕ Buy Coffee</button>
-                <button class="type-btn" onclick="setType('project')">💻 Project Pay</button>
+                <button class="type-btn active" onclick="setType('coffee', event)">☕ Buy Coffee</button>
+                <button class="type-btn" onclick="setType('project', event)">💻 Project Pay</button>
             </div>
 
             <form id="paymentForm">
@@ -113,10 +131,12 @@
 
                 <div class="input-group" id="amount-group">
                     <label>Amount (NGN)</label>
-                    <input type="number" id="amount" required placeholder="Enter Amount">
+                    <input type="number" id="amount" required placeholder="Enter Amount" value="5000">
                 </div>
 
-                <button type="submit" class="pay-btn" id="pay-now">
+                <div id="paystack-apple-pay"></div>
+
+                <button type="submit" class="pay-btn" id="paystack-other-channels">
                     <i class="ri-secure-payment-fill"></i> Pay with Paystack
                 </button>
             </form>
@@ -138,3 +158,4 @@
     </script>
 </body>
 </html>
+    
