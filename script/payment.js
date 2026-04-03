@@ -34,7 +34,9 @@ function setType(type, event) {
  * AND handles the manual Paystack button click.
  */
 async function processPayment(e) {
-    if (e) e.preventDefault();
+    if (e && e.preventDefault) {
+        e.preventDefault();
+    }
 
     const email = document.getElementById("email-address").value;
     const amountValue = document.getElementById("amount").value;
