@@ -1,15 +1,17 @@
 let currentType = 'coffee'; 
-const paystackPop = new PaystackPop(); 
+const paystackPop = new PaystackPop(); // This will now work with v2
 
-// 1. INITIALIZE ON LOAD (This makes the Apple Pay button appear)
 paystackPop.paymentRequest({
     key: 'pk_live_aeec89eec2bf1d7aa2d009951872e81e9e5329e5', 
-    container: 'paystack-apple-pay', // Where Apple Pay lives
-    loadPaystackCheckoutButton: 'paystack-other-channels', // Your green button ID
+    container: 'paystack-apple-pay',
+    loadPaystackCheckoutButton: 'paystack-other-channels', 
     
-    // These functions gather the data JUST before the window opens
+    // Use functions to get real-time values when the user clicks
     email: () => document.getElementById("email-address").value,
-    amount: () => document.getElementById("amount").value * 100,
+    amount: () => {
+        const amt = document.getElementById("amount").value;
+        return amt ? amt * 100 : 0; 
+    },
     
     metadata: () => {
         return {
@@ -21,7 +23,7 @@ paystackPop.paymentRequest({
         };
     },
     onSuccess(response) {
-        window.location.href = "success.html";
+        window.location.href = "success.html?ref=" + response.reference;
     },
     onCancel() {
         console.log('User closed the window.');
