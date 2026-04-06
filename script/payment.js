@@ -1,18 +1,16 @@
 let currentType = 'coffee'; 
 const paystackPop = new PaystackPop();
 
-// 1. INITIALIZE APPLE PAY & HOOK THE BUTTON
-// This runs immediately when the script loads
+// 1. INITIALIZE APPLE PAY (Runs on page load)
 paystackPop.paymentRequest({
     key: 'pk_live_aeec89eec2bf1d7aa2d009951872e81e9e5329e5', 
-    container: 'paystack-apple-pay', // Apple Pay button appears here
-    loadPaystackCheckoutButton: 'paystack-other-channels', // Hooks your Green Button
+    container: 'paystack-apple-pay', 
+    // We'll handle the green button manually to avoid the "Promise" error
     
-    // Use functions () => so Paystack grabs the LATEST values on click
-    email: () => document.getElementById("email-address").value,
+    email: () => document.getElementById("email-address").value || "customer@emmystack01.com",
     amount: () => {
         const amt = document.getElementById("amount").value;
-        return amt ? amt * 100 : 0; 
+        return amt ? amt * 100 : 500000; // Default to 5k if empty
     },
     metadata: () => {
         return {
@@ -25,13 +23,42 @@ paystackPop.paymentRequest({
     },
     onSuccess(response) {
         window.location.href = "success.html?ref=" + response.reference;
-    },
-    onCancel() {
-        console.log('User closed the window.');
     }
 });
 
-// 2. UI SELECTION LOGIC (For switching Coffee/Project)
+// 2. MANUAL GREEN BUTTON TRIGGER (The Fix for the "Nothing Happens" bug)
+function processManualPayment(e) {
+    if (e) e.preventDefault();
+
+    const email = document.getElementById("email-address").value;
+    const amount = document.getElementById("amount").value;
+
+    if (!email || !amount) {
+        alert("Please enter your email and amount first.");
+        return;
+    }
+
+    paystackPop.newTransaction({
+        key: 'pk_live_aeec89eec2bf1d7aa2d009951872e81e9e5329e5',
+        email: email,
+        amount: amount * 100,
+        metadata: {
+            custom_fields: [{
+                display_name: "Payment Type",
+                variable_name: "payment_type",
+                value: currentType
+            }]
+        },
+        onSuccess: (transaction) => {
+            window.location.href = "success.html?ref=" + transaction.reference;
+        }
+    });
+}
+
+// Attach the manual trigger to your green button
+document.getElementById('paystack-other-channels').onclick = processManualPayment;
+
+// 3. UI SELECTION LOGIC
 function setType(type, event) {
     currentType = type;
     const btns = document.querySelectorAll('.type-btn');
