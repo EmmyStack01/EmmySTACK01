@@ -1,18 +1,19 @@
 let currentType = 'coffee'; 
-const paystackPop = new PaystackPop(); // This will now work with v2
+const paystackPop = new PaystackPop();
 
+// 1. INITIALIZE APPLE PAY & HOOK THE BUTTON
+// This runs immediately when the script loads
 paystackPop.paymentRequest({
     key: 'pk_live_aeec89eec2bf1d7aa2d009951872e81e9e5329e5', 
-    container: 'paystack-apple-pay',
-    loadPaystackCheckoutButton: 'paystack-other-channels', 
+    container: 'paystack-apple-pay', // Apple Pay button appears here
+    loadPaystackCheckoutButton: 'paystack-other-channels', // Hooks your Green Button
     
-    // Use functions to get real-time values when the user clicks
+    // Use functions () => so Paystack grabs the LATEST values on click
     email: () => document.getElementById("email-address").value,
     amount: () => {
         const amt = document.getElementById("amount").value;
         return amt ? amt * 100 : 0; 
     },
-    
     metadata: () => {
         return {
             custom_fields: [{
@@ -30,7 +31,7 @@ paystackPop.paymentRequest({
     }
 });
 
-// 2. UI SELECTION LOGIC (Keep this as is)
+// 2. UI SELECTION LOGIC (For switching Coffee/Project)
 function setType(type, event) {
     currentType = type;
     const btns = document.querySelectorAll('.type-btn');
