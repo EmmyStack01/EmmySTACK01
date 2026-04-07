@@ -11,6 +11,8 @@ let currentPdfBytes = null;
 let pdfScale = 1.0; 
 let signatures = []; 
 let currentStrokeColor = "#000000";
+let textFields = []; // Array to store { id, text, page, left, top, fontSize, color }
+let currentFontSize = 16;
 
 // --- 1. PDF Handling ---
 const pdfUpload = document.getElementById('pdf-upload');
@@ -118,6 +120,20 @@ document.getElementById('close-modal').onclick = () => {
     document.body.style.overflow = 'auto'; 
 };
 
+document.getElementById('add-text-btn').onclick = () => {
+    const newText = {
+        id: Date.now(),
+        text: "Type here...",
+        page: currentPage,
+        left: 100,
+        top: 100,
+        fontSize: currentFontSize,
+        color: currentStrokeColor // Uses your existing color picker color!
+    };
+    textFields.push(newText);
+    renderAllElements(); // Consolidate your render functions
+};
+
 // --- 3. MULTI-SIGNATURE LOGIC ---
 document.getElementById('save-sig-btn').onclick = () => {
     const dataURL = sigPad.toDataURL();
@@ -127,68 +143,78 @@ document.getElementById('save-sig-btn').onclick = () => {
         page: currentPage,
         left: 50, top: 50, width: 160, height: 80
     });
-    renderAllSignatures();
+    renderAllElements();
     document.getElementById('sig-modal').style.display = 'none';
     document.body.style.overflow = 'auto';
     sigCtx.clearRect(0, 0, sigPad.width, sigPad.height);
 };
 
-function renderAllSignatures() {
+function renderAllElements() {
     const container = document.getElementById('pdf-container');
-    container.querySelectorAll('.sig-instance').forEach(el => el.remove());
+    // Clear both signatures and text instances
+    container.querySelectorAll('.sig-instance, .text-instance').forEach(el => el.remove());
 
-    signatures.filter(s => s.page === currentPage).forEach(sig => {
-        const sigEl = document.createElement('div');
-        sigEl.className = 'sig-instance';
-        // touch-action: none is critical for mobile dragging!
-        sigEl.style.cssText = `position: absolute; left:${sig.left}px; top:${sig.top}px; width:${sig.width}px; height:${sig.height}px; cursor:move; touch-action:none; z-index:100; border:1px dashed #3498db;`;
-        
-        sigEl.innerHTML = `
-            <img src="${sig.dataURL}" style="width:100%; height:100%; pointer-events:none;">
-            <div class="resizer" style="position:absolute; width:24px; height:24px; background:#3498db; bottom:-12px; right:-12px; cursor:nwse-resize; border-radius:50%; border:2px solid white;"></div>
-            <div class="delete-sig" style="position:absolute; top:-15px; right:-15px; background:#ff4757; color:white; border-radius:50%; width:30px; height:30px; text-align:center; cursor:pointer; line-height:30px; font-weight:bold;">×</div>
-        `;
+    const currentPageElements = [
+        ...signatures.filter(s => s.page === currentPage).map(s => ({...s, type: 'sig'})),
+        ...textFields.filter(t => t.page === currentPage).map(t => ({...t, type: 'text'}))
+    ];
 
-        sigEl.querySelector('.delete-sig').onpointerdown = (e) => {
-            e.stopPropagation();
-            signatures = signatures.filter(s => s.id !== sig.id);
-            renderAllSignatures();
-        };
+    currentPageElements.forEach(item => {
+        const el = document.createElement('div');
+        el.className = item.type === 'sig' ? 'sig-instance' : 'text-instance';
+       
+        // Base styles for both
+        el.style.cssText = `position: absolute; left:${item.left}px; top:${item.top}px; cursor:move; touch-action:none; z-index:100; border:1px dashed #3498db;`;
 
-        sigEl.onpointerdown = (e) => {
-            if (e.target.classList.contains('delete-sig')) return;
+        if (item.type === 'sig') {
+            el.style.width = `${item.width}px`;
+            el.style.height = `${item.height}px`;
+            el.innerHTML = `
+                <img src="${item.dataURL}" style="width:100%; height:100%; pointer-events:none;">
+                <div class="resizer"></div>
+                <div class="delete-btn">×</div>`;
+        } else {
+            // Text specific UI
+            el.style.padding = "5px";
+            el.style.fontSize = `${item.fontSize}px`;
+            el.style.color = item.color;
+            el.style.background = "rgba(255, 255, 255, 0.7)";
+            el.innerHTML = `
+                <div class="editable-text" contenteditable="true">${item.text}</div>
+                <div class="delete-btn">×</div>`;
+           
+            // Sync text changes back to the array
+            el.querySelector('.editable-text').onblur = (e) => {
+                const index = textFields.findIndex(t => t.id === item.id);
+                if (index !== -1) textFields[index].text = e.target.innerText;
+            };
+        }
+
+        // --- Dragging Logic (Apply to both) ---
+        el.onpointerdown = (e) => {
+            if (e.target.classList.contains('delete-btn') || e.target.contentEditable === "true") return;
             e.preventDefault();
-            const isResizing = e.target.classList.contains('resizer');
-            const startX = e.clientX; 
-            const startY = e.clientY;
-            const startW = sig.width; 
-            const startH = sig.height;
-            const startL = sig.left; 
-            const startT = sig.top;
+            const startX = e.clientX; const startY = e.clientY;
+            const startL = item.left; const startT = item.top;
 
-            sigEl.setPointerCapture(e.pointerId);
-            sigEl.onpointermove = (em) => {
-                const dx = em.clientX - startX; 
-                const dy = em.clientY - startY;
-                if (isResizing) {
-                    sig.width = Math.max(40, startW + dx);
-                    sig.height = Math.max(20, startH + dy);
-                } else {
-                    sig.left = startL + dx; 
-                    sig.top = startT + dy;
-                }
-                // Directly update style for performance
-                sigEl.style.left = sig.left + 'px';
-                sigEl.style.top = sig.top + 'px';
-                sigEl.style.width = sig.width + 'px';
-                sigEl.style.height = sig.height + 'px';
+            el.setPointerCapture(e.pointerId);
+            el.onpointermove = (em) => {
+                item.left = startL + (em.clientX - startX);
+                item.top = startT + (em.clientY - startY);
+                el.style.left = item.left + 'px';
+                el.style.top = item.top + 'px';
             };
-            sigEl.onpointerup = () => { 
-                sigEl.onpointermove = null; 
-                sigEl.releasePointerCapture(e.pointerId); 
-            };
+            el.onpointerup = () => { el.onpointermove = null; el.releasePointerCapture(e.pointerId); };
         };
-        container.appendChild(sigEl);
+
+        // Delete Logic
+        el.querySelector('.delete-btn').onclick = () => {
+            if (item.type === 'sig') signatures = signatures.filter(s => s.id !== item.id);
+            else textFields = textFields.filter(t => t.id !== item.id);
+            renderAllElements();
+        };
+
+        container.appendChild(el);
     });
 }
 
@@ -211,6 +237,20 @@ document.getElementById('download-btn').onclick = async () => {
             y: (canvRect.height - sig.top - sig.height) * sY, // Correct Y inversion
             width: sig.width * sX,
             height: sig.height * sY,
+        });
+    }
+    // After signature loop in download-btn handler:
+    for (const tf of textFields) {
+        const page = pages[tf.page - 1];
+        const { height } = page.getSize();
+        const sX = page.getSize().width / canvRect.width;
+        const sY = height / canvRect.height;
+    
+        page.drawText(tf.text, {
+            x: tf.left * sX,
+            y: (canvRect.height - tf.top - (tf.fontSize)) * sY, // Standardize Y flip
+            size: tf.fontSize * sX,
+            color: PDFLib.rgb(0, 0, 0), // You can convert tf.color to RGB here
         });
     }
     const pdfBytes = await pdfDocLib.save();
