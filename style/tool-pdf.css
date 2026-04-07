@@ -350,3 +350,6 @@ button:hover { opacity: 0.9; transform: translateY(-1px); }
     .toolbar1 { flex-direction: column; text-align: center; width: 100%; }
     .coffee-section { bottom: 20px; right: 20px; }
 }
+@media (max-width: 800px) {
+    .toolbar2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+}
