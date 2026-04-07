@@ -29,16 +29,16 @@ if (pdfUpload) {
 }
 
 async function renderPage(num) {
-    if (!pdfDoc  num < 1  num > pdfDoc.numPages) return;
+    if (!pdfDoc || num < 1 || num > pdfDoc.numPages) return;
     currentPage = num;
     const page = await pdfDoc.getPage(num);
     const canvas = document.getElementById('pdf-render-canvas');
     const container = document.getElementById('pdf-container');
-    
+   
     const unscaledViewport = page.getViewport({ scale: 1 });
     const fitScale = (container.clientWidth / unscaledViewport.width) * pdfScale;
     const viewport = page.getViewport({ scale: fitScale });
-    
+   
     const ctx = canvas.getContext('2d');
 
     // --- NEW: HIGH-DPI FIX ---
@@ -47,12 +47,12 @@ async function renderPage(num) {
     canvas.height = viewport.height * dpr;
     canvas.style.width = viewport.width + 'px';
     canvas.style.height = viewport.height + 'px';
-    ctx.scale(dpr, dpr); 
+    ctx.scale(dpr, dpr);
     // -------------------------
 
     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
     document.getElementById('current-page').textContent = num;
-    renderAllSignatures(); 
+    renderAllSignatures();
 }
 
 // --- 2. SIGNATURE PAD (Mobile Optimized) ---
