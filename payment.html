@@ -149,6 +149,7 @@
             cursor: pointer;
             font-family: 'Orbitron';
             transition: 0.3s;
+            font-weight: 600;
         }
         .pay-btn:hover { opacity: 0.9; }
 
@@ -166,6 +167,7 @@
             cursor: pointer;
             border-radius: 8px;
             transition: 0.3s;
+            font-weight: 600;
         }
         .type-btn.active {
             background: #2d66b4; /* Matching your Vanta color */
@@ -206,6 +208,10 @@
                 </div>
 
                 <div id="paystack-apple-pay"></div>
+
+                <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 20px;">
+                    International payments are converted and processed in NGN at the current market rate.
+                </p>
 
                 <button type="button" class="pay-btn" id="paystack-other-channels">
                     <i class="ri-secure-payment-fill"></i> Pay with Paystack
