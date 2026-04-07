@@ -54,7 +54,7 @@ async function renderPage(num) {
 
     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
     document.getElementById('current-page').textContent = num;
-    renderAllSignatures();
+    renderAllElements();
 }
 
 // --- 2. SIGNATURE PAD (Mobile Optimized) ---
