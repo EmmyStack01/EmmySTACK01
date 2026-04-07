@@ -148,6 +148,11 @@
             <h1>Payment Received!</h1>
             <p>Thank you for choosing <b>Emmy STACK01</b>. Your transaction was processed successfully. A formal receipt has been sent to your email address.</p>
 
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 20px;">
+                *International payments are processed in NGN at the current daily market rate. 
+                Your bank statement will reflect the final conversion.
+            </p>
+            
             <div class="action-btns">
                 <a href="https://emmystack01.com/" class="btn-primary">Return to Home</a>
             </div>
@@ -168,6 +173,13 @@
             scale: 1.00, scaleMobile: 1.00,
             color: 0x2d66b4, backgroundColor: 0x0
         })
+        // Reference script
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+
+        if (ref) {
+            document.getElementById('ref-display').innerText = "Reference: " + ref;
+        }
     </script>
 </body>
 </html>
