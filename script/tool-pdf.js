@@ -29,7 +29,7 @@ if (pdfUpload) {
 }
 
 async function renderPage(num) {
-    if (!pdfDoc || num < 1 || num > pdfDoc.numPages) return;
+    if (!pdfDoc  num < 1  num > pdfDoc.numPages) return;
     currentPage = num;
     const page = await pdfDoc.getPage(num);
     const canvas = document.getElementById('pdf-render-canvas');
@@ -40,9 +40,16 @@ async function renderPage(num) {
     const viewport = page.getViewport({ scale: fitScale });
     
     const ctx = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    
+
+    // --- NEW: HIGH-DPI FIX ---
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = viewport.width * dpr;
+    canvas.height = viewport.height * dpr;
+    canvas.style.width = viewport.width + 'px';
+    canvas.style.height = viewport.height + 'px';
+    ctx.scale(dpr, dpr); 
+    // -------------------------
+
     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
     document.getElementById('current-page').textContent = num;
     renderAllSignatures(); 
