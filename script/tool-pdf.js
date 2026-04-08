@@ -162,7 +162,7 @@ function renderAllElements() {
         const grip = document.createElement('div');
         grip.className = "drag-grip";
         grip.style.cssText = `position:absolute; top:-24px; left:-1px; background:${item.color}; color:white; font-size:10px; padding:2px 8px; cursor:move; border-radius:3px 3px 0 0; z-index:110;`;
-        grip.innerText = item.type === 'sig' ? 'SIGN' : 'MOVE';
+        grip.innerText = item.type === 'sig' ? 'MOVE' : 'MOVE';
         el.appendChild(grip);
 
         if (item.type === 'sig') {
@@ -261,7 +261,7 @@ async function handleDownload() {
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = "EmmySign_Final.pdf";
+    link.download = "EmmySign_Signed.pdf";
     link.click();
 }
 
