@@ -1,6 +1,6 @@
 /**
- * EmmySign Master JS - Final Production V3.4
- * ADVANCED: Control Handles, Extreme Mobile Zoom, and Micro-Scaling.
+ * EmmySign Master JS - Final Production V3.5
+ * FEATURES: Pagination, Multi-Color, Movement Grips, Extreme Zoom, Micro-Scaling, and PDF Export.
  * Author: Emmy STACK01
  */
 
@@ -12,9 +12,10 @@ let pdfScale = 1.0;
 let signatures = []; 
 let textFields = []; 
 let currentStrokeColor = "#000000";
-let currentFont = "sans-serif"; // Options: 'serif', 'sans-serif', 'cursive'
+let currentFont = "sans-serif";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. PDF LOADING ---
     const pdfUpload = document.getElementById('pdf-upload');
     if (pdfUpload) {
         pdfUpload.addEventListener('change', async (e) => {
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 1. SIGNATURE PAD (High-DPI Mobile) ---
+    // --- 2. SIGNATURE PAD LOGIC ---
     const sigPad = document.getElementById('sig-pad');
     const sigCtx = sigPad ? sigPad.getContext('2d') : null;
     let isDrawing = false;
@@ -65,7 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('pointerup', () => isDrawing = false);
     }
 
-    // --- 2. ELEMENT CREATION ---
+    // --- 3. UI BUTTONS (SIGN, TEXT, DATE, DOWNLOAD, NAVIGATION) ---
+    
+    // Create Signature Modal
+    document.getElementById('open-sig-btn').onclick = () => {
+        document.getElementById('sig-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; 
+    };
+
     document.getElementById('save-sig-btn').onclick = () => {
         const dataURL = sigPad.toDataURL();
         signatures.push({ 
@@ -77,18 +85,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('add-text-btn').onclick = () => {
-        textFields.push({ id: Date.now(), text: "Text", page: currentPage, left: 50, top: 50, width: 80, height: 30, color: currentStrokeColor, font: currentFont });
+        textFields.push({ id: Date.now(), text: "Type...", page: currentPage, left: 50, top: 50, width: 80, height: 30, color: currentStrokeColor, font: currentFont });
         renderAllElements();
     };
 
     document.getElementById('add-date-btn').onclick = () => {
         const today = new Date().toLocaleDateString('en-GB'); 
-        textFields.push({ id: Date.now(), text: today, page: currentPage, left: 50, top: 100, width: 80, height: 30, color: currentStrokeColor, font: currentFont });
+        textFields.push({ id: Date.now(), text: today, page: currentPage, left: 50, top: 120, width: 80, height: 30, color: currentStrokeColor, font: currentFont });
         renderAllElements();
     };
+
+    // Pagination
+    document.getElementById('prev-page').onclick = () => { if (currentPage > 1) renderPage(currentPage - 1); };
+    document.getElementById('next-page').onclick = () => { if (currentPage < pdfDoc.numPages) renderPage(currentPage + 1); };
+
+    // Export & Utils
+    document.getElementById('download-btn').onclick = handleDownload;
+    document.getElementById('clear-pad').onclick = () => sigCtx.clearRect(0,0,sigPad.width,sigPad.height);
+    document.getElementById('close-modal').onclick = closeModal;
 });
 
-// --- 3. THE REFINED ENGINE (Grips & Persistence) ---
+// --- 4. ENGINE: RENDERING & INTERACTION ---
 
 async function renderPage(num) {
     if (!pdfDoc || num < 1 || num > pdfDoc.numPages) return;
@@ -98,7 +115,7 @@ async function renderPage(num) {
     const container = document.getElementById('pdf-container');
     
     const unscaledViewport = page.getViewport({ scale: 1 });
-    // MOBILE FIX: Allow scaling down to 0.1 for full-page overview
+    // Zoom Out to full canvas size (min 0.1)
     const fitScale = (container.clientWidth / unscaledViewport.width) * pdfScale;
     const viewport = page.getViewport({ scale: fitScale });
     
@@ -129,17 +146,18 @@ function renderAllElements() {
         el.className = item.type === 'sig' ? 'sig-instance' : 'text-instance';
         el.style.cssText = `position: absolute; left:${item.left}px; top:${item.top}px; width:${item.width}px; height:${item.height}px; touch-action:none; z-index:100; border:1px solid #3498db;`;
 
-        // THE MOVEMENT HANDLE (Drag Grip)
+        // THE MOVEMENT HANDLE (Grip)
         const grip = document.createElement('div');
-        grip.style.cssText = `position:absolute; top:-25px; left:0; background:#3498db; color:white; font-size:10px; padding:2px 8px; cursor:move; border-radius:3px 3px 0 0;`;
+        grip.className = "drag-grip";
+        grip.style.cssText = `position:absolute; top:-24px; left:-1px; background:#3498db; color:white; font-size:10px; padding:2px 8px; cursor:move; border-radius:3px 3px 0 0; z-index:110;`;
         grip.innerText = item.type === 'sig' ? 'SIGN' : 'MOVE';
         el.appendChild(grip);
 
         if (item.type === 'sig') {
             el.innerHTML += `<img src="${item.dataURL}" style="width:100%; height:100%; pointer-events:none;">`;
         } else {
-            const fs = item.height * 0.7; // Micro-font scaling
-            el.innerHTML += `<div class="editable-text" contenteditable="true" style="outline:none; width:100%; height:100%; font-size:${fs}px; color:${item.color}; font-family:${item.font || 'sans-serif'}; overflow:hidden; white-space:nowrap;">${item.text}</div>`;
+            const fs = item.height * 0.7; 
+            el.innerHTML += `<div class="editable-text" contenteditable="true" style="outline:none; width:100%; height:100%; font-size:${fs}px; color:${item.color}; font-family:${item.font}; overflow:hidden; white-space:nowrap;">${item.text}</div>`;
             el.querySelector('.editable-text').onblur = (e) => {
                 const target = textFields.find(t => t.id === item.id);
                 if (target) target.text = e.target.innerText;
@@ -148,15 +166,16 @@ function renderAllElements() {
 
         // Action Buttons
         el.innerHTML += `
-            <div class="resizer" style="position:absolute; width:16px; height:16px; background:#3498db; bottom:-8px; right:-8px; cursor:nwse-resize; border-radius:50%; border:2px solid white;"></div>
-            <div class="delete-btn" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:22px; height:22px; text-align:center; cursor:pointer; line-height:20px; font-weight:bold;">×</div>
+            <div class="resizer" style="position:absolute; width:18px; height:18px; background:#3498db; bottom:-9px; right:-9px; cursor:nwse-resize; border-radius:50%; border:2px solid white; z-index:115;"></div>
+            <div class="delete-btn" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:24px; height:24px; text-align:center; cursor:pointer; line-height:22px; font-weight:bold; z-index:115; border:2px solid white;">×</div>
         `;
 
-        // --- DRAG & SCALE ENGINE ---
-        const handleDrag = (e) => {
+        // FIXED INTERACTION ENGINE
+        el.onpointerdown = (e) => {
             const isResizing = e.target.classList.contains('resizer');
-            const isGrip = e.target === grip;
-            if (!isResizing && !isGrip) return; // Only drag via grip or resize via resizer
+            const isGrip = e.target.classList.contains('drag-grip') || e.target === grip;
+            
+            if (!isResizing && !isGrip) return; 
 
             const startX = e.clientX; const startY = e.clientY;
             const startW = item.width; const startH = item.height;
@@ -166,12 +185,12 @@ function renderAllElements() {
             el.onpointermove = (em) => {
                 const dx = em.clientX - startX; const dy = em.clientY - startY;
                 if (isResizing) {
-                    item.width = Math.max(20, startW + dx); // Lowered min-width
-                    item.height = Math.max(10, startH + dy); // Lowered min-height
+                    item.width = Math.max(15, startW + dx);
+                    item.height = Math.max(10, startH + dy);
                     el.style.width = item.width + 'px';
                     el.style.height = item.height + 'px';
                     if(item.type === 'text') el.querySelector('.editable-text').style.fontSize = (item.height * 0.7) + 'px';
-                } else {
+                } else if (isGrip) {
                     item.left = startL + dx;
                     item.top = startT + dy;
                     el.style.left = item.left + 'px';
@@ -181,14 +200,14 @@ function renderAllElements() {
             el.onpointerup = () => {
                 const master = item.type === 'sig' ? signatures : textFields;
                 const record = master.find(i => i.id === item.id);
-                if (record) { Object.assign(record, { left: item.left, top: item.top, width: item.width, height: item.height }); }
+                if (record) Object.assign(record, { left: item.left, top: item.top, width: item.width, height: item.height });
                 el.onpointermove = null;
                 el.releasePointerCapture(e.pointerId);
             };
         };
 
-        el.onpointerdown = handleDrag;
-        el.querySelector('.delete-btn').onclick = () => {
+        el.querySelector('.delete-btn').onclick = (e) => {
+            e.stopPropagation();
             if (item.type === 'sig') signatures = signatures.filter(s => s.id !== item.id);
             else textFields = textFields.filter(t => t.id !== item.id);
             renderAllElements();
@@ -198,9 +217,9 @@ function renderAllElements() {
     });
 }
 
-// --- 4. EXPORT ENGINE ---
+// --- 5. PDF EXPORT ENGINE ---
 async function handleDownload() {
-    if (!currentPdfBytes) return;
+    if (!currentPdfBytes) return alert("Please upload a PDF first.");
     const pdfDocLib = await PDFLib.PDFDocument.load(currentPdfBytes.slice(0));
     const pages = pdfDocLib.getPages();
     const canvRect = document.getElementById('pdf-render-canvas').getBoundingClientRect();
@@ -210,31 +229,43 @@ async function handleDownload() {
         const { width, height } = page.getSize();
         const sigImage = await pdfDocLib.embedPng(sig.dataURL);
         const sX = width / canvRect.width; const sY = height / canvRect.height;
-        page.drawImage(sigImage, { x: sig.left * sX, y: (canvRect.height - sig.top - sig.height) * sY, width: sig.width * sX, height: sig.height * sY });
+        page.drawImage(sigImage, { 
+            x: sig.left * sX, 
+            y: (canvRect.height - sig.top - sig.height) * sY, 
+            width: sig.width * sX, 
+            height: sig.height * sY 
+        });
     }
 
     for (const tf of textFields) {
         const page = pages[tf.page - 1];
         const { width, height } = page.getSize();
         const sX = width / canvRect.width; const sY = height / canvRect.height;
-        page.drawText(tf.text, { x: tf.left * sX, y: (canvRect.height - tf.top - (tf.height * 0.75)) * sY, size: (tf.height * 0.6) * sX, color: PDFLib.rgb(0,0,0) });
+        page.drawText(tf.text, { 
+            x: tf.left * sX, 
+            y: (canvRect.height - tf.top - (tf.height * 0.75)) * sY, 
+            size: (tf.height * 0.6) * sX, 
+            color: PDFLib.rgb(0,0,0) 
+        });
     }
 
     const pdfBytes = await pdfDocLib.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = "EmmySign_Signed.pdf";
+    link.download = `EmmySign_Signed_${Date.now()}.pdf`;
     link.click();
 }
 
-// --- 5. UTILS ---
+// --- 6. UTILS ---
 window.changeZoom = (d) => { 
-    // MODIFIED: Zoom out much more (0.1)
     pdfScale = Math.min(Math.max(0.1, pdfScale + d), 3.0); 
     renderPage(currentPage); 
 };
 
-window.setGlobalFont = (f) => { currentFont = f; };
-function closeModal() { document.getElementById('sig-modal').style.display = 'none'; document.body.style.overflow = 'auto'; sigCtx.clearRect(0,0,sigPad.width,sigPad.height); }
-                          
+function closeModal() { 
+    document.getElementById('sig-modal').style.display = 'none'; 
+    document.body.style.overflow = 'auto'; 
+    if (sigCtx) sigCtx.clearRect(0,0,sigPad.width,sigPad.height); 
+}
+    
