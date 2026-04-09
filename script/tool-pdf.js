@@ -14,6 +14,8 @@ let signatures = [];
 let textFields = []; 
 let currentStrokeColor = "#000000"; // Default
 let currentFont = "sans-serif";
+let selectedId = null;
+let sigCtx = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. COLOR PICKER LOGIC (RE-INTEGRATED) ---
@@ -87,30 +89,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /*added recently*/
+    document.getElementById('pdf-container').onpointerdown = (e) => {
+        // 1. Check if the click is on the background/canvas
+        if (e.target.id === 'pdf-container' || e.target.id === 'pdf-render-canvas') {
+            
+            // 2. FORCE a sync of all text fields right now
+            syncAllTextFields(); 
+            
+            // 3. Now it is safe to deselect and re-render
+            selectedId = null;
+            renderAllElements();
+        }
+    };
+
     document.getElementById('open-sig-btn').onclick = () => {
         document.getElementById('sig-modal').style.display = 'flex';
         document.body.style.overflow = 'hidden'; 
     };
 
-    document.getElementById('save-sig-btn').onclick = () => {
-        const dataURL = sigPad.toDataURL();
-        signatures.push({ 
-            id: Date.now(), dataURL: dataURL, page: currentPage, 
-            left: 50, top: 50, width: 120, height: 60, color: currentStrokeColor 
-        });
-        renderAllElements();
-        closeModal();
-    };
-
     document.getElementById('add-text-btn').onclick = () => {
-        textFields.push({ id: Date.now(), text: "Type...", page: currentPage, left: 50, top: 50, width: 90, height: 35, color: currentStrokeColor, font: currentFont });
+        syncAllTextFields(); // Save whatever is currently typed
+        const id = Date.now();
+        textFields.push({ id: id, text: "Type...", page: currentPage, left: 50, top: 50, width: 90, height: 35, color: currentStrokeColor, font: currentFont });
+        selectedId = id;
         renderAllElements();
     };
 
     document.getElementById('add-date-btn').onclick = () => {
+        syncAllTextFields(); // Save whatever is currently typed
+        const id = Date.now();
         const today = new Date().toLocaleDateString('en-GB'); 
-        textFields.push({ id: Date.now(), text: today, page: currentPage, left: 50, top: 120, width: 90, height: 35, color: currentStrokeColor, font: currentFont });
+        textFields.push({ id: id, text: today, page: currentPage, left: 50, top: 120, width: 90, height: 35, color: currentStrokeColor, font: currentFont });
+        selectedId = id;
         renderAllElements();
+    };
+
+    document.getElementById('save-sig-btn').onclick = () => {
+        syncAllTextFields(); // Save whatever is currently typed
+        const dataURL = sigPad.toDataURL();
+        const id = Date.now();
+        signatures.push({ id: id, dataURL: dataURL, page: currentPage, left: 50, top: 50, width: 120, height: 60, color: currentStrokeColor });
+        selectedId = id;
+        renderAllElements();
+        closeModal();
     };
 
     document.getElementById('prev-page').onclick = () => { if (currentPage > 1) renderPage(currentPage - 1); };
@@ -118,6 +140,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('download-btn').onclick = handleDownload;
     document.getElementById('clear-pad').onclick = () => sigCtx.clearRect(0,0,sigPad.width,sigPad.height);
     document.getElementById('close-modal').onclick = closeModal;
+
+    function syncAllTextFields() {
+        document.querySelectorAll('.editable-text').forEach(div => {
+            // Find the parent's ID to match with our array
+            const parentEl = div.closest('.text-instance');
+            if (parentEl) {
+                // We'll store the ID on the element to find it easily
+                const id = parseInt(parentEl.getAttribute('data-id'));
+                const field = textFields.find(t => t.id === id);
+                if (field) {
+                    field.text = div.innerText;
+                }
+            }
+        });
+    }
 });
 
 // --- 4. ENGINE: RENDERING ---
@@ -144,6 +181,7 @@ async function renderPage(num) {
     renderAllElements(); 
 }
 
+
 function renderAllElements() {
     const container = document.getElementById('pdf-container');
     container.querySelectorAll('.sig-instance, .text-instance').forEach(el => el.remove());
@@ -153,54 +191,104 @@ function renderAllElements() {
         ...textFields.filter(t => t.page === currentPage).map(t => ({...t, type: 'text'}))
     ];
 
+
     items.forEach(item => {
+        const isSelected = selectedId === item.id;
         const el = document.createElement('div');
         el.className = item.type === 'sig' ? 'sig-instance' : 'text-instance';
-        el.style.cssText = `position: absolute; left:${item.left}px; top:${item.top}px; width:${item.width}px; height:${item.height}px; touch-action:none; z-index:100; border:1px solid ${item.color}; background: rgba(255,255,255,0.1);`;
+        el.setAttribute('data-id', item.id); // Add this line!
+        
+        const borderStyle = isSelected ? `2px dashed ${item.color}` : `1px solid transparent`;
+        el.style.cssText = `position: absolute; left:${item.left}px; top:${item.top}px; width:${item.width}px; height:${item.height}px; touch-action:none; z-index:100; border:${borderStyle}; cursor: pointer;`;
 
-        // DRAG GRIP (Matches Element Color)
-        const grip = document.createElement('div');
-        grip.className = "drag-grip";
-        grip.style.cssText = `position:absolute; top:-24px; left:-1px; background:${item.color}; color:white; font-size:10px; padding:2px 8px; cursor:move; border-radius:3px 3px 0 0; z-index:110;`;
-        grip.innerText = item.type === 'sig' ? 'MOVE' : 'MOVE';
-        el.appendChild(grip);
-
+        // 1. CONTENT
         if (item.type === 'sig') {
-            el.innerHTML += `<img src="${item.dataURL}" style="width:100%; height:100%; pointer-events:none;">`;
+            el.innerHTML += `<img src="${item.dataURL}" style="width:100%; height:100%; pointer-events:none; user-select:none;">`;
         } else {
             const fs = item.height * 0.7; 
-            el.innerHTML += `<div class="editable-text" contenteditable="true" style="outline:none; width:100%; height:100%; font-size:${fs}px; color:${item.color}; font-family:${item.font}; overflow:hidden; white-space:nowrap;">${item.text}</div>`;
-            el.querySelector('.editable-text').onblur = (e) => {
-                const target = textFields.find(t => t.id === item.id);
-                if (target) target.text = e.target.innerText;
+            const textDiv = document.createElement('div');
+            textDiv.className = "editable-text";
+            textDiv.contentEditable = "true";
+            textDiv.style.cssText = `outline:none; width:100%; height:100%; font-size:${fs}px; color:${item.color}; font-family:${item.font}; overflow:hidden; white-space:nowrap; padding: 2px;`;
+            
+            // CRITICAL: Pull directly from the item object
+            textDiv.innerText = item.text;
+
+            // PERSISTENCE: Immediate sync to master array
+            textDiv.oninput = (e) => {
+                const newText = e.target.innerText;
+                // Update local reference
+                item.text = newText;
+                // Update master array reference
+                const masterIdx = textFields.findIndex(t => t.id === item.id);
+                if (masterIdx !== -1) {
+                    textFields[masterIdx].text = newText;
+                }
             };
+
+            // SELECTION: Fix for text fields
+            textDiv.onpointerdown = (e) => {
+                e.stopPropagation(); 
+                if (selectedId !== item.id) {
+                    selectedId = item.id;
+                    renderAllElements();
+                }
+            };
+            
+            el.appendChild(textDiv);
         }
 
-        // Action Buttons
-        el.innerHTML += `
-            <div class="resizer" style="position:absolute; width:18px; height:18px; background:${item.color}; bottom:-9px; right:-9px; cursor:nwse-resize; border-radius:50%; border:2px solid white; z-index:115;"></div>
-            <div class="delete-btn" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:24px; height:24px; text-align:center; cursor:pointer; line-height:22px; font-weight:bold; z-index:115; border:2px solid white;">×</div>
-        `;
+        // 2. CONTROLS
+        if (isSelected) {
+            el.innerHTML += `
+                <div class="drag-grip" style="position:absolute; top:-28px; left:-1px; background:${item.color}; color:white; font-size:10px; padding:4px 10px; cursor:move; border-radius:4px 4px 0 0; z-index:110; font-weight:bold;">MOVE</div>
+                <div class="resizer" style="position:absolute; width:16px; height:16px; background:${item.color}; bottom:-8px; right:-8px; cursor:nwse-resize; border-radius:50%; border:2px solid white; z-index:115;"></div>
+                <div class="delete-btn" style="position:absolute; top:-12px; right:-12px; background:#ff4757; color:white; border-radius:50%; width:22px; height:22px; text-align:center; cursor:pointer; line-height:20px; font-weight:bold; z-index:115; border:2px solid white;">×</div>
+            `;
+        }
 
-        // POINTER ENGINE
+        // 3. INTERACTION
         el.onpointerdown = (e) => {
+            e.stopPropagation(); 
+            
+            if (selectedId !== item.id) {
+                selectedId = item.id;
+                renderAllElements();
+                return;
+            }
+
             const isResizing = e.target.classList.contains('resizer');
             const isGrip = e.target.classList.contains('drag-grip');
-            if (!isResizing && !isGrip) return; 
+            const isDelete = e.target.classList.contains('delete-btn');
+
+            if (isDelete) {
+                if (item.type === 'sig') signatures = signatures.filter(s => s.id !== item.id);
+                else textFields = textFields.filter(t => t.id !== item.id);
+                selectedId = null;
+                renderAllElements();
+                return;
+            }
+
+            if (!isResizing && !isGrip) return;
 
             const startX = e.clientX; const startY = e.clientY;
             const startW = item.width; const startH = item.height;
             const startL = item.left; const startT = item.top;
 
             el.setPointerCapture(e.pointerId);
+
             el.onpointermove = (em) => {
                 const dx = em.clientX - startX; const dy = em.clientY - startY;
                 if (isResizing) {
-                    item.width = Math.max(15, startW + dx);
-                    item.height = Math.max(10, startH + dy);
+                    item.width = Math.max(30, startW + dx);
+                    item.height = Math.max(20, startH + dy);
                     el.style.width = item.width + 'px';
                     el.style.height = item.height + 'px';
-                    if(item.type === 'text') el.querySelector('.editable-text').style.fontSize = (item.height * 0.7) + 'px';
+                    if(item.type === 'text') {
+                        const newFs = item.height * 0.7;
+                        const tDiv = el.querySelector('.editable-text');
+                        if(tDiv) tDiv.style.fontSize = newFs + 'px';
+                    }
                 } else {
                     item.left = startL + dx;
                     item.top = startT + dy;
@@ -208,21 +296,22 @@ function renderAllElements() {
                     el.style.top = item.top + 'px';
                 }
             };
+
             el.onpointerup = () => {
-                const master = item.type === 'sig' ? signatures : textFields;
-                const record = master.find(i => i.id === item.id);
-                if (record) Object.assign(record, { left: item.left, top: item.top, width: item.width, height: item.height });
                 el.onpointermove = null;
                 el.releasePointerCapture(e.pointerId);
+                // Final save to master arrays
+                const master = item.type === 'sig' ? signatures : textFields;
+                const rec = master.find(i => i.id === item.id);
+                if (rec) {
+                    rec.left = item.left;
+                    rec.top = item.top;
+                    rec.width = item.width;
+                    rec.height = item.height;
+                }
             };
         };
 
-        el.querySelector('.delete-btn').onclick = (e) => {
-            e.stopPropagation();
-            if (item.type === 'sig') signatures = signatures.filter(s => s.id !== item.id);
-            else textFields = textFields.filter(t => t.id !== item.id);
-            renderAllElements();
-        };
         container.appendChild(el);
     });
 }
