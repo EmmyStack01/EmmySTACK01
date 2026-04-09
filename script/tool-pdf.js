@@ -277,19 +277,30 @@ function renderAllElements() {
 
             el.setPointerCapture(e.pointerId);
 
-            el.onpointermove = (em) => {
-                const dx = em.clientX - startX; const dy = em.clientY - startY;
+             el.onpointermove = (em) => {
+                const dx = em.clientX - startX; 
+                const dy = em.clientY - startY;
+
                 if (isResizing) {
+                    // 1. Calculate new dimensions
                     item.width = Math.max(30, startW + dx);
-                    item.height = Math.max(20, startH + dy);
+                    item.height = Math.max(15, startH + dy); // Minimum height for mobile
+
+                    // 2. Apply dimensions to the container
                     el.style.width = item.width + 'px';
                     el.style.height = item.height + 'px';
-                    if(item.type === 'text') {
-                        const newFs = item.height * 0.7;
+
+                    // 3. SCALE THE FONT (The Magic Part)
+                    if (item.type === 'text') {
                         const tDiv = el.querySelector('.editable-text');
-                        if(tDiv) tDiv.style.fontSize = newFs + 'px';
+                        if (tDiv) {
+                            // Adjust the 0.7 multiplier to change how "tight" the font fits the box
+                            const newFs = item.height * 0.7; 
+                            tDiv.style.fontSize = newFs + 'px';
+                        }
                     }
                 } else {
+                    // Movement logic stays the same...
                     item.left = startL + dx;
                     item.top = startT + dy;
                     el.style.left = item.left + 'px';
