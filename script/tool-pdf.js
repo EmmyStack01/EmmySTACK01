@@ -209,7 +209,7 @@ function renderAllElements() {
             const textDiv = document.createElement('div');
             textDiv.className = "editable-text";
             textDiv.contentEditable = "true";
-            textDiv.style.cssText = `outline:none; width:100%; height:100%; font-size:${fs}px; color:${item.color}; font-family:${item.font}; overflow:hidden; white-space:nowrap; padding: 2px;`;
+            textDiv.style.cssText = `outline:none; width:100%; height:100%; font-size:${item.height * 0.7}px; color:${item.color}; font-family:${item.font}; overflow:hidden; white-space:nowrap; padding: 2px; display:flex; align-items:center; /* Vertically centers the text in the box */`;
             
             // CRITICAL: Pull directly from the item object
             textDiv.innerText = item.text;
