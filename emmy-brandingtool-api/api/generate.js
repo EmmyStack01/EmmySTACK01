@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
 
     const { keyword, niche } = req.body;
-    const API_KEY = process.env.GEMINI_API_KEY; // Save this in Vercel!
+    const API_KEY = process.env.GEMINI_API_KEY;
 
     const prompt = `Act as a premium brand strategist. For a ${niche} brand with keyword "${keyword}", provide:
     1. Six unique brand names.
