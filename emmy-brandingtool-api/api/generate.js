@@ -3,6 +3,7 @@ export default async function handler(req, res) {
     const allowedOrigins = [
         'https://emmystack01.github.io',
         'https://emmystack01.com',
+        'https://emmy-stack-01.vercel.app',
         'http://127.0.0.1:5500'
     ];
 
