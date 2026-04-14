@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Engine | Emmy STACK01 - Generate Your Digital DNA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <meta name="title" content="Brand Engine | Emmy STACK01 - AI-Powered Brand Identity DNA">
+    <meta name="description" content="Generate high-performance brand identities, color palettes, and typography blueprints in seconds with the Emmy STACK01 Brand Engine. Built for the modern digital professional.">
+    <meta name="keywords" content="Brand Engine, Digital DNA, Emmy STACK01, AI Branding, Color Palette Generator, UI/UX Design Nigeria, Digital Business Cards">
+    <link rel="canonical" href="https://emmystack01.com/brandengine.html">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/brandengine.html">
+    <meta property="og:title" content="Brand Engine | Emmy STACK01 - Generate Your Digital DNA">
+    <meta property="og:description" content="Professional brand blueprints featuring custom typography, hex palettes, and identity vaults.">
+    <meta property="og:image" content="https://emmystack01.com/asset/branding-og.jpg"> 
+    <meta property="og:site_name" content="Emmy Brand by STACK01">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://emmystack01.com/brandengine.html">
+    <meta property="twitter:title" content="Brand Engine | Emmy STACK01">
+    <meta property="twitter:description" content="Initialize your DNA scan and build your digital brand identity instantly.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/branding-og.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --accent:  #00ccff;
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Headers get the 'Cyber' treatment */
+        h2, h3, .neon-text {
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Orbitron';
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        /* Monospaced accents for that 'Developer' feel */
+        code, .status-text {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat';
+            margin: 0;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 204, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 204, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .container { 
+            max-width: 1300px; 
+            margin: auto; 
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        nav{
+            padding-top: 40px;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 20px;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Navigation */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .pill-nav {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            gap: 15px;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 0 2px var(--accent);
+        }
+
+        .pill-nav:hover { transform: scale(1.02); box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);}
+
+        .nav-text {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive size */
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: default;
+            color: transparent;
+            background-image: repeating-linear-gradient(45deg, #f1f1f1 0px, #f1f1f1 144px, gray 144px, gray 288px, #bebebe 288px, #bebebe 432px);
+            background-size: 250%;
+            background-position: 0%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: stripeAnimation 3s linear infinite paused;
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        h1:hover { animation-play-state: running; }
+
+        @keyframes stripeAnimation {
+            100% { background-position: 165%; }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.05) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none; /* Allows users to click through to the buttons */
+            opacity: 0.3;
+        }
+
+        /* 1. The Main Layout Wrapper */
+        .engine-container {
+        max-width: 1300px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr; /* Default to 1 column for mobile */
+        gap: 20px;
+        padding: 20px;
+        }
+
+        /* 2. Desktop Upgrade: When the screen is wider than 1024px */
+        @media (min-width: 1024px) {
+        .engine-container {
+            grid-template-columns: 350px 1fr; /* Sidebar + Main Grid */
+        }
+
+        /* Make the QR/Asset card span across both columns on desktop */
+        .qr-vault {
+            grid-column: span 2;
+        }
+        }
+
+        
+
+        .bento-card {
+            width: 100%;
+            height: auto;
+            overflow: hidden; /* Prevents long text from breaking the card */
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, rgba(15, 20, 28, 0.9) 0%, rgba(5, 7, 10, 0.9) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border 0.3s ease;
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+        }
+        .bento-card:hover {
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.2);
+            background: linear-gradient(135deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 12, 15, 0.95) 100%);
+            transform: translateY(-5px); /* Slight lift */
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto;
+            gap: 20px;
+        }
+
+        /* 3. Tablet Optimization (768px - 1023px) */
+        @media (max-width: 1023px) {
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Stacks everything vertically */
+            gap: 20px;
+        }
+        }
+
+        .swatch-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .swatch {
+            width: 40px; height: 40px;
+            border-radius: 8px;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .pass { color: var(--accent); border: 1px solid var(--accent); }
+        .fail { color: #FF003C; border: 1px solid #FF003C; }
+
+        .qr-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+        }
+        .qr-preview img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .primary-btn{
+            background: var(--accent); 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            font-weight: bold;
+        }
+        .primary-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgb(0, 204, 255, 0.3);
+        }
+
+        .secondary-btn{
+          text-decoration: none;
+          background: rgba(0, 204, 255, 0.1);
+          color: #00ccff;
+          padding: 15px;
+          border: none; 
+          font-weight: bold;
+        }
+        .secondary-btn:hover{
+          box-shadow: 0 0 15px #00ccff;
+        }
+
+        .input-group{
+          margin-bottom: 10px;
+        }
+
+        button {
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: black;
+            padding: 12px 24px;
+            font-family: 'Orbitron';
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateY(100px);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+            pointer-events: none;
+        }
+
+        /* Add this to your <style> block */
+        .bento-card {
+            visibility: visible;
+            opacity: 1;
+            will-change: transform, opacity;
+        }
+
+        .scroll-area {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Custom Scrollbar for that Cyber feel */
+        .scroll-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        input{
+            width: 100%;
+            background: #111;
+            border: 1px solid var(--border);
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            margin: 10px 0 20px;
+        }
+
+        .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
+        .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
+        .ownership { text-align: center; margin-bottom: 10px; }
+        .branding { font-size: 0.9rem; color: #94a3b8; }
+        .branding a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+        .socials { display: flex; justify-content: center; gap: 20px; }
+        .socials a {
+            text-decoration: none;
+            display: flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 800px) {
+            .header-wrapper { flex-direction: column; gap: 15px; }
+            .back-btn { position: static; margin-bottom: 10px; }
+        }
+      </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="https://emmystack01.com/" title="back" class="back-btn">
+                <span>&#8592;</span> 
+            </a>
+
+            <div class="header-wrapper">
+                <div class="navbar-container">
+                    <div class="pill-nav glass">
+                        <img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="30px" width="auto" class="nav-logo">
+                        <span class="nav-text">Brand Engine</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="scanlines"></div>
+        <h1>
+            BRAND ENGINE: INITIALIZE DIGITAL DNA
+        </h1>
+        <main class="engine-container">
+            <aside>
+            <div class="control-panel bento-card">
+                <h2 style="color: var(--accent)">BRAND ENGINE</h2>
+                <div class="input-group">
+                    <label>CORE KEYWORD</label>
+                    <input type="text" id="brandKeyword" placeholder="e.g. Nexus">
+                </div>
+                <div class="input-group">
+                    <label>NICHE</label>
+                    <input type="text" id="brandNiche" placeholder="e.g. Tech">
+                </div>
+                <button id="generateBtn" class="primary-btn">
+                    INITIALIZE DNA SCAN
+                </button>
+            </div>
+            </aside>
+
+            <section class="results-grid">
+                <div class="bento-card name-vault">
+                    <h3>IDENTITY VAULT</h3>
+                    <p id="brandSlogan" style="font-size: 0.8rem; color: var(--accent); margin-top: -10px; font-style: italic;"></p>
+                    <div id="nameResults" class="scroll-area"></div>
+                </div>
+                <div class="bento-card visual-dna">
+                    <h3>COLOR DNA</h3>
+                    <div id="paletteDisplay" class="palette-grid"></div>
+                </div>
+                <div class="bento-card qr-vault">
+                    <h3>SMART ASSET</h3>
+                    <div class="qr-preview" id="qrWrapper"></div>
+                    <button id="downloadPdf" class="secondary-btn" disabled style="margin-top: 20px;">EXPORT BRAND BOARD</button>
+                </div>
+            </section>
+            <div id="toast" class="toast-notification">HEX CODE COPIED TO CLIPBOARD</div>
+        </main>
+
+        <footer class="footer-section">
+            <hr class="line">
+            <div class="footer">
+                <div class="ownership">
+                    <p class="branding">
+                        Built by <a href="https://emmystack01.com/" target="_blank" rel="noopener nofollow">Emmy STACK01</a>
+                    </p>
+                </div>
+                <div class="socials"> 
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer"><i class="ri-twitter-x-line"></i></a> 
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-fill"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+/**
+ * EMMY STACK01 - BRAND ENGINE CORE
+ * Professional Brand Blueprint Generator
+ */
+const { jsPDF } = window.jspdf;
+
+// --- 1. CONFIGURATION & STATE ---
+const brandState = {
+    name: '',
+    niche: '',
+    colors: [],
+    fonts: { header: 'Orbitron', body: 'Montserrat' },
+    slogan: '',
+    isScanning: false
+};
+
+// --- 2. DYNAMIC ASSET LOADING ---
+const loadAIFonts = (fonts) => {
+    if (!fonts || !fonts.header) return;
+    
+    const linkId = 'dynamic-fonts';
+    let link = document.getElementById(linkId);
+    if (!link) {
+        link = document.createElement('link');
+        link.id = linkId;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }
+    
+    const headerFont = fonts.header.replace(/\s+/g, '+');
+    const bodyFont = fonts.body.replace(/\s+/g, '+');
+    link.href = `https://fonts.googleapis.com/css2?family=${headerFont}:wght@700&family=${bodyFont}&display=swap`;
+
+    const styleId = 'dynamic-font-styles';
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+    }
+    styleTag.innerHTML = `.name-card span { font-family: '${fonts.header}', sans-serif; }`;
+};
+
+// --- 3. ACCESSIBILITY & UTILS ---
+const getLuminance = (hex) => {
+    const rgb = hex.match(/\w\w/g).map(x => {
+        const s = parseInt(x, 16) / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+};
+
+const auditContrast = (hex) => {
+    const l1 = getLuminance(hex);
+    const l2 = getLuminance("#050505"); 
+    const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    return { ratio: ratio.toFixed(2), isPass: ratio >= 4.5 };
+};
+
+const showToast = (message) => {
+    const toast = document.getElementById('toast');
+    toast.innerText = message;
+    const tl = gsap.timeline();
+    tl.to(toast, { opacity: 1, y: 0, duration: 0.5, ease: "power4.out" })
+      .to(toast, { opacity: 0, y: 20, duration: 0.5, delay: 2, ease: "power4.in" });
+};
+
+// --- 4. CORE ENGINE LOGIC ---
+const initializeBrandFlow = async () => {
+    const keyword = document.getElementById('brandKeyword').value.trim();
+    const niche = document.getElementById('brandNiche').value.trim();
+
+    if (!keyword) {
+        alert("Enter a keyword to begin the DNA scan.");
+        return;
+    }
+
+    updateButtonStatus(true);
+
+    try {
+        const response = await fetch('https://emmy-stack-01.vercel.app/emmy-brandingtool-api/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ keyword, niche })
+        });
+
+        if (!response.ok) throw new Error('Vercel API Offline');
+
+        const aiData = await response.json();
+
+        // Update State
+        brandState.name = keyword;
+        brandState.niche = niche;
+        brandState.colors = aiData.colors;
+        brandState.fonts = aiData.fonts;
+        brandState.slogan = aiData.slogan || "";
+
+        // UI Updates
+        document.getElementById('brandSlogan').innerText = brandState.slogan;
+        renderNames(aiData.names);
+        renderPalette(aiData.colors);
+        loadAIFonts(aiData.fonts);
+        animateQRReveal();
+
+        document.getElementById('downloadPdf').disabled = false;
+        
+    } catch (error) {
+        console.error("AI Error:", error);
+        alert("Sync Failed: Connection to Emmy STACK01 Brain lost.");
+    } finally {
+        updateButtonStatus(false);
+    }
+};
+
+const renderNames = (names) => {
+    const containers = document.querySelectorAll('#nameResults'); // Handling both instances in your HTML
+    containers.forEach(container => {
+        container.innerHTML = '';
+        names.forEach((name, i) => {
+            const el = document.createElement('div');
+            el.className = 'name-card bento-item';
+            el.style.padding = "10px";
+            el.style.borderBottom = "1px solid rgba(0,240,255,0.1)";
+            el.innerHTML = `<span style="display:block; font-size:1.2rem;">${name}</span><small id="handle-${i}">VERIFYING...</small>`;
+            container.appendChild(el);
+
+            gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1, onComplete: () => {
+                document.getElementById(`handle-${i}`).innerText = Math.random() > 0.3 ? "AVAILABLE" : "SECURED";
+            }});
+        });
+    });
+};
+
+const renderPalette = (colors) => {
+    const container = document.getElementById('paletteDisplay');
+    container.innerHTML = '';
+
+    colors.forEach((color, i) => {
+        const audit = auditContrast(color);
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch-container';
+        swatch.onclick = () => {
+            navigator.clipboard.writeText(color.toUpperCase());
+            showToast(`HEX COPIED: ${color.toUpperCase()}`);
+        };
+        
+        swatch.innerHTML = `
+            <div class="swatch" style="background:${color}; border: 1px solid rgba(255,255,255,0.1)"></div>
+            <div class="swatch-info">
+                <code>${color.toUpperCase()}</code>
+                <span class="badge ${audit.isPass ? 'pass' : 'fail'}">
+                    ${audit.isPass ? '✓' : '⚠️'} ${audit.ratio}:1
+                </span>
+            </div>
+        `;
+        container.appendChild(swatch);
+        gsap.from(swatch, { scale: 0.8, opacity: 0, delay: i * 0.1 });
+    });
+};
+
+const animateQRReveal = () => {
+    const wrapper = document.getElementById('qrWrapper');
+    const colorHex = brandState.colors[0] ? brandState.colors[0].replace('#', '') : '00ccff';
+    
+    const previewURL = `https://emmystack01.com/preview?name=${encodeURIComponent(brandState.name)}&color=${colorHex}&font=${encodeURIComponent(brandState.fonts.header)}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(previewURL)}&color=00ccff&bgcolor=050505`;
+
+    wrapper.innerHTML = `<img src="${qrUrl}" alt="Brand QR" style="border: 2px solid var(--accent); padding: 5px; border-radius: 10px; background: #050505;">`;
+
+    gsap.fromTo(wrapper, 
+        { scale: 0.5, opacity: 0, rotation: -15 },
+        { scale: 1, opacity: 1, rotation: 0, duration: 1, ease: "back.out(1.7)" }
+    );
+};
+
+// --- 5. EVENTS & INITIALIZATION ---
+document.getElementById('generateBtn').addEventListener('click', initializeBrandFlow);
+
+document.getElementById('downloadPdf').addEventListener('click', () => {
+    const doc = new jsPDF();
+    const accent = "#00ccff";
+
+    doc.setFillColor(10, 10, 10);
+    doc.rect(0, 0, 210, 297, 'F');
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(24);
+    doc.text(brandState.name.toUpperCase(), 20, 30);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
+    doc.text(brandState.slogan.toUpperCase(), 20, 38);
+
+    doc.setTextColor(accent);
+    doc.setFontSize(14);
+    doc.text("VISUAL DNA PALETTE", 20, 60);
+
+    brandState.colors.forEach((color, i) => {
+        const y = 75 + (i * 20);
+        doc.setFillColor(color);
+        doc.roundedRect(20, y, 30, 12, 2, 2, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.text(color.toUpperCase(), 60, y + 8);
+    });
+
+    doc.setTextColor(accent);
+    doc.text("TYPOGRAPHY DNA", 20, 180);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`Primary: ${brandState.fonts.header}`, 20, 190);
+    doc.text(`Secondary: ${brandState.fonts.body}`, 20, 198);
+
+    doc.save(`${brandState.name}-DNA-Board.pdf`);
+});
+
+function updateButtonStatus(loading) {
+    const btn = document.getElementById('generateBtn');
+    btn.innerText = loading ? "SCANNING BIOMETRICS..." : "INITIALIZE DNA SCAN";
+    btn.style.opacity = loading ? "0.6" : "1";
+    btn.style.pointerEvents = loading ? "none" : "auto";
+}
+
+window.onload = () => {
+    gsap.set(".engine-container", { visibility: "visible" });
+    const tl = gsap.timeline();
+    tl.from(".control-panel", { x: -50, opacity: 0, duration: 1, ease: "power4.out" })
+      .from(".bento-card:not(.control-panel)", { scale: 0.95, opacity: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6");
+};
+</script>
+
+</body>
+</html>

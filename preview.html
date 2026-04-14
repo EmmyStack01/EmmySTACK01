@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Preview | Emmy STACK01</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070A;
+            --user-accent: #00ccff; /* Fallback */
+            --glass: rgba(15, 20, 28, 0.8);
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* The Animated Background Grid */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--user-accent) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--user-accent) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .preview-container {
+            max-width: 400px;
+            width: 100%;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        /* The Phone Mockup Card */
+        .phone-mockup {
+            background: var(--glass);
+            border: 2px solid var(--user-accent);
+            border-radius: 40px;
+            padding: 40px 20px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--user-accent);
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Orbitron';
+            font-size: 2rem;
+            color: var(--user-accent);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px var(--user-accent);
+        }
+
+        .slogan {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            display: block;
+            background: var(--user-accent);
+            color: black;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 40px;
+            font-family: 'Orbitron';
+            transition: 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--user-accent);
+        }
+
+        .comparison-tag {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="preview-container">
+    <div class="phone-mockup" id="mainContent">
+        <h1 id="brandName">LOADING...</h1>
+        <div class="slogan" id="brandSlogan">DIGITAL DNA INITIALIZED</div>
+        
+        <div style="height: 150px; border: 1px dashed var(--user-accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+            <span style="color: var(--user-accent); opacity: 0.5;">[ PORTFOLIO PREVIEW ]</span>
+        </div>
+
+        <a href="#" id="whatsappBtn" class="action-btn">ACTIVATE PERMANENT SITE</a>
+        <p class="comparison-tag">PREVIEW MODE: Automated DNA Mockup</p>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name') || "Vanguard";
+        const color = params.get('color') ? `#${params.get('color')}` : "#00ccff";
+        const fontName = params.get('font') || "Orbitron"; // Fallback to your signature font
+
+        // 1. DYNAMICALLY LOAD THE AI CHOSEN FONT
+        if (fontName) {
+            const fontLink = document.createElement('link');
+            fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
+            fontLink.rel = 'stylesheet';
+            document.head.appendChild(fontLink);
+
+            // Apply it to the main brand header
+            const brandHeader = document.getElementById('brandName');
+            if (brandHeader) {
+                brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
+                brandHeader.innerText = name.toUpperCase();
+            }
+        }
+
+        // 2. APPLY COLOR DNA
+        document.documentElement.style.setProperty('--user-accent', color);
+
+        // 3. UPDATE WHATSAPP ACTION LINK (The fix from earlier)
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        if (whatsappBtn) {
+            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} and I'm ready to build the permanent site.`);
+            whatsappBtn.href = `https://wa.me/2349076991076?text=${msg}`;
+        }
+
+        // 4. ENTRANCE ANIMATION (GSAP)
+        gsap.from(".preview-card", {
+            opacity: 0,
+            y: 30,
+            duration: 1.5,
+            ease: "expo.out"
+        });
+    };
+</script>
+</body>
+</html>
