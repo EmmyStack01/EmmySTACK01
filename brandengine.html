@@ -561,10 +561,10 @@ const showToast = (message) => {
 
 // --- 4. CORE ENGINE LOGIC ---
 const initializeBrandFlow = async () => {
-    const keyword = document.getElementById('brandKeyword').value.trim();
-    const niche = document.getElementById('brandNiche').value.trim();
+    const keywordInput = document.getElementById('brandKeyword').value.trim();
+    const nicheInput = document.getElementById('brandNiche').value.trim();
 
-    if (!keyword) {
+    if (!keywordInput) {
         alert("Enter a keyword to begin the DNA scan.");
         return;
     }
@@ -574,37 +574,52 @@ const initializeBrandFlow = async () => {
     try {
         const response = await fetch('https://emmy-stack-01.vercel.app/api/generate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ keyword, niche })
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' 
+            },
+            body: JSON.stringify({ 
+                keyword: keywordInput, 
+                niche: nicheInput 
+            })
         });
 
-        if (!response.ok) throw new Error('Vercel API Offline');
-
+        // If the backend returns our custom error, we handle it here
         const aiData = await response.json();
 
-        // Update State
-        brandState.name = keyword;
-        brandState.niche = niche;
+        if (!response.ok) {
+            throw new Error(aiData.details || 'Sync Failed');
+        }
+
+        // --- UPDATE STATE WITH REAL AI DATA ---
+        // Instead of just using the keyword, let's use the first AI suggestion as the "Primary Name"
+        brandState.name = aiData.names[0] || keywordInput; 
+        brandState.niche = nicheInput;
         brandState.colors = aiData.colors;
         brandState.fonts = aiData.fonts;
         brandState.slogan = aiData.slogan || "";
 
-        // UI Updates
+        // --- UI UPDATES ---
         document.getElementById('brandSlogan').innerText = brandState.slogan;
+        
+        // Pass the names array to your render function
         renderNames(aiData.names);
         renderPalette(aiData.colors);
         loadAIFonts(aiData.fonts);
         animateQRReveal();
 
         document.getElementById('downloadPdf').disabled = false;
+        showToast("BIOMETRIC SCAN COMPLETE");
         
     } catch (error) {
         console.error("AI Error:", error);
-        alert("Sync Failed: Connection to Emmy STACK01 Brain lost.");
+        // This will now show the SPECIFIC error message from your Vercel logs
+        alert(`DNA Sync Error: ${error.message}`);
     } finally {
         updateButtonStatus(false);
     }
 };
+
 
 const renderNames = (names) => {
     const container = document.getElementById('nameResults');
