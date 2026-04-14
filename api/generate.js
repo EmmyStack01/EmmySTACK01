@@ -1,3 +1,4 @@
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 export default async function handler(req, res) {
     // 1. DYNAMIC CORS HANDLER
     const allowedOrigins = [
