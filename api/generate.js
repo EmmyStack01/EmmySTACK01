@@ -41,14 +41,14 @@ export default async function handler(req, res) {
         Return ONLY a raw JSON object: 
         {"names":["name1", "name2"], "colors":["#hex1", "#hex2"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
 
-        // 4. CALL GEMINI API
+                // 4. CALL GEMINI API
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: { 
-                    responseMimeType: "application/json",
+                    // Remove responseMimeType if it's causing a restriction
                     temperature: 0.7 
                 }
             })
@@ -56,22 +56,21 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
-        if (!data.candidates || !data.candidates[0]) {
-            console.error("Gemini Error:", data);
-            throw new Error("Gemini API returned an empty response.");
+        // LOG THE DATA TO VERCEL FOR DEBUGGING
+        console.log("Full Gemini Data:", JSON.stringify(data));
+
+        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+            // Check for specific safety or key errors
+            const errorMsg = data.error ? data.error.message : "Empty Content";
+            throw new Error(`Gemini API Error: ${errorMsg}`);
         }
 
-        const aiText = data.candidates[0].content.parts[0].text;
+        let aiText = data.candidates[0].content.parts[0].text;
+        
+        // CLEAN MARKDOWN (Gemini loves to wrap JSON in ```json blocks)
+        aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+        
         const cleanJson = JSON.parse(aiText);
-
         res.status(200).json(cleanJson);
 
-    } catch (error) {
-        console.error("Backend Error:", error.message);
-        res.status(500).json({ 
-            error: "Internal Server Error",
-            details: error.message 
-        });
-    }
-            }
             
