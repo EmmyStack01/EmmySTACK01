@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-    // 1. Handle Preflight
+    // 1. DYNAMIC CORS & HEADERS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -10,10 +10,10 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: "Use POST" });
 
     try {
-        // 2. SAFE BODY PARSING
+        // 2. PARSE BODY
         let body = req.body;
         if (typeof body === 'string') {
-            try { body = JSON.parse(body); } catch (e) { throw new Error("Invalid JSON in request body"); }
+            body = JSON.parse(body);
         }
         
         const { keyword, niche } = body || {};
@@ -25,43 +25,42 @@ export default async function handler(req, res) {
         // 3. PROMPT SETUP
         const prompt = `Act as a premium brand strategist. For a ${niche} brand centered on "${keyword}", provide:
         1. Six unique brand names. 2. A 4-color hex palette. 3. A high-end Google Font pairing. 4. A 5-word slogan.
-        Return ONLY raw JSON: {"names":["name1"], "colors":["#hex1"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
+        Return ONLY a raw JSON object with this exact structure: 
+        {"names":["name1"], "colors":["#hex1"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
 
-        // 4. CALL GEMINI API
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+        // 4. CALL GEMINI API (Updated to v1 Stable)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7 }
+                generationConfig: { 
+                    temperature: 0.7,
+                    responseMimeType: "application/json" 
+                }
             })
         });
 
         const data = await response.json();
 
-        // 5. ROBUST ERROR CHECKING
+        // 5. ERROR HANDLING
         if (data.error) throw new Error(`Gemini API: ${data.error.message}`);
         
         if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-            // This catches "Safety" blocks or empty responses
-            console.error("Incomplete Gemini Response:", JSON.stringify(data));
-            throw new Error("Gemini blocked the request or returned empty content.");
+            throw new Error("Gemini returned an empty or blocked response.");
         }
 
-        let aiText = data.candidates[0].content.parts[0].text;
+        const aiText = data.candidates[0].content.parts[0].text.trim();
         
-        // Strip Markdown and parse
-        const cleanText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-        const cleanJson = JSON.parse(cleanText);
-
-        return res.status(200).json(cleanJson);
+        // Final JSON parse and send
+        res.status(200).json(JSON.parse(aiText));
 
     } catch (error) {
-        console.error("BACKEND CRASH:", error.message);
-        return res.status(500).json({ 
+        console.error("EMMY STACK01 ENGINE ERROR:", error.message);
+        res.status(500).json({ 
             error: "DNA Sync Failed",
             details: error.message 
         });
     }
-} // <--- THIS BRACKET WAS MISSING!
+            }
             
