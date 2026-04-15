@@ -28,20 +28,19 @@ export default async function handler(req, res) {
         Return ONLY a raw JSON object with this exact structure: 
         {"names":["name1"], "colors":["#hex1"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
 
-        // 4. CALL GEMINI API (Updated to v1 Stable)
+                // 4. CALL GEMINI API (v1 Stable - Simplified)
         const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: { 
-                    temperature: 0.7,
-                    responseMimeType: "application/json" 
+                    temperature: 0.7 
+                    // responseMimeType is removed to avoid the "Unknown name" error
                 }
             })
         });
-
-        const data = await response.json();
+        
 
         // 5. ERROR HANDLING
         if (data.error) throw new Error(`Gemini API: ${data.error.message}`);
