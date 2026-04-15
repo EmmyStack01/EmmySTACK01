@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         Return ONLY raw JSON: {"names":["name1"], "colors":["#hex1"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
 
         // 4. CALL GEMINI API
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
