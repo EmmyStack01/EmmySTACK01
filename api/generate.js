@@ -1,76 +1,67 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-    // 1. Handle Preflight (Browser security check)
-    if (req.method === 'OPTIONS') {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-        return res.status(200).end();
-    }
+    // 1. Handle Preflight
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: "Method not allowed. Use POST." });
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ error: "Use POST" });
 
     try {
-        // 2. MANUAL BODY PARSING (The "Crash Fix")
+        // 2. SAFE BODY PARSING
         let body = req.body;
         if (typeof body === 'string') {
-            body = JSON.parse(body);
+            try { body = JSON.parse(body); } catch (e) { throw new Error("Invalid JSON in request body"); }
         }
         
-        const { keyword, niche } = body;
-
-        if (!keyword || !niche) {
-            throw new Error("Missing keyword or niche in request body.");
-        }
+        const { keyword, niche } = body || {};
+        if (!keyword || !niche) throw new Error("Missing keyword or niche");
 
         const API_KEY = process.env.GEMINI_API_KEY;
-        if (!API_KEY) {
-            throw new Error("GEMINI_API_KEY is not defined in Vercel settings.");
-        }
+        if (!API_KEY) throw new Error("GEMINI_API_KEY is missing in Vercel settings");
 
         // 3. PROMPT SETUP
         const prompt = `Act as a premium brand strategist. For a ${niche} brand centered on "${keyword}", provide:
-        1. Six unique, professional brand names.
-        2. A 4-color hex palette (Primary, Bg, Accent, Surface).
-        3. A high-end Google Font pairing.
-        4. A punchy 5-word brand slogan.
-        
-        Return ONLY a raw JSON object: 
-        {"names":["name1", "name2"], "colors":["#hex1", "#hex2"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
+        1. Six unique brand names. 2. A 4-color hex palette. 3. A high-end Google Font pairing. 4. A 5-word slogan.
+        Return ONLY raw JSON: {"names":["name1"], "colors":["#hex1"], "fonts":{"header":"Font", "body":"Font"}, "slogan": "Slogan"}`;
 
-                // 4. CALL GEMINI API
+        // 4. CALL GEMINI API
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { 
-                    // Remove responseMimeType if it's causing a restriction
-                    temperature: 0.7 
-                }
+                generationConfig: { temperature: 0.7 }
             })
         });
 
         const data = await response.json();
 
-        // LOG THE DATA TO VERCEL FOR DEBUGGING
-        console.log("Full Gemini Data:", JSON.stringify(data));
-
-        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-            // Check for specific safety or key errors
-            const errorMsg = data.error ? data.error.message : "Empty Content";
-            throw new Error(`Gemini API Error: ${errorMsg}`);
+        // 5. ROBUST ERROR CHECKING
+        if (data.error) throw new Error(`Gemini API: ${data.error.message}`);
+        
+        if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+            // This catches "Safety" blocks or empty responses
+            console.error("Incomplete Gemini Response:", JSON.stringify(data));
+            throw new Error("Gemini blocked the request or returned empty content.");
         }
 
         let aiText = data.candidates[0].content.parts[0].text;
         
-        // CLEAN MARKDOWN (Gemini loves to wrap JSON in ```json blocks)
-        aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-        
-        const cleanJson = JSON.parse(aiText);
-        res.status(200).json(cleanJson);
+        // Strip Markdown and parse
+        const cleanText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const cleanJson = JSON.parse(cleanText);
 
+        return res.status(200).json(cleanJson);
+
+    } catch (error) {
+        console.error("BACKEND CRASH:", error.message);
+        return res.status(500).json({ 
+            error: "DNA Sync Failed",
+            details: error.message 
+        });
+    }
+} // <--- THIS BRACKET WAS MISSING!
             
