@@ -12,8 +12,8 @@ export default async function handler(req, res) {
         const { keyword, niche } = req.body;
         const API_KEY = process.env.GEMINI_API_KEY;
 
-        // Use the v1 stable endpoint which is generally more reliable for flash
-        const URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // SWITCHING TO GEMINI-PRO FOR STABILITY
+        const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
 
         const prompt = `Act as a premium brand strategist. For a ${niche} brand called "${keyword}", generate:
         1. Names: 6 creative options.
@@ -33,22 +33,21 @@ export default async function handler(req, res) {
 
         const resultData = await response.json();
 
-        // Specific handling for the "model not found" error
         if (resultData.error) {
-            console.error("Gemini Error Detail:", resultData.error);
             return res.status(resultData.error.code || 500).json({ 
-                error: `Engine Mismatch: ${resultData.error.message}` 
+                error: `Engine Sync Error: ${resultData.error.message}` 
             });
         }
 
+        // Safety parsing to extract JSON from any extra AI chatter
         const rawText = resultData.candidates[0].content.parts[0].text;
         const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         
-        if (!jsonMatch) throw new Error("Invalid DNA sequence received.");
+        if (!jsonMatch) throw new Error("DNA sequence corrupted. Please try again.");
 
         return res.status(200).json(JSON.parse(jsonMatch[0]));
 
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
-            }
+}
