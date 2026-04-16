@@ -12,11 +12,16 @@ export default async function handler(req, res) {
         const { keyword, niche } = req.body;
         const API_KEY = process.env.GEMINI_API_KEY;
 
-        // Try gemini-pro (the most compatible version globally)
-        const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+        // USING THE UNIVERSAL STABLE MODEL NAME
+        const URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
 
-        const prompt = `Generate a brand DNA for a ${niche} business named "${keyword}". 
-        Return ONLY valid JSON: {"names":["6 options"], "colors":["4 hex"], "fonts":{"header":"Google Font", "body":"Google Font"}, "slogan":"5 words"}`;
+        const prompt = `Act as a premium brand strategist. For a ${niche} brand called "${keyword}", generate:
+        1. Names: 6 creative options.
+        2. Colors: 4 hex codes (Primary, BG, Accent, Surface).
+        3. Fonts: A Google Font for header and body.
+        4. Slogan: A short 5-word tagline.
+        
+        Output ONLY a JSON object: {"names":[], "colors":[], "fonts":{"header":"", "body":""}, "slogan":""}`;
 
         const response = await fetch(URL, {
             method: 'POST',
@@ -28,22 +33,21 @@ export default async function handler(req, res) {
 
         const resultData = await response.json();
 
-        // If Google rejects the model, send a specific error we can read
+        // If the API returns an error, we send it back to the frontend alert
         if (resultData.error) {
-            return res.status(500).json({ 
-                error: "DNA Sync Refused",
-                details: resultData.error.message 
+            return res.status(resultData.error.code || 500).json({ 
+                error: `Engine Sync Error: ${resultData.error.message}` 
             });
         }
 
         const rawText = resultData.candidates[0].content.parts[0].text;
         const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         
-        if (!jsonMatch) throw new Error("DNA sequence corrupted.");
+        if (!jsonMatch) throw new Error("DNA sequence corrupted. Please try again.");
 
         return res.status(200).json(JSON.parse(jsonMatch[0]));
 
     } catch (error) {
         return res.status(500).json({ error: "Biometric Failure", details: error.message });
     }
-}
+            }
