@@ -54,10 +54,12 @@ export default async function handler(req, res) {
 
         return res.status(200).json(JSON.parse(jsonMatch[0]));
 
-    } catch (error) {
-        return res.status(500).json({ 
-            error: "Biometric Failure", 
-            details: error.message 
-        });
-    }
+    
+        } catch (error) {
+            let friendlyMessage = "The engine is cooling down. Please wait 60 seconds.";
+            if (error.message.includes("429")) {
+                return res.status(429).json({ error: "System Overloaded", details: friendlyMessage });
+            }
+            return res.status(500).json({ error: "DNA Sync Failed", details: error.message });
+        }
             }
