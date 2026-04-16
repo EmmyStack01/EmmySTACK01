@@ -514,8 +514,9 @@ const brandState = {
 
 // --- 2. DYNAMIC ASSET LOADING ---
 const loadAIFonts = (fonts) => {
-    if (!fonts || !fonts.header) return;
+    if (!fonts || !fonts.header || !fonts.body) return;
     
+    // 1. Create/Update the Google Fonts link in the <head>
     const linkId = 'dynamic-fonts';
     let link = document.getElementById(linkId);
     if (!link) {
@@ -525,10 +526,27 @@ const loadAIFonts = (fonts) => {
         document.head.appendChild(link);
     }
     
+    // Format font names for Google Fonts API (replace spaces with +)
     const headerFont = fonts.header.replace(/\s+/g, '+');
     const bodyFont = fonts.body.replace(/\s+/g, '+');
-    link.href = `https://fonts.googleapis.com/css2?family=${headerFont}:wght@700&family=${bodyFont}&display=swap`;
+    
+    // Fetch both fonts from Google
+    link.href = `https://fonts.googleapis.com/css2?family=${headerFont}:wght@400;700&family=${bodyFont}:wght@400;700&display=swap`;
 
+    // 2. Apply font families to the UI Preview elements
+    const headerPreview = document.getElementById('headerPreview');
+    const bodyPreview = document.getElementById('bodyPreview');
+    const headerNameDisplay = document.getElementById('headerFontName');
+    const bodyNameDisplay = document.getElementById('bodyFontName');
+
+    if (headerPreview) headerPreview.style.fontFamily = `'${fonts.header}', sans-serif`;
+    if (bodyPreview) bodyPreview.style.fontFamily = `'${fonts.body}', sans-serif`;
+    
+    // 3. Update the text labels in the Typography DNA card
+    if (headerNameDisplay) headerNameDisplay.innerText = `HEADER: ${fonts.header.toUpperCase()}`;
+    if (bodyNameDisplay) bodyNameDisplay.innerText = `BODY: ${fonts.body.toUpperCase()}`;
+
+    // 4. Also update the global name-card style for consistency
     const styleId = 'dynamic-font-styles';
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
