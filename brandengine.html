@@ -208,11 +208,6 @@
         .engine-container {
             grid-template-columns: 350px 1fr; /* Sidebar + Main Grid */
         }
-
-        /* Make the QR/Asset card span across both columns on desktop */
-        .qr-vault {
-            grid-column: span 2;
-        }
         }
 
         
@@ -464,6 +459,15 @@
                     <h3>COLOR DNA</h3>
                     <div id="paletteDisplay" class="palette-grid"></div>
                 </div>
+                <div class="bento-card dna-card">
+                    <h3>TYPOGRAPHY DNA</h3>
+                    <div class="font-display">
+                        <p id="headerFontName" style="font-size: 0.7rem; color: var(--accent);">HEADER: --</p>
+                        <p id="headerPreview" style="margin-bottom: 0.9rem; font-weight: 550;">Header Preview</p>
+                        <p id="bodyFontName" style="font-size: 0.7rem; color: var(--accent);">BODY: --</p>
+                        <p id="bodyPreview">This is a preview of your brand's body typography.</p>
+                    </div>
+                </div>
                 <div class="bento-card qr-vault">
                     <h3>SMART ASSET</h3>
                     <div class="qr-preview" id="qrWrapper"></div>
@@ -488,11 +492,14 @@
             </div>
         </footer>
     </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
+/**
+ * EMMY STACK01 - BRAND ENGINE CORE
+ * Professional Brand Blueprint Generator
+ */
 const { jsPDF } = window.jspdf;
 
 // --- 1. CONFIGURATION & STATE ---
@@ -532,7 +539,7 @@ const loadAIFonts = (fonts) => {
     styleTag.innerHTML = `.name-card span { font-family: '${fonts.header}', sans-serif; }`;
 };
 
-// --- 3. UTILS ---
+// --- 3. ACCESSIBILITY & UTILS ---
 const getLuminance = (hex) => {
     const rgb = hex.match(/\w\w/g).map(x => {
         const s = parseInt(x, 16) / 255;
@@ -581,13 +588,30 @@ const initializeBrandFlow = async () => {
             })
         });
 
+        // If the backend returns our custom error, we handle it here
         const aiData = await response.json();
 
         if (!response.ok) {
-            throw new Error(aiData.details || aiData.error || 'DNA Sync Failed');
+            throw new Error(aiData.details || 'Sync Failed');
         }
 
-        // --- UPDATE STATE ---
+        // Current aadded: initializeBrandFlow try block after success:
+        const scanBtn = document.getElementById('generateBtn');
+        scanBtn.disabled = true;
+        let secondsLeft = 60;
+
+        const cooldownTimer = setInterval(() => {
+            secondsLeft--;
+            scanBtn.innerText = `SYSTEM RECHARGING: ${secondsLeft}s`;
+            if (secondsLeft <= 0) {
+                clearInterval(cooldownTimer);
+                scanBtn.disabled = false;
+                scanBtn.innerText = "INITIALIZE DNA SCAN";
+            }
+        }, 1000);
+
+        // --- UPDATE STATE WITH REAL AI DATA ---
+        // Instead of just using the keyword, let's use the first AI suggestion as the "Primary Name"
         brandState.name = aiData.names[0] || keywordInput; 
         brandState.niche = nicheInput;
         brandState.colors = aiData.colors;
@@ -596,6 +620,8 @@ const initializeBrandFlow = async () => {
 
         // --- UI UPDATES ---
         document.getElementById('brandSlogan').innerText = brandState.slogan;
+        
+        // Pass the names array to your render function
         renderNames(aiData.names);
         renderPalette(aiData.colors);
         loadAIFonts(aiData.fonts);
@@ -606,11 +632,13 @@ const initializeBrandFlow = async () => {
         
     } catch (error) {
         console.error("AI Error:", error);
+        // This will now show the SPECIFIC error message from your Vercel logs
         alert(`DNA Sync Error: ${error.message}`);
     } finally {
         updateButtonStatus(false);
     }
 };
+
 
 const renderNames = (names) => {
     const container = document.getElementById('nameResults');
@@ -620,19 +648,31 @@ const renderNames = (names) => {
     names.forEach((name, i) => {
         const el = document.createElement('div');
         el.className = 'name-card';
+        // Style it like a button
         el.style.padding = "15px";
         el.style.marginBottom = "10px";
-        el.style.background = "rgba(255,255,255,0.03)";
+        el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.2)" : "rgba(255,255,255,0.03)";
         el.style.borderLeft = `2px solid var(--accent)`;
+        el.style.cursor = "pointer";
+        el.style.transition = "0.3s";
+        
         el.innerHTML = `
             <span style="display:block; font-size:1.1rem; color:white;">${name}</span>
-            <small id="handle-${i}" style="color:var(--accent); font-family:'JetBrains Mono'; font-size:0.7rem;">ANALYZING...</small>
+            <small style="color:var(--accent); font-family:'JetBrains Mono'; font-size:0.7rem;">
+                ${name === brandState.name ? "DNA SELECTED" : "CLICK TO SELECT"}
+            </small>
         `;
-        container.appendChild(el);
 
+        el.onclick = () => {
+            brandState.name = name; // Lock in the choice
+            renderNames(names);     // Re-render to show selection
+            animateQRReveal();      // Refresh QR for the new name
+            showToast(`IDENTITY UPDATED: ${name}`);
+        };
+
+        container.appendChild(el);
         gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1, onComplete: () => {
-            const handle = document.getElementById(`handle-${i}`);
-            if(handle) handle.innerText = Math.random() > 0.3 ? "VAULT SECURED" : "DNA MATCH FOUND";
+            document.getElementById(`handle-${i}`).innerText = Math.random() > 0.3 ? "VAULT SECURED" : "DNA MATCH FOUND";
         }});
     });
 };
@@ -673,7 +713,7 @@ const animateQRReveal = () => {
     const previewURL = `https://emmystack01.com/preview?name=${encodeURIComponent(brandState.name)}&color=${colorHex}&font=${encodeURIComponent(brandState.fonts.header)}`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(previewURL)}&color=00ccff&bgcolor=050505`;
 
-    wrapper.innerHTML = `<img src="${qrUrl}" alt="Brand QR" style="border: 2px solid var(--accent); padding: 5px; border-radius: 10px; background: #050505; max-width: 100%;">`;
+    wrapper.innerHTML = `<img src="${qrUrl}" alt="Brand QR" style="border: 2px solid var(--accent); padding: 5px; border-radius: 10px; background: #050505;">`;
 
     gsap.fromTo(wrapper, 
         { scale: 0.5, opacity: 0, rotation: -15 },
@@ -688,41 +728,59 @@ document.getElementById('downloadPdf').addEventListener('click', () => {
     const doc = new jsPDF();
     const accent = "#00ccff";
 
-    doc.setFillColor(10, 10, 10);
+    // Dark Mode Background
+    doc.setFillColor(5, 5, 5);
     doc.rect(0, 0, 210, 297, 'F');
 
+    // Header: Selected Brand Name
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.text(brandState.name.toUpperCase(), 20, 30);
+    doc.setFontSize(28);
+    doc.text(brandState.name.toUpperCase(), 20, 40);
     
-    doc.setFontSize(10);
-    doc.setTextColor(150, 150, 150);
-    doc.text(brandState.slogan.toUpperCase(), 20, 38);
-
+    // Slogan
+    doc.setFontSize(12);
     doc.setTextColor(accent);
-    doc.setFontSize(14);
-    doc.text("VISUAL DNA PALETTE", 20, 60);
+    doc.text(brandState.slogan.toUpperCase(), 20, 50);
+
+    // Section: Color DNA
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.text("VISUAL DNA PALETTE", 20, 80);
 
     brandState.colors.forEach((color, i) => {
-        const y = 75 + (i * 20);
+        const y = 95 + (i * 20);
         doc.setFillColor(color);
-        doc.roundedRect(20, y, 30, 12, 2, 2, 'F');
+        doc.roundedRect(20, y, 40, 15, 2, 2, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.text(color.toUpperCase(), 60, y + 8);
+        doc.setFontSize(10);
+        doc.text(color.toUpperCase(), 70, y + 10);
     });
 
+    // Section: Typography DNA
+    doc.setFontSize(16);
+    doc.text("TYPOGRAPHY BLUEPRINT", 20, 200);
+    
+    doc.setFontSize(12);
     doc.setTextColor(accent);
-    doc.text("TYPOGRAPHY DNA", 20, 180);
+    doc.text("PRIMARY HEADER:", 20, 215);
     doc.setTextColor(255, 255, 255);
-    doc.text(`Primary: ${brandState.fonts.header}`, 20, 190);
-    doc.text(`Secondary: ${brandState.fonts.body}`, 20, 198);
+    doc.text(brandState.fonts.header, 70, 215);
 
-    doc.save(`${brandState.name}-DNA-Board.pdf`);
+    doc.setTextColor(accent);
+    doc.text("BODY TEXT:", 20, 225);
+    doc.setTextColor(255, 255, 255);
+    doc.text(brandState.fonts.body, 70, 225);
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text("GENERATED BY EMMY STACK01 BRAND ENGINE", 105, 285, { align: "center" });
+
+    doc.save(`Emmy-DNA-${brandState.name}.pdf`);
 });
 
 function updateButtonStatus(loading) {
     const btn = document.getElementById('generateBtn');
-    if(!btn) return;
     btn.innerText = loading ? "SCANNING BIOMETRICS..." : "INITIALIZE DNA SCAN";
     btn.style.opacity = loading ? "0.6" : "1";
     btn.style.pointerEvents = loading ? "none" : "auto";
@@ -735,5 +793,6 @@ window.onload = () => {
       .from(".bento-card:not(.control-panel)", { scale: 0.95, opacity: 0, duration: 0.8, stagger: 0.1, ease: "back.out(1.2)" }, "-=0.6");
 };
 </script>
+
 </body>
 </html>
