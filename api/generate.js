@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
         // 2. THE 2026 UNIVERSAL STABLE MODEL
         // Using gemini-2.0-flash which is the stable production anchor right now.
-        const URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2-flash:generateContent?key=${API_KEY}`;
+        const URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
 
         const prompt = `Act as a premium brand strategist. For a ${niche} brand called "${keyword}", generate:
         1. Names: 6 creative options.
