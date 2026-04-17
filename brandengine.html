@@ -689,9 +689,7 @@ const renderNames = (names) => {
         };
 
         container.appendChild(el);
-        gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1, onComplete: () => {
-            document.getElementById(`handle-${i}`).innerText = Math.random() > 0.3 ? "VAULT SECURED" : "DNA MATCH FOUND";
-        }});
+        gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1 });
     });
 };
 
