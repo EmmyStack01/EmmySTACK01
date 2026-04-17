@@ -90,6 +90,16 @@
     box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
 }
 /*new*/
+.dropbtn {
+    background: none;
+    border: none;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+    font-size: inherit;
+    font-family: inherit;
+}
+
 /* Dropdown Container */
 .dropdown {
     position: relative;
@@ -302,6 +312,16 @@
 
     .nav-toggle.open .line:nth-child(3) {
         transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .dropbtn {
+        background: none;
+        border: none;
+        text-decoration: none;
+        color: var(--white);
+        font-size: 24px;
+        font-weight: bold;
+        transition: color 0.3s ease;
     }
 }
 
