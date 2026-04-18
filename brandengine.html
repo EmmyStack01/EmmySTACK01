@@ -599,11 +599,11 @@ const initializeBrandFlow = async () => {
     const nicheInput = document.getElementById('brandNiche').value.trim();
 
     if (!keywordInput) {
-        alert("Enter a keyword to begin the DNA scan.");
+        showToast("Enter a keyword to begin the DNA scan.");
         return;
     }
 
-    updateButtonStatus(true);
+    updateButtonStatus(true); // Scanning animation starts
 
     try {
         const response = await fetch('https://emmy-stack-01.vercel.app/api/generate', {
@@ -618,14 +618,16 @@ const initializeBrandFlow = async () => {
             })
         });
 
-        // If the backend returns our custom error, we handle it here
+        // 1. Parse the JSON from your Branded Decoder
         const aiData = await response.json();
 
+        // 2. Check if the response failed (503, 429, 400, etc.)
         if (!response.ok) {
+            // This throws the error to the catch block below
             throw new Error(aiData.details || 'Sync Failed');
         }
 
-        // Current aadded: initializeBrandFlow try block after success:
+        // --- IF SUCCESSFUL: START COOLDOWN ---
         const scanBtn = document.getElementById('generateBtn');
         scanBtn.disabled = true;
         let secondsLeft = 60;
@@ -641,7 +643,6 @@ const initializeBrandFlow = async () => {
         }, 1000);
 
         // --- UPDATE STATE WITH REAL AI DATA ---
-        // Instead of just using the keyword, let's use the first AI suggestion as the "Primary Name"
         brandState.name = aiData.names[0] || keywordInput; 
         brandState.niche = nicheInput;
         brandState.colors = aiData.colors;
@@ -651,7 +652,6 @@ const initializeBrandFlow = async () => {
         // --- UI UPDATES ---
         document.getElementById('brandSlogan').innerText = brandState.slogan;
         
-        // Pass the names array to your render function
         renderNames(aiData.names);
         renderPalette(aiData.colors);
         loadAIFonts(aiData.fonts);
@@ -662,10 +662,17 @@ const initializeBrandFlow = async () => {
         
     } catch (error) {
         console.error("AI Error:", error);
-        // This will now show the SPECIFIC error message from your Vercel logs
-        alert(`DNA Sync Error: ${error.message}`);
+        
+        // Use showToast instead of alert for a better Emmy STACK01 experience
+        showToast(error.message); 
+        
+        // Reset button immediately so they can try again if it was a minor flicker
+        const scanBtn = document.getElementById('generateBtn');
+        scanBtn.disabled = false;
+        scanBtn.innerText = "RE-INITIALIZE SCAN";
+
     } finally {
-        updateButtonStatus(false);
+        updateButtonStatus(false); // Stop the "Scanning" UI state
     }
 };
 
