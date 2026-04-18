@@ -689,7 +689,7 @@ const renderNames = (names) => {
         };
 
         container.appendChild(el);
-        gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1 });
+        gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1, clearProps: "opacity" });
     });
 };
 
