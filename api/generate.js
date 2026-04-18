@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-    // 1. HEADERS
+    // 1. SECURITY & CORS HEADERS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -16,8 +16,7 @@ export default async function handler(req, res) {
         if (!API_KEY) throw new Error("API Key missing in Vercel settings.");
 
         // 2. THE 2026 UNIVERSAL STABLE MODEL
-        // Using gemini-2.0-flash which is the stable production anchor right now.
-        const URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+        const URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
         const prompt = `Act as a premium brand strategist. For a ${niche} brand called "${keyword}", generate:
         1. Names: 6 creative options.
@@ -37,14 +36,13 @@ export default async function handler(req, res) {
 
         const resultData = await response.json();
 
-        // 01. BRANDED ERROR DECODER
+        // 3. BRANDED ERROR DECODER
         if (resultData.error) {
             console.error("API Error Trace:", resultData.error);
             
             let userMessage = "The DNA Sequencer is recalibrating. Please try again in 10 seconds.";
             let statusCode = resultData.error.code || 500;
 
-            // Mapping technical failures to "Cyber" Brand Language
             if (statusCode === 503 || resultData.error.message.includes("high demand")) {
                 userMessage = "SYSTEM OVERLOAD: Too many brands initializing at once. Please wait 15 seconds for the engine to cool down.";
             } else if (statusCode === 429) {
@@ -59,7 +57,7 @@ export default async function handler(req, res) {
             });
         }
 
-        // 2. RESPONSE VALIDATION (Safety Gate)
+        // 4. RESPONSE VALIDATION (Safety Gate)
         if (!resultData.candidates || resultData.candidates.length === 0) {
             return res.status(500).json({ 
                 error: "DNA Sync Failed", 
@@ -67,7 +65,7 @@ export default async function handler(req, res) {
             });
         }
 
-        // 3. JSON EXTRACTION & CLEANUP
+        // 5. JSON EXTRACTION & CLEANUP
         const rawText = resultData.candidates[0].content.parts[0].text;
         const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         
@@ -89,7 +87,7 @@ export default async function handler(req, res) {
         }
 
     } catch (error) {
-        // 4. GLOBAL CATCH (The "Flicker" Error)
+        // 6. GLOBAL CATCH (The "Flicker" Error)
         console.error("Critical System Error:", error);
         return res.status(500).json({ 
             error: "DNA Sync Interrupted", 
@@ -97,4 +95,3 @@ export default async function handler(req, res) {
         });
     }
 }
-            }
