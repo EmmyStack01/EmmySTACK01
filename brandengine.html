@@ -15,19 +15,19 @@
     <meta name="title" content="Brand Engine | Emmy STACK01 - AI-Powered Brand Identity DNA">
     <meta name="description" content="Generate high-performance brand identities, color palettes, and typography blueprints in seconds with the Emmy STACK01 Brand Engine. Built for the modern digital professional.">
     <meta name="keywords" content="Brand Engine, Digital DNA, Emmy STACK01, AI Branding, Color Palette Generator, UI/UX Design Nigeria, Digital Business Cards">
-    <link rel="canonical" href="https://emmystack01.com/brandengine.html">
+    <link rel="canonical" href="https://emmystack01.com/brandengine">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Emmy STACK01">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emmystack01.com/brandengine.html">
+    <meta property="og:url" content="https://emmystack01.com/brandengine">
     <meta property="og:title" content="Brand Engine | Emmy STACK01 - Generate Your Digital DNA">
     <meta property="og:description" content="Professional brand blueprints featuring custom typography, hex palettes, and identity vaults.">
     <meta property="og:image" content="https://emmystack01.com/asset/branding-og.jpg"> 
     <meta property="og:site_name" content="Emmy Brand by STACK01">
 
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://emmystack01.com/brandengine.html">
+    <meta property="twitter:url" content="https://emmystack01.com/brandengine">
     <meta property="twitter:title" content="Brand Engine | Emmy STACK01">
     <meta property="twitter:description" content="Initialize your DNA scan and build your digital brand identity instantly.">
     <meta property="twitter:image" content="https://emmystack01.com/asset/branding-og.jpg">
@@ -344,11 +344,23 @@
             will-change: transform, opacity;
         }
 
+        .name-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px 20px !important; /* Added 20px on the left and right */
+            margin-left: 5px;             /* Slight nudge away from the left border */
+            width: calc(100% - 10px);    /* Ensures it doesn't overflow the right */
+            transition: transform 0.3s ease;
+        }
+
         .scroll-area {
             max-height: 300px;
+            padding-left: 10px;          /* Critical: gives space for the x-axis animation */
+            overflow-x: hidden;          /* Prevents a horizontal scrollbar */
             overflow-y: auto;
-            padding-right: 10px;
         }
+
 
         /* Custom Scrollbar for that Cyber feel */
         .scroll-area::-webkit-scrollbar {
@@ -669,10 +681,14 @@ const renderNames = (names) => {
         // Style it like a button
         el.style.padding = "15px";
         el.style.marginBottom = "10px";
-        el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.2)" : "rgba(255,255,255,0.03)";
-        el.style.borderLeft = `2px solid var(--accent)`;
+        // el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.2)" : "rgba(255,255,255,0.03)";
+        // el.style.borderLeft = `2px solid var(--accent)`;
         el.style.cursor = "pointer";
         el.style.transition = "0.3s";
+
+        el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.15)" : "rgba(255,255,255,0.03)";
+        el.style.borderLeft = name === brandState.name ? `4px solid var(--accent)` : `2px solid rgba(255,255,255,0.1)`;
+        if(name === brandState.name) el.style.boxShadow = "inset 10px 0 20px -10px rgba(0, 204, 255, 0.3)";
         
         el.innerHTML = `
             <span style="display:block; font-size:1.1rem; color:white;">${name}</span>
@@ -689,7 +705,14 @@ const renderNames = (names) => {
         };
 
         container.appendChild(el);
-        gsap.from(el, { opacity: 0, x: -20, duration: 0.5, delay: i * 0.1, clearProps: "opacity" });
+        gsap.from(el, { 
+            opacity: 0, 
+            x: -30,          // Increased for a smoother slide-in
+            duration: 0.6, 
+            delay: i * 0.1,
+            ease: "power2.out",
+            clearProps: "all" // This clears the x: -30 so it doesn't stay shifted left
+        });
     });
 };
 
