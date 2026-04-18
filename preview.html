@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Preview | Emmy STACK01</title>
-    <meta name="theme-color" id="theme-meta" content="#05070A">
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #05070A;
-            --user-accent: #00ccff; /* Fallback */
+            --user-accent: #00ccff; /* LOCKED to Emmy STACK01 Blue */
             --glass: rgba(15, 20, 28, 0.8);
-            --text-color: #ffffff;
         }
 
         body {
             background: var(--bg);
-            color: var(--text-color);
+            color: white;
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
@@ -25,7 +22,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            transition: color 0.3s ease;
         }
 
         /* The Animated Background Grid */
@@ -47,16 +43,14 @@
             text-align: center;
         }
 
-        /* The Phone Mockup Card - Added subtle inner light for dark backgrounds */
+        /* The Phone Mockup Card */
         .phone-mockup {
             background: var(--glass);
             border: 2px solid var(--user-accent);
             border-radius: 40px;
             padding: 40px 20px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(255,255,255,0.05);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--user-accent);
             position: relative;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
         }
 
         h1 {
@@ -71,8 +65,7 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: var(--text-color);
-            opacity: 0.7;
+            color: #888;
             margin-bottom: 30px;
         }
 
@@ -96,8 +89,7 @@
 
         .comparison-tag {
             font-size: 0.7rem;
-            color: var(--text-color);
-            opacity: 0.4;
+            color: #555;
             margin-top: 20px;
         }
     </style>
@@ -110,7 +102,7 @@
         <div class="slogan" id="brandSlogan">DIGITAL DNA INITIALIZED</div>
         
         <div style="height: 150px; border: 1px dashed var(--user-accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
-            <span style="color: var(--user-accent); opacity: 0.5;">[ PORTFOLIO PREVIEW ]</span>
+            <span id="fontDisplay" style="color: var(--user-accent); opacity: 0.5; font-size: 0.9rem;">[ PORTFOLIO PREVIEW ]</span>
         </div>
 
         <a href="#" id="whatsappBtn" class="action-btn">ACTIVATE PERMANENT SITE</a>
@@ -120,57 +112,42 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-    // 1. UTILITY: CHECK FOR DARK COLOR
-    const isColorDark = (hex) => {
-        if (!hex) return true;
-        hex = hex.replace('#', '');
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance < 0.5;
-    };
-
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const name = params.get('name') || "Vanguard";
-        const colorParam = params.get('color') || "00ccff";
-        const color = `#${colorParam}`;
+        const generatedColor = params.get('color') || "00ccff"; // Keep for WhatsApp message
         const fontName = params.get('font') || "Orbitron";
 
-        // 2. DYNAMIC CONTRAST & THEME FIX
-        const themeMeta = document.getElementById('theme-meta');
-        if (themeMeta) themeMeta.setAttribute('content', color);
-        
-        // If the color is too dark, we ensure text stays bright 
-        // If color was light, we'd switch to black text (but your UI is dark mode)
-        if (!isColorDark(color)) {
-            // Optional: tweaks for light brand colors if needed
+        // 1. DYNAMICALLY LOAD THE AI CHOSEN FONT
+        if (fontName) {
+            const fontLink = document.createElement('link');
+            fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
+            fontLink.rel = 'stylesheet';
+            document.head.appendChild(fontLink);
+
+            const brandHeader = document.getElementById('brandName');
+            if (brandHeader) {
+                brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
+                brandHeader.innerText = name.toUpperCase();
+            }
+            
+            // Visual feedback of what font is loaded
+            const fontDisplay = document.getElementById('fontDisplay');
+            if (fontDisplay) fontDisplay.innerText = `[ ${fontName.toUpperCase()} DNA ]`;
         }
 
-        // 3. DYNAMICALLY LOAD THE AI CHOSEN FONT
-        const fontLink = document.createElement('link');
-        fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
-        fontLink.rel = 'stylesheet';
-        document.head.appendChild(fontLink);
+        // 2. APPLY LIKELY FIXED COLOR
+        // We do NOT call setProperty('--user-accent', color) here to keep the Emmy Blue.
 
-        const brandHeader = document.getElementById('brandName');
-        if (brandHeader) {
-            brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
-            brandHeader.innerText = name.toUpperCase();
-        }
-
-        // 4. APPLY COLOR DNA
-        document.documentElement.style.setProperty('--user-accent', color);
-
-        // 5. UPDATE WHATSAPP ACTION LINK
+        // 3. UPDATE WHATSAPP ACTION LINK
         const whatsappBtn = document.getElementById('whatsappBtn');
         if (whatsappBtn) {
-            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} (#${colorParam}) and I'm ready to build the permanent site.`);
+            // We still send the generated color to you in the message so you know what the AI picked
+            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} (Font: ${fontName}, Color: #${generatedColor}) and I'm ready to build the permanent site.`);
             whatsappBtn.href = `https://wa.me/2349076991076?text=${msg}`;
         }
 
-        // 6. ENTRANCE ANIMATION (GSAP)
+        // 4. ENTRANCE ANIMATION (GSAP)
         gsap.from(".phone-mockup", {
             opacity: 0,
             y: 30,
