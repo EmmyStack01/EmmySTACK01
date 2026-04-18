@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Preview | Emmy STACK01</title>
+    <meta name="theme-color" id="theme-meta" content="#05070A">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #05070A;
             --user-accent: #00ccff; /* Fallback */
             --glass: rgba(15, 20, 28, 0.8);
+            --text-color: #ffffff;
         }
 
         body {
             background: var(--bg);
-            color: white;
+            color: var(--text-color);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
@@ -22,6 +25,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+            transition: color 0.3s ease;
         }
 
         /* The Animated Background Grid */
@@ -43,14 +47,16 @@
             text-align: center;
         }
 
-        /* The Phone Mockup Card */
+        /* The Phone Mockup Card - Added subtle inner light for dark backgrounds */
         .phone-mockup {
             background: var(--glass);
             border: 2px solid var(--user-accent);
             border-radius: 40px;
             padding: 40px 20px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--user-accent);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(255,255,255,0.05);
             position: relative;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
 
         h1 {
@@ -65,7 +71,8 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 3px;
-            color: #888;
+            color: var(--text-color);
+            opacity: 0.7;
             margin-bottom: 30px;
         }
 
@@ -89,7 +96,8 @@
 
         .comparison-tag {
             font-size: 0.7rem;
-            color: #555;
+            color: var(--text-color);
+            opacity: 0.4;
             margin-top: 20px;
         }
     </style>
@@ -112,42 +120,61 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
+    // 1. UTILITY: CHECK FOR DARK COLOR
+    const isColorDark = (hex) => {
+        if (!hex) return true;
+        hex = hex.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance < 0.5;
+    };
+
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
         const name = params.get('name') || "Vanguard";
-        const color = params.get('color') ? `#${params.get('color')}` : "#00ccff";
-        const fontName = params.get('font') || "Orbitron"; // Fallback to your signature font
+        const colorParam = params.get('color') || "00ccff";
+        const color = `#${colorParam}`;
+        const fontName = params.get('font') || "Orbitron";
 
-        // 1. DYNAMICALLY LOAD THE AI CHOSEN FONT
-        if (fontName) {
-            const fontLink = document.createElement('link');
-            fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
-            fontLink.rel = 'stylesheet';
-            document.head.appendChild(fontLink);
-
-            // Apply it to the main brand header
-            const brandHeader = document.getElementById('brandName');
-            if (brandHeader) {
-                brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
-                brandHeader.innerText = name.toUpperCase();
-            }
+        // 2. DYNAMIC CONTRAST & THEME FIX
+        const themeMeta = document.getElementById('theme-meta');
+        if (themeMeta) themeMeta.setAttribute('content', color);
+        
+        // If the color is too dark, we ensure text stays bright 
+        // If color was light, we'd switch to black text (but your UI is dark mode)
+        if (!isColorDark(color)) {
+            // Optional: tweaks for light brand colors if needed
         }
 
-        // 2. APPLY COLOR DNA
+        // 3. DYNAMICALLY LOAD THE AI CHOSEN FONT
+        const fontLink = document.createElement('link');
+        fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
+        fontLink.rel = 'stylesheet';
+        document.head.appendChild(fontLink);
+
+        const brandHeader = document.getElementById('brandName');
+        if (brandHeader) {
+            brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
+            brandHeader.innerText = name.toUpperCase();
+        }
+
+        // 4. APPLY COLOR DNA
         document.documentElement.style.setProperty('--user-accent', color);
 
-        // 3. UPDATE WHATSAPP ACTION LINK (The fix from earlier)
+        // 5. UPDATE WHATSAPP ACTION LINK
         const whatsappBtn = document.getElementById('whatsappBtn');
         if (whatsappBtn) {
-            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} and I'm ready to build the permanent site.`);
+            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} (#${colorParam}) and I'm ready to build the permanent site.`);
             whatsappBtn.href = `https://wa.me/2349076991076?text=${msg}`;
         }
 
-        // 4. ENTRANCE ANIMATION (GSAP)
-        gsap.from(".preview-card", {
+        // 6. ENTRANCE ANIMATION (GSAP)
+        gsap.from(".phone-mockup", {
             opacity: 0,
             y: 30,
-            duration: 1.5,
+            duration: 1.2,
             ease: "expo.out"
         });
     };
