@@ -681,14 +681,14 @@ const renderNames = (names) => {
         // Style it like a button
         el.style.padding = "15px";
         el.style.marginBottom = "10px";
-        // el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.2)" : "rgba(255,255,255,0.03)";
-        // el.style.borderLeft = `2px solid var(--accent)`;
+        el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.2)" : "rgba(255,255,255,0.03)";
+        el.style.borderLeft = `2px solid var(--accent)`;
         el.style.cursor = "pointer";
         el.style.transition = "0.3s";
 
-        el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.15)" : "rgba(255,255,255,0.03)";
-        el.style.borderLeft = name === brandState.name ? `4px solid var(--accent)` : `2px solid rgba(255,255,255,0.1)`;
-        if(name === brandState.name) el.style.boxShadow = "inset 10px 0 20px -10px rgba(0, 204, 255, 0.3)";
+        // el.style.background = name === brandState.name ? "rgba(0, 204, 255, 0.15)" : "rgba(255,255,255,0.03)";
+        // el.style.borderLeft = name === brandState.name ? `4px solid var(--accent)` : `2px solid rgba(255,255,255,0.1)`;
+        // if(name === brandState.name) el.style.boxShadow = "inset 10px 0 20px -10px rgba(0, 204, 255, 0.3)";
         
         el.innerHTML = `
             <span style="display:block; font-size:1.1rem; color:white;">${name}</span>
