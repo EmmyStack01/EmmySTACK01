@@ -756,7 +756,15 @@ const animateQRReveal = () => {
     const wrapper = document.getElementById('qrWrapper');
     const colorHex = brandState.colors[0] ? brandState.colors[0].replace('#', '') : '00ccff';
     
-    const previewURL = `https://emmystack01.com/preview?name=${encodeURIComponent(brandState.name)}&color=${colorHex}&font=${encodeURIComponent(brandState.fonts.header)}`;
+    const previewURL = `https://emmystack01.com/preview?` + 
+    `name=${encodeURIComponent(brandState.name)}` +
+    `&font=${encodeURIComponent(brandState.fonts.header)}` +
+    `&bodyFont=${encodeURIComponent(brandState.fonts.body)}` +
+    `&c1=${brandState.colors[0].replace('#','')}` +
+    `&c2=${brandState.colors[1].replace('#','')}` +
+    `&c3=${brandState.colors[2].replace('#','')}` +
+    `&c4=${brandState.colors[3].replace('#','')}`;
+    
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(previewURL)}&color=00ccff&bgcolor=050505`;
 
     wrapper.innerHTML = `<img src="${qrUrl}" alt="Brand QR" style="border: 2px solid var(--accent); padding: 5px; border-radius: 10px; background: #050505;">`;
