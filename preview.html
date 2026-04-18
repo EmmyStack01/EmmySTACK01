@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brand Preview | Emmy STACK01</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Orbitron:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #05070A;
-            --user-accent: #00ccff; /* LOCKED to Emmy STACK01 Blue */
+            --user-accent: #00ccff; /* Emmy Blue - Fixed */
             --glass: rgba(15, 20, 28, 0.8);
         }
 
@@ -24,7 +24,6 @@
             padding: 20px;
         }
 
-        /* The Animated Background Grid */
         body::before {
             content: "";
             position: fixed;
@@ -39,11 +38,10 @@
         .preview-container {
             max-width: 400px;
             width: 100%;
-            margin-top: 50px;
+            margin-top: 30px;
             text-align: center;
         }
 
-        /* The Phone Mockup Card */
         .phone-mockup {
             background: var(--glass);
             border: 2px solid var(--user-accent);
@@ -51,22 +49,55 @@
             padding: 40px 20px;
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--user-accent);
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
             font-family: 'Orbitron';
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--user-accent);
             margin-bottom: 5px;
-            text-shadow: 0 0 10px var(--user-accent);
+            text-transform: uppercase;
         }
 
         .slogan {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: #888;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Portfolio DNA Area */
+        .dna-vault {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--user-accent);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .dna-item {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--user-accent);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .palette-preview {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .mini-swatch {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .action-btn {
@@ -77,36 +108,38 @@
             padding: 15px;
             border-radius: 10px;
             font-weight: bold;
-            margin-top: 40px;
+            margin-top: 20px;
             font-family: 'Orbitron';
             transition: 0.3s ease;
         }
 
-        .action-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--user-accent);
-        }
-
         .comparison-tag {
-            font-size: 0.7rem;
-            color: #555;
-            margin-top: 20px;
+            font-size: 0.65rem;
+            color: #444;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
 <div class="preview-container">
-    <div class="phone-mockup" id="mainContent">
+    <div class="phone-mockup">
         <h1 id="brandName">LOADING...</h1>
-        <div class="slogan" id="brandSlogan">DIGITAL DNA INITIALIZED</div>
+        <div class="slogan" id="brandSlogan">DNA INITIALIZED</div>
         
-        <div style="height: 150px; border: 1px dashed var(--user-accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 20px 0;">
-            <span id="fontDisplay" style="color: var(--user-accent); opacity: 0.5; font-size: 0.9rem;">[ PORTFOLIO PREVIEW ]</span>
+        <div class="dna-vault">
+            <span class="dna-item" id="headerFontDisplay">HEADER: --</span>
+            <span class="dna-item" id="bodyFontDisplay">BODY: --</span>
+            
+            <div style="border-top: 1px solid rgba(0,204,255,0.2); margin: 10px 0;"></div>
+            
+            <span class="dna-item">COLOR PALETTE</span>
+            <div class="palette-preview" id="palettePreview">
+                </div>
         </div>
 
-        <a href="#" id="whatsappBtn" class="action-btn">ACTIVATE PERMANENT SITE</a>
-        <p class="comparison-tag">PREVIEW MODE: Automated DNA Mockup</p>
+        <a href="#" id="whatsappBtn" class="action-btn">ACTIVATE SITE</a>
+        <p class="comparison-tag">EMMY STACK01 | BRAND ENGINE v2.5</p>
     </div>
 </div>
 
@@ -114,46 +147,60 @@
 <script>
     window.onload = () => {
         const params = new URLSearchParams(window.location.search);
+        
+        // Data Extraction
         const name = params.get('name') || "Vanguard";
-        const generatedColor = params.get('color') || "00ccff"; // Keep for WhatsApp message
-        const fontName = params.get('font') || "Orbitron";
+        const hFont = params.get('font') || "Orbitron";
+        const bFont = params.get('bodyFont') || "Montserrat";
+        
+        // Colors (c1, c2, c3, c4)
+        const colors = [
+            params.get('c1') || "1A1A1A",
+            params.get('c2') || "00CCFF",
+            params.get('c3') || "FFFFFF",
+            params.get('c4') || "333333"
+        ];
 
-        // 1. DYNAMICALLY LOAD THE AI CHOSEN FONT
-        if (fontName) {
-            const fontLink = document.createElement('link');
-            fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, '+')}:wght@700&display=swap`;
-            fontLink.rel = 'stylesheet';
-            document.head.appendChild(fontLink);
+        // 1. LOAD FONTS
+        const fontFamilies = `${hFont.replace(/\s+/g, '+')}:wght@700&family=${bFont.replace(/\s+/g, '+')}:wght@400`;
+        const link = document.createElement('link');
+        link.href = `https://fonts.googleapis.com/css2?family=${fontFamilies}&display=swap`;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
 
-            const brandHeader = document.getElementById('brandName');
-            if (brandHeader) {
-                brandHeader.style.fontFamily = `'${fontName}', sans-serif`;
-                brandHeader.innerText = name.toUpperCase();
-            }
-            
-            // Visual feedback of what font is loaded
-            const fontDisplay = document.getElementById('fontDisplay');
-            if (fontDisplay) fontDisplay.innerText = `[ ${fontName.toUpperCase()} DNA ]`;
-        }
+        // 2. APPLY TO UI
+        document.getElementById('brandName').innerText = name;
+        document.getElementById('brandName').style.fontFamily = `'${hFont}', sans-serif`;
+        
+        document.getElementById('headerFontDisplay').innerText = `H: ${hFont}`;
+        document.getElementById('bodyFontDisplay').innerText = `B: ${bFont}`;
 
-        // 2. APPLY LIKELY FIXED COLOR
-        // We do NOT call setProperty('--user-accent', color) here to keep the Emmy Blue.
+        // 3. RENDER SWATCHES
+        const paletteContainer = document.getElementById('palettePreview');
+        colors.forEach(hex => {
+            const swatch = document.createElement('div');
+            swatch.className = 'mini-swatch';
+            swatch.style.backgroundColor = `#${hex}`;
+            swatch.title = `#${hex.toUpperCase()}`;
+            paletteContainer.appendChild(swatch);
+        });
 
-        // 3. UPDATE WHATSAPP ACTION LINK
+        // 4. UPDATE WHATSAPP MESSAGE (Everything included)
         const whatsappBtn = document.getElementById('whatsappBtn');
         if (whatsappBtn) {
-            // We still send the generated color to you in the message so you know what the AI picked
-            const msg = encodeURIComponent(`Hi Emmy, I just generated the DNA for ${name.toUpperCase()} (Font: ${fontName}, Color: #${generatedColor}) and I'm ready to build the permanent site.`);
-            whatsappBtn.href = `https://wa.me/2349076991076?text=${msg}`;
+            const colorString = colors.map(c => `#${c.toUpperCase()}`).join(', ');
+            const message = `Hi Emmy! I just scanned my Brand DNA:%0A%0A` +
+                            `🚀 Name: ${name.toUpperCase()}%0A` +
+                            `🎨 Palette: ${colorString}%0A` +
+                            `✍️ Header: ${hFont}%0A` +
+                            `📄 Body: ${bFont}%0A%0A` +
+                            `Ready to activate my permanent site!`;
+            
+            whatsappBtn.href = `https://wa.me/2349076991076?text=${message}`;
         }
 
-        // 4. ENTRANCE ANIMATION (GSAP)
-        gsap.from(".phone-mockup", {
-            opacity: 0,
-            y: 30,
-            duration: 1.2,
-            ease: "expo.out"
-        });
+        // 5. ANIMATION
+        gsap.from(".phone-mockup", { opacity: 0, scale: 0.9, duration: 1, ease: "power4.out" });
     };
 </script>
 </body>
