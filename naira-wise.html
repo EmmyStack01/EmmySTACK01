@@ -91,12 +91,14 @@
             flex-shrink: 0;
             user-select: none;
             transition: transform 0.1s ease-out;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         /* Invoice Internal Styles */
-        .inv-header { display: flex; justify-content: space-between; margin-bottom: 40px; }
+        .inv-header { display: flex; justify-content: space-between; margin-bottom: 25px; }
         .biz-title { font-size: 1.8rem; font-weight: 900; color: var(--primary-dark); margin: 0; }
-        .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .invoice-table th { text-align: left; border-bottom: 2px solid #f1f5f9; padding: 10px; font-size: 11px; color: var(--text-light); }
         .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #f8fafc; font-size: 0.95rem; }
         
@@ -106,7 +108,6 @@
 
         /* Update your existing .inv-footer class */
         .inv-footer { 
-            height: 40px;
             margin-top: auto; /* Pushes to bottom if inside a flex container */
             background: var(--accent); 
             color: white; 
@@ -115,7 +116,6 @@
             justify-content: center; 
             font-size: 10px;
             width: 100%;
-            position: absolute; bottom: 0; left: 0;
         }
 
         .emmystack01 a{
@@ -391,49 +391,55 @@
     }
 
     async function downloadPDF() {
-    const element = document.getElementById('invoice-capture');
+        const element = document.getElementById('invoice-capture');
 
-    const wrapper = document.createElement('div');
-    wrapper.style.position = 'fixed';
-    wrapper.style.top = '0';
-    wrapper.style.left = '0';
-    wrapper.style.opacity = '0';
-    wrapper.style.pointerEvents = 'none';
-    wrapper.style.width = '794px';
-    wrapper.style.background = '#fff';
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.top = '0';
+        wrapper.style.left = '0';
+        wrapper.style.opacity = '0';
+        wrapper.style.pointerEvents = 'none';
+        wrapper.style.width = '794px';
+        wrapper.style.background = '#fff';
 
-    document.body.appendChild(wrapper);
+        document.body.appendChild(wrapper);
 
-    const clone = element.cloneNode(true);
-    wrapper.appendChild(clone);
+        const clone = element.cloneNode(true);
+        wrapper.appendChild(clone);
 
-    clone.style.transform = 'none';
-    clone.style.position = 'relative';
-    clone.style.boxShadow = 'none';
+        clone.style.transform = 'none';
+        clone.style.position = 'relative';
+        clone.style.boxShadow = 'none';
+        clone.style.display = 'flex';
+        clone.style.flexDirection = 'column';
 
-    const opt = {
-        margin: 0,
-        filename: 'Naira-Wise_Invoice.pdf',
-        image: { type: 'jpeg', quality: 1.0 },
-        html2canvas: {
-            scale: 2,
-            useCORS: true
-        },
-        jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait'
+        const opt = {
+            margin: 0,
+            filename: 'Naira-Wise_Invoice.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                scrollY: 0
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            },
+            pagebreak: {
+                mode: ['avoid-all'] // 🔥 IMPORTANT
+            }
+        };
+
+        try {
+            await html2pdf().set(opt).from(clone).save();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            document.body.removeChild(wrapper);
         }
-    };
-
-    try {
-        await html2pdf().set(opt).from(clone).save();
-    } catch (err) {
-        console.error(err);
-    } finally {
-        document.body.removeChild(wrapper);
     }
-}
     document.getElementById("logoUpload").addEventListener("change", function(e){
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
