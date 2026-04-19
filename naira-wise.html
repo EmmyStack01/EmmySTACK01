@@ -391,57 +391,50 @@
     }
 
     async function downloadPDF() {
-        const element = document.getElementById('invoice-capture');
-        const originalParent = element.parentElement;
-        const originalTransform = element.style.transform;
+    async function downloadPDF() {
+    const element = document.getElementById('invoice-capture');
 
-        // 1. Create a hidden capture wrapper to lock dimensions
-        const wrapper = document.createElement('div');
-        wrapper.style.position = 'fixed';
-        wrapper.style.left = '-9999px';
-        wrapper.style.top = '0';
-        wrapper.style.width = '794px';  // Exact A4 px
-        wrapper.style.height = '1123px'; // Exact A4 px
-        wrapper.style.backgroundColor = '#ffffff';
-        document.body.appendChild(wrapper);
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'fixed';
+    wrapper.style.top = '0';
+    wrapper.style.left = '0';
+    wrapper.style.opacity = '0';
+    wrapper.style.pointerEvents = 'none';
+    wrapper.style.width = '794px';
+    wrapper.style.background = '#fff';
 
-        // 2. Move element into wrapper and reset styles
-        wrapper.appendChild(element);
-        element.style.transform = 'none';
-        element.style.margin = '0';
-        element.style.boxShadow = 'none'; // Remove shadow to keep PDF clean
+    document.body.appendChild(wrapper);
 
-        const opt = {
-            margin: 0,
-            filename: 'Naira-Wise_Invoice.pdf',
-            image: { type: 'jpeg', quality: 1.0 },
-            html2canvas: { 
-                scale: 2, 
-                useCORS: true, 
-                logging: false,
-                width: 794,
-                height: 1123,
-                windowWidth: 794,
-                windowHeight: 1123
-            },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+    const clone = element.cloneNode(true);
+    wrapper.appendChild(clone);
 
-        try {
-            // Wait for rendering
-            await new Promise(resolve => setTimeout(resolve, 150));
-            await html2pdf().set(opt).from(wrapper).save();
-        } catch (error) {
-            console.error("PDF Generation Error:", error);
-        } finally {
-            // 3. Restore to the UI
-            originalParent.appendChild(element);
-            element.style.transform = originalTransform;
-            element.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)'; // Restore shadow
-            document.body.removeChild(wrapper);
+    clone.style.transform = 'none';
+    clone.style.position = 'relative';
+    clone.style.boxShadow = 'none';
+
+    const opt = {
+        margin: 0,
+        filename: 'Naira-Wise_Invoice.pdf',
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: {
+            scale: 2,
+            useCORS: true
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
         }
-    }
+    };
 
+    try {
+        await html2pdf().set(opt).from(clone).save();
+    } catch (err) {
+        console.error(err);
+    } finally {
+        document.body.removeChild(wrapper);
+    }
+}
     document.getElementById("logoUpload").addEventListener("change", function(e){
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
