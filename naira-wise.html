@@ -21,7 +21,7 @@
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); }
+        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); overflow-x: hidden; }
 
         .app-container {
             max-width: 1300px;
@@ -31,7 +31,6 @@
             gap: 40px;
         }
 
-        /* --- Input Side (Control Panel) --- */
         .controls {
             background: var(--card);
             padding: 30px;
@@ -54,247 +53,176 @@
             border-radius: 8px;
             background: #fdfdfd;
             font-size: 0.95rem;
-            transition: all 0.3s;
         }
 
-        input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-
-        /* Item Table in Builder */
-        .items-header { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 10px; margin-top: 20px; }
-        .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
-        
-        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .item-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; margin-bottom: 10px; }
+        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; }
         .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
-        
-        .vat-box { background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 25px; }
-        .checkbox-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
-        .checkbox-wrap input { width: auto; }
 
-        .btn-download {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-top: 25px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        /* --- SCREEN RESPONSIVE PREVIEW --- */
+        .preview-area { 
+            position: sticky; 
+            top: 20px; 
+            display: flex; 
+            justify-content: center;
+            align-items: flex-start;
+            background: #e2e8f0;
+            padding: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            height: 90vh;
         }
-
-        /* --- Preview Side (Invoice) --- */
-        .preview-area { position: sticky; top: 20px; overflow-x: auto; }
         
         .invoice-paper {
             background: white;
-            width: 794px; /* A4 width */
-            min-height: 1123px; /* A4 height */
-            padding: 60px;
-            margin: 0 auto;
+            width: 794px; /* A4 Ratio */
+            min-height: 1123px;
+            padding: 50px;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform-origin: top center;
+            flex-shrink: 0;
         }
 
-        .inv-header { display: flex; justify-content: space-between; margin-bottom: 50px; }
-        #logoPreview { max-height: 70px; margin-bottom: 15px; display: block; }
+        /* Invoice Internal Styles */
+        .inv-header { display: flex; justify-content: space-between; margin-bottom: 40px; }
         .biz-title { font-size: 1.8rem; font-weight: 900; color: var(--primary-dark); margin: 0; }
-        .biz-addr { font-size: 0.8rem; color: var(--text-light); white-space: pre-line; max-width: 300px; }
-        
-        .inv-type { text-align: right; }
-        .inv-type h1 { font-size: 4rem; margin: 0; opacity: 0.05; letter-spacing: 5px; }
-        .meta-text { font-size: 0.75rem; font-weight: 700; color: var(--text-light); margin: 5px 0; }
-        .meta-text span { color: var(--accent); }
-
-        .bill-to { margin-bottom: 40px; }
-        .bill-to label { color: var(--primary); letter-spacing: 1px; }
-        .bill-to h3 { font-size: 1.5rem; margin: 5px 0; color: var(--accent); }
-
         .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-        .invoice-table th { text-align: left; border-bottom: 2px solid #f1f5f9; padding: 12px 5px; font-size: 10px; text-transform: uppercase; color: var(--text-light); }
-        .invoice-table td { padding: 15px 5px; border-bottom: 1px solid #f8fafc; font-size: 0.9rem; }
-        .text-right { text-align: right; }
-        .text-center { text-align: center; }
+        .invoice-table th { text-align: left; border-bottom: 2px solid #f1f5f9; padding: 10px; font-size: 11px; color: var(--text-light); }
+        .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #f8fafc; font-size: 0.95rem; }
+        
+        .total-card { background: #f8fafc; padding: 20px; border-radius: 12px; width: 280px; margin-left: auto; }
+        .grand-total { font-size: 1.5rem; font-weight: 900; color: var(--primary-dark); border-top: 1px solid #e2e8f0; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; }
 
-        .total-section { display: flex; justify-content: flex-end; margin-top: 30px; }
-        .total-card { background: #f8fafc; padding: 25px; border-radius: 12px; width: 280px; }
-        .total-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem; color: var(--text-light); }
-        .grand-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 1.4rem; font-weight: 900; color: var(--primary-dark); }
+        .inv-footer { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--accent); color: white; padding: 10px 30px; display: flex; justify-content: space-between; font-size: 10px; }
 
-        .inv-footer { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--accent); color: white; padding: 12px 30px; display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 1px; }
-        .inv-footer a { color: #818cf8; text-decoration: none; }
-
-        /* --- Responsive Styles --- */
         @media (max-width: 1100px) {
             .app-container { grid-template-columns: 1fr; }
-            .preview-area { position: static; }
-        }
-
-        @media (max-width: 600px) {
-            .items-header { display: none; }
-            .item-row { grid-template-columns: 1fr; gap: 5px; background: #f8fafc; padding: 10px; border-radius: 8px; }
-            .btn-remove { justify-self: end; }
-            .invoice-paper { width: 100%; padding: 20px; }
+            .preview-area { height: auto; padding: 10px; position: relative; top: 0; }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    
     <div class="controls">
         <h2>Naira-Wise Pro+</h2>
         <p class="branding-p">Smart Invoicing by Emmy STACK01</p>
 
         <div class="form-group">
-            <label>Business Logo</label>
-            <input type="file" id="logoUpload" accept="image/*">
-        </div>
-
-        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div>
-                <label>Currency</label>
-                <select id="currency">
-                    <option value="₦">NGN (₦)</option>
-                    <option value="$">USD ($)</option>
-                </select>
-            </div>
-            <div>
-                <label>Business Name</label>
-                <input type="text" id="bizName" placeholder="e.g. Emmy STACK01">
+            <label>Logo & Branding</label>
+            <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
+                <input type="text" id="bizName" placeholder="Business Name">
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Business Address</label>
-            <textarea id="bizAddress" placeholder="Address, Email, Phone..."></textarea>
-        </div>
+        <div class="form-group"><label>Address</label><textarea id="bizAddress"></textarea></div>
+        <div class="form-group"><label>Bill To</label><input type="text" id="clientName"></div>
 
-        <div class="form-group">
-            <label>Client Name</label>
-            <input type="text" id="clientName" placeholder="Who is paying?">
-        </div>
-
-        <div class="items-header">
-            <label>Description</label>
-            <label class="text-center">Qty</label>
-            <label class="text-right">Price</label>
-            <span></span>
-        </div>
         <div id="itemsList"></div>
-        <button class="btn-add" onclick="addItem()">+ Add Item</button>
+        <button class="btn-add" onclick="addItem()">+ Add Line Item</button>
 
-        <div class="vat-box">
-            <label class="checkbox-wrap">
-                <input type="checkbox" id="vatToggle">
-                <span>Add 7.5% VAT</span>
+        <div style="margin-top:20px; padding:15px; background:#f1f5f9; border-radius:12px;">
+            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:10px;">
+                <input type="checkbox" id="vatToggle" onchange="update()"> <span>Add 7.5% VAT</span>
             </label>
-            <label>Bank Details</label>
-            <input type="text" id="bankInfo" placeholder="Bank Name - Account #">
+            <label>Bank Info</label>
+            <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
         </div>
 
-        <button class="btn-download" onclick="downloadPDF()">Export PDF</button>
+        <button onclick="downloadPDF()" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
     </div>
 
-    <div class="preview-area">
+    <div class="preview-area" id="previewContainer">
         <div id="invoice-capture" class="invoice-paper">
-            
             <div class="inv-header">
                 <div>
-                    <img id="logoPreview" style="display:none;">
+                    <img id="logoPreview" style="max-height:60px; display:none; margin-bottom:10px;">
                     <h2 id="prevBizName" class="biz-title">YOUR BUSINESS</h2>
-                    <p id="prevBizAddr" class="biz-addr"></p>
+                    <p id="prevBizAddr" style="font-size:12px; color:var(--text-light); white-space:pre-line;"></p>
                 </div>
-                <div class="inv-type">
-                    <h1>RECEIPT</h1>
-                    <p class="meta-text">NO: <span id="prevNo">#0000</span></p>
-                    <p class="meta-text">DATE: <span id="prevDate">-- -- --</span></p>
+                <div style="text-align:right">
+                    <h1 style="margin:0; font-size:3rem; opacity:0.1;">RECEIPT</h1>
+                    <p style="font-size:11px; font-weight:700;">NO: <span id="prevNo">#0000</span></p>
+                    <p style="font-size:11px; font-weight:700;">DATE: <span id="prevDate"></span></p>
                 </div>
             </div>
 
-            <div class="bill-to">
-                <label>BILL TO</label>
-                <h3 id="prevClientName">Client Name</h3>
+            <div style="margin-bottom:30px;">
+                <label style="color:var(--primary); font-size:10px; font-weight:800;">BILL TO</label>
+                <h3 id="prevClientName" style="margin:5px 0; font-size:1.4rem;">Client Name</h3>
             </div>
 
             <table class="invoice-table">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th class="text-center">Qty</th>
-                        <th class="text-right">Price</th>
-                        <th class="text-right">Total</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
                 <tbody id="prevTableBody"></tbody>
             </table>
 
-            <div class="total-section">
-                <div class="total-card">
-                    <div class="total-row">
-                        <span>Subtotal</span>
-                        <span><span class="curr">₦</span><span id="prevSubtotal">0</span></span>
-                    </div>
-                    <div class="total-row">
-                        <span>VAT (7.5%)</span>
-                        <span><span class="curr">₦</span><span id="prevVat">0</span></span>
-                    </div>
-                    <div class="grand-total">
-                        <span>Total</span>
-                        <span><span class="curr">₦</span><span id="prevTotal">0</span></span>
-                    </div>
+            <div class="total-card">
+                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                    <span>Subtotal</span><span><span class="curr">₦</span><span id="displaySub">0</span></span>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                    <span>VAT (7.5%)</span><span><span class="curr">₦</span><span id="displayVat">0</span></span>
+                </div>
+                <div class="grand-total">
+                    <span>Total</span><span><span class="curr">₦</span><span id="displayTotal">0</span></span>
                 </div>
             </div>
 
-            <div style="margin-top: 50px;">
-                <label style="color:var(--primary); font-size: 10px; font-weight: 800;">PAYMENT METHOD</label>
-                <p id="prevBank" style="margin: 5px 0; font-weight: 600;"></p>
-            </div>
+            <div style="margin-top:40px;"><label style="font-size:10px; font-weight:800; color:var(--primary);">PAYMENT METHOD</label><p id="prevBank" style="font-weight:700; margin:5px 0;"></p></div>
 
             <div class="inv-footer">
-                <span>POWERED BY EMMY STACK01</span>
-                <span>AUTOMATE YOUR FLOW: <a href="https://emmystack01.com">EMMYSTACK01.COM</a></span>
+                <span>EMMY STACK01 OFFICIAL RECEIPT</span>
+                <span>EMMYSTACK01.COM</span>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let items = [{ id: Date.now(), desc: 'Web Development', qty: 1, price: 0 }];
+    let items = [{ id: Date.now(), desc: '', qty: 1, price: 0 }];
+    
+    // Proxy objects for GSAP to animate numbers smoothly
+    let mathStore = { subtotal: 0, vat: 0, total: 0 };
 
     function init() {
-        document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random() * 90000 + 10000);
+        document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random()*90000+10000);
         document.getElementById('prevDate').innerText = new Date().toLocaleDateString('en-GB');
         
-        // Add listeners to all static inputs
-        ['bizName', 'bizAddress', 'clientName', 'bankInfo', 'currency', 'vatToggle'].forEach(id => {
+        ['bizName', 'bizAddress', 'clientName', 'currency'].forEach(id => {
             document.getElementById(id).addEventListener('input', update);
         });
 
+        window.addEventListener('resize', fitInvoice);
         renderItems();
         update();
+        fitInvoice();
+    }
+
+    // --- RESPONSIVE FIX ---
+    function fitInvoice() {
+        const container = document.getElementById('previewContainer');
+        const paper = document.getElementById('invoice-capture');
+        const scale = Math.min(container.offsetWidth / 840, container.offsetHeight / 1150);
+        paper.style.transform = `scale(${scale})`;
     }
 
     function addItem() {
-        // Before we add a new item, we MUST ensure the current inputs are saved to our 'items' array
-        syncStateWithInputs(); 
-        
+        // Save current input values to array so they don't reset
+        const rows = document.querySelectorAll('.item-row');
+        rows.forEach((row, i) => {
+            const ins = row.querySelectorAll('input');
+            items[i].desc = ins[0].value;
+            items[i].qty = parseFloat(ins[1].value) || 0;
+            items[i].price = parseFloat(ins[2].value) || 0;
+        });
+
         items.push({ id: Date.now(), desc: '', qty: 1, price: 0 });
         renderItems();
         update();
-    }
-    // Helper to grab current input values before a rerender
-    function syncStateWithInputs() {
-        const rows = document.querySelectorAll('.item-row');
-        rows.forEach((row, index) => {
-            const inputs = row.querySelectorAll('input');
-            if (items[index]) {
-                items[index].desc = inputs[0].value;
-                items[index].qty = parseFloat(inputs[1].value) || 0;
-                items[index].price = parseFloat(inputs[2].value) || 0;
-            }
-        });
     }
 
     function removeItem(id) {
@@ -305,140 +233,98 @@
         }
     }
 
-    function updateItemData(id, field, value) {
+    function renderItems() {
+        const list = document.getElementById('itemsList');
+        list.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item-row';
+            div.innerHTML = `
+                <input type="text" placeholder="Description" value="${item.desc}" oninput="updateItem(${item.id}, 'desc', this.value)">
+                <input type="number" value="${item.qty}" style="text-align:center" oninput="updateItem(${item.id}, 'qty', this.value)">
+                <input type="number" value="${item.price}" style="text-align:right" oninput="updateItem(${item.id}, 'price', this.value)">
+                <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>
+            `;
+            list.appendChild(div);
+        });
+    }
+
+    function updateItem(id, field, val) {
         const item = items.find(i => i.id === id);
-        if (field === 'desc') item[field] = value;
-        else item[field] = parseFloat(value) || 0;
+        item[field] = (field === 'desc') ? val : (parseFloat(val) || 0);
         update();
     }
 
-    function renderItems() {
-        const container = document.getElementById('itemsList');
-        container.innerHTML = '';
-        items.forEach(item => {
-            const row = document.createElement('div');
-            row.className = 'item-row';
-            row.innerHTML = `
-                <input type="text" placeholder="Item..." value="${item.desc}" oninput="updateItemData(${item.id}, 'desc', this.value)">
-                <input type="number" placeholder="1" value="${item.qty}" class="text-center" oninput="updateItemData(${item.id}, 'qty', this.value)">
-                <input type="number" placeholder="0" value="${item.price}" class="text-right" oninput="updateItemData(${item.id}, 'price', this.value)">
-                <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>
-            `;
-            container.appendChild(row);
-        });
-    }
-
     function update() {
-        let subtotal = 0;
-        const previewTable = document.getElementById('prevTableBody');
-        previewTable.innerHTML = '';
+        let sub = 0;
+        const tbody = document.getElementById('prevTableBody');
+        tbody.innerHTML = '';
 
         items.forEach(item => {
-            const rowTotal = item.qty * item.price;
-            subtotal += rowTotal;
-            previewTable.innerHTML += `
-                <tr>
-                    <td>${item.desc || '---'}</td>
-                    <td class="text-center">${item.qty}</td>
-                    <td class="text-right">${item.price.toLocaleString()}</td>
-                    <td class="text-right" style="font-weight:700;">${rowTotal.toLocaleString()}</td>
-                </tr>
-            `;
+            const lineTotal = item.qty * item.price;
+            sub += lineTotal;
+            tbody.innerHTML += `<tr>
+                <td>${item.desc || '---'}</td>
+                <td style="text-align:center">${item.qty}</td>
+                <td style="text-align:right">${item.price.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:700;">${lineTotal.toLocaleString()}</td>
+            </tr>`;
         });
 
-        const vatOn = document.getElementById('vatToggle').checked;
-        const vat = vatOn ? subtotal * 0.075 : 0;
-        const grandTotal = subtotal + vat;
-        const curr = document.getElementById('currency').value;
+        const hasVat = document.getElementById('vatToggle').checked;
+        const vVal = hasVat ? sub * 0.075 : 0;
+        const tVal = sub + vVal;
 
-        // --- FIXED GSAP LOGIC ---
-        // We animate a proxy object to avoid long decimal strings in the UI
-        let targetObj = { val: parseFloat(document.getElementById("prevTotal").innerText.replace(/,/g, '')) || 0 };
-
-        gsap.to("#prevSubtotal", { 
-            duration: 0.4, 
-            innerText: subtotal, 
-            snap: { innerText: 1 },
-            modifiers: {
-                innerText: function(val) { return parseFloat(val).toLocaleString(); }
+        // GSAP smooth math animation
+        gsap.to(mathStore, {
+            subtotal: sub,
+            vat: vVal,
+            total: tVal,
+            duration: 0.5,
+            onUpdate: () => {
+                document.getElementById('displaySub').innerText = Math.ceil(mathStore.subtotal).toLocaleString();
+                document.getElementById('displayVat').innerText = Math.ceil(mathStore.vat).toLocaleString();
+                document.getElementById('displayTotal').innerText = Math.ceil(mathStore.total).toLocaleString();
             }
         });
 
-        gsap.to("#prevVat", { 
-            duration: 0.4, 
-            innerText: vat, 
-            snap: { innerText: 1 },
-            modifiers: {
-                innerText: function(val) { return parseFloat(val).toLocaleString(); }
-            }
-        });
-
-        gsap.to("#prevTotal", { 
-            duration: 0.5, 
-            innerText: grandTotal,
-            snap: { innerText: 1 }, // This prevents the long decimals
-            modifiers: {
-                innerText: function(val) { 
-                    // Ensures we show ₦6,450 instead of 2407.97708
-                    return parseFloat(val).toLocaleString(); 
-                }
-            },
-            scale: 1.05, 
-            yoyo: true, 
-            repeat: 1 
-        });
-
-        // Update Text Fields
         document.getElementById('prevBizName').innerText = document.getElementById('bizName').value || 'YOUR BUSINESS';
         document.getElementById('prevBizAddr').innerText = document.getElementById('bizAddress').value;
         document.getElementById('prevClientName').innerText = document.getElementById('clientName').value || 'Client Name';
         document.getElementById('prevBank').innerText = document.getElementById('bankInfo').value;
-        
-        document.querySelectorAll('.curr').forEach(el => el.innerText = curr);
+        document.querySelectorAll('.curr').forEach(c => c.innerText = document.getElementById('currency').value);
     }
 
-    // Logo Logic
+    function downloadPDF() {
+        const element = document.getElementById('invoice-capture');
+        // Reset transform briefly for high-quality capture
+        const originalTransform = element.style.transform;
+        element.style.transform = 'none';
+
+        const opt = {
+            margin: 0,
+            filename: 'NairaWise_Receipt.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.style.transform = originalTransform;
+        });
+    }
+
     document.getElementById("logoUpload").addEventListener("change", function(e){
         const reader = new FileReader();
         reader.onload = () => {
             const img = document.getElementById("logoPreview");
-            img.src = reader.result;
-            img.style.display = "block";
+            img.src = reader.result; img.style.display = "block";
         };
         reader.readAsDataURL(e.target.files[0]);
     });
 
-    // --- FIX 2: Better PDF Export ---
-    function downloadPDF() {
-        const element = document.getElementById('invoice-capture');
-        
-        // We clone the element to a temporary div to avoid CSS scaling issues
-        const opt = {
-            margin: [0, 0],
-            filename: 'NairaWise_Receipt.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { 
-                scale: 2, 
-                useCORS: true, 
-                letterRendering: true,
-                scrollY: 0 
-            },
-            jsPDF: { 
-                unit: 'mm', 
-                format: 'a4', 
-                orientation: 'portrait' 
-            }
-        };
-
-        // New way to execute to ensure it captures the full height
-        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
-            // This ensures the PDF doesn't have huge blank spaces
-        }).save();
-    }
-
     window.onload = init;
 </script>
-
 </body>
-            </html>
-        
+    </html>
+                                                     
