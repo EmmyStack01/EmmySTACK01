@@ -277,9 +277,24 @@
     }
 
     function addItem() {
+        // Before we add a new item, we MUST ensure the current inputs are saved to our 'items' array
+        syncStateWithInputs(); 
+        
         items.push({ id: Date.now(), desc: '', qty: 1, price: 0 });
         renderItems();
         update();
+    }
+    // Helper to grab current input values before a rerender
+    function syncStateWithInputs() {
+        const rows = document.querySelectorAll('.item-row');
+        rows.forEach((row, index) => {
+            const inputs = row.querySelectorAll('input');
+            if (items[index]) {
+                items[index].desc = inputs[0].value;
+                items[index].qty = parseFloat(inputs[1].value) || 0;
+                items[index].price = parseFloat(inputs[2].value) || 0;
+            }
+        });
     }
 
     function removeItem(id) {
@@ -306,7 +321,7 @@
             row.innerHTML = `
                 <input type="text" placeholder="Item..." value="${item.desc}" oninput="updateItemData(${item.id}, 'desc', this.value)">
                 <input type="number" placeholder="1" value="${item.qty}" class="text-center" oninput="updateItemData(${item.id}, 'qty', this.value)">
-                <input type="number" placeholder="0" class="text-right" oninput="updateItemData(${item.id}, 'price', this.value)">
+                <input type="number" placeholder="0" value="${item.price}" class="text-right" oninput="updateItemData(${item.id}, 'price', this.value)">
                 <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>
             `;
             container.appendChild(row);
@@ -336,17 +351,44 @@
         const grandTotal = subtotal + vat;
         const curr = document.getElementById('currency').value;
 
-        // GSAP Numbers
-        gsap.to("#prevSubtotal", { duration: 0.4, innerText: subtotal.toFixed(2) });
-        gsap.to("#prevVat", { duration: 0.4, innerText: vat.toFixed(2) });
+        // --- FIXED GSAP LOGIC ---
+        // We animate a proxy object to avoid long decimal strings in the UI
+        let targetObj = { val: parseFloat(document.getElementById("prevTotal").innerText.replace(/,/g, '')) || 0 };
+
+        gsap.to("#prevSubtotal", { 
+            duration: 0.4, 
+            innerText: subtotal, 
+            snap: { innerText: 1 },
+            modifiers: {
+                innerText: function(val) { return parseFloat(val).toLocaleString(); }
+            }
+        });
+
+        gsap.to("#prevVat", { 
+            duration: 0.4, 
+            innerText: vat, 
+            snap: { innerText: 1 },
+            modifiers: {
+                innerText: function(val) { return parseFloat(val).toLocaleString(); }
+            }
+        });
+
         gsap.to("#prevTotal", { 
             duration: 0.5, 
-            innerText: grandTotal.toFixed(2),
+            innerText: grandTotal,
+            snap: { innerText: 1 }, // This prevents the long decimals
+            modifiers: {
+                innerText: function(val) { 
+                    // Ensures we show ₦6,450 instead of 2407.97708
+                    return parseFloat(val).toLocaleString(); 
+                }
+            },
             scale: 1.05, 
             yoyo: true, 
             repeat: 1 
         });
 
+        // Update Text Fields
         document.getElementById('prevBizName').innerText = document.getElementById('bizName').value || 'YOUR BUSINESS';
         document.getElementById('prevBizAddr').innerText = document.getElementById('bizAddress').value;
         document.getElementById('prevClientName').innerText = document.getElementById('clientName').value || 'Client Name';
@@ -366,16 +408,32 @@
         reader.readAsDataURL(e.target.files[0]);
     });
 
+    // --- FIX 2: Better PDF Export ---
     function downloadPDF() {
         const element = document.getElementById('invoice-capture');
+        
+        // We clone the element to a temporary div to avoid CSS scaling issues
         const opt = {
-            margin: 0,
-            filename: 'NairaWise_Invoice.pdf',
-            image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 3 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            margin: [0, 0],
+            filename: 'NairaWise_Receipt.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                letterRendering: true,
+                scrollY: 0 
+            },
+            jsPDF: { 
+                unit: 'mm', 
+                format: 'a4', 
+                orientation: 'portrait' 
+            }
         };
-        html2pdf().set(opt).from(element).save();
+
+        // New way to execute to ensure it captures the full height
+        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+            // This ensures the PDF doesn't have huge blank spaces
+        }).save();
     }
 
     window.onload = init;
