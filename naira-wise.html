@@ -7,189 +7,271 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; }
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --accent: #111827;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); }
+
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- Input Side (Control Panel) --- */
+        .controls {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            border-top: 6px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        h2 { margin-top: 0; color: var(--accent); font-weight: 800; }
+        .branding-p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 25px; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; margin-bottom: 5px; }
         
-        /* Invoice Paper remains A4 sized for the PDF generator */
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fdfdfd;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+        /* Item Table in Builder */
+        .items-header { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 10px; margin-top: 20px; }
+        .item-row { display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
+        
+        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
+        
+        .vat-box { background: #f1f5f9; padding: 15px; border-radius: 12px; margin-top: 25px; }
+        .checkbox-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
+        .checkbox-wrap input { width: auto; }
+
+        .btn-download {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 25px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        /* --- Preview Side (Invoice) --- */
+        .preview-area { position: sticky; top: 20px; overflow-x: auto; }
+        
         .invoice-paper {
             background: white;
-            min-height: 842px; 
-            width: 794px; /* Standard A4 px width at 96dpi */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            width: 794px; /* A4 width */
+            min-height: 1123px; /* A4 height */
+            padding: 60px;
+            margin: 0 auto;
             position: relative;
-            padding: 40px;
-            transform-origin: top left;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        /* Responsive Wrapper for the Preview */
-        .preview-scroll-container {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 20px;
+        .inv-header { display: flex; justify-content: space-between; margin-bottom: 50px; }
+        #logoPreview { max-height: 70px; margin-bottom: 15px; display: block; }
+        .biz-title { font-size: 1.8rem; font-weight: 900; color: var(--primary-dark); margin: 0; }
+        .biz-addr { font-size: 0.8rem; color: var(--text-light); white-space: pre-line; max-width: 300px; }
+        
+        .inv-type { text-align: right; }
+        .inv-type h1 { font-size: 4rem; margin: 0; opacity: 0.05; letter-spacing: 5px; }
+        .meta-text { font-size: 0.75rem; font-weight: 700; color: var(--text-light); margin: 5px 0; }
+        .meta-text span { color: var(--accent); }
+
+        .bill-to { margin-bottom: 40px; }
+        .bill-to label { color: var(--primary); letter-spacing: 1px; }
+        .bill-to h3 { font-size: 1.5rem; margin: 5px 0; color: var(--accent); }
+
+        .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .invoice-table th { text-align: left; border-bottom: 2px solid #f1f5f9; padding: 12px 5px; font-size: 10px; text-transform: uppercase; color: var(--text-light); }
+        .invoice-table td { padding: 15px 5px; border-bottom: 1px solid #f8fafc; font-size: 0.9rem; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .total-section { display: flex; justify-content: flex-end; margin-top: 30px; }
+        .total-card { background: #f8fafc; padding: 25px; border-radius: 12px; width: 280px; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem; color: var(--text-light); }
+        .grand-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 1.4rem; font-weight: 900; color: var(--primary-dark); }
+
+        .inv-footer { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--accent); color: white; padding: 12px 30px; display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 1px; }
+        .inv-footer a { color: #818cf8; text-decoration: none; }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 1100px) {
+            .app-container { grid-template-columns: 1fr; }
+            .preview-area { position: static; }
         }
 
-        .item-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 40px;
-            gap: 8px;
-            align-items: center;
-        }
-
-        @media (max-width: 640px) {
-            .item-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .item-grid input:first-child { grid-column: span 2; }
-            .item-grid button { grid-column: span 2; background: #fee2e2; border-radius: 5px; }
+        @media (max-width: 600px) {
+            .items-header { display: none; }
+            .item-row { grid-template-columns: 1fr; gap: 5px; background: #f8fafc; padding: 10px; border-radius: 8px; }
+            .btn-remove { justify-self: end; }
+            .invoice-paper { width: 100%; padding: 20px; }
         }
     </style>
 </head>
-<body class="p-4 md:p-8 lg:p-12">
+<body>
 
-<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+<div class="app-container">
     
-    <div class="space-y-6 order-2 lg:order-1">
-        <div class="bg-white p-5 md:p-8 rounded-2xl shadow-sm border-t-8 border-indigo-600">
-            <h2 class="text-2xl font-black text-gray-800 mb-2">Naira-Wise Pro+</h2>
-            <p class="text-sm text-gray-500 mb-6 font-medium">Professional invoices by Emmy STACK01</p>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Business Logo</label>
-                    <input type="file" id="logoUpload" class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 mt-1">
-                </div>
-                <div>
-                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Currency</label>
-                    <select id="currency" class="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <option value="₦">NGN (₦)</option>
-                        <option value="$">USD ($)</option>
-                    </select>
-                </div>
-            </div>
+    <div class="controls">
+        <h2>Naira-Wise Pro+</h2>
+        <p class="branding-p">Smart Invoicing by Emmy STACK01</p>
 
-            <div class="space-y-3 mb-6">
-                <input id="bizName" type="text" placeholder="Your Business Name" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-                <textarea id="bizAddress" placeholder="Address & Contact Details" class="w-full p-3 border border-gray-200 rounded-xl h-24 focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
-                <input id="clientName" type="text" placeholder="Client / Company Name" class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <h3 class="font-bold text-gray-700 border-b pb-2 mb-4 flex justify-between items-center">
-                <span>Line Items</span>
-                <span class="text-[10px] text-gray-400 uppercase">Qty / Price</span>
-            </h3>
-            <div id="itemsContainer" class="space-y-4"></div>
-            
-            <button onclick="addItem()" class="mt-4 flex items-center text-indigo-600 font-bold text-sm bg-indigo-50 px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
-                <span class="mr-2">+</span> Add Item
-            </button>
-
-            <div class="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center space-x-3 cursor-pointer group">
-                        <input type="checkbox" id="vatToggle" class="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                        <span class="text-sm font-semibold text-gray-700 group-hover:text-indigo-600 transition">Include 7.5% VAT</span>
-                    </label>
-                </div>
-                <input id="bankInfo" type="text" placeholder="Bank Name - Account Number - Name" class="w-full p-3 border border-gray-200 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-            </div>
-
-            <button onclick="downloadPDF()" class="w-full mt-8 bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 hover:bg-indigo-700 active:scale-[0.98] transition-all">
-                Download PDF
-            </button>
+        <div class="form-group">
+            <label>Business Logo</label>
+            <input type="file" id="logoUpload" accept="image/*">
         </div>
+
+        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+                <label>Currency</label>
+                <select id="currency">
+                    <option value="₦">NGN (₦)</option>
+                    <option value="$">USD ($)</option>
+                </select>
+            </div>
+            <div>
+                <label>Business Name</label>
+                <input type="text" id="bizName" placeholder="e.g. Emmy STACK01">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Business Address</label>
+            <textarea id="bizAddress" placeholder="Address, Email, Phone..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Client Name</label>
+            <input type="text" id="clientName" placeholder="Who is paying?">
+        </div>
+
+        <div class="items-header">
+            <label>Description</label>
+            <label class="text-center">Qty</label>
+            <label class="text-right">Price</label>
+            <span></span>
+        </div>
+        <div id="itemsList"></div>
+        <button class="btn-add" onclick="addItem()">+ Add Item</button>
+
+        <div class="vat-box">
+            <label class="checkbox-wrap">
+                <input type="checkbox" id="vatToggle">
+                <span>Add 7.5% VAT</span>
+            </label>
+            <label>Bank Details</label>
+            <input type="text" id="bankInfo" placeholder="Bank Name - Account #">
+        </div>
+
+        <button class="btn-download" onclick="downloadPDF()">Export PDF</button>
     </div>
 
-    <div class="order-1 lg:order-2">
-        <p class="text-xs font-bold text-gray-400 uppercase mb-3 text-center lg:text-left">Live Preview (A4 View)</p>
-        <div class="preview-scroll-container">
-            <div id="invoice-capture" class="invoice-paper">
-                
-                <div class="flex justify-between items-start mb-12">
-                    <div>
-                        <img id="logoPreview" src="" class="max-h-20 mb-4 hidden">
-                        <h1 id="prevBiz" class="text-3xl font-black text-indigo-900 tracking-tighter uppercase">YOUR BUSINESS</h1>
-                        <p id="prevAddr" class="text-xs text-gray-500 max-w-[280px] leading-relaxed whitespace-pre-line"></p>
-                    </div>
-                    <div class="text-right">
-                        <h2 class="text-6xl font-black text-gray-50 leading-none mb-4">RECEIPT</h2>
-                        <div class="text-xs font-bold text-gray-500 space-y-1">
-                            <p>INVOICE NO: <span id="prevNo" class="text-gray-900"></span></p>
-                            <p>DATE: <span id="prevDate" class="text-gray-900"></span></p>
-                        </div>
-                    </div>
+    <div class="preview-area">
+        <div id="invoice-capture" class="invoice-paper">
+            
+            <div class="inv-header">
+                <div>
+                    <img id="logoPreview" style="display:none;">
+                    <h2 id="prevBizName" class="biz-title">YOUR BUSINESS</h2>
+                    <p id="prevBizAddr" class="biz-addr"></p>
                 </div>
-
-                <div class="mb-12">
-                    <p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-2">Bill To</p>
-                    <h3 id="prevClient" class="text-2xl font-bold text-gray-800">Client Name</h3>
+                <div class="inv-type">
+                    <h1>RECEIPT</h1>
+                    <p class="meta-text">NO: <span id="prevNo">#0000</span></p>
+                    <p class="meta-text">DATE: <span id="prevDate">-- -- --</span></p>
                 </div>
+            </div>
 
-                <table class="w-full mb-12">
-                    <thead>
-                        <tr class="border-b-2 border-gray-100 text-left">
-                            <th class="pb-4 text-[10px] font-black text-gray-400 uppercase">Service Description</th>
-                            <th class="pb-4 text-[10px] font-black text-gray-400 uppercase text-center">Qty</th>
-                            <th class="pb-4 text-[10px] font-black text-gray-400 uppercase text-right">Price</th>
-                            <th class="pb-4 text-[10px] font-black text-gray-400 uppercase text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewTableBody"></tbody>
-                </table>
+            <div class="bill-to">
+                <label>BILL TO</label>
+                <h3 id="prevClientName">Client Name</h3>
+            </div>
 
-                <div class="flex justify-end">
-                    <div class="w-72 space-y-3 bg-gray-50 p-6 rounded-2xl">
-                        <div class="flex justify-between text-xs font-medium text-gray-500">
-                            <span>Subtotal</span>
-                            <span><span class="curr">₦</span><span id="prevSubtotal">0</span></span>
-                        </div>
-                        <div class="flex justify-between text-xs font-medium text-gray-500">
-                            <span>VAT (7.5%)</span>
-                            <span><span class="curr">₦</span><span id="prevVat">0</span></span>
-                        </div>
-                        <div class="flex justify-between text-2xl font-black text-indigo-900 border-t border-gray-200 pt-4">
-                            <span>Total</span>
-                            <span><span class="curr">₦</span><span id="prevTotal">0</span></span>
-                        </div>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th class="text-center">Qty</th>
+                        <th class="text-right">Price</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="prevTableBody"></tbody>
+            </table>
+
+            <div class="total-section">
+                <div class="total-card">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span><span class="curr">₦</span><span id="prevSubtotal">0</span></span>
+                    </div>
+                    <div class="total-row">
+                        <span>VAT (7.5%)</span>
+                        <span><span class="curr">₦</span><span id="prevVat">0</span></span>
+                    </div>
+                    <div class="grand-total">
+                        <span>Total</span>
+                        <span><span class="curr">₦</span><span id="prevTotal">0</span></span>
                     </div>
                 </div>
+            </div>
 
-                <div class="mt-24 pt-10 border-t border-gray-100">
-                    <div class="flex justify-between items-end">
-                        <div>
-                            <p class="text-[10px] font-black text-gray-400 uppercase mb-2">Payment Details</p>
-                            <p id="prevBank" class="text-sm font-bold text-gray-700 italic"></p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-gray-400">Authorized Signature</p>
-                            <div class="h-1 w-32 bg-gray-100 mt-4 ml-auto"></div>
-                        </div>
-                    </div>
-                </div>
+            <div style="margin-top: 50px;">
+                <label style="color:var(--primary); font-size: 10px; font-weight: 800;">PAYMENT METHOD</label>
+                <p id="prevBank" style="margin: 5px 0; font-weight: 600;"></p>
+            </div>
 
-                <div class="absolute bottom-0 left-0 w-full bg-slate-900 text-white py-3 px-8 flex justify-between items-center">
-                    <span class="text-[9px] font-bold tracking-[0.2em] uppercase opacity-60">Powered by Emmy STACK01</span>
-                    <span class="text-[9px] font-medium opacity-80">Build your automated portal: emmystack01.com</span>
-                </div>
+            <div class="inv-footer">
+                <span>POWERED BY EMMY STACK01</span>
+                <span>AUTOMATE YOUR FLOW: <a href="https://emmystack01.com">EMMYSTACK01.COM</a></span>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let items = [{ id: Date.now(), desc: 'Development Services', qty: 1, price: 0 }];
+    let items = [{ id: Date.now(), desc: 'Web Development', qty: 1, price: 0 }];
 
     function init() {
-        document.getElementById('prevNo').innerText = '#' + Math.floor(10000 + Math.random() * 90000);
-        document.getElementById('prevDate').innerText = new Date().toLocaleDateString('en-NG', {day:'numeric', month:'long', year:'numeric'});
+        document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random() * 90000 + 10000);
+        document.getElementById('prevDate').innerText = new Date().toLocaleDateString('en-GB');
         
-        const inputs = ['bizName', 'bizAddress', 'clientName', 'bankInfo', 'currency', 'vatToggle'];
-        inputs.forEach(id => document.getElementById(id).addEventListener('input', update));
-        
+        // Add listeners to all static inputs
+        ['bizName', 'bizAddress', 'clientName', 'bankInfo', 'currency', 'vatToggle'].forEach(id => {
+            document.getElementById(id).addEventListener('input', update);
+        });
+
         renderItems();
         update();
     }
@@ -208,76 +290,78 @@
         }
     }
 
-    function updateItemData(id, field, val) {
+    function updateItemData(id, field, value) {
         const item = items.find(i => i.id === id);
-        if (field === 'desc') item[field] = val;
-        else item[field] = parseFloat(val) || 0;
+        if (field === 'desc') item[field] = value;
+        else item[field] = parseFloat(value) || 0;
         update();
     }
 
     function renderItems() {
-        const container = document.getElementById('itemsContainer');
+        const container = document.getElementById('itemsList');
         container.innerHTML = '';
         items.forEach(item => {
-            container.innerHTML += `
-                <div class="item-grid group">
-                    <input type="text" placeholder="Description" value="${item.desc}" oninput="updateItemData(${item.id}, 'desc', this.value)" class="p-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <input type="number" placeholder="Qty" value="${item.qty}" oninput="updateItemData(${item.id}, 'qty', this.value)" class="p-3 border border-gray-200 rounded-xl text-sm text-center focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <input type="number" placeholder="Price" value="${item.price}" oninput="updateItemData(${item.id}, 'price', this.value)" class="p-3 border border-gray-200 rounded-xl text-sm text-right focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <button onclick="removeItem(${item.id})" class="text-red-300 hover:text-red-600 font-bold transition-colors">✕</button>
-                </div>
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Item..." value="${item.desc}" oninput="updateItemData(${item.id}, 'desc', this.value)">
+                <input type="number" placeholder="1" value="${item.qty}" class="text-center" oninput="updateItemData(${item.id}, 'qty', this.value)">
+                <input type="number" placeholder="0" class="text-right" oninput="updateItemData(${item.id}, 'price', this.value)">
+                <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>
             `;
+            container.appendChild(row);
         });
     }
 
     function update() {
         let subtotal = 0;
-        const tableBody = document.getElementById('previewTableBody');
-        tableBody.innerHTML = '';
+        const previewTable = document.getElementById('prevTableBody');
+        previewTable.innerHTML = '';
 
         items.forEach(item => {
             const rowTotal = item.qty * item.price;
             subtotal += rowTotal;
-            tableBody.innerHTML += `
-                <tr class="border-b border-gray-50">
-                    <td class="py-5 text-sm font-semibold text-gray-700">${item.desc || '---'}</td>
-                    <td class="py-5 text-sm text-center text-gray-500">${item.qty}</td>
-                    <td class="py-5 text-sm text-right text-gray-500">${item.price.toLocaleString()}</td>
-                    <td class="py-5 text-sm text-right font-bold text-gray-900">${rowTotal.toLocaleString()}</td>
+            previewTable.innerHTML += `
+                <tr>
+                    <td>${item.desc || '---'}</td>
+                    <td class="text-center">${item.qty}</td>
+                    <td class="text-right">${item.price.toLocaleString()}</td>
+                    <td class="text-right" style="font-weight:700;">${rowTotal.toLocaleString()}</td>
                 </tr>
             `;
         });
 
-        const vatActive = document.getElementById('vatToggle').checked;
-        const vat = vatActive ? subtotal * 0.075 : 0;
-        const total = subtotal + vat;
+        const vatOn = document.getElementById('vatToggle').checked;
+        const vat = vatOn ? subtotal * 0.075 : 0;
+        const grandTotal = subtotal + vat;
         const curr = document.getElementById('currency').value;
 
-        gsap.to("#prevSubtotal", { duration: 0.4, innerText: subtotal.toFixed(2), snap: { innerText: 0.01 } });
-        gsap.to("#prevVat", { duration: 0.4, innerText: vat.toFixed(2), snap: { innerText: 0.01 } });
+        // GSAP Numbers
+        gsap.to("#prevSubtotal", { duration: 0.4, innerText: subtotal.toFixed(2) });
+        gsap.to("#prevVat", { duration: 0.4, innerText: vat.toFixed(2) });
         gsap.to("#prevTotal", { 
             duration: 0.5, 
-            innerText: total.toFixed(2), 
-            snap: { innerText: 0.01 },
+            innerText: grandTotal.toFixed(2),
             scale: 1.05, 
             yoyo: true, 
             repeat: 1 
         });
 
-        document.getElementById('prevBiz').innerText = document.getElementById('bizName').value || 'YOUR BUSINESS';
-        document.getElementById('prevAddr').innerText = document.getElementById('bizAddress').value;
-        document.getElementById('prevClient').innerText = document.getElementById('clientName').value || 'Client Name';
-        document.getElementById('prevBank').innerText = document.getElementById('bankInfo').value || 'Please enter bank details...';
+        document.getElementById('prevBizName').innerText = document.getElementById('bizName').value || 'YOUR BUSINESS';
+        document.getElementById('prevBizAddr').innerText = document.getElementById('bizAddress').value;
+        document.getElementById('prevClientName').innerText = document.getElementById('clientName').value || 'Client Name';
+        document.getElementById('prevBank').innerText = document.getElementById('bankInfo').value;
         
         document.querySelectorAll('.curr').forEach(el => el.innerText = curr);
     }
 
+    // Logo Logic
     document.getElementById("logoUpload").addEventListener("change", function(e){
         const reader = new FileReader();
-        const preview = document.getElementById("logoPreview");
         reader.onload = () => {
-            preview.src = reader.result;
-            preview.classList.remove('hidden');
+            const img = document.getElementById("logoPreview");
+            img.src = reader.result;
+            img.style.display = "block";
         };
         reader.readAsDataURL(e.target.files[0]);
     });
@@ -286,9 +370,9 @@
         const element = document.getElementById('invoice-capture');
         const opt = {
             margin: 0,
-            filename: `NairaWise_Receipt.pdf`,
+            filename: 'NairaWise_Invoice.pdf',
             image: { type: 'jpeg', quality: 1 },
-            html2canvas: { scale: 3, useCORS: true },
+            html2canvas: { scale: 3 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().set(opt).from(element).save();
@@ -296,6 +380,7 @@
 
     window.onload = init;
 </script>
+
 </body>
-                        </html>
-                                                                                                                   
+            </html>
+        
