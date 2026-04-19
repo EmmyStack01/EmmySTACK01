@@ -24,11 +24,11 @@
         body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); overflow-x: hidden; }
 
         .app-container {
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 450px 1fr;
+            gap: 30px;
         }
 
         .controls {
@@ -38,6 +38,8 @@
             border-top: 6px solid var(--primary);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             height: fit-content;
+            overflow-y: auto;
+            max-height: 95vh;
         }
 
         h2 { margin-top: 0; color: var(--accent); font-weight: 800; }
@@ -56,32 +58,39 @@
         }
 
         .item-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; margin-bottom: 10px; }
-        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; }
+        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 15px; }
         .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
 
-        /* --- SCREEN RESPONSIVE PREVIEW --- */
+        /* --- PREVIEW AREA & PAN/ZOOM --- */
         .preview-area { 
             position: sticky; 
             top: 20px; 
             display: flex; 
-            justify-content: center;
-            align-items: flex-start;
-            background: #e2e8f0;
-            padding: 20px;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;     /* Centers vertically */
+            background: #cbd5e1; 
+            padding: 0;
             border-radius: 16px;
-            overflow: hidden;
+            overflow: hidden; 
             height: 90vh;
+            cursor: grab;
+            border: 2px solid var(--border);
+            position: relative;
         }
-        
+
+        .preview-area:active { cursor: grabbing; }
+
         .invoice-paper {
             background: white;
-            width: 794px; /* A4 Ratio */
+            width: 794px; /* Strict A4 Width */
             min-height: 1123px;
             padding: 50px;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transform-origin: top center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            transform-origin: center center; 
             flex-shrink: 0;
+            user-select: none;
+            transition: transform 0.1s ease-out;
         }
 
         /* Invoice Internal Styles */
@@ -94,11 +103,54 @@
         .total-card { background: #f8fafc; padding: 20px; border-radius: 12px; width: 280px; margin-left: auto; }
         .grand-total { font-size: 1.5rem; font-weight: 900; color: var(--primary-dark); border-top: 1px solid #e2e8f0; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; }
 
-        .inv-footer { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--accent); color: white; padding: 10px 30px; display: flex; justify-content: space-between; font-size: 10px; }
+
+        /* Update your existing .inv-footer class */
+        .inv-footer { 
+            height: 40px;
+            margin-top: auto; /* Pushes to bottom if inside a flex container */
+            background: var(--accent); 
+            color: white; 
+            padding: 10px 30px; 
+            display: flex; 
+            justify-content: center; 
+            font-size: 10px;
+            width: 100%;
+            position: absolute; bottom: 0; left: 0;
+        }
+
+        .emmystack01 a{
+            color: white;
+        }
+
+        /* Ensure the invoice paper is a flex container to support the footer logic */
+        .invoice-paper {
+            display: flex;
+            flex-direction: column;
+            /* keep your other existing styles */
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+        .zoom-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
 
         @media (max-width: 1100px) {
             .app-container { grid-template-columns: 1fr; }
-            .preview-area { height: auto; padding: 10px; position: relative; top: 0; }
+            .preview-area { height: 70vh; }
         }
     </style>
 </head>
@@ -118,8 +170,8 @@
             </div>
         </div>
 
-        <div class="form-group"><label>Address</label><textarea id="bizAddress"></textarea></div>
-        <div class="form-group"><label>Bill To</label><input type="text" id="clientName"></div>
+        <div class="form-group"><label>Address</label><textarea id="bizAddress" placeholder="Your Business Address"></textarea></div>
+        <div class="form-group"><label>Bill To</label><input type="text" id="clientName" placeholder="Client Name"></div>
 
         <div id="itemsList"></div>
         <button class="btn-add" onclick="addItem()">+ Add Line Item</button>
@@ -128,7 +180,7 @@
             <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:10px;">
                 <input type="checkbox" id="vatToggle" onchange="update()"> <span>Add 7.5% VAT</span>
             </label>
-            <label>Bank Info</label>
+            <label>Bank Info / Payment Method</label>
             <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
         </div>
 
@@ -136,6 +188,12 @@
     </div>
 
     <div class="preview-area" id="previewContainer">
+        <div class="zoom-controls">
+            <button class="zoom-btn" onclick="zoom(0.1)">+</button>
+            <button class="zoom-btn" onclick="zoom(-0.1)">-</button>
+            <button class="zoom-btn" onclick="resetView()">Reset</button>
+        </div>
+
         <div id="invoice-capture" class="invoice-paper">
             <div class="inv-header">
                 <div>
@@ -175,8 +233,7 @@
             <div style="margin-top:40px;"><label style="font-size:10px; font-weight:800; color:var(--primary);">PAYMENT METHOD</label><p id="prevBank" style="font-weight:700; margin:5px 0;"></p></div>
 
             <div class="inv-footer">
-                <span>EMMY STACK01 OFFICIAL RECEIPT</span>
-                <span>EMMYSTACK01.COM</span>
+                <span class="emmystack01">POWERED BY <a href="https://emmystack01.com/">EMMYSTACK01.COM</a></span>
             </div>
         </div>
     </div>
@@ -184,9 +241,14 @@
 
 <script>
     let items = [{ id: Date.now(), desc: '', qty: 1, price: 0 }];
-    
-    // Proxy objects for GSAP to animate numbers smoothly
     let mathStore = { subtotal: 0, vat: 0, total: 0 };
+
+    // PAN & ZOOM STATE
+    let scale = 0.55; 
+    let posX = 0;
+    let posY = 0;
+    let isDragging = false;
+    let startX, startY;
 
     function init() {
         document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random()*90000+10000);
@@ -196,22 +258,56 @@
             document.getElementById(id).addEventListener('input', update);
         });
 
-        window.addEventListener('resize', fitInvoice);
+        setupPanAndZoom();
         renderItems();
         update();
-        fitInvoice();
+        applyTransform();
     }
 
-    // --- RESPONSIVE FIX ---
-    function fitInvoice() {
-        const container = document.getElementById('previewContainer');
+    function setupPanAndZoom() {
+        const area = document.getElementById('previewContainer');
+
+        area.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.zoom-controls')) return;
+            isDragging = true;
+            startX = e.clientX - posX;
+            startY = e.clientY - posY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            posX = e.clientX - startX;
+            posY = e.clientY - startY;
+            applyTransform();
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        area.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.05 : 0.05;
+            zoom(delta);
+        }, { passive: false });
+    }
+
+    function zoom(delta) {
+        scale = Math.min(Math.max(0.1, scale + delta), 2);
+        applyTransform();
+    }
+
+    function resetView() {
+        scale = 0.55;
+        posX = 0;
+        posY = 0;
+        applyTransform();
+    }
+
+    function applyTransform() {
         const paper = document.getElementById('invoice-capture');
-        const scale = Math.min(container.offsetWidth / 840, container.offsetHeight / 1150);
-        paper.style.transform = `scale(${scale})`;
+        paper.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
     }
 
     function addItem() {
-        // Save current input values to array so they don't reset
         const rows = document.querySelectorAll('.item-row');
         rows.forEach((row, i) => {
             const ins = row.querySelectorAll('input');
@@ -275,12 +371,11 @@
         const vVal = hasVat ? sub * 0.075 : 0;
         const tVal = sub + vVal;
 
-        // GSAP smooth math animation
         gsap.to(mathStore, {
             subtotal: sub,
             vat: vVal,
             total: tVal,
-            duration: 0.5,
+            duration: 0.4,
             onUpdate: () => {
                 document.getElementById('displaySub').innerText = Math.ceil(mathStore.subtotal).toLocaleString();
                 document.getElementById('displayVat').innerText = Math.ceil(mathStore.vat).toLocaleString();
@@ -295,36 +390,71 @@
         document.querySelectorAll('.curr').forEach(c => c.innerText = document.getElementById('currency').value);
     }
 
-    function downloadPDF() {
+    async function downloadPDF() {
         const element = document.getElementById('invoice-capture');
-        // Reset transform briefly for high-quality capture
+        const originalParent = element.parentElement;
         const originalTransform = element.style.transform;
+
+        // 1. Create a hidden capture wrapper to lock dimensions
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.left = '-9999px';
+        wrapper.style.top = '0';
+        wrapper.style.width = '794px';  // Exact A4 px
+        wrapper.style.height = '1123px'; // Exact A4 px
+        wrapper.style.backgroundColor = '#ffffff';
+        document.body.appendChild(wrapper);
+
+        // 2. Move element into wrapper and reset styles
+        wrapper.appendChild(element);
         element.style.transform = 'none';
+        element.style.margin = '0';
+        element.style.boxShadow = 'none'; // Remove shadow to keep PDF clean
 
         const opt = {
             margin: 0,
-            filename: 'NairaWise_Receipt.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+            filename: 'Naira-Wise_Invoice.pdf',
+            image: { type: 'jpeg', quality: 1.0 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true, 
+                logging: false,
+                width: 794,
+                height: 1123,
+                windowWidth: 794,
+                windowHeight: 1123
+            },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
+        try {
+            // Wait for rendering
+            await new Promise(resolve => setTimeout(resolve, 150));
+            await html2pdf().set(opt).from(wrapper).save();
+        } catch (error) {
+            console.error("PDF Generation Error:", error);
+        } finally {
+            // 3. Restore to the UI
+            originalParent.appendChild(element);
             element.style.transform = originalTransform;
-        });
+            element.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)'; // Restore shadow
+            document.body.removeChild(wrapper);
+        }
     }
 
     document.getElementById("logoUpload").addEventListener("change", function(e){
-        const reader = new FileReader();
-        reader.onload = () => {
-            const img = document.getElementById("logoPreview");
-            img.src = reader.result; img.style.display = "block";
-        };
-        reader.readAsDataURL(e.target.files[0]);
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = document.getElementById("logoPreview");
+                img.src = reader.result; 
+                img.style.display = "block";
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
     });
 
     window.onload = init;
 </script>
 </body>
-    </html>
-                                                     
+</html>
