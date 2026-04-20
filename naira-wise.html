@@ -11,8 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
 
     <meta name="title" content="Free Invoice Generator for Nigerian Freelancers | Naira-Wise by Emmy STACK01">
-    <meta name="description" content="Generate professional PDF invoices and receipts in NGN & USD. Designed for Nigerian freelancers and small businesses. Fast, secure, and powered by Emmy STACK01.">
-    <meta name="keywords" content="invoice generator Nigeria, free receipt maker, Naira invoice tool, Emmy STACK01, freelancer billing, NGN PDF receipt, digital business cards Nigeria">
+    <meta name="description" content="Generate professional PDF invoices in NGN & USD. Designed for Nigerian freelancers and small businesses. Fast, secure, and powered by Emmy STACK01.">
+    <meta name="keywords" content="invoice generator Nigeria, free invoice maker, Naira invoice tool, Emmy STACK01, freelancer billing, NGN PDF invoice, digital business cards Nigeria">
     <link rel="canonical" href="https://emmystack01.com/naira-wise">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Emmy STACK01">
@@ -27,7 +27,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://emmystack01.com/naira-wise">
     <meta property="twitter:title" content="Naira-Wise: Professional Invoices by Emmy STACK01">
-    <meta property="twitter:description" content="Generate high-performance PDF receipts for your clients in seconds. Optimized for NGN and USD billing.">
+    <meta property="twitter:description" content="Generate high-performance PDF Invoices for your clients in seconds. Optimized for NGN and USD billing.">
     <meta property="twitter:image" content="https://emmystack01.com/asset/naira-wise-og.jpg">
 
     <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
@@ -196,7 +196,7 @@
         }
        
 
-
+        
         .item-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; margin-bottom: 10px; }
         .btn-add { background: var(--bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 15px; }
         .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
@@ -356,6 +356,51 @@
             border-radius: 8px;
         }
 
+        /* Container for the checkbox */
+        .vat-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Hide the default checkbox */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Checkbox hover effect */
+        input[type="checkbox"]:hover {
+            border-color: var(--primary);
+        }
+
+        /* Checked state */
+        input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* The checkmark (✓) */
+        input[type="checkbox"]:checked::after {
+            content: '\eb7a'; /* Remixicon checkmark code */
+            font-family: 'remixicon';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+        }
+
         .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
         .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
         .ownership { text-align: center; margin-bottom: 10px; }
@@ -402,7 +447,7 @@
             </div>
         </nav>
         <h1 class="hero-title">
-            Fast, Professional Invoices in
+            Naira-Wise: Fast, Professional Invoices in
             <span class="highlight">NGN & USD</span>
         </h1>    
         <main class="app-container">
@@ -414,9 +459,16 @@
                     <label>Logo & Branding</label>
                     <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
-                        <input type="text" id="bizName" placeholder="Business Name">
+                        <div>
+                            <label>Currency</label>
+                            <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
+                        </div>
+                        <div class="field-group">
+                            <label>Due Date</label>
+                            <input type="date" id="dueDate" oninput="update()">
+                        </div>
                     </div>
+                    <input style="margin-top: 5px;" type="text" id="bizName" placeholder="Business Name">
                 </div>
 
                 <div class="form-group"><label>Address</label><textarea id="bizAddress" placeholder="Your Business Address"></textarea></div>
@@ -451,9 +503,10 @@
                             <p id="prevBizAddr" style="font-size:12px; color:var(--text-light); white-space:pre-line;"></p>
                         </div>
                         <div style="text-align:right">
-                            <h1 style="margin:0; font-size:3rem; opacity:0.1;">RECEIPT</h1>
+                            <h1 style="margin:0; font-size:3rem; opacity:0.1;">INVOICE</h1>
                             <p style="font-size:11px; font-weight:700;">NO: <span id="prevNo">#0000</span></p>
-                            <p style="font-size:11px; font-weight:700;">DATE: <span id="prevDate"></span></p>
+                            <p style="font-size:11px; font-weight:700;">ISSUE DATE: <span id="prevDate"></span></p>
+                            <p style="font-size:11px; font-weight:700;">DUE DATE: <span id="prevDueDate"></span></p>
                         </div>
                     </div>
 
@@ -512,6 +565,19 @@
     let posY = 0;
     let isDragging = false;
     let startX, startY;
+
+    // Function to set default date to Today
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('dueDate');
+        
+        if (dateInput) {
+            dateInput.value = today;
+        }
+    }
+
+    // Call this when the script runs
+    setDefaultDates();
 
     function init() {
         document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random()*90000+10000);
@@ -595,13 +661,28 @@
     function renderItems() {
         const list = document.getElementById('itemsList');
         list.innerHTML = '';
+        
         items.forEach(item => {
             const div = document.createElement('div');
             div.className = 'item-row';
+            
+            // Updated innerHTML with your new labels and structure
             div.innerHTML = `
-                <input type="text" placeholder="Description" value="${item.desc}" oninput="updateItem(${item.id}, 'desc', this.value)">
-                <input type="number" value="${item.qty}" style="text-align:center" oninput="updateItem(${item.id}, 'qty', this.value)">
-                <input type="number" value="${item.price}" style="text-align:right" oninput="updateItem(${item.id}, 'price', this.value)">
+                <div class="field-group desc">
+                    <label>Description</label>
+                    <input type="text" placeholder="Description" value="${item.desc}" 
+                        oninput="updateItem(${item.id}, 'desc', this.value)">
+                </div>
+                <div class="field-group qty">
+                    <label>Qty</label>
+                    <input type="number" value="${item.qty}" style="text-align:center" 
+                        oninput="updateItem(${item.id}, 'qty', this.value)">
+                </div>
+                <div class="field-group price">
+                    <label>Amount</label>
+                    <input type="number" value="${item.price}" style="text-align:right" 
+                        oninput="updateItem(${item.id}, 'price', this.value)">
+                </div>
                 <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>
             `;
             list.appendChild(div);
@@ -629,6 +710,17 @@
                 <td style="text-align:right; font-weight:700;">${lineTotal.toLocaleString()}</td>
             </tr>`;
         });
+
+        // Force the document title to INVOICE
+        const docTitle = document.getElementById('prevDocTitle');
+        if (docTitle) docTitle.innerText = "INVOICE";
+
+        const dateVal = document.getElementById('dueDate').value;
+        // Format the date for the invoice (e.g., DD/MM/YYYY)
+        if (dateVal) {
+            const [y, m, d] = dateVal.split('-');
+            document.getElementById('prevDueDate').innerText = `${d}/${m}/${y}`;
+        }
 
         const hasVat = document.getElementById('vatToggle').checked;
         const vVal = hasVat ? sub * 0.075 : 0;
