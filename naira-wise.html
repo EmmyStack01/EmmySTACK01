@@ -3,25 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naira-Wise Ultimate | Emmy STACK01</title>
+    <title>Free Invoice Generator for Nigerian Freelancers | Emmy STACK01</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <meta name="title" content="Free Invoice Generator for Nigerian Freelancers | Naira-Wise by Emmy STACK01">
+    <meta name="description" content="Generate professional PDF invoices and receipts in NGN & USD. Designed for Nigerian freelancers and small businesses. Fast, secure, and powered by Emmy STACK01.">
+    <meta name="keywords" content="invoice generator Nigeria, free receipt maker, Naira invoice tool, Emmy STACK01, freelancer billing, NGN PDF receipt, digital business cards Nigeria">
+    <link rel="canonical" href="https://emmystack01.com/naira-wise">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/naira-wise">
+    <meta property="og:title" content="Free Invoice Generator for Nigerian Freelancers | Naira-Wise">
+    <meta property="og:description" content="Fast, clean, and professional PDF invoicing for the modern Nigerian business. No sign-up required.">
+    <meta property="og:image" content="https://emmystack01.com/asset/naira-wise-og.jpg"> 
+    <meta property="og:site_name" content="Naira-Wise by Emmy STACK01">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://emmystack01.com/naira-wise">
+    <meta property="twitter:title" content="Naira-Wise: Professional Invoices by Emmy STACK01">
+    <meta property="twitter:description" content="Generate high-performance PDF receipts for your clients in seconds. Optimized for NGN and USD billing.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/naira-wise-og.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --accent: #111827;
+            /* Main Dark Backgrounds */
+            --bg: #0f172a;           /* Deep Navy/Slate */
+            --card: #1e293b;         /* Lighter Slate for containers */
+        
+            /* Branding Colors (Kept from Emmy STACK01) */
+            --primary: #818cf8;      /* Lightened indigo for better dark-mode visibility */
+            --primary-dark: #4f46e5;
+            --accent: #f8fafc;       /* Off-white for high-contrast accents */
+        
+            /* Text Colors */
+            --text-main: #f1f5f9;    /* Clean white-grey for readability */
+            --text-light: #94a3b8;   /* Muted slate for labels and secondary text */
+        
+            /* Borders & Inputs */
+            --border: #334155;       /* Subtle dark border */
+            --input-bg: #0f172a;     /* Match main bg for inset feel */
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); overflow-x: hidden; }
+        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); overflow-x: hidden; font-family: 'Montserrat'; }
+
+        /*Old code start*/
+        .container { 
+            max-width: 1400px; 
+            margin: auto; 
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        nav{
+            padding-top: 40px;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 20px;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Navigation */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .pill-nav {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            gap: 15px;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+            border: 2px solid var(--border);
+            box-shadow: 0 0 2px var(--primary);
+        }
+
+        .pill-nav:hover { transform: scale(1.02); box-shadow: 0 0 10px var(--primary)}
+
+        .nav-text {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        /*Old code end*/
 
         .app-container {
             max-width: 1400px;
@@ -41,7 +146,40 @@
             overflow-y: auto;
             max-height: 95vh;
         }
+        
+        
+        .hero-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive size */
+            font-weight: 700;
+            line-height: 1.2;
+            color: #e5e7eb; /* soft white */
+            letter-spacing: -0.02em;
+            max-width: 600px;
+            letter-spacing: -0.02em;
+        }
 
+        /* Gradient highlight */
+        .highlight {
+            background: linear-gradient(90deg, #6366f1, #22d3ee, #6366f1);
+            background-size: 200% auto;
+            animation: shimmer 4s linear infinite;
+            -webkit-background-clip: text;
+            background-clip: var(--text-main);
+            color: var(--bg);
+            
+        }
+
+        /* Optional glow effect */
+        .hero-title {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+        }
+
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
         h2 { margin-top: 0; color: var(--accent); font-weight: 800; }
         .branding-p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 25px; }
 
@@ -53,12 +191,19 @@
             padding: 12px;
             border: 1px solid var(--border);
             border-radius: 8px;
-            background: #fdfdfd;
+            background: var(--input-bg);
+            color: var(--text-main);
             font-size: 0.95rem;
         }
+        input:focus, textarea:focus, select:focus{
+            border-color: var(--primary);
+            outline: none;
+        }
+       
+
 
         .item-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; margin-bottom: 10px; }
-        .btn-add { background: #eef2ff; color: var(--primary); border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 15px; }
+        .btn-add { background: var(--bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 15px; }
         .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
 
         /* --- PREVIEW AREA & PAN/ZOOM --- */
@@ -68,7 +213,7 @@
             display: flex; 
             justify-content: center; /* Centers horizontally */
             align-items: center;     /* Centers vertically */
-            background: #cbd5e1; 
+            background: #0d1117; 
             padding: 0;
             border-radius: 16px;
             overflow: hidden; 
@@ -82,11 +227,12 @@
 
         .invoice-paper {
             background: white;
+            color: #1e293b;
             width: 794px; /* Strict A4 Width */
-            min-height: 1123px;
+            height: auto;
             padding: 50px;
             position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             transform-origin: center center; 
             flex-shrink: 0;
             user-select: none;
@@ -109,7 +255,7 @@
         /* Update your existing .inv-footer class */
         .inv-footer { 
             margin-top: auto; /* Pushes to bottom if inside a flex container */
-            background: var(--accent); 
+            background: var(--bg); 
             color: white; 
             padding: 10px 30px; 
             display: flex; 
@@ -137,8 +283,9 @@
             display: flex;
             gap: 10px;
         }
+
         .zoom-btn {
-            background: var(--accent);
+            background: var(--primary);
             color: white;
             border: none;
             padding: 10px 15px;
@@ -152,93 +299,214 @@
             .app-container { grid-template-columns: 1fr; }
             .preview-area { height: 70vh; }
         }
+
+        /* Removes the default arrows for a cleaner 'Cyber-Professional' look */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* For Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: none;
+            margin: 0;
+        }
+
+
+        .controls::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls::-webkit-scrollbar-track {
+            background: var(--bg); /* Deep slate */
+        }
+
+        .controls::-webkit-scrollbar-thumb {
+            background: var(--border); /* Subtle dark border color */
+            border-radius: 10px;
+        }
+
+        .controls::-webkit-scrollbar-thumb:hover {
+            background: var(--primary); /* Indigo highlight on hover */
+        }
+
+
+        input[type="file"]::file-selector-button {
+            background: var(--card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif; /* Your brand font */
+            transition: 0.3s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+
+        /* Active state when dragging the invoice */
+        .preview-area:active {
+            cursor: grabbing; /* Closed hand */
+        }
+
+        /* Hover state for line items */
+        .item-row:hover {
+            background: rgba(99, 102, 241, 0.05); /* Slight indigo tint */
+            border-radius: 8px;
+        }
+
+        .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
+        .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
+        .ownership { text-align: center; margin-bottom: 10px; }
+        .branding { font-size: 0.9rem; color: #94a3b8; }
+        .branding a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+        .socials { display: flex; justify-content: center; gap: 20px; }
+        .socials a {
+            text-decoration: none;
+            display: flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            background: var(--border);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 800px) {
+            .header-wrapper { flex-direction: column; gap: 15px; }
+            .back-btn { position: static; margin-bottom: 10px; }
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <nav>
+            <a href="https://emmystack01.com/" title="back" class="back-btn">
+                <span>&#8592;</span> 
+            </a>
 
-<div class="app-container">
-    <div class="controls">
-        <h2>Naira-Wise Pro+</h2>
-        <p class="branding-p">Smart Invoicing by Emmy STACK01</p>
-
-        <div class="form-group">
-            <label>Logo & Branding</label>
-            <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
-                <input type="text" id="bizName" placeholder="Business Name">
-            </div>
-        </div>
-
-        <div class="form-group"><label>Address</label><textarea id="bizAddress" placeholder="Your Business Address"></textarea></div>
-        <div class="form-group"><label>Bill To</label><input type="text" id="clientName" placeholder="Client Name"></div>
-
-        <div id="itemsList"></div>
-        <button class="btn-add" onclick="addItem()">+ Add Line Item</button>
-
-        <div style="margin-top:20px; padding:15px; background:#f1f5f9; border-radius:12px;">
-            <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:10px;">
-                <input type="checkbox" id="vatToggle" onchange="update()"> <span>Add 7.5% VAT</span>
-            </label>
-            <label>Bank Info / Payment Method</label>
-            <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
-        </div>
-
-        <button onclick="downloadPDF()" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
-    </div>
-
-    <div class="preview-area" id="previewContainer">
-        <div class="zoom-controls">
-            <button class="zoom-btn" onclick="zoom(0.1)">+</button>
-            <button class="zoom-btn" onclick="zoom(-0.1)">-</button>
-            <button class="zoom-btn" onclick="resetView()">Reset</button>
-        </div>
-
-        <div id="invoice-capture" class="invoice-paper">
-            <div class="inv-header">
-                <div>
-                    <img id="logoPreview" style="max-height:60px; display:none; margin-bottom:10px;">
-                    <h2 id="prevBizName" class="biz-title">YOUR BUSINESS</h2>
-                    <p id="prevBizAddr" style="font-size:12px; color:var(--text-light); white-space:pre-line;"></p>
-                </div>
-                <div style="text-align:right">
-                    <h1 style="margin:0; font-size:3rem; opacity:0.1;">RECEIPT</h1>
-                    <p style="font-size:11px; font-weight:700;">NO: <span id="prevNo">#0000</span></p>
-                    <p style="font-size:11px; font-weight:700;">DATE: <span id="prevDate"></span></p>
+            <div class="header-wrapper">
+                <div class="navbar-container">
+                    <div class="pill-nav glass">
+                        <img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="30px" width="auto" class="nav-logo">
+                        <span class="nav-text">Invoice Generator</span>
+                    </div>
                 </div>
             </div>
+        </nav>
+        <h1 class="hero-title">
+            Fast, Professional Invoices in
+            <span class="highlight">NGN & USD</span>
+        </h1>    
+        <main class="app-container">
+            <div class="controls">
+                <h2>Naira-Wise</h2>
+                <p class="branding-p">Smart Invoicing by Emmy STACK01</p>
 
-            <div style="margin-bottom:30px;">
-                <label style="color:var(--primary); font-size:10px; font-weight:800;">BILL TO</label>
-                <h3 id="prevClientName" style="margin:5px 0; font-size:1.4rem;">Client Name</h3>
+                <div class="form-group">
+                    <label>Logo & Branding</label>
+                    <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
+                        <input type="text" id="bizName" placeholder="Business Name">
+                    </div>
+                </div>
+
+                <div class="form-group"><label>Address</label><textarea id="bizAddress" placeholder="Your Business Address"></textarea></div>
+                <div class="form-group"><label>Bill To</label><input type="text" id="clientName" placeholder="Client Name"></div>
+
+                <div id="itemsList"></div>
+                <button class="btn-add" onclick="addItem()">+ Add Line Item</button>
+
+                <div style="margin-top:20px; padding:15px; background:var(--bg); border-radius:12px;">
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:10px;">
+                        <input type="checkbox" id="vatToggle" onchange="update()"> <span>Add 7.5% VAT</span>
+                    </label>
+                    <label>Bank Info / Payment Method</label>
+                    <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
+                </div>
+
+                <button onclick="downloadPDF()" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
             </div>
 
-            <table class="invoice-table">
-                <thead><tr><th>Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
-                <tbody id="prevTableBody"></tbody>
-            </table>
+            <div class="preview-area" id="previewContainer">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoom(0.1)">+</button>
+                    <button class="zoom-btn" onclick="zoom(-0.1)">-</button>
+                    <button class="zoom-btn" onclick="resetView()">Reset</button>
+                </div>
 
-            <div class="total-card">
-                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
-                    <span>Subtotal</span><span><span class="curr">₦</span><span id="displaySub">0</span></span>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
-                    <span>VAT (7.5%)</span><span><span class="curr">₦</span><span id="displayVat">0</span></span>
-                </div>
-                <div class="grand-total">
-                    <span>Total</span><span><span class="curr">₦</span><span id="displayTotal">0</span></span>
+                <div id="invoice-capture" class="invoice-paper">
+                    <div class="inv-header">
+                        <div>
+                            <img id="logoPreview" style="max-height:60px; display:none; margin-bottom:10px;">
+                            <h2 id="prevBizName" class="biz-title">YOUR BUSINESS</h2>
+                            <p id="prevBizAddr" style="font-size:12px; color:var(--text-light); white-space:pre-line;"></p>
+                        </div>
+                        <div style="text-align:right">
+                            <h1 style="margin:0; font-size:3rem; opacity:0.1;">RECEIPT</h1>
+                            <p style="font-size:11px; font-weight:700;">NO: <span id="prevNo">#0000</span></p>
+                            <p style="font-size:11px; font-weight:700;">DATE: <span id="prevDate"></span></p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:30px;">
+                        <label style="color:var(--primary); font-size:10px; font-weight:800;">BILL TO</label>
+                        <h3 id="prevClientName" style="margin:5px 0; font-size:1.4rem;">Client Name</h3>
+                    </div>
+
+                    <table class="invoice-table">
+                        <thead><tr><th>Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
+                        <tbody id="prevTableBody"></tbody>
+                    </table>
+
+                    <div class="total-card">
+                        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                            <span>Subtotal</span><span><span class="curr">₦</span><span id="displaySub">0</span></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                            <span>VAT (7.5%)</span><span><span class="curr">₦</span><span id="displayVat">0</span></span>
+                        </div>
+                        <div class="grand-total">
+                            <span>Total</span><span><span class="curr">₦</span><span id="displayTotal">0</span></span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:40px; margin-bottom: 40px;"><label style="font-size:10px; font-weight:800; color:var(--primary);">PAYMENT METHOD</label><p id="prevBank" style="font-weight:700; margin:5px 0;"></p></div>
+
+                    <div class="inv-footer">
+                        <span class="emmystack01">POWERED BY <a href="https://emmystack01.com/">EMMYSTACK01.COM</a></span>
+                    </div>
                 </div>
             </div>
-
-            <div style="margin-top:40px;"><label style="font-size:10px; font-weight:800; color:var(--primary);">PAYMENT METHOD</label><p id="prevBank" style="font-weight:700; margin:5px 0;"></p></div>
-
-            <div class="inv-footer">
-                <span class="emmystack01">POWERED BY <a href="https://emmystack01.com/">EMMYSTACK01.COM</a></span>
+        </main>
+        <footer class="footer-section">
+            <hr class="line">
+            <div class="footer">
+                <div class="ownership">
+                    <p class="branding">
+                        Built by <a href="https://emmystack01.com/" target="_blank" rel="noopener nofollow">Emmy STACK01</a>
+                    </p>
+                </div>
+                <div class="socials"> 
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer"><i class="ri-twitter-x-line"></i></a> 
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-fill"></i></a>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
+        </footer>        
+    </div>    
 <script>
     let items = [{ id: Date.now(), desc: '', qty: 1, price: 0 }];
     let mathStore = { subtotal: 0, vat: 0, total: 0 };
@@ -412,6 +680,8 @@
         clone.style.boxShadow = 'none';
         clone.style.display = 'flex';
         clone.style.flexDirection = 'column';
+        clone.style.minHeight = 'unset';
+        clone.style.height = 'auto';
 
         const opt = {
             margin: 0,
