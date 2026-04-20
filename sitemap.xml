@@ -2,55 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://emmystack01.com/</loc>
-    <lastmod>2026-04-17</lastmod>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/product.html</loc>
-    <lastmod>2026-04-17</lastmod>
+    <loc>https://emmystack01.com/product</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/partnership.html</loc>
-    <lastmod>2026-03-23</lastmod>
+    <loc>https://emmystack01.com/partnership</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/affiliate.html</loc>
-    <lastmod>2026-03-29</lastmod>
+    <loc>https://emmystack01.com/affiliate</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/partner-kit.html</loc>
-    <lastmod>2026-03-23</lastmod>
+    <loc>https://emmystack01.com/partner-kit</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/articles.html</loc>
-    <lastmod>2026-04-17</lastmod>
+    <loc>https://emmystack01.com/articles</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/post-digital-dna.html</loc>
-    <lastmod>2026-03-23</lastmod>
+    <loc>https://emmystack01.com/post-digital-dna</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/tool-pdf.html</loc>
-    <lastmod>2026-04-08</lastmod>
+    <loc>https://emmystack01.com/emmy-sign</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://emmystack01.com/policy.html</loc>
-    <lastmod>2026-03-23</lastmod>
+    <loc>https://emmystack01.com/naira-wise</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://emmystack01.com/brand-engine</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://emmystack01.com/policy</loc>
+    <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
