@@ -605,73 +605,75 @@ const initializeBrandFlow = async () => {
 
     updateButtonStatus(true); // Scanning animation starts
 
-    
-
-         
-        try {
-    const response = await fetch('https://emmy-stack-01.vercel.app/api/generate', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json' 
-        },
-        body: JSON.stringify({ 
-            keyword: keywordInput, 
-            niche: nicheInput 
-        })
-    });
-
-    console.log("STATUS:", response.status);
-
-    const text = await response.text();
-    console.log("RAW RESPONSE:", text);
-
-    let aiData;
     try {
-        aiData = JSON.parse(text);
-    } catch (e) {
-        throw new Error("JSON Parse Failed → " + text);
+        const response = await fetch('https://emmy-stack-01.vercel.app/api/generate', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' 
+            },
+            body: JSON.stringify({ 
+                keyword: keywordInput, 
+                niche: nicheInput 
+            })
+        });
+
+        // 1. Parse the JSON from your Branded Decoder
+        const aiData = await response.json();
+
+        // 2. Check if the response failed (503, 429, 400, etc.)
+        if (!response.ok) {
+            // This throws the error to the catch block below
+            throw new Error(aiData.details || 'Sync Failed');
+        }
+
+        // --- IF SUCCESSFUL: START COOLDOWN ---
+        const scanBtn = document.getElementById('generateBtn');
+        scanBtn.disabled = true;
+        let secondsLeft = 60;
+
+        const cooldownTimer = setInterval(() => {
+            secondsLeft--;
+            scanBtn.innerText = `SYSTEM RECHARGING: ${secondsLeft}s`;
+            if (secondsLeft <= 0) {
+                clearInterval(cooldownTimer);
+                scanBtn.disabled = false;
+                scanBtn.innerText = "INITIALIZE DNA SCAN";
+            }
+        }, 1000);
+
+        // --- UPDATE STATE WITH REAL AI DATA ---
+        brandState.name = aiData.names[0] || keywordInput; 
+        brandState.niche = nicheInput;
+        brandState.colors = aiData.colors;
+        brandState.fonts = aiData.fonts;
+        brandState.slogan = aiData.slogan || "";
+
+        // --- UI UPDATES ---
+        document.getElementById('brandSlogan').innerText = brandState.slogan;
+        
+        renderNames(aiData.names);
+        renderPalette(aiData.colors);
+        loadAIFonts(aiData.fonts);
+        animateQRReveal();
+
+        document.getElementById('downloadPdf').disabled = false;
+        showToast("BIOMETRIC SCAN COMPLETE");
+        
+    } catch (error) {
+        console.error("AI Error:", error);
+        
+        // Use showToast instead of alert for a better Emmy STACK01 experience
+        showToast(error.message); 
+        
+        // Reset button immediately so they can try again if it was a minor flicker
+        const scanBtn = document.getElementById('generateBtn');
+        scanBtn.disabled = false;
+        scanBtn.innerText = "RE-INITIALIZE SCAN";
+
+    } finally {
+        updateButtonStatus(false); // Stop the "Scanning" UI state
     }
-
-    console.log("PARSED DATA:", aiData);
-
-    // 🚨 DO NOT BLOCK ERRORS — SHOW THEM RAW
-    if (!response.ok) {
-        throw new Error(JSON.stringify(aiData, null, 2));
-    }
-
-    // --- NORMAL FLOW ---
-    brandState.name = aiData.names?.[0] || keywordInput;
-    brandState.niche = nicheInput;
-    brandState.colors = aiData.colors || [];
-    brandState.fonts = aiData.fonts || { header: 'Orbitron', body: 'Montserrat' };
-    brandState.slogan = aiData.slogan || "";
-
-    document.getElementById('brandSlogan').innerText = brandState.slogan;
-
-    renderNames(aiData.names || []);
-    renderPalette(aiData.colors || []);
-    loadAIFonts(aiData.fonts || {});
-    animateQRReveal();
-
-    document.getElementById('downloadPdf').disabled = false;
-
-    showToast("SCAN COMPLETE");
-
-} catch (error) {
-    console.error("🔥 FULL ERROR:", error);
-
-    // 🚨 SHOW RAW ERROR (NO BRAND FILTER)
-    showToast(error.message);
-
-    const scanBtn = document.getElementById('generateBtn');
-    scanBtn.disabled = false;
-    scanBtn.innerText = "TRY AGAIN";
-
-} finally {
-    updateButtonStatus(false);
-}
-
 };
 
 
