@@ -10,7 +10,8 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: "Use POST" });
 
     try {
-        const { keyword, niche } = req.body;
+        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+const { keyword, niche } = body;
         const API_KEY = process.env.GEMINI_API_KEY;
 
         if (!API_KEY) throw new Error("API Key missing in Vercel settings.");
