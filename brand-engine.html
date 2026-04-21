@@ -619,7 +619,15 @@ const initializeBrandFlow = async () => {
         });
 
         // 1. Parse the JSON from your Branded Decoder
-        const aiData = await response.json();
+        const text = await response.text();
+
+let aiData;
+try {
+    aiData = JSON.parse(text);
+} catch (e) {
+    console.error("RAW RESPONSE:", text);
+    throw new Error("Invalid JSON from API");
+}
 
         // 2. Check if the response failed (503, 429, 400, etc.)
         if (!response.ok) {
