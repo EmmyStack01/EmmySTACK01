@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "headers": [
     {
       "source": "/api/(.*)",
@@ -10,5 +11,20 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/product", "destination": "/product.html" },
+    { "source": "/partnership", "destination": "/partnership.html" },
+    { "source": "/affiliate", "destination": "/affiliate.html" },
+    { "source": "/partner-kit", "destination": "/partner-kit.html" },
+    { "source": "/articles", "destination": "/articles.html" },
+    { "source": "/post-digital-dna", "destination": "/post-digital-dna.html" },
+    { "source": "/emmy-sign", "destination": "/emmy-sign.html" },
+    { "source": "/naira-wise", "destination": "/naira-wise.html" },
+    { "source": "/brand-engine", "destination": "/brand-engine.html" },
+    { "source": "/policy", "destination": "/policy.html" },
+    { "source": "/payment", "destination": "/payment.html" },
+    { "source": "/preview", "destination": "/preview.html" },
+    { "source": "/performance-auditor", "destination": "/performance-auditor.html" }
   ]
 }
