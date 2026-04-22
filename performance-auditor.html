@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Digital DNA Auditor | Free Website Speed & SEO Test by Emmy STACK01</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <meta name="title" content="Digital DNA Auditor | Free Website Speed & SEO Test by Emmy STACK01">
+    <meta name="description" content="Instantly analyze your website's performance, SEO, and accessibility. Identify digital leaks and optimize your site's Digital DNA for maximum speed and conversion.">
+    <meta name="keywords" content="website speed test, seo audit tool, website performance auditor, digital dna, emmy stack01, website optimization nigeria, core web vitals checker">
+    <link rel="canonical" href="https://emmystack01.com/performance-auditor">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/performance-auditor">
+    <meta property="og:title" content="Is Your Website Leaking Revenue? | Digital DNA Auditor">
+    <meta property="og:description" content="Get a free high-performance audit. Check your site's speed, SEO, and UX instantly with the Emmy STACK01 Auditor.">
+    <meta property="og:image" content="https://emmystack01.com/asset/performance-auditor-og.jpg"> 
+    <meta property="og:site_name" content="Emmy STACK01 Performance Auditor">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://emmystack01.com/performance-auditor">
+    <meta property="twitter:title" content="Digital DNA Auditor: Fix Your Site Speed & SEO">
+    <meta property="twitter:description" content="Stop losing customers to a slow website. Run a free audit and optimize your Digital DNA today.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/performance-auditor-og.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --accent-color: #4facfe;
+            --pass-color: #00ff88;
+            --pain-color: #ff4444;
+            --warning-color: #ffbb00;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #fff;
+            font-family: 'Montserrat';
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        #vanta-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Keeps it behind your text and results */
+            background-color: #0a0a0a; /* Matches your brand bg */
+        }
+
+        /* Ensure your main content wrapper is transparent so the vanta shows through */
+        .audit-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container { 
+            max-width: 1100px; 
+            margin: auto; 
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 20px;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Navigation */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .pill-nav {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            gap: 15px;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .pill-nav:hover { transform: scale(1.02); }
+
+        .nav-text {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        /* NEEDED */
+        .audit-wrapper {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .audit-hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-family: 'Orbitron';
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+
+        
+            text-shadow:
+                0 0 10px rgba(0, 245, 255, 0.3),
+                0 0 20px rgba(142, 45, 226, 0.2);
+        }
+        .accent-text {
+            /* OPTION 1: Solid Neon Green */
+            color: #4facfe; 
+          
+            /* OPTION 2: Add a Glow (Works well with Orbitron) */
+            text-shadow: 0 0 15px  rgba(79, 172, 254, 0.5);           
+        }
+
+        h2{
+            font-size: 1.3em;
+        }
+        
+        /* Input Group */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            background: var(--glass-bg);
+            padding: 8px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 12px;
+            outline: none;
+            font-size: 1rem;
+        }
+        #url-input {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 12px;
+
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+
+        color: #fff;
+        font-size: 0.95rem;
+
+        backdrop-filter: blur(10px);
+
+        transition: all 0.3s ease;
+        }
+
+        #url-input:focus {
+        outline: none;
+        border: 1px solid #4facfe;
+
+        box-shadow:
+            0 0 10px rgba(79, 172, 254, 0.4),
+            0 0 20px rgba(0, 245, 255, 0.2);
+        }
+
+        #audit-btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+
+            background: linear-gradient(135deg, #00f5ff, #4facfe, #8e2de2);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+
+            position: relative;
+            overflow: hidden;
+
+            box-shadow:
+                0 0 10px rgba(0, 245, 255, 0.4),
+                0 0 20px rgba(79, 172, 254, 0.3),
+                0 0 30px rgba(142, 45, 226, 0.2);
+
+            transition: all 0.3s ease;
+        }
+        #audit-btn::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+
+        background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.4),
+            transparent
+        );
+
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        }
+
+        #audit-btn:hover::before {
+        opacity: 1;
+        animation: shine 1s linear;
+        }
+
+
+        #audit-btn:hover {
+        transform: translateY(-3px) scale(1.02);
+
+        box-shadow:
+            0 0 20px rgba(0, 245, 255, 0.7),
+            0 0 40px rgba(79, 172, 254, 0.5),
+            0 0 60px rgba(142, 45, 226, 0.4);
+        }
+
+        @keyframes shine {
+        from { transform: translateX(-100%); }
+        to { transform: translateX(100%); }
+        }
+
+
+        /* Scanner Styling */
+        #scanner-container {
+            position: relative;
+            height: 200px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        #scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+            box-shadow: 0 0 15px var(--accent-color);
+            top: 0;
+        }
+
+        #status-text {
+            color: var(--accent-color);
+            font-family: monospace;
+            text-align: center;
+            padding-top: 90px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* Results Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .score-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            opacity: 0; /* Managed by GSAP */
+        }
+
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .score-high { color: var(--pass-color); text-shadow: 0 0 30px rgba(0, 255, 136, 0.4); }
+        .score-med  { color: var(--warning-color); text-shadow: 0 0 30px rgba(255, 187, 0, 0.4); }
+        .score-low  { color: var(--pain-color); text-shadow: 0 0 30px rgba(255, 68, 68, 0.4); }
+
+        /* Diagnostics */
+        .diagnostics-container {
+            margin-top: 60px;
+        }
+
+        #issues-list {
+            padding: 0;
+            list-style: none;
+        }
+
+        .fix-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 35px;
+            background: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        /*footer*/
+        .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
+        .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
+        .ownership { text-align: center; margin-bottom: 10px; }
+        .branding { font-size: 0.9rem; color: #94a3b8; }
+        .branding a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
+
+        .socials { display: flex; justify-content: center; gap: 20px; }
+        .socials a {
+            text-decoration: none;
+            display: flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 800px) {
+            .header-wrapper { flex-direction: column; gap: 15px; }
+            .back-btn { position: static; margin-bottom: 10px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    <div class="container">
+        <nav>
+            <a href="https://emmystack01.com/" title="back" class="back-btn">
+                <span>&#8592;</span> 
+            </a>
+
+            <div class="header-wrapper">
+                <div class="navbar-container">
+                    <div class="pill-nav glass">
+                        <img src="asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="30px" width="auto" class="nav-logo">
+                        <span class="nav-text">Performance Auditor</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <main class="audit-wrapper">
+            <section class="audit-hero">
+                <h1>Website Speed Test & <span class="accent-text">Digital DNA Auditor</span></h1>
+                <p>Run a professional performance audit to identify SEO leaks and speed bottlenecks in seconds.</p>
+                
+                <div class="input-group">
+                    <input type="url" id="url-input" placeholder="https://your-competitor.com" required>
+                    <button onclick="startAudit()" id="audit-btn">Analyze Site</button>
+                </div>
+            </section>
+
+            <div id="scanner-container" style="display:none;">
+                <div id="scan-line"></div>
+                <div id="status-text">INITIALIZING PROBE...</div>
+            </div>
+
+            <section id="results-display">
+                <div class="results-grid">
+                    <div class="score-card">
+                        <h2>Performance</h2>
+                        <span id="perf-score" class="score-number">--</span>
+                    </div>
+                    <div class="score-card">
+                        <h2>SEO Score</h2>
+                        <span id="seo-score" class="score-number">--</span>
+                    </div>
+                    <div class="score-card">
+                        <h2>Accessibility</h2>
+                        <span id="ux-score" class="score-number">--</span>
+                    </div>
+                </div>
+
+                <div class="diagnostics-container">
+                    <h2>Identified Leaks</h2>
+                    <ul id="issues-list"></ul>
+                    <div id="cta-area"></div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer-section">
+            <hr class="line">
+            <div class="footer">
+                <div class="ownership">
+                    <p class="branding">
+                        Built by <a href="https://emmystack01.com/" target="_blank" rel="noopener nofollow">Emmy STACK01</a>
+                    </p>
+                </div>
+                <div class="socials"> 
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer"><i class="ri-twitter-x-line"></i></a> 
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-fill"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        /**
+         * EMMY STACK01 - Website Performance Auditor
+         * Logic: 
+         * 1. startAudit triggers the GSAP UI and calls the Vercel API.
+         * 2. handleResults processes the data and triggers the staggered reveal.
+         */
+        VANTA.DOTS({
+        el: "#vanta-canvas", // Replace with your actual div ID
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        /* Custom Color Configuration */
+        backgroundColor: 0x000000, // Black background
+        color: 0x2d66b4,           // Primary dot color
+        color2: 0x00ccff,          // Secondary dot color
+        size: 3.00,                // Matches the 'size' slider in your screenshot
+        spacing: 35.00,            // Matches the 'spacing' slider in your screenshot
+        showLines: false           // Keeps the focus on the dots
+        })
+
+        // 1. UI: The Scanning Animation
+        function toggleScanner(show) {
+            const scanner = document.getElementById('scanner-container');
+            if (show) {
+                scanner.style.display = 'block';
+                gsap.to("#scan-line", {
+                    top: "100%",
+                    duration: 1.5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+            } else {
+                // Fade out scanner and hide it
+                gsap.to(scanner, { opacity: 0, duration: 0.5, onComplete: () => {
+                    scanner.style.display = 'none';
+                    scanner.style.opacity = 1; // Reset opacity for next use
+                }});
+            }
+        }
+
+        // 2. UI: Status Text Messenger
+        let statusInterval;
+        function startStatusUpdates() {
+            const messages = [
+                "FETCHING DOM STRUCTURE...",
+                "ANALYZING ASSET COMPRESSION...",
+                "CHECKING RENDER-BLOCKING RESOURCES...",
+                "DECODING DIGITAL DNA...",
+                "COMPILING PERFORMANCE REPORT..."
+            ];
+            let i = 0;
+            const textElement = document.getElementById('status-text');
+            
+            statusInterval = setInterval(() => {
+                if (i < messages.length) {
+                    textElement.innerText = messages[i];
+                    i++;
+                }
+            }, 1500);
+        }
+
+        // 3. MAIN: The Audit Controller
+        async function startAudit() {
+            const targetUrl = document.getElementById('url-input').value;
+            if (!targetUrl) return alert("Please enter a URL first.");
+
+            // Start visual vibe
+            toggleScanner(true);
+            startStatusUpdates();
+
+            try {
+                // Call your Vercel Serverless Function
+                const response = await fetch(`/api/audit?url=${encodeURIComponent(targetUrl)}`);
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                // Success: Clean up scanner and show results
+                clearInterval(statusInterval);
+                toggleScanner(false);
+                
+                // Wait for scanner fade-out before revealing results
+                setTimeout(() => {
+                    renderScores(data.scores);
+                    renderAudits(data.audits);
+                }, 600);
+
+            } catch (err) {
+                clearInterval(statusInterval);
+                toggleScanner(false);
+                alert("Audit Failed: " + err.message);
+                console.error("Audit error:", err);
+            }
+        }
+
+        // 4. UI: Render Score Cards
+        function renderScores(scores) {
+            const getStatus = (s) => s >= 90 ? 'score-high' : (s >= 50 ? 'score-med' : 'score-low');
+
+            const metrics = [
+                { id: 'perf-score', val: scores.performance },
+                { id: 'seo-score', val: scores.seo },
+                { id: 'ux-score', val: scores.accessibility }
+            ];
+
+            metrics.forEach(m => {
+                const el = document.getElementById(m.id);
+                el.innerText = Math.round(m.val);
+                el.className = `score-number ${getStatus(m.val)}`;
+            });
+
+            // GSAP Reveal Cards
+            gsap.fromTo(".score-card", 
+                { opacity: 0, y: 30 }, 
+                { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "back.out(1.7)" }
+            );
+        }
+
+        // 5. UI: Render Issue List
+        function renderAudits(audits) {
+            const listContainer = document.getElementById('issues-list');
+            listContainer.innerHTML = ''; 
+
+            const diagnosticMap = {
+                'render-blocking-resources': {
+                    title: "Render-Blocking Code",
+                    pain: "Your site waits for heavy files before showing anything.",
+                    fix: "Refactor to ES6+ Modules."
+                },
+                'modern-image-formats': {
+                    title: "Outdated Image Formats",
+                    pain: "Large images are draining user data.",
+                    fix: "Convert to WebP/Avif."
+                },
+                'cumulative-layout-shift': {
+                    title: "Visual Instability",
+                    pain: "Elements jump around while loading.",
+                    fix: "Stabilize with GSAP & CSS ratios."
+                }
+            };
+
+            let failCount = 0;
+            Object.keys(diagnosticMap).forEach(key => {
+                if (audits[key] && audits[key].score < 0.9) {
+                    failCount++;
+                    const issue = diagnosticMap[key];
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div style="border-left: 4px solid #ff4444; padding-left: 15px; margin-bottom: 20px;">
+                            <h4 style="color: #ff4444; margin: 0;">${issue.title}</h4>
+                            <p style="color: #ccc; margin: 5px 0;">${issue.pain}</p>
+                            <small style="color: #00ff88;"><strong>FIX:</strong> ${issue.fix}</small>
+                        </div>
+                    `;
+                    listContainer.appendChild(li);
+                }
+            });
+
+            showCTA(failCount);
+        }
+
+        // 6. UI: Call to Action
+        function showCTA(count) {
+            const cta = document.getElementById('cta-area');
+            if (count > 0) {
+                cta.innerHTML = `
+                    <div class="cta-box" style="background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h2 style="color: #fff;">Found ${count} critical leaks.</h2>
+                        <button class="fix-btn" onclick="window.location.href='#contact'">Fix My Digital DNA</button>
+                    </div>`;
+            } else {
+                cta.innerHTML = `<div class="cta-box"><h2>Your DNA is clean!</h2></div>`;
+            }
+        }
+    </script>
+</body>
+</html>
