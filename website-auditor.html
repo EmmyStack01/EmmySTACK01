@@ -247,7 +247,7 @@
 
             transition: all 0.3s ease;
         }
-        .audit-btn::before, .fix-btn::before {
+        .audit-btn::before {
         content: "";
         position: absolute;
         inset: -2px;
@@ -264,13 +264,13 @@
         transition: opacity 0.4s ease;
         }
 
-        #audit-btn:hover::before {
+        .audit-btn:hover::before {
         opacity: 1;
         animation: shine 1s linear;
         }
 
 
-        .audit-btn:hover, .fix-btn:hover {
+        .audit-btn:hover {
         transform: translateY(-3px) scale(1.02);
 
         box-shadow:
@@ -284,6 +284,32 @@
         to { transform: translateX(100%); }
         }
 
+        .fix-btn {
+        padding: 16px 32px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 1.05rem;
+
+        background: linear-gradient(135deg, #00f5ff, #4facfe, #8e2de2);
+        color: #fff;
+        border: none;
+
+        box-shadow:
+            0 0 20px rgba(0, 245, 255, 0.7),
+            0 0 40px rgba(79, 172, 254, 0.5),
+            0 0 60px rgba(142, 45, 226, 0.4);
+
+        transition: all 0.3s ease;
+        }
+
+        .fix-btn:hover {
+        transform: translateY(-4px) scale(1.03);
+
+        box-shadow:
+            0 0 30px rgba(0,245,255,0.9),
+            0 0 60px rgba(79,172,254,0.7),
+            0 0 90px rgba(142,45,226,0.5);
+        }
 
         /* Scanner Styling */
         #scanner-container {
@@ -353,16 +379,29 @@
         }
 
         .btn-secondary {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 35px;
-            background: var(--accent-color);
-            color: #000;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 800;
-            text-transform: uppercase;
-            transition: 0.3s;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+
+        background: rgba(255,255,255,0.05);
+        color: #cbd5ff;
+
+        border: 1px solid rgba(79,172,254,0.3);
+
+        backdrop-filter: blur(10px);
+
+        transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+        color: #fff;
+
+        border: 1px solid #4facfe;
+
+        box-shadow:
+            0 0 10px rgba(79,172,254,0.4),
+            inset 0 0 10px rgba(79,172,254,0.2);
         }
 
         /*footer*/
@@ -452,7 +491,7 @@
                 </div>
 
                 <button onclick="generatePDF()" id="download-btn" class="btn-secondary" style="display:none; margin-top: 20px;">
-                    <i class="ri-file-download-line"></i> Download Official Audit
+                    <i class="ri-file-download-line"></i> Download Full Report
                 </button>
             </section>
         </main>
@@ -711,10 +750,9 @@
             const cta = document.getElementById('cta-area');
             const targetUrl = document.getElementById('url-input').value || "their website";
             
-            // Replace with your actual WhatsApp number (include country code, no +)
-            const myNumber = "234XXXXXXXXXX"; 
+            // FIXED: Use your actual WhatsApp number here
+            const myNumber = "2349076991076"; 
             
-            // Crafting the professional pitch message
             const message = encodeURIComponent(
                 `Hi Emmy STACK01! 🚀\n\nI just ran a Website Audit for ${targetUrl}.\n` +
                 `The tool identified ${count} critical performance leaks.\n\n` +
@@ -742,40 +780,46 @@
             const domain = document.getElementById('url-input').value || "website";
             const date = new Date().toLocaleDateString();
             
-            // 1. Update the Header info in your template
             const pdfDomainDisplay = document.getElementById('pdf-domain-display');
             const pdfDateDisplay = document.getElementById('pdf-date');
-            
+            const pdfIssuesList = document.getElementById('pdf-issues-list');
+            const currentIssues = document.getElementById('issues-list');
+
             if(pdfDomainDisplay) pdfDomainDisplay.innerText = `Analysis for: ${domain}`;
             if(pdfDateDisplay) pdfDateDisplay.innerText = `Date: ${date}`;
             
-            // 2. Sync the results: Move the "Identified Leaks" into the PDF template
-            const currentIssues = document.getElementById('issues-list').innerHTML;
-            const pdfIssuesList = document.getElementById('pdf-issues-list');
-            
-            if(pdfIssuesList) {
-                pdfIssuesList.innerHTML = currentIssues;
-            } else {
-                console.error("PDF issues list container not found in template.");
+            // Sync content and force opacity to 1 for the PDF capture
+            if(pdfIssuesList && currentIssues) {
+                pdfIssuesList.innerHTML = currentIssues.innerHTML;
+                // Ensure all cloned cards are visible in the PDF
+                const cards = pdfIssuesList.querySelectorAll('.audit-card');
+                cards.forEach(card => card.style.opacity = "1");
             }
-            
-            // 3. Trigger the PDF generation
+
             const element = document.getElementById('pdf-template');
+            
+            // Temporarily bring into view for the library to "see" it properly
+            element.style.left = "0";
+            element.style.position = "relative";
+
             const opt = {
-                margin:       [10, 10, 10, 10], // top, left, bottom, right
-                filename:     `EmmyStack01-Audit-${domain}.pdf`,
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { 
+                margin: 10,
+                filename: `EmmyStack01-Audit-${domain.replace(/[^a-z0-9]/gi, '_')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
                     scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#0b0b0b', // Ensures the dark mode aesthetic carries over
-                    letterRendering: true
+                    backgroundColor: '#0b0b0b',
+                    scrollY: 0
                 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Use the html2pdf library to save
-            html2pdf().set(opt).from(element).save();
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Hide it again after generation
+                element.style.left = "-9999px";
+                element.style.position = "absolute";
+            });
         }
     </script>
 </body>
