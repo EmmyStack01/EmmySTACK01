@@ -34,7 +34,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest" crossorigin="use-credentials">
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -226,7 +226,7 @@
             0 0 20px rgba(0, 245, 255, 0.2);
         }
 
-        #audit-btn {
+        .audit-btn, .fix-btn {
             padding: 14px 28px;
             border-radius: 12px;
             font-weight: 600;
@@ -247,7 +247,7 @@
 
             transition: all 0.3s ease;
         }
-        #audit-btn::before {
+        .audit-btn::before, .fix-btn::before {
         content: "";
         position: absolute;
         inset: -2px;
@@ -270,7 +270,7 @@
         }
 
 
-        #audit-btn:hover {
+        .audit-btn:hover, .fix-btn:hover {
         transform: translateY(-3px) scale(1.02);
 
         box-shadow:
@@ -352,7 +352,7 @@
             list-style: none;
         }
 
-        .fix-btn {
+        .btn-secondary {
             display: inline-block;
             margin-top: 20px;
             padding: 15px 35px;
@@ -420,7 +420,7 @@
                 
                 <div class="input-group">
                     <input type="url" id="url-input" placeholder="https://your-competitor.com" required>
-                    <button onclick="startAudit()" id="audit-btn">Analyze Site</button>
+                    <button onclick="startAudit()" id="audit-btn" class="audit-btn">Analyze Site</button>
                 </div>
             </section>
 
@@ -633,7 +633,7 @@
             const listContainer = document.getElementById('issues-list');
             listContainer.innerHTML = ''; 
 
-            // High-impact keys for Performance
+            // 1. Performance Focus: High-impact keys you specialize in fixing
             const highImpactKeys = [
                 'modern-image-formats', 'uses-optimized-images', 
                 'render-blocking-resources', 'server-response-time', 
@@ -644,11 +644,12 @@
 
             highImpactKeys.forEach((key, index) => {
                 const issue = audits[key];
+                // Only show if the score is below 90%
                 if (issue && issue.score < 0.9) {
                     failCount++;
                     const card = document.createElement('div');
                     card.className = 'audit-card';
-                    card.style.opacity = 0;
+                    card.style.opacity = 0; // Prepare for GSAP animation
 
                     card.innerHTML = `
                         <div class="audit-header" style="border-left: 4px solid #ff4b2b; padding-left:15px; margin-bottom:15px;">
@@ -657,76 +658,123 @@
                         </div>
                         <p style="color:#ccc; font-size:14px;">${issue.description.split('.')[0]}.</p>
                         <div class="solution-tag" style="color:#00ff88; font-size:12px; margin-top:10px;">
-                            <i class="ri-magic-line"></i> Emmy STACK01 Fix Ready
+                            <i class="ri-magic-line"></i> Emmy STACK01 Optimization Ready
                         </div>
                     `;
                     listContainer.appendChild(card);
 
+                    // GSAP Reveal: Reveal cards one by one for a premium feel
                     gsap.to(card, {
-                        opacity: 1, y: -10, delay: index * 0.1, duration: 0.5
+                        opacity: 1, 
+                        y: -10, 
+                        delay: index * 0.1, 
+                        duration: 0.5, 
+                        ease: "power2.out"
                     });
                 }
             });
 
-            // Handle SEO Injection for PDF template
+            // 2. SEO Focus: Populating the hidden PDF template
+            // We pull these from rawData (which is your lighthouseResult)
             if (rawData && rawData.audits) {
                 const criticalSEO = ['viewport', 'document-title', 'meta-description', 'http-status-code'];
                 let seoHTML = '';
+
                 criticalSEO.forEach(key => {
-                    const audit = rawData.audits[key];
-                    if (audit) {
-                        const statusColor = audit.score === 1 ? '#00ff88' : '#ff4b2b';
+                    const seoAudit = rawData.audits[key];
+                    if (seoAudit) {
+                        const statusColor = seoAudit.score === 1 ? '#00ff88' : '#ff4b2b';
+                        const statusIcon = seoAudit.score === 1 ? '✅' : '❌';
+                        
                         seoHTML += `
                             <div style="background: #1a1a1a; padding: 10px; border-radius: 5px; border-left: 3px solid ${statusColor}; margin-bottom:10px;">
-                                <span style="font-size: 12px; color: #888;">${audit.title}</span>
-                                <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 14px;">${audit.score === 1 ? '✅ Optimized' : '❌ Needs Fix'}</p>
+                                <span style="font-size: 11px; color: #888; text-transform: uppercase;">${seoAudit.title}</span>
+                                <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 14px; color: #fff;">
+                                    ${statusIcon} ${seoAudit.score === 1 ? 'Optimized' : 'Needs Fix'}
+                                </p>
                             </div>
                         `;
                     }
                 });
+
+                // Injecting into the hidden template for the PDF export
                 const seoContainer = document.getElementById('pdf-seo-list');
-                if(seoContainer) seoContainer.innerHTML = seoHTML;
+                if (seoContainer) seoContainer.innerHTML = seoHTML;
             }
 
+            // 3. Update the Call to Action area with the total leak count
             showCTA(failCount);
         }
 
         // 6. UI: Call to Action
         function showCTA(count) {
             const cta = document.getElementById('cta-area');
+            const targetUrl = document.getElementById('url-input').value || "their website";
+            
+            // Replace with your actual WhatsApp number (include country code, no +)
+            const myNumber = "234XXXXXXXXXX"; 
+            
+            // Crafting the professional pitch message
+            const message = encodeURIComponent(
+                `Hi Emmy STACK01! 🚀\n\nI just ran a Website Audit for ${targetUrl}.\n` +
+                `The tool identified ${count} critical performance leaks.\n\n` +
+                `I'd like to discuss fixing my Digital DNA and optimizing my site's performance!`
+            );
+            
+            const waLink = `https://wa.me/${myNumber}?text=${message}`;
+
             if (count > 0) {
                 cta.innerHTML = `
-                    <div class="cta-box" style="background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; padding: 25px; border-radius: 12px; text-align: center; margin-top:30px;">
-                        <h2 style="color: #fff;">Found ${count} critical performance leaks.</h2>
-                        <button class="fix-btn" onclick="window.location.href='#contact'">Fix My Digital DNA</button>
+                    <div class="cta-box" style="background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px;">
+                        <h2 style="color: #fff; margin-bottom: 10px;">Found ${count} critical performance leaks.</h2>
+                        <p style="color: #ccc; margin-bottom: 20px;">Your site's speed and SEO are currently below professional standards.</p>
+                        <button class="fix-btn" onclick="window.open('${waLink}', '_blank')" style="cursor: pointer;">
+                            <i class="ri-whatsapp-line"></i> Fix My Digital DNA
+                        </button>
                     </div>`;
             } else {
-                cta.innerHTML = `<div class="cta-box" style="text-align:center; margin-top:30px;"><h2>Your DNA is clean!</h2></div>`;
+                cta.innerHTML = `<div class="cta-box" style="text-align: center; margin-top: 30px;"><h2>Your DNA is clean! 🚀</h2></div>`;
             }
         }
 
         // 7. PDF: Report Generation
         function generatePDF() {
-            const domain = document.getElementById('url-input').value || 'website';
+            const domain = document.getElementById('url-input').value || "website";
             const date = new Date().toLocaleDateString();
             
-            // Populate the Template
-            document.getElementById('pdf-domain-display').innerText = `Analysis for: ${domain}`;
-            document.getElementById('pdf-date').innerText = `Date: ${date}`;
+            // 1. Update the Header info in your template
+            const pdfDomainDisplay = document.getElementById('pdf-domain-display');
+            const pdfDateDisplay = document.getElementById('pdf-date');
             
-            // Clone current UI issues into PDF template
+            if(pdfDomainDisplay) pdfDomainDisplay.innerText = `Analysis for: ${domain}`;
+            if(pdfDateDisplay) pdfDateDisplay.innerText = `Date: ${date}`;
+            
+            // 2. Sync the results: Move the "Identified Leaks" into the PDF template
             const currentIssues = document.getElementById('issues-list').innerHTML;
-            document.getElementById('pdf-issues-list').innerHTML = currentIssues;
+            const pdfIssuesList = document.getElementById('pdf-issues-list');
             
+            if(pdfIssuesList) {
+                pdfIssuesList.innerHTML = currentIssues;
+            } else {
+                console.error("PDF issues list container not found in template.");
+            }
+            
+            // 3. Trigger the PDF generation
             const element = document.getElementById('pdf-template');
             const opt = {
-                margin:       0,
+                margin:       [10, 10, 10, 10], // top, left, bottom, right
                 filename:     `EmmyStack01-Audit-${domain}.pdf`,
                 image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0b0b0b' },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: '#0b0b0b', // Ensures the dark mode aesthetic carries over
+                    letterRendering: true
+                },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
+            // Use the html2pdf library to save
             html2pdf().set(opt).from(element).save();
         }
     </script>
