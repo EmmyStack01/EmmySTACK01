@@ -89,6 +89,7 @@
     color: #000;                  /* Flips to black for contrast */
     box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
 }
+
 /*new*/
 .dropbtn {
     background: none;
@@ -208,6 +209,7 @@
     }
 }
 
+
 /* TOOGLE NAVBAR */
 @media screen and (max-width: 900px) {
     .nav{display: none;}
@@ -239,7 +241,7 @@
         right: -100%; /* Fully hidden to the right */
         width: 80%;   /* Adjust width as needed */
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.89);
+        background-color: rgba(0, 0, 0, 0.97);
         -webkit-backdrop-filter: blur(15px);
         backdrop-filter: blur(15px);
         display: flex;
@@ -278,7 +280,7 @@
     .nav-link a {
         text-decoration: none;
         color: var(--white);
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         transition: color 0.3s ease;
     }
@@ -319,7 +321,7 @@
         border: none;
         text-decoration: none;
         color: var(--white);
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         transition: color 0.3s ease;
     }
@@ -328,6 +330,8 @@
 body, html {
     scroll-behavior: smooth;
 }
+
+
 
 /*HERO SECTION*/
 .video-background {
