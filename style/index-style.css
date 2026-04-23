@@ -279,7 +279,6 @@
 
     .nav-link a {
         text-decoration: none;
-        max-width: 20px;
         color: var(--white);
         font-size: 20px;
         font-weight: bold;
