@@ -78,6 +78,7 @@ body {
     backdrop-filter: blur(12px);
     transition: all 0.3s ease;
     font-size: 1.2rem;
+   z-index: 1000;
 }
 
 .back-btn:hover {
