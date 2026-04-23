@@ -283,7 +283,7 @@ html{
     .nav-list {
         width: 100%;
         text-align: center;
-        padding: 20px 0;
+        padding: 20px 60px;
     }
 
     .nav-link a {
