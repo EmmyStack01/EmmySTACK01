@@ -25,6 +25,6 @@
     { "source": "/policy", "destination": "/policy.html" },
     { "source": "/payment", "destination": "/payment.html" },
     { "source": "/preview", "destination": "/preview.html" },
-    { "source": "/performance-auditor", "destination": "/performance-auditor.html" }
+    { "source": "/website-auditor", "destination": "/website-auditor.html" }
   ]
 }
