@@ -154,6 +154,7 @@ body{background-color: var(--bg-dark);}
     transform: rotate(180deg);
 }
 
+
 /*FLAT NAV*/
 @media screen and (min-width: 900.01px){
     .navbar{display: none;}
@@ -237,7 +238,7 @@ body{background-color: var(--bg-dark);}
         right: -100%; /* Fully hidden to the right */
         width: 80%;   /* Adjust width as needed */
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.89);
+        background-color: rgba(0, 0, 0, 0.97);
         -webkit-backdrop-filter: blur(15px);
         backdrop-filter: blur(15px);
         display: flex;
@@ -276,7 +277,7 @@ body{background-color: var(--bg-dark);}
     .nav-link a {
         text-decoration: none;
         color: var(--white);
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         transition: color 0.3s ease;
     }
@@ -317,7 +318,7 @@ body{background-color: var(--bg-dark);}
         border: none;
         text-decoration: none;
         color: var(--white);
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         transition: color 0.3s ease;
     }
