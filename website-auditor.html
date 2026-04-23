@@ -510,7 +510,7 @@
             </div>
         </footer>
     </div>
-    <div id="pdf-template" style="position: absolute; left: -9999px; width: 700px; color: #fff; background: #0b0b0b; padding: 40px; font-family: 'Inter', sans-serif;">
+    <div id="pdf-template" style="position: absolute; left: -9999px; width: 210mm; min-height: 297mm; color: #fff; background: #0a0a0a; padding: 40px; font-family: 'Montserrat', sans-serif;">
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 20px; margin-bottom: 30px;">
             <h1 style="margin: 0; font-size: 28px;">EMMY <span style="color: #4facfe;">STACK01</span></h1>
             <p style="margin: 5px 0; color: #888;">High-Performance Digital DNA Audit</p>
@@ -749,14 +749,12 @@
         function showCTA(count) {
             const cta = document.getElementById('cta-area');
             const targetUrl = document.getElementById('url-input').value || "their website";
-            
-            // FIXED: Use your actual WhatsApp number here
-            const myNumber = "2349076991076"; 
+            const myNumber = "2349076991076"; // Your actual number
             
             const message = encodeURIComponent(
                 `Hi Emmy STACK01! 🚀\n\nI just ran a Website Audit for ${targetUrl}.\n` +
                 `The tool identified ${count} critical performance leaks.\n\n` +
-                `I'd like to discuss fixing my Digital DNA and optimizing my site's performance!`
+                `I'd like to discuss fixing my Digital DNA!`
             );
             
             const waLink = `https://wa.me/${myNumber}?text=${message}`;
@@ -766,9 +764,9 @@
                     <div class="cta-box" style="background: rgba(255, 68, 68, 0.1); border: 1px solid #ff4444; padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px;">
                         <h2 style="color: #fff; margin-bottom: 10px;">Found ${count} critical performance leaks.</h2>
                         <p style="color: #ccc; margin-bottom: 20px;">Your site's speed and SEO are currently below professional standards.</p>
-                        <button class="fix-btn" onclick="window.open('${waLink}', '_blank')" style="cursor: pointer;">
+                        <a href="${waLink}" target="_blank" class="fix-btn" style="display: inline-block; text-decoration: none; cursor: pointer;">
                             <i class="ri-whatsapp-line"></i> Fix My Digital DNA
-                        </button>
+                        </a>
                     </div>`;
             } else {
                 cta.innerHTML = `<div class="cta-box" style="text-align: center; margin-top: 30px;"><h2>Your DNA is clean! 🚀</h2></div>`;
@@ -778,47 +776,40 @@
         // 7. PDF: Report Generation
         function generatePDF() {
             const domain = document.getElementById('url-input').value || "website";
-            const date = new Date().toLocaleDateString();
-            
-            const pdfDomainDisplay = document.getElementById('pdf-domain-display');
-            const pdfDateDisplay = document.getElementById('pdf-date');
-            const pdfIssuesList = document.getElementById('pdf-issues-list');
+            const element = document.getElementById('pdf-template');
             const currentIssues = document.getElementById('issues-list');
+            const pdfIssuesList = document.getElementById('pdf-issues-list');
 
-            if(pdfDomainDisplay) pdfDomainDisplay.innerText = `Analysis for: ${domain}`;
-            if(pdfDateDisplay) pdfDateDisplay.innerText = `Date: ${date}`;
-            
-            // Sync content and force opacity to 1 for the PDF capture
+            // 1. Sync the data and FORCE visibility
             if(pdfIssuesList && currentIssues) {
                 pdfIssuesList.innerHTML = currentIssues.innerHTML;
-                // Ensure all cloned cards are visible in the PDF
+                // CRITICAL: Force opacity to 1 because GSAP sets it to 0 initially
                 const cards = pdfIssuesList.querySelectorAll('.audit-card');
                 cards.forEach(card => card.style.opacity = "1");
             }
 
-            const element = document.getElementById('pdf-template');
-            
-            // Temporarily bring into view for the library to "see" it properly
+            // 2. Prepare the template for capture
+            element.style.position = "static";
             element.style.left = "0";
-            element.style.position = "relative";
+            element.style.background = "#0a0a0a"; // Ensure it's your brand black
 
             const opt = {
-                margin: 10,
-                filename: `EmmyStack01-Audit-${domain.replace(/[^a-z0-9]/gi, '_')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
+                margin: 0, // No margins to ensure the black fills the page
+                filename: `EmmyStack01-Audit-${domain}.pdf`,
+                image: { type: 'jpeg', quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#0b0b0b',
-                    scrollY: 0
+                    backgroundColor: '#0a0a0a', // Forces the canvas background
+                    letterRendering: true
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
+            // 3. Run and reset
             html2pdf().set(opt).from(element).save().then(() => {
-                // Hide it again after generation
-                element.style.left = "-9999px";
                 element.style.position = "absolute";
+                element.style.left = "-9999px";
             });
         }
     </script>
