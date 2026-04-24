@@ -511,7 +511,8 @@
             </div>
         </footer>
     </div>
-    <div id="pdf-template" style="display: none; width: 210mm; min-height: 297mm; background: #0a0a0a; color: #fff; padding: 40px; box-sizing: border-box;">
+   
+    <div id="pdf-template" style="position: fixed; top: 0; left: -100vw; width: 210mm; min-height: 297mm; background: #0a0a0a; color: #ffffff; padding: 40px; box-sizing: border-box; z-index: -999;">
     
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div>
@@ -778,76 +779,41 @@
         // 7. PDF: Report Generation
         function generatePDF() {
             const domain = document.getElementById('url-input').value || "website";
-            const date = new Date().toLocaleDateString();
+            const element = document.getElementById('pdf-template');
             
-            // 1. Target the hidden template and CLONE it
-            const originalElement = document.getElementById('pdf-template');
-            const clonedElement = originalElement.cloneNode(true);
-            
-            // 2. Make the clone "visible" to the worker (but not on screen)
-            clonedElement.style.display = "block";
-            clonedElement.style.position = "absolute";
-            clonedElement.style.top = "0";
-            clonedElement.style.left = "-9999px"; // Keep it far off-screen
-            document.body.appendChild(clonedElement);
-
-            // 3. Inject data into the CLONE (not the original)
-            clonedElement.querySelector('#pdf-domain-display').innerText = `Analysis for: ${domain}`;
-            clonedElement.querySelector('#pdf-date').innerText = `Date: ${date}`;
-            
-            const perf = document.getElementById('perf-score').innerText;
-            const seo = document.getElementById('seo-score').innerText;
-            const ux = document.getElementById('ux-score').innerText;
-            
-            const scoresGrid = clonedElement.querySelector('#pdf-scores-grid');
-            scoresGrid.innerHTML = `
-                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
-                    <p style="font-size:10px; color:#888; margin:0;">PERFORMANCE</p>
-                    <h2 style="color:#00ff88; margin:5px 0;">${perf}</h2>
-                </div>
-                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
-                    <p style="font-size:10px; color:#888; margin:0;">SEO SCORE</p>
-                    <h2 style="color:#4facfe; margin:5px 0;">${seo}</h2>
-                </div>
-                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
-                    <p style="font-size:10px; color:#888; margin:0;">ACCESSIBILITY</p>
-                    <h2 style="color:#ffbb00; margin:5px 0;">${ux}</h2>
-                </div>
-            `;
-
-            // Sync the issues list into the clone
-            const pdfIssuesList = clonedElement.querySelector('#pdf-issues-list');
+            // 1. Sync Data to the template
+            const pdfIssuesList = document.getElementById('pdf-issues-list');
             const currentIssues = document.getElementById('issues-list');
+            
             if(pdfIssuesList && currentIssues) {
                 pdfIssuesList.innerHTML = currentIssues.innerHTML;
-                const cards = pdfIssuesList.querySelectorAll('.audit-card');
-                cards.forEach(card => {
-                    card.style.opacity = "1";
-                    card.style.background = "#111";
-                    card.style.padding = "10px";
-                    card.style.borderRadius = "8px";
+                // FORCE all items to be visible (solves the blank PDF issue)
+                const allItems = pdfIssuesList.querySelectorAll('*');
+                allItems.forEach(el => {
+                    el.style.opacity = "1";
+                    el.style.visibility = "visible";
+                    el.style.color = "#ffffff"; // Ensure text isn't black-on-black
                 });
             }
 
-            // 4. PDF Options
+            // 2. PDF Capture Settings
             const opt = {
                 margin: 0,
-                filename: `EmmyStack01-Audit-${domain}.pdf`,
+                filename: `EmmySTACK01-Audit-${domain}.pdf`,
                 image: { type: 'jpeg', quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#0a0a0a', // Forced black background
-                    letterRendering: true
+                    backgroundColor: '#0a0a0a', // Forces the canvas to be black
+                    letterRendering: true,
+                    logging: false // Keeps the console clean
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // 5. Generate and Cleanup
-            html2pdf().set(opt).from(clonedElement).save().then(() => {
-                // Remove the clone from the DOM so it doesn't stay in the background
-                document.body.removeChild(clonedElement);
-            });
+            // 3. Execute Capture
+            // We don't need to move the element; it's already at left: -100vw
+            html2pdf().set(opt).from(element).save();
         }
     </script>
 </body>
