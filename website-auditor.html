@@ -777,70 +777,7 @@
         }
 
         // 7. PDF: Report Generation
-        async function generatePDF() {
-    const domain = document.getElementById('url-input').value || "website";
-    const date = new Date().toLocaleDateString();
-    const element = document.getElementById('pdf-template');
-
-    // 1. Sync Meta Info
-    document.getElementById('pdf-domain-display').innerText = `Analysis for: ${domain}`;
-    document.getElementById('pdf-date').innerText = `Date: ${date}`;
-
-    // 2. Sync Score Grid
-    const perf = document.getElementById('perf-score').innerText;
-    const seo  = document.getElementById('seo-score').innerText;
-    const ux   = document.getElementById('ux-score').innerText;
-
-    document.getElementById('pdf-scores-grid').innerHTML = `
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">PERFORMANCE</p>
-            <h2 style="color:#00ff88;margin:5px 0;font-size:24px;">${perf}</h2>
-        </div>
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">SEO SCORE</p>
-            <h2 style="color:#4facfe;margin:5px 0;font-size:24px;">${seo}</h2>
-        </div>
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">ACCESSIBILITY</p>
-            <h2 style="color:#ffbb00;margin:5px 0;font-size:24px;">${ux}</h2>
-        </div>
-    `;
-
-    // 3. Sync Issues List
-    const pdfIssuesList = document.getElementById('pdf-issues-list');
-    const currentIssues = document.getElementById('issues-list');
-
-    if (pdfIssuesList && currentIssues) {
-        pdfIssuesList.innerHTML = currentIssues.innerHTML;
-        pdfIssuesList.querySelectorAll('*').forEach(el => {
-            el.style.opacity    = "1";
-            el.style.visibility = "visible";
-            el.style.color      = "#ffffff";
-        });
-    }
-
-    // 4. Reveal for html2canvas (no FOUC — element is off-screen via left: -100vw)
-    element.style.visibility = "visible";
-
-    // 5. Wait for fonts + paint
-    await document.fonts.ready;
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    // 6. PDF options
-    const opt = {
-        margin: 0,
-        filename: `EmmyStack01-Audit-${domain}.pdf`,
-        image:    { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale:           2,
-            useCORS:         true,
-            backgroundColor: '#0a0a0a',
-            letterRendering: true,
-            allowTaint:      true
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
+    
     // 7. Generate then reset
     async function generatePDF() {
     const domain = document.getElementById('url-input').value || "website";
