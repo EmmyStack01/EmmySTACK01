@@ -777,43 +777,57 @@
         }
 
         // 7. PDF: Report Generation
-        function generatePDF() {
+        async function generatePDF() {
             const domain = document.getElementById('url-input').value || "website";
             const element = document.getElementById('pdf-template');
             
-            // 1. Sync Data to the template
+            // 1. Sync Data
             const pdfIssuesList = document.getElementById('pdf-issues-list');
             const currentIssues = document.getElementById('issues-list');
             
             if(pdfIssuesList && currentIssues) {
                 pdfIssuesList.innerHTML = currentIssues.innerHTML;
-                // FORCE all items to be visible (solves the blank PDF issue)
+                
+                // Force every single element to be visible and white
                 const allItems = pdfIssuesList.querySelectorAll('*');
                 allItems.forEach(el => {
                     el.style.opacity = "1";
                     el.style.visibility = "visible";
-                    el.style.color = "#ffffff"; // Ensure text isn't black-on-black
+                    el.style.display = "block"; // Ensure they aren't hidden
+                    el.style.color = "#ffffff"; 
                 });
             }
 
-            // 2. PDF Capture Settings
+            // 2. THE SECRET SAUCE: Wait for the browser to "paint" the hidden element
+            // We move it slightly into view but keep it hidden behind other things
+            element.style.position = "fixed";
+            element.style.left = "0";
+            element.style.zIndex = "-999"; 
+            
+            // Give the browser 100ms to render the HTML into the template
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            // 3. PDF Settings
             const opt = {
                 margin: 0,
-                filename: `EmmySTACK01-Audit-${domain}.pdf`,
+                filename: `EmmyStack01-Audit-${domain}.pdf`,
                 image: { type: 'jpeg', quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#0a0a0a', // Forces the canvas to be black
-                    letterRendering: true,
-                    logging: false // Keeps the console clean
+                    backgroundColor: '#0a0a0a', 
+                    letterRendering: true
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // 3. Execute Capture
-            // We don't need to move the element; it's already at left: -100vw
-            html2pdf().set(opt).from(element).save();
+            // 4. Run and Reset
+            try {
+                await html2pdf().set(opt).from(element).save();
+            } finally {
+                // Move it back out of the way
+                element.style.left = "-100vw";
+            }
         }
     </script>
 </body>
