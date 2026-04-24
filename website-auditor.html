@@ -511,7 +511,7 @@
             </div>
         </footer>
     </div>
-    <div id="pdf-template" style="position: absolute; left: -9999px; width: 794px; height: auto; color: #fff; background: #0a0a0a; padding: 40px; font-family: 'Montserrat', sans-serif;">
+    <div id="pdf-template" style="position: absolute; left: -9999px; width: 210mm; min-height: 297mm; color: #fff; background: #0a0a0a; padding: 40px; font-family: 'Montserrat', sans-serif;">
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 20px; margin-bottom: 30px;">
             <h1 style="margin: 0; font-size: 28px;">EMMY <span style="color: #4facfe;">STACK01</span></h1>
             <p style="margin: 5px 0; color: #888;">High-Performance Digital DNA Audit</p>
@@ -526,7 +526,9 @@
             </div>
 
         <div id="pdf-findings">
-            <h3 style="border-left: 4px solid #4facfe; padding-left: 15px;">Technical Findings & Solutions</h3>
+            <h3 style="border-left: 4px solid #4facfe; padding-left: 15px;">
+                <i class="ri-settings-3-line"></i> Technical Findings & Solutions
+            </h3>
             <div id="pdf-issues-list">
                 </div>
         </div>
@@ -777,40 +779,57 @@
         // 7. PDF: Report Generation
         function generatePDF() {
             const domain = document.getElementById('url-input').value || "website";
-            const element = document.getElementById('pdf-template');
-            const currentIssues = document.getElementById('issues-list');
+            
             const pdfIssuesList = document.getElementById('pdf-issues-list');
+            const currentIssues = document.getElementById('issues-list');
 
-            // 1. Sync the data and FORCE visibility
+            // Sync content and force opacity to 1 for the PDF capture
             if(pdfIssuesList && currentIssues) {
                 pdfIssuesList.innerHTML = currentIssues.innerHTML;
-                // CRITICAL: Force opacity to 1 because GSAP sets it to 0 initially
                 const cards = pdfIssuesList.querySelectorAll('.audit-card');
                 cards.forEach(card => card.style.opacity = "1");
             }
 
-            // 2. Prepare the template for capture
-            element.style.position = "static";
+            const element = document.getElementById('pdf-template');
+            
+            // Temporarily bring into view and set background for proper rendering
             element.style.left = "0";
-            element.style.background = "#0a0a0a"; // Ensure it's your brand black
+            element.style.position = "relative";
+            element.style.background = "#0a0a0a"; 
+
+            // CALCULATE SCALING TO FIT ONE PAGE
+            // Get the height of the content in pixels
+            const contentHeight = element.offsetHeight;
+            // A4 page height in points is roughly 842pt. Let's provide some padding.
+            // To be safe, let's say the target height is 800pt.
+            const targetHeightPoints = 800; 
+
+            //Points = pixels * 72 / 96, so content height in points is:
+            const contentHeightPoints = contentHeight * 0.75; // roughly
+
+            let scaleFactor = 1;
+            if (contentHeightPoints > targetHeightPoints) {
+                // If content is too tall, scale it down.
+                scaleFactor = targetHeightPoints / contentHeightPoints;
+            }
 
             const opt = {
-                margin: 0, // No margins to ensure the black fills the page
+                margin: 0, 
                 filename: `EmmyStack01-Audit-${domain}.pdf`,
                 image: { type: 'jpeg', quality: 1 },
                 html2canvas: { 
-                    scale: 2, 
+                    scale: 2 * scaleFactor, // Scale the rendering canvas as well
                     useCORS: true, 
-                    backgroundColor: '#0a0a0a', // Forces the canvas background
+                    backgroundColor: '#0a0a0a',
                     letterRendering: true
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // 3. Run and reset
             html2pdf().set(opt).from(element).save().then(() => {
-                element.style.position = "absolute";
+                // Hide it again after generation
                 element.style.left = "-9999px";
+                element.style.position = "absolute";
             });
         }
     </script>
