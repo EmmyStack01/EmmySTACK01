@@ -511,7 +511,7 @@
             </div>
         </footer>
     </div>
-    <div id="pdf-template" style="position: absolute; left: -9999px; width: 190mm; min-height: 270mm; color: #fff; background: #0a0a0a; padding: 10mm; font-family: 'Montserrat', sans-serif; box-sizing: border-box;">
+    <div id="pdf-template" style="display: none; width: 210mm; min-height: 297mm; background: #0a0a0a; color: #fff; padding: 40px; box-sizing: border-box;">
     
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div>
@@ -780,16 +780,27 @@
             const domain = document.getElementById('url-input').value || "website";
             const date = new Date().toLocaleDateString();
             
-            // Sync Metadata
-            document.getElementById('pdf-domain-display').innerText = `Analysis for: ${domain}`;
-            document.getElementById('pdf-date').innerText = `Date: ${date}`;
+            // 1. Target the hidden template and CLONE it
+            const originalElement = document.getElementById('pdf-template');
+            const clonedElement = originalElement.cloneNode(true);
             
-            // Sync Scores (Make sure they look good in PDF)
+            // 2. Make the clone "visible" to the worker (but not on screen)
+            clonedElement.style.display = "block";
+            clonedElement.style.position = "absolute";
+            clonedElement.style.top = "0";
+            clonedElement.style.left = "-9999px"; // Keep it far off-screen
+            document.body.appendChild(clonedElement);
+
+            // 3. Inject data into the CLONE (not the original)
+            clonedElement.querySelector('#pdf-domain-display').innerText = `Analysis for: ${domain}`;
+            clonedElement.querySelector('#pdf-date').innerText = `Date: ${date}`;
+            
             const perf = document.getElementById('perf-score').innerText;
             const seo = document.getElementById('seo-score').innerText;
             const ux = document.getElementById('ux-score').innerText;
             
-            document.getElementById('pdf-scores-grid').innerHTML = `
+            const scoresGrid = clonedElement.querySelector('#pdf-scores-grid');
+            scoresGrid.innerHTML = `
                 <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
                     <p style="font-size:10px; color:#888; margin:0;">PERFORMANCE</p>
                     <h2 style="color:#00ff88; margin:5px 0;">${perf}</h2>
@@ -804,43 +815,38 @@
                 </div>
             `;
 
-            // Sync Issues List
-            const pdfIssuesList = document.getElementById('pdf-issues-list');
+            // Sync the issues list into the clone
+            const pdfIssuesList = clonedElement.querySelector('#pdf-issues-list');
             const currentIssues = document.getElementById('issues-list');
             if(pdfIssuesList && currentIssues) {
                 pdfIssuesList.innerHTML = currentIssues.innerHTML;
-                // Force opacity and fix layout for PDF
                 const cards = pdfIssuesList.querySelectorAll('.audit-card');
                 cards.forEach(card => {
                     card.style.opacity = "1";
                     card.style.background = "#111";
                     card.style.padding = "10px";
                     card.style.borderRadius = "8px";
-                    card.style.marginBottom = "0"; // Handled by grid gap
                 });
             }
 
-            const element = document.getElementById('pdf-template');
-            element.style.position = "static";
-            element.style.left = "0";
-
+            // 4. PDF Options
             const opt = {
-                margin: [0, 0, 0, 0], // No margins to keep it one page
-                filename: `Audit-${domain}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
+                margin: 0,
+                filename: `EmmyStack01-Audit-${domain}.pdf`,
+                image: { type: 'jpeg', quality: 1 },
                 html2canvas: { 
                     scale: 2, 
                     useCORS: true, 
-                    backgroundColor: '#0a0a0a',
-                    scrollY: 0 
+                    backgroundColor: '#0a0a0a', // Forced black background
+                    letterRendering: true
                 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: 'avoid-all' } // Prevents splitting cards across pages
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().set(opt).from(element).save().then(() => {
-                element.style.position = "absolute";
-                element.style.left = "-9999px";
+            // 5. Generate and Cleanup
+            html2pdf().set(opt).from(clonedElement).save().then(() => {
+                // Remove the clone from the DOM so it doesn't stay in the background
+                document.body.removeChild(clonedElement);
             });
         }
     </script>
