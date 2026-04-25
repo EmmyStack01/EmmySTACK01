@@ -607,7 +607,7 @@ const initializeBrandFlow = async () => {
     updateButtonStatus(true); // Scanning animation starts
 
     try {
-        const response = await fetch('https://emmy-stack-01.vercel.app/api/generate', {
+        const response = await fetch('/api/generate', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
