@@ -413,6 +413,10 @@
             left: -2000px; /* Moves it off-screen */
             z-index: -999;
 
+            font-family: 'remixicon' !important;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+
             /* A4 PROPORTIONS */
             width: 210mm;
             min-height: 297mm; /* Forces full page height to be black */
@@ -422,7 +426,7 @@
             /* DARK DNA BRANDING */
             background-color: #0a0a0a !important; /* Force black */
             color: #ffffff !important;           /* Force white text */
-            font-family: 'Montserrat', sans-serif;
+            /*font-family: 'Montserrat', sans-serif;*/
             
             /* PREVENT BLANK RENDER */
             display: block; 
@@ -883,14 +887,21 @@
                 // Move into view
                 element.style.left = "0";
 
-                // WAIT for fonts and icons to actually load
-                await document.fonts.ready; // Wait for Google Fonts
-                await new Promise(resolve => setTimeout(resolve, 500)); // Half-second buffer for icons
+                // 1. First, tell the browser to wait for the font files to be active
+                await document.fonts.ready; 
 
+                // 2. Give the icons (RemixIcon) a moment to "paint" onto the screen
+                await new Promise(resolve => setTimeout(resolve, 500)); 
+
+                // 3. Take the high-res snapshot
                 const dataUrl = await htmlToImage.toPng(element, { 
                     backgroundColor: '#0a0a0a',
                     pixelRatio: 2,
-                    cacheBust: true, // Prevents loading old cached (blank) versions of icons
+                    cacheBust: true,
+                    skipFonts: false, // Add it here to be 100% safe
+                    style: {
+                        fontFamily: 'Montserrat, Orbitron, sans-serif' // Extra force for the fonts
+                    }
                 });
 
                 // 5. Create the PDF and add the image
