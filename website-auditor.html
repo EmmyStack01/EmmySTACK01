@@ -405,6 +405,49 @@
             inset 0 0 10px rgba(79,172,254,0.2);
         }
 
+
+        #pdf-template {
+            /* HIDE FROM USER, SHOW TO WORKER */
+            position: fixed;
+            top: 0;
+            left: -2000px; /* Moves it off-screen */
+            z-index: -999;
+
+            /* A4 PROPORTIONS */
+            width: 210mm;
+            min-height: 297mm; /* Forces full page height to be black */
+            padding: 30px 40px;
+            box-sizing: border-box;
+
+            /* DARK DNA BRANDING */
+            background-color: #0a0a0a !important; /* Force black */
+            color: #ffffff !important;           /* Force white text */
+            font-family: 'Montserrat', sans-serif;
+            
+            /* PREVENT BLANK RENDER */
+            display: block; 
+        }
+
+        /* Force headings and icons to keep their color */
+        #pdf-template h1, #pdf-template h2, #pdf-template h3, #pdf-template i {
+            color: #4facfe !important;
+        }
+
+        #pdf-template p, #pdf-template span {
+            color: #ffffff !important;
+        }
+
+        /* Prevent cards from splitting between pages */
+        .audit-card {
+            page-break-inside: avoid;
+            break-inside: avoid;
+            background: #111111 !important;
+            border: 1px solid #333333 !important;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
         /*footer*/
         .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
         .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
@@ -511,9 +554,9 @@
             </div>
         </footer>
     </div>
+   
+    <div id="pdf-template">
     
-   <div id="pdf-template" style="position:fixed; left:-100vw; top:0; z-index:9999; visibility:hidden; width:210mm; min-height:297mm; background:#0a0a0a; color:#ffffff; padding:40px; box-sizing:border-box;">
-
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 style="margin: 0; font-size: 24px; font-family: 'Orbitron';">EMMY <span style="color: #4facfe;">STACK01</span></h1>
@@ -546,7 +589,8 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         /**
          * EMMY STACK01 - Website Performance Auditor
@@ -777,82 +821,72 @@
         }
 
         // 7. PDF: Report Generation
-    
-    // 7. Generate then reset
-    async function generatePDF() {
-    const domain = document.getElementById('url-input').value || "website";
-    const date = new Date().toLocaleDateString();
-    const element = document.getElementById('pdf-template');
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const domain = document.getElementById('url-input').value || "website";
+            const element = document.getElementById('pdf-template');
+            
+            // 1. Sync the Meta Data
+            document.getElementById('pdf-domain-display').innerText = `Analysis for: ${domain}`;
+            document.getElementById('pdf-date').innerText = `Date: ${new Date().toLocaleDateString()}`;
 
-    // 1. Sync Meta Info
-    document.getElementById('pdf-domain-display').innerText = `Analysis for: ${domain}`;
-    document.getElementById('pdf-date').innerText = `Date: ${date}`;
+            // 2. Sync Scores
+            const perf = document.getElementById('perf-score').innerText;
+            const seo = document.getElementById('seo-score').innerText;
+            const ux = document.getElementById('ux-score').innerText;
+            
+            document.getElementById('pdf-scores-grid').innerHTML = `
+                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
+                    <p style="font-size:10px; color:#888; margin:0;">PERFORMANCE</p>
+                    <h2 style="color:#00ff88; margin:5px 0; font-family: 'Orbitron';">${perf}</h2>
+                </div>
+                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
+                    <p style="font-size:10px; color:#888; margin:0;">SEO SCORE</p>
+                    <h2 style="color:#4facfe; margin:5px 0; font-family: 'Orbitron';">${seo}</h2>
+                </div>
+                <div style="background:#111; padding:15px; border-radius:10px; text-align:center; border:1px solid #333;">
+                    <p style="font-size:10px; color:#888; margin:0;">ACCESSIBILITY</p>
+                    <h2 style="color:#ffbb00; margin:5px 0; font-family: 'Orbitron';">${ux}</h2>
+                </div>
+            `;
 
-    // 2. Sync Score Grid
-    const perf = document.getElementById('perf-score').innerText;
-    const seo  = document.getElementById('seo-score').innerText;
-    const ux   = document.getElementById('ux-score').innerText;
+            // 3. Sync Issues List
+            const pdfIssuesList = document.getElementById('pdf-issues-list');
+            const currentIssues = document.getElementById('issues-list');
+            if(pdfIssuesList && currentIssues) {
+                pdfIssuesList.innerHTML = currentIssues.innerHTML;
+                // Force card visibility for the snapshot
+                const cards = pdfIssuesList.querySelectorAll('.audit-card');
+                cards.forEach(card => card.style.opacity = "1");
+            }
 
-    document.getElementById('pdf-scores-grid').innerHTML = `
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">PERFORMANCE</p>
-            <h2 style="color:#00ff88;margin:5px 0;font-size:24px;">${perf}</h2>
-        </div>
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">SEO SCORE</p>
-            <h2 style="color:#4facfe;margin:5px 0;font-size:24px;">${seo}</h2>
-        </div>
-        <div style="background:#111;padding:15px;border-radius:10px;text-align:center;border:1px solid #333;">
-            <p style="font-size:10px;color:#888;margin:0;">ACCESSIBILITY</p>
-            <h2 style="color:#ffbb00;margin:5px 0;font-size:24px;">${ux}</h2>
-        </div>
-    `;
+            // 4. THE MAGIC: Take a high-res snapshot
+            element.style.left = "0"; // Temporarily bring to "render zone" (hidden by z-index)
 
-    // 3. Sync Issues List
-    const pdfIssuesList = document.getElementById('pdf-issues-list');
-    const currentIssues = document.getElementById('issues-list');
+            try {
+                // We use htmlToImage to create a crisp PNG of your dark design
+                const dataUrl = await htmlToImage.toPng(element, { 
+                    backgroundColor: '#0a0a0a',
+                    pixelRatio: 2, // Double resolution for professional quality
+                    skipFonts: false
+                });
 
-    if (pdfIssuesList && currentIssues) {
-        pdfIssuesList.innerHTML = currentIssues.innerHTML;
-        pdfIssuesList.querySelectorAll('*').forEach(el => {
-            el.style.opacity    = "1";
-            el.style.visibility = "visible";
-            el.style.color      = "#ffffff";
-        });
-    }
+                // 5. Create the PDF and add the image
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps = pdf.getImageProperties(dataUrl);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-    // 4. Reveal for html2canvas (no FOUC — element is off-screen via left: -100vw)
-    element.style.visibility = "visible";
+                pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`EmmyStack01-Audit-${domain}.pdf`);
 
-    // 5. Wait for fonts + paint
-    await document.fonts.ready;
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    // 6. PDF options
-    const opt = {
-        margin: 0,
-        filename: `EmmyStack01-Audit-${domain}.pdf`,
-        image:    { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-            scale:           2,
-            useCORS:         true,
-            backgroundColor: '#0a0a0a',
-            letterRendering: true,
-            allowTaint:      true
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // 7. Generate then reset
-    try {
-        await html2pdf().set(opt).from(element).save();
-    } catch (err) {
-        console.error("PDF Error:", err);
-    } finally {
-        element.style.visibility = "hidden";
-    }
+            } catch (error) {
+                console.error('Snapshot failed:', error);
+                alert("Report generation failed. Please try again.");
+            } finally {
+                element.style.left = "-100vw"; // Hide it back
+            }
         }
-        
     </script>
 </body>
 </html>
