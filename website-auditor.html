@@ -413,9 +413,6 @@
             left: -2000px; /* Moves it off-screen */
             z-index: -999;
 
-            font-family: 'remixicon' !important;
-            font-style: normal;
-            -webkit-font-smoothing: antialiased;
 
             /* A4 PROPORTIONS */
             width: 210mm;
@@ -426,10 +423,19 @@
             /* DARK DNA BRANDING */
             background-color: #0a0a0a !important; /* Force black */
             color: #ffffff !important;           /* Force white text */
-            /*font-family: 'Montserrat', sans-serif;*/
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji" !important;
             
             /* PREVENT BLANK RENDER */
             display: block; 
+        }
+
+
+        #pdf-template h1, 
+        #pdf-template h2, 
+        #pdf-template h3 {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+            font-weight: 800; 
+            letter-spacing: -0.02em;
         }
 
         /* Force headings and icons to keep their color */
@@ -884,24 +890,14 @@
             element.style.left = "0"; // Temporarily bring to "render zone" (hidden by z-index)
 
             try {
-                // Move into view
                 element.style.left = "0";
 
-                // 1. First, tell the browser to wait for the font files to be active
-                await document.fonts.ready; 
+                await new Promise(resolve => setTimeout(resolve, 100)); 
 
-                // 2. Give the icons (RemixIcon) a moment to "paint" onto the screen
-                await new Promise(resolve => setTimeout(resolve, 500)); 
-
-                // 3. Take the high-res snapshot
                 const dataUrl = await htmlToImage.toPng(element, { 
                     backgroundColor: '#0a0a0a',
                     pixelRatio: 2,
                     cacheBust: true,
-                    skipFonts: false, // Add it here to be 100% safe
-                    style: {
-                        fontFamily: 'Montserrat, Orbitron, sans-serif' // Extra force for the fonts
-                    }
                 });
 
                 // 5. Create the PDF and add the image
