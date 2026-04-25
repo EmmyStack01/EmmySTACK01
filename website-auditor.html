@@ -842,34 +842,39 @@
             const targetUrl = document.getElementById('url-input').value || "your website";
             const perf = parseInt(document.getElementById('perf-score').innerText) || 0;
             const seo = parseInt(document.getElementById('seo-score').innerText) || 0;
-            
-            let performanceStatus = perf < 90 ? "critical performance leaks" : "minor performance gaps";
-            let seoStatus = seo >= 90 ? "excellent SEO" : "SEO bottlenecks";
+            const ux = parseInt(document.getElementById('ux-score').innerText) || 0; // Grab Accessibility
             
             // Dynamic message building
             let headline = "";
             let subtext = "";
 
+            // 1. Logic for Headline & Subtext
             if (perf < 50) {
                 headline = `Found ${count} critical performance leaks.`;
-                subtext = `While your SEO is ${seo >= 90 ? 'strong' : 'average'}, your site speed is currently holding back your revenue.`;
+                subtext = `Your SEO (${seo}%) and UX (${ux}%) are noted, but your site speed is currently a major revenue leak.`;
             } else if (perf < 90) {
                 headline = `Optimization Required.`;
-                subtext = `Your SEO is solid at ${seo}%, but we can shave off seconds from your load time to improve conversions.`;
+                subtext = `You've done well with SEO (${seo}%) and Accessibility (${ux}%), but we can still shave seconds off your load time.`;
             } else {
                 headline = `Your Digital DNA is looking sharp!`;
-                subtext = `Top-tier performance and SEO. You're outperforming most of the market.`;
+                subtext = `Top-tier Performance, SEO, and Accessibility. You're leading the market.`;
             }
 
+            // 2. The WhatsApp Message (The "Lead Magnet")
             const myNumber = "2349076991076";
             const message = encodeURIComponent(
-                `Hi Emmy STACK01! 🚀\n\nI just audited ${targetUrl}.\n` +
-                `Scores: Perf: ${perf}% | SEO: ${seo}%.\n` +
-                `I'd like to discuss the ${count} leaks found!`
+                `Hi Emmy STACK01! 🚀\n\n` +
+                `I just audited ${targetUrl} using the Digital DNA Auditor.\n\n` +
+                `📊 My Results:\n` +
+                `- Performance: ${perf}%\n` +
+                `- SEO: ${seo}%\n` +
+                `- Accessibility: ${ux}%\n\n` +
+                `The tool identified ${count} leaks. I'd like to discuss fixing these!`
             );
             
             const waLink = `https://wa.me/${myNumber}?text=${message}`;
 
+            // 3. Render the Box
             cta.innerHTML = `
                 <div class="cta-box" style="background: rgba(79, 172, 254, 0.1); border: 1px solid #4facfe; padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px;">
                     <h2 style="color: #fff; margin-bottom: 10px;">${headline}</h2>
