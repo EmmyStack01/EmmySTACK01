@@ -566,10 +566,9 @@
     </div>
    
     <div id="pdf-template">
-    
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
             <div>
-                <h1 style="margin: 0; font-size: 24px; font-family: 'Orbitron';">EMMY <span style="color: #4facfe;">STACK01</span></h1>
+                <h1 style="margin: 0; font-size: 24px;">EMMY <span style="color: #4facfe;">STACK01</span></h1>
                 <p style="margin: 2px 0; color: #888; font-size: 12px;">High-Performance Digital DNA Audit</p>
             </div>
             <div style="text-align: right;">
@@ -582,22 +581,35 @@
             </div>
 
         <div id="pdf-findings">
-            <h3 style="border-left: 4px solid #4facfe; padding-left: 10px; font-size: 16px; margin-bottom: 15px;"><i class="ri-settings-3-line"></i> Technical Findings & Solutions</h3>
+            <h3 style="border-left: 4px solid #4facfe; padding-left: 10px; font-size: 16px; margin-bottom: 15px;">
+                <i class="ri-settings-3-line"></i> Technical Findings & Solutions
+            </h3>
             <div id="pdf-issues-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 </div>
         </div>
 
+        <div id="pdf-ux-section" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+            <h3 style="border-left: 4px solid #ffbb00; padding-left: 10px; font-size: 16px; margin-bottom: 15px;">
+                <i class="ri-user-smile-line"></i> Accessibility & UX
+            </h3>
+            <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                </div>
+        </div>
+
         <div id="pdf-seo-section" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
-            <h3 style="border-left: 4px solid #4facfe; padding-left: 10px; font-size: 16px;"><i class="ri-global-line"></i> Search Engine Optimization (SEO)</h3>
+            <h3 style="border-left: 4px solid #00ff88; padding-left: 10px; font-size: 16px; margin-bottom: 15px;">
+                <i class="ri-global-line"></i> Search Engine Optimization (SEO)
+            </h3>
             <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 </div>
         </div>
 
         <div style="margin-top: 30px; padding: 15px; background: #111; border-radius: 8px; text-align: center; border: 1px solid #222;">
             <p style="font-size: 12px; margin-bottom: 5px;">Ready to optimize your Digital DNA?</p>
-            <p style="color: #4facfe; font-weight: bold; font-size: 13px; margin: 0;">Web: <a href="https://emmystack01.com/" style="text-decoration: none; color: #4facfe;">emmystack01.com</a> <span style="padding: 20px;">|</span> Email: <a href="mailto:hello@emmystack01.com" style="text-decoration: none; color: #4facfe;">hello@emmystack01.com</a></p>
+            <p style="color: #4facfe; font-weight: bold; font-size: 13px; margin: 0;">Web: emmystack01.com <span style="padding: 20px;">|</span> Email: hello@emmystack01.com</p>
         </div>
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -796,6 +808,28 @@
                 // Injecting into the hidden template for the PDF export
                 const seoContainer = document.getElementById('pdf-seo-list');
                 if (seoContainer) seoContainer.innerHTML = seoHTML;
+            }
+
+            // Accessibility (UX) Logic for PDF
+            if (rawData && rawData.audits) {
+                const uxKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
+                let uxHTML = '';
+
+                uxKeys.forEach(key => {
+                    const audit = rawData.audits[key];
+                    if (audit) {
+                        const isPass = audit.score === 1;
+                        uxHTML += `
+                            <div style="background: #1a1a1a; padding: 10px; border-radius: 5px; border-left: 3px solid ${isPass ? '#00ff88' : '#ffbb00'};">
+                                <span style="font-size: 10px; color: #888; text-transform: uppercase;">${audit.title}</span>
+                                <p style="margin: 3px 0 0 0; font-weight: bold; font-size: 12px; color: #fff;">
+                                    ${isPass ? '✅ Optimized' : '⚠️ Improvement Needed'}
+                                </p>
+                            </div>
+                        `;
+                    }
+                });
+                document.getElementById('pdf-ux-list').innerHTML = uxHTML;
             }
 
             // 3. Update the Call to Action area with the total leak count
