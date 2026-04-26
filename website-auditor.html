@@ -768,8 +768,18 @@
 
             // --- 2. MAIN UI: Unified Category Loop ---
             categories.forEach(cat => {
-                const issues = cat.keys.map(k => audits[k]).filter(a => a && a.score < 0.9);
+                // 1. Get the score for this specific category
+                let currentScore = 0;
+                if (cat.title.includes("Performance")) currentScore = perfScore;
+                else if (cat.title.includes("SEO")) currentScore = seoScore;
+                else if (cat.title.includes("Accessibility")) currentScore = uxScore;
 
+                // 2. Only look for issues if the score is actually below 90
+                const issues = currentScore < 90 
+                    ? cat.keys.map(k => audits[k]).filter(a => a && a.score < 0.9)
+                    : [];
+
+                // 3. Only render the header and cards if there are issues to show
                 if (issues.length > 0) {
                     const header = document.createElement('h3');
                     header.innerHTML = `<i class="${cat.icon}"></i> ${cat.title}`;
