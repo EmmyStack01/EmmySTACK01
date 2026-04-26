@@ -753,42 +753,45 @@
         function renderAudits(audits, rawData) {
             const listContainer = document.getElementById('issues-list');
             listContainer.innerHTML = ''; 
-
-            // 1. PERFORMANCE: High-Impact List (Main UI)
-            const highImpactKeys = [
-                'modern-image-formats', 'uses-optimized-images', 
-                'render-blocking-resources', 'server-response-time', 
-                'offscreen-images', 'unused-javascript', 'total-byte-weight'
-            ];
-
             let failCount = 0;
 
-            // Main UI Performance Header
+            // --- 1. CONFIGURATION: High-Impact & Critical Keys ---
+            const perfKeys = [
+                'modern-image-formats', 'uses-optimized-images', 
+                'render-blocking-resources', 'server-response-time', 
+                'offscreen-images', 'unused-javascript', 'total-byte-weight',
+                'cumulative-layout-shift', 'largest-contentful-paint'
+            ];
+            
+            const seoCriticalKeys = ['viewport', 'document-title', 'meta-description', 'http-status-code', 'is-crawlable'];
+            const uxCriticalKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
+
+            // --- 2. MAIN UI: Render Performance Header ---
             const perfHeader = document.createElement('h3');
             perfHeader.innerHTML = `<i class="ri-dashboard-3-line"></i> Performance Findings`;
             perfHeader.style.cssText = "color: #4facfe; margin: 20px 0 15px 0; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;";
             listContainer.appendChild(perfHeader);
 
-            highImpactKeys.forEach((key, index) => {
-                const issue = audits[key];
-                if (issue && issue.score < 0.9) {
-                    failCount++;
-                    const card = document.createElement('div');
-                    card.className = 'audit-card';
-                    card.style.opacity = 0;
-                    card.innerHTML = `
-                        <div class="audit-header" style="border-left: 4px solid #ff4b2b; padding-left:15px; margin-bottom:10px;">
-                            <h4 style="color:#fff; margin:0;">${issue.title}</h4>
-                            <small style="color:#ff4b2b;">Impact: ${issue.displayValue || 'Significant'}</small>
-                        </div>
-                        <p style="color:#ccc; font-size:13px; margin-bottom:5px;">${issue.description.split('.')[0]}.</p>
-                    `;
-                    listContainer.appendChild(card);
-                    gsap.to(card, { opacity: 1, y: -5, delay: index * 0.05, duration: 0.4 });
-                }
+            // --- 3. MAIN UI: Render Performance Issues (Top 5) ---
+            const activePerfIssues = perfKeys.map(k => audits[k]).filter(a => a && a.score < 0.9);
+            
+            activePerfIssues.slice(0, 5).forEach((issue, index) => {
+                failCount++;
+                const card = document.createElement('div');
+                card.className = 'audit-card';
+                card.style.opacity = 0;
+                card.innerHTML = `
+                    <div class="audit-header" style="border-left: 4px solid #ff4b2b; padding-left:15px; margin-bottom:10px;">
+                        <h4 style="color:#fff; margin:0;">${issue.title}</h4>
+                        <small style="color:#ff4b2b;">Impact: ${issue.displayValue || 'Significant'}</small>
+                    </div>
+                    <p style="color:#ccc; font-size:13px; margin-bottom:5px;">${issue.description.split('.')[0]}.</p>
+                `;
+                listContainer.appendChild(card);
+                gsap.to(card, { opacity: 1, y: -5, delay: index * 0.05, duration: 0.4 });
             });
 
-            // 2. SEO & ACCESSIBILITY Summary (Main UI)
+            // --- 4. MAIN UI: SEO & Accessibility Summary Cards ---
             const createSummaryCard = (title, icon, score) => {
                 const summary = document.createElement('div');
                 summary.className = 'audit-card';
@@ -799,92 +802,82 @@
                         <span style="color:${score >= 90 ? '#00ff88' : '#ffbb00'}">${score}%</span>
                     </div>
                     <p style="font-size:12px; color:#888; margin-top:5px;">
-                        ${score >= 90 ? 'All critical checks passed.' : 'Minor optimizations suggested in the PDF report.'}
+                        ${score >= 90 ? 'All critical checks passed.' : 'Critical optimizations required for this DNA segment.'}
                     </p>
                 `;
                 listContainer.appendChild(summary);
             };
 
-            const perfScore = parseInt(document.getElementById('perf-score').innerText);
-            const seoScore = parseInt(document.getElementById('seo-score').innerText);
-            const uxScore = parseInt(document.getElementById('ux-score').innerText);
+            const perfScore = parseInt(document.getElementById('perf-score').innerText) || 0;
+            const seoScore = parseInt(document.getElementById('seo-score').innerText) || 0;
+            const uxScore = parseInt(document.getElementById('ux-score').innerText) || 0;
 
             createSummaryCard("Search Engine Optimization", "ri-search-eye-line", seoScore);
             createSummaryCard("User Accessibility", "ri-user-smile-line", uxScore);
 
-            // 3. PDF SYNC: AUTO-INJECT LOGIC
+            // --- 5. PDF SYNC: AUTO-INJECT LOGIC ---
             if (rawData && rawData.audits) {
                 
-                // --- 3a. AUTO-INJECT SEO ---
+                // --- 5a. PDF SEO ---
                 const seoContainer = document.getElementById('pdf-seo-container');
-                const criticalSEO = ['viewport', 'document-title', 'meta-description', 'http-status-code', 'is-crawlable'];
                 let seoHTML = '';
-
-                criticalSEO.forEach(key => {
-                    const seoAudit = rawData.audits[key];
-                    if (seoAudit) {
-                        const isPass = seoAudit.score >= 0.9;
+                seoCriticalKeys.forEach(key => {
+                    const audit = rawData.audits[key];
+                    if (audit && audit.score < 0.9) { // Only inject if it's a "Fail" or "Warning"
                         seoHTML += `
-                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid ${isPass ? '#00ff88' : '#ff4b2b'}; margin-bottom:10px;">
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid #ff4b2b; margin-bottom:10px;">
                                 <div style="display:flex; justify-content:space-between;">
-                                    <span style="font-size: 11px; color: #888;">${seoAudit.title}</span>
-                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ff4b2b'};">${isPass ? 'PASSED' : 'ACTION'}</span>
+                                    <span style="font-size: 11px; color: #888;">${audit.title}</span>
+                                    <span style="font-size: 11px; color: #ff4b2b;">ACTION</span>
                                 </div>
                             </div>`;
                     }
                 });
 
                 if (seoHTML.trim() !== "") {
-                    seoContainer.innerHTML = `
-                        <h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">SEO Optimization</h3>
-                        <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${seoHTML}</div>`;
-                } else {
-                    seoContainer.innerHTML = ''; // Delete everything if empty
-                }
+                    seoContainer.innerHTML = `<h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">SEO Criticals</h3>
+                                            <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${seoHTML}</div>`;
+                } else { seoContainer.innerHTML = ''; }
 
-                // --- 3b. AUTO-INJECT UX/ACCESSIBILITY ---
+                // --- 5b. PDF UX ---
                 const uxContainer = document.getElementById('pdf-ux-container');
-                const uxKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
                 let uxHTML = '';
-
-                uxKeys.forEach(key => {
+                uxCriticalKeys.forEach(key => {
                     const audit = rawData.audits[key];
-                    if (audit) {
-                        const isPass = audit.score >= 0.9;
+                    if (audit && audit.score < 0.9) {
                         uxHTML += `
-                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid ${isPass ? '#00ff88' : '#ffbb00'}; margin-bottom:10px;">
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid #ffbb00; margin-bottom:10px;">
                                 <div style="display:flex; justify-content:space-between;">
                                     <span style="font-size: 11px; color: #888;">${audit.title}</span>
-                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ffbb00'};">${isPass ? 'OPTIMIZED' : 'FIX'}</span>
+                                    <span style="font-size: 11px; color: #ffbb00;">FIX</span>
                                 </div>
                             </div>`;
                     }
                 });
 
                 if (uxHTML.trim() !== "") {
-                    uxContainer.innerHTML = `
-                        <h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">Accessibility & UX</h3>
-                        <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${uxHTML}</div>`;
-                } else {
-                    uxContainer.innerHTML = ''; // Delete everything if empty
-                }
+                    uxContainer.innerHTML = `<h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">UX Blockers</h3>
+                                            <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${uxHTML}</div>`;
+                } else { uxContainer.innerHTML = ''; }
 
-                // --- 3c. AUTO-INJECT PERFORMANCE (PDF-ISSUES-LIST) ---
-                // This ensures the "Performance Findings" header only appears if there are actual issues
+                // --- 5c. PDF PERFORMANCE ---
                 const perfContainer = document.getElementById('pdf-perf-container');
                 const pdfIssuesList = document.getElementById('pdf-issues-list');
-                
-                // Sync the issues from the main list container
                 pdfIssuesList.innerHTML = listContainer.innerHTML; 
-                // Filter out the main UI header so it doesn't double up in the PDF
-                const pdfHeaderToRemove = pdfIssuesList.querySelector('h3');
-                if(pdfHeaderToRemove) pdfHeaderToRemove.remove();
+                
+                // Cleanup main UI elements from the PDF version
+                const headerInPdf = pdfIssuesList.querySelector('h3');
+                if(headerInPdf) headerInPdf.remove();
+                // Remove the Summary Cards from the PDF list (we already have headers for them above)
+                pdfIssuesList.querySelectorAll('.audit-card').forEach(card => {
+                    if (card.innerHTML.includes('Optimization') || card.innerHTML.includes('Accessibility')) {
+                        card.remove();
+                    } else {
+                        card.style.opacity = "1"; // Force visibility for snapshot
+                    }
+                });
 
-                if (pdfIssuesList.children.length > 0) {
-                    perfContainer.style.display = 'block'; // Or wrap in innerHTML like above
-                } else {
-                    perfContainer.style.display = 'none';
-                }
+                perfContainer.style.display = pdfIssuesList.children.length > 0 ? 'block' : 'none';
             }
 
             showCTA(failCount);
