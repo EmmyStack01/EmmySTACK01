@@ -569,51 +569,33 @@
         <div style="border-bottom: 2px solid #4facfe; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 style="margin: 0; font-size: 28px; letter-spacing: 1px;">EMMY <span style="color: #4facfe;">STACK01</span></h1>
-                <p style="margin: 4px 0; color: #888; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">High-Performance Digital DNA Audit</p>
+                <p style="margin: 4px 0; color: #888; font-size: 13px; text-transform: uppercase;">High-Performance Digital DNA Audit</p>
             </div>
             <div style="text-align: right;">
-                <h2 id="pdf-domain-display" style="font-size: 14px; margin: 0; color: #4facfe;">Analysis for: </h2>
+                <h2 id="pdf-domain-display" style="font-size: 14px; margin: 0; color: #4facfe;">Analysis</h2>
                 <p id="pdf-date" style="color: #666; font-size: 11px; margin: 4px 0 0 0;"></p>
             </div>
         </div>
 
-        <div id="pdf-scores-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
-            </div>
+        <div id="pdf-scores-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;"></div>
 
-        <div id="pdf-performance-section" style="margin-bottom: 25px;">
-            <h3 style="border-left: 4px solid #ff4b2b; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color: #fff;">
-                Technical Performance Leaks
-            </h3>
-            <div id="pdf-issues-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                </div>
+        <div id="pdf-perf-container">
+            <h3 style="border-left: 4px solid #ff4b2b; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">Performance Findings</h3>
+            <div id="pdf-issues-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;"></div>
         </div>
 
-        <div id="pdf-ux-section" style="margin-bottom: 25px; border-top: 1px solid #222; padding-top: 20px;">
-            <h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color: #fff;">
-                Accessibility & UX DNA
-            </h3>
-            <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                </div>
+        <div id="pdf-seo-container">
+            <h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">SEO Optimization</h3>
+            <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;"></div>
         </div>
 
-        <div id="pdf-seo-section" style="margin-bottom: 30px; border-top: 1px solid #222; padding-top: 20px;">
-            <h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color: #fff;">
-                Search Engine Optimization (SEO)
-            </h3>
-            <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                </div>
+        <div id="pdf-ux-container">
+            <h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">Accessibility & UX</h3>
+            <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;"></div>
         </div>
 
-        <div style="margin-top: 40px; padding: 20px; background: linear-gradient(90deg, #111, #1a1a1a); border-radius: 12px; text-align: center; border: 1px solid #333;">
-            <p style="font-size: 13px; margin: 0 0 10px 0; color: #888;">Ready to finalize your Digital DNA optimization?</p>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 30px;">
-                <p style="margin: 0; font-size: 14px; font-weight: bold;">
-                    <span style="color: #4facfe;">WEB:</span> emmystack01.com
-                </p>
-                <p style="margin: 0; font-size: 14px; font-weight: bold;">
-                    <span style="color: #4facfe;">EMAIL:</span> hello@emmystack01.com
-                </p>
-            </div>
+        <div style="margin-top: 40px; padding: 20px; background: #111; border-radius: 12px; text-align: center; border: 1px solid #333;">
+            <p style="color: #4facfe; font-weight: bold; font-size: 14px; margin: 0;">emmystack01.com | hello@emmystack01.com</p>
         </div>
     </div>
 
@@ -885,6 +867,24 @@
                     }
                 });
                 document.getElementById('pdf-ux-list').innerHTML = uxHTML;
+
+
+                // 1. Logic for Performance Leaks
+                const perfList = document.getElementById('pdf-issues-list');
+                // (Your loop that adds cards to perfList goes here)
+                // After the loop, hide the section if empty:
+                document.getElementById('pdf-perf-container').style.display = perfList.innerHTML === '' ? 'none' : 'block';
+
+                // 2. Logic for SEO
+                const seoList = document.getElementById('pdf-seo-list');
+                // (Your loop for SEO goes here)
+                document.getElementById('pdf-seo-container').style.display = seoList.innerHTML === '' ? 'none' : 'block';
+
+                // 3. Logic for UX
+                const uxList = document.getElementById('pdf-ux-list');
+                // (Your loop for UX goes here)
+                document.getElementById('pdf-ux-container').style.display = uxList.innerHTML === '' ? 'none' : 'block';
+
             }
         }
 
