@@ -755,31 +755,29 @@
             listContainer.innerHTML = ''; 
             let failCount = 0;
 
+            // --- 0. SCORES: Grab these FIRST so the loop can use them ---
+            const perfScore = parseInt(document.getElementById('perf-score').innerText) || 0;
+            const seoScore = parseInt(document.getElementById('seo-score').innerText) || 0;
+            const uxScore = parseInt(document.getElementById('ux-score').innerText) || 0;
+
             // --- 1. CONFIGURATION ---
             const perfKeys = ['modern-image-formats', 'uses-optimized-images', 'render-blocking-resources', 'server-response-time', 'offscreen-images', 'unused-javascript', 'total-byte-weight', 'cumulative-layout-shift', 'largest-contentful-paint'];
             const seoCriticalKeys = ['viewport', 'document-title', 'meta-description', 'http-status-code', 'is-crawlable'];
             const uxCriticalKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
 
             const categories = [
-                { title: "Performance Findings", keys: perfKeys, color: "#ff4b2b", icon: "ri-dashboard-3-line" },
-                { title: "SEO Criticals", keys: seoCriticalKeys, color: "#4facfe", icon: "ri-search-eye-line" },
-                { title: "UX & Accessibility", keys: uxCriticalKeys, color: "#ffbb00", icon: "ri-user-smile-line" }
+                { title: "Performance Findings", keys: perfKeys, color: "#ff4b2b", icon: "ri-dashboard-3-line", score: perfScore },
+                { title: "SEO Criticals", keys: seoCriticalKeys, color: "#4facfe", icon: "ri-search-eye-line", score: seoScore },
+                { title: "UX & Accessibility", keys: uxCriticalKeys, color: "#ffbb00", icon: "ri-user-smile-line", score: uxScore }
             ];
 
             // --- 2. MAIN UI: Unified Category Loop ---
             categories.forEach(cat => {
-                // 1. Get the score for this specific category
-                let currentScore = 0;
-                if (cat.title.includes("Performance")) currentScore = perfScore;
-                else if (cat.title.includes("SEO")) currentScore = seoScore;
-                else if (cat.title.includes("Accessibility")) currentScore = uxScore;
-
-                // 2. Only look for issues if the score is actually below 90
-                const issues = currentScore < 90 
+                // Only look for issues if the score is actually below 90
+                const issues = cat.score < 90 
                     ? cat.keys.map(k => audits[k]).filter(a => a && a.score < 0.9)
                     : [];
 
-                // 3. Only render the header and cards if there are issues to show
                 if (issues.length > 0) {
                     const header = document.createElement('h3');
                     header.innerHTML = `<i class="${cat.icon}"></i> ${cat.title}`;
@@ -804,10 +802,10 @@
                 }
             });
 
-            // --- 3. Summary Cards (Main UI Only - Only for 90+ Scores) ---
+            // --- 3. Summary Cards (Show for 90+ Scores) ---
             const createSummaryCard = (title, icon, score) => {
                 const summary = document.createElement('div');
-                summary.className = 'audit-card summary-card'; // Added class for easier PDF cleanup
+                summary.className = 'audit-card summary-card';
                 summary.style.background = 'rgba(255,255,255,0.05)';
                 summary.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -820,9 +818,6 @@
                 `;
                 listContainer.appendChild(summary);
             };
-
-            const seoScore = parseInt(document.getElementById('seo-score').innerText) || 0;
-            const uxScore = parseInt(document.getElementById('ux-score').innerText) || 0;
 
             if (seoScore >= 90) createSummaryCard("Search Engine Optimization", "ri-search-eye-line", seoScore);
             if (uxScore >= 90) createSummaryCard("User Accessibility", "ri-user-smile-line", uxScore);
@@ -863,7 +858,8 @@
             }
 
             showCTA(failCount);
-        }
+        }    
+
 
         // 6. UI: Call to Action
         function showCTA(count) {
