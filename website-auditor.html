@@ -580,18 +580,13 @@
         <div id="pdf-scores-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;"></div>
 
         <div id="pdf-perf-container">
-            <h3 style="border-left: 4px solid #ff4b2b; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">Performance Findings</h3>
-            <div id="pdf-issues-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;"></div>
+            <div id="pdf-issues-list"></div>
         </div>
 
         <div id="pdf-seo-container">
-            <h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">SEO Optimization</h3>
-            <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;"></div>
         </div>
 
         <div id="pdf-ux-container">
-            <h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px;">Accessibility & UX</h3>
-            <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;"></div>
         </div>
 
         <div style="margin-top: 40px; padding: 20px; background: #111; border-radius: 12px; text-align: center; border: 1px solid #333;">
@@ -759,7 +754,7 @@
             const listContainer = document.getElementById('issues-list');
             listContainer.innerHTML = ''; 
 
-            // 1. PERFORMANCE: High-Impact List
+            // 1. PERFORMANCE: High-Impact List (Main UI)
             const highImpactKeys = [
                 'modern-image-formats', 'uses-optimized-images', 
                 'render-blocking-resources', 'server-response-time', 
@@ -768,7 +763,7 @@
 
             let failCount = 0;
 
-            // Create a section header for Performance
+            // Main UI Performance Header
             const perfHeader = document.createElement('h3');
             perfHeader.innerHTML = `<i class="ri-dashboard-3-line"></i> Performance Findings`;
             perfHeader.style.cssText = "color: #4facfe; margin: 20px 0 15px 0; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;";
@@ -793,9 +788,8 @@
                 }
             });
 
-            // 2. SEO & ACCESSIBILITY: Summary Sections
-            // This part ensures that even if they are 100%, we acknowledge it in the main UI
-            const createSummaryCard = (title, icon, score, containerId) => {
+            // 2. SEO & ACCESSIBILITY Summary (Main UI)
+            const createSummaryCard = (title, icon, score) => {
                 const summary = document.createElement('div');
                 summary.className = 'audit-card';
                 summary.style.background = 'rgba(255,255,255,0.05)';
@@ -818,16 +812,11 @@
             createSummaryCard("Search Engine Optimization", "ri-search-eye-line", seoScore);
             createSummaryCard("User Accessibility", "ri-user-smile-line", uxScore);
 
-            // 3. PDF SYNC (Keep your existing logic for pdf-seo-list and pdf-ux-list here)
+            // 3. PDF SYNC: AUTO-INJECT LOGIC
             if (rawData && rawData.audits) {
-                // ... (Your existing SEO and UX logic for PDF remains the same) ...
-                // Ensure you include the 'failCount' update for the CTA
-            }
-
-
-            // 3. PDF SYNC (Section inside renderAudits)
-            if (rawData && rawData.audits) {
-                // --- FILL SEO PDF LIST ---
+                
+                // --- 3a. AUTO-INJECT SEO ---
+                const seoContainer = document.getElementById('pdf-seo-container');
                 const criticalSEO = ['viewport', 'document-title', 'meta-description', 'http-status-code', 'is-crawlable'];
                 let seoHTML = '';
 
@@ -839,15 +828,22 @@
                             <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid ${isPass ? '#00ff88' : '#ff4b2b'}; margin-bottom:10px;">
                                 <div style="display:flex; justify-content:space-between;">
                                     <span style="font-size: 11px; color: #888;">${seoAudit.title}</span>
-                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ff4b2b'};">${isPass ? 'PASSED' : 'ACTION REQUIRED'}</span>
+                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ff4b2b'};">${isPass ? 'PASSED' : 'ACTION'}</span>
                                 </div>
-                            </div>
-                        `;
+                            </div>`;
                     }
                 });
-                document.getElementById('pdf-seo-list').innerHTML = seoHTML;
 
-                // --- FILL UX/ACCESSIBILITY PDF LIST ---
+                if (seoHTML.trim() !== "") {
+                    seoContainer.innerHTML = `
+                        <h3 style="border-left: 4px solid #00ff88; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">SEO Optimization</h3>
+                        <div id="pdf-seo-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${seoHTML}</div>`;
+                } else {
+                    seoContainer.innerHTML = ''; // Delete everything if empty
+                }
+
+                // --- 3b. AUTO-INJECT UX/ACCESSIBILITY ---
+                const uxContainer = document.getElementById('pdf-ux-container');
                 const uxKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
                 let uxHTML = '';
 
@@ -859,41 +855,36 @@
                             <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border-left: 4px solid ${isPass ? '#00ff88' : '#ffbb00'}; margin-bottom:10px;">
                                 <div style="display:flex; justify-content:space-between;">
                                     <span style="font-size: 11px; color: #888;">${audit.title}</span>
-                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ffbb00'};">${isPass ? 'OPTIMIZED' : 'NEEDS ATTENTION'}</span>
+                                    <span style="font-size: 11px; color: ${isPass ? '#00ff88' : '#ffbb00'};">${isPass ? 'OPTIMIZED' : 'FIX'}</span>
                                 </div>
-                            </div>
-                        `;
+                            </div>`;
                     }
                 });
-                document.getElementById('pdf-ux-list').innerHTML = uxHTML;
 
-
-                // --- THE CLEAN SWEEP LOGIC (REFINED) ---
-
-                // 1. Performance Section
-                const pdfPerfContainer = document.getElementById('pdf-perf-container');
-                const pdfPerfList = document.getElementById('pdf-issues-list');
-                if (pdfPerfContainer && pdfPerfList) {
-                    // Hide if no performance cards were added
-                    pdfPerfContainer.style.display = pdfPerfList.children.length === 0 ? 'none' : 'block';
+                if (uxHTML.trim() !== "") {
+                    uxContainer.innerHTML = `
+                        <h3 style="border-left: 4px solid #ffbb00; padding-left: 12px; font-size: 17px; margin-bottom: 15px; color:#fff;">Accessibility & UX</h3>
+                        <div id="pdf-ux-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">${uxHTML}</div>`;
+                } else {
+                    uxContainer.innerHTML = ''; // Delete everything if empty
                 }
 
-                // 2. SEO Section
-                const pdfSeoContainer = document.getElementById('pdf-seo-container');
-                const pdfSeoList = document.getElementById('pdf-seo-list');
-                if (pdfSeoContainer && pdfSeoList) {
-                    // Hide if no SEO cards were generated
-                    pdfSeoContainer.style.display = pdfSeoList.innerHTML.trim() === "" ? 'none' : 'block';
-                }
+                // --- 3c. AUTO-INJECT PERFORMANCE (PDF-ISSUES-LIST) ---
+                // This ensures the "Performance Findings" header only appears if there are actual issues
+                const perfContainer = document.getElementById('pdf-perf-container');
+                const pdfIssuesList = document.getElementById('pdf-issues-list');
+                
+                // Sync the issues from the main list container
+                pdfIssuesList.innerHTML = listContainer.innerHTML; 
+                // Filter out the main UI header so it doesn't double up in the PDF
+                const pdfHeaderToRemove = pdfIssuesList.querySelector('h3');
+                if(pdfHeaderToRemove) pdfHeaderToRemove.remove();
 
-                // 3. UX Section
-                const pdfUxContainer = document.getElementById('pdf-ux-container');
-                const pdfUxList = document.getElementById('pdf-ux-list');
-                if (pdfUxContainer && pdfUxList) {
-                    // Hide if no UX cards were generated
-                    pdfUxContainer.style.display = pdfUxList.innerHTML.trim() === "" ? 'none' : 'block';
+                if (pdfIssuesList.children.length > 0) {
+                    perfContainer.style.display = 'block'; // Or wrap in innerHTML like above
+                } else {
+                    perfContainer.style.display = 'none';
                 }
-
             }
 
             showCTA(failCount);
