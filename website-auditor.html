@@ -824,7 +824,6 @@
                 // Ensure you include the 'failCount' update for the CTA
             }
 
-            showCTA(failCount);
 
             // 3. PDF SYNC (Section inside renderAudits)
             if (rawData && rawData.audits) {
@@ -869,23 +868,32 @@
                 document.getElementById('pdf-ux-list').innerHTML = uxHTML;
 
 
-                // 1. Logic for Performance Leaks
+                // --- THE CLEAN SWEEP LOGIC ---
+
+                // 1. Check Performance Section
                 const perfList = document.getElementById('pdf-issues-list');
-                // (Your loop that adds cards to perfList goes here)
-                // After the loop, hide the section if empty:
-                document.getElementById('pdf-perf-container').style.display = perfList.innerHTML === '' ? 'none' : 'block';
+                const perfSection = document.getElementById('pdf-performance-section'); // or 'pdf-findings' based on your template
+                if (perfList && perfSection) {
+                    perfSection.style.display = perfList.children.length === 0 ? 'none' : 'block';
+                }
 
-                // 2. Logic for SEO
+                // 2. Check SEO Section
                 const seoList = document.getElementById('pdf-seo-list');
-                // (Your loop for SEO goes here)
-                document.getElementById('pdf-seo-container').style.display = seoList.innerHTML === '' ? 'none' : 'block';
+                const seoSection = document.getElementById('pdf-seo-section');
+                if (seoList && seoSection) {
+                    seoSection.style.display = seoList.children.length === 0 ? 'none' : 'block';
+                }
 
-                // 3. Logic for UX
+                // 3. Check UX Section
                 const uxList = document.getElementById('pdf-ux-list');
-                // (Your loop for UX goes here)
-                document.getElementById('pdf-ux-container').style.display = uxList.innerHTML === '' ? 'none' : 'block';
+                const uxSection = document.getElementById('pdf-ux-section');
+                if (uxList && uxSection) {
+                    uxSection.style.display = uxList.children.length === 0 ? 'none' : 'block';
+                }
 
             }
+
+            showCTA(failCount);
         }
 
         // 6. UI: Call to Action
