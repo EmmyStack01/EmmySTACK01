@@ -638,10 +638,6 @@
         showLines: false           // Keeps the focus on the dots
         })
 
-        document.getElementById('url-input').addEventListener('input', function(e) {
-            // Instantly remove commas and spaces if the user types or pastes them
-            this.value = this.value.replace(/[, ]/g, '');
-        });
 
         // 1. UI: The Scanning Animation
         function toggleScanner(show) {
@@ -717,6 +713,14 @@
 
                 if (data.error) throw new Error(data.error);
 
+                let leakCount = 0;
+                // We look at all audits and count anything that isn't a "Pass" (below 90%)
+                Object.values(data.audits).forEach(audit => {
+                    if (audit.score !== null && audit.score < 0.9) {
+                        leakCount++;
+                    }
+                });
+
                 clearInterval(statusInterval);
                 toggleScanner(false);
                 
@@ -724,6 +728,8 @@
                     renderScores(data.scores);
                     renderAudits(data.audits, data.lighthouseResult); 
                     
+                    showCTA(leakCount);
+
                     if(document.getElementById('download-btn')) {
                         document.getElementById('download-btn').style.display = 'block';
                     }
@@ -885,6 +891,12 @@
 
             // 2. The WhatsApp Message (The "Lead Magnet")
             const myNumber = "2349076991076";
+            //Determine the closing line based on the count
+            const closingLine = count > 0 
+                ? `The tool identified ${count} leaks. I'd like to discuss fixing these!` 
+                : `The tool identified 0 leaks—excellent! I'd like to discuss maintaining this performance or adding new features.`;
+
+            //The Updated WhatsApp Message
             const message = encodeURIComponent(
                 `Hi Emmy STACK01! 🚀\n\n` +
                 `I just audited ${targetUrl} using the Digital DNA Auditor.\n\n` +
@@ -892,9 +904,9 @@
                 `- Performance: ${perf}%\n` +
                 `- SEO: ${seo}%\n` +
                 `- Accessibility: ${ux}%\n\n` +
-                `The tool identified ${count} leaks. I'd like to discuss fixing these!`
+                `${closingLine}`
             );
-            
+                        
             const waLink = `https://wa.me/${myNumber}?text=${message}`;
 
             // 3. Render the Box
@@ -907,6 +919,11 @@
                     </a>
                 </div>`;
         }
+
+        document.getElementById('url-input').addEventListener('input', function(e) {
+            // Instantly remove commas and spaces if the user types or pastes them
+            this.value = this.value.replace(/[, ]/g, '');
+        });
 
         // 7. PDF: Report Generation
         async function generatePDF() {
