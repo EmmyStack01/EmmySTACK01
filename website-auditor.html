@@ -868,27 +868,30 @@
                 document.getElementById('pdf-ux-list').innerHTML = uxHTML;
 
 
-                // --- THE CLEAN SWEEP LOGIC ---
+                // --- THE CLEAN SWEEP LOGIC (REFINED) ---
 
-                // 1. Check Performance Section
-                const perfList = document.getElementById('pdf-issues-list');
-                const perfSection = document.getElementById('pdf-performance-section'); // or 'pdf-findings' based on your template
-                if (perfList && perfSection) {
-                    perfSection.style.display = perfList.children.length === 0 ? 'none' : 'block';
+                // 1. Performance Section
+                const pdfPerfContainer = document.getElementById('pdf-perf-container');
+                const pdfPerfList = document.getElementById('pdf-issues-list');
+                if (pdfPerfContainer && pdfPerfList) {
+                    // Hide if no performance cards were added
+                    pdfPerfContainer.style.display = pdfPerfList.children.length === 0 ? 'none' : 'block';
                 }
 
-                // 2. Check SEO Section
-                const seoList = document.getElementById('pdf-seo-list');
-                const seoSection = document.getElementById('pdf-seo-section');
-                if (seoList && seoSection) {
-                    seoSection.style.display = seoList.children.length === 0 ? 'none' : 'block';
+                // 2. SEO Section
+                const pdfSeoContainer = document.getElementById('pdf-seo-container');
+                const pdfSeoList = document.getElementById('pdf-seo-list');
+                if (pdfSeoContainer && pdfSeoList) {
+                    // Hide if no SEO cards were generated
+                    pdfSeoContainer.style.display = pdfSeoList.innerHTML.trim() === "" ? 'none' : 'block';
                 }
 
-                // 3. Check UX Section
-                const uxList = document.getElementById('pdf-ux-list');
-                const uxSection = document.getElementById('pdf-ux-section');
-                if (uxList && uxSection) {
-                    uxSection.style.display = uxList.children.length === 0 ? 'none' : 'block';
+                // 3. UX Section
+                const pdfUxContainer = document.getElementById('pdf-ux-container');
+                const pdfUxList = document.getElementById('pdf-ux-list');
+                if (pdfUxContainer && pdfUxList) {
+                    // Hide if no UX cards were generated
+                    pdfUxContainer.style.display = pdfUxList.innerHTML.trim() === "" ? 'none' : 'block';
                 }
 
             }
@@ -994,6 +997,9 @@
                 // Force card visibility for the snapshot
                 const cards = pdfIssuesList.querySelectorAll('.audit-card');
                 cards.forEach(card => card.style.opacity = "1");
+
+                const hasPerfIssues = currentIssues.querySelectorAll('.audit-card').length > 0;
+                document.getElementById('pdf-perf-container').style.display = hasPerfIssues ? 'block' : 'none';
             }
 
             // 4. THE MAGIC: Take a high-res snapshot
