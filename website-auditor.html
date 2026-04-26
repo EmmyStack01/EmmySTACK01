@@ -638,6 +638,11 @@
         showLines: false           // Keeps the focus on the dots
         })
 
+        document.getElementById('url-input').addEventListener('input', function(e) {
+            // Instantly remove commas and spaces if the user types or pastes them
+            this.value = this.value.replace(/[, ]/g, '');
+        });
+
         // 1. UI: The Scanning Animation
         function toggleScanner(show) {
             const scanner = document.getElementById('scanner-container');
@@ -682,14 +687,31 @@
 
         // 3. MAIN: The Audit Controller
         async function startAudit() {
-            const targetUrl = document.getElementById('url-input').value;
-            if (!targetUrl) return alert("Please enter a URL first.");
+            // 1. Grab and sanitize the URL immediately
+            let inputField = document.getElementById('url-input');
+            let targetUrl = inputField.value.trim();
+
+            // Remove trailing commas or accidental characters at the end
+            targetUrl = targetUrl.replace(/[, ]+$/, "");
+
+            // Force https:// if missing
+            if (targetUrl && !targetUrl.startsWith('http')) {
+                targetUrl = 'https://' + targetUrl;
+            }
+
+            // Update the input field visually so the user sees the "clean" URL
+            inputField.value = targetUrl;
+
+            // 2. Validation check
+            if (!targetUrl || targetUrl === 'https://') {
+                return alert("Please enter a valid URL first.");
+            }
 
             toggleScanner(true);
             startStatusUpdates();
 
             try {
-                // Ensure your Vercel API includes &category=seo and &category=performance
+                // Use the sanitized targetUrl for the fetch call
                 const response = await fetch(`/api/audit?url=${encodeURIComponent(targetUrl)}`);
                 const data = await response.json();
 
@@ -700,10 +722,11 @@
                 
                 setTimeout(() => {
                     renderScores(data.scores);
-                    // We pass the full raw data now to handle complex filtering
                     renderAudits(data.audits, data.lighthouseResult); 
-                    // Show download button
-                    if(document.getElementById('download-btn')) document.getElementById('download-btn').style.display = 'block';
+                    
+                    if(document.getElementById('download-btn')) {
+                        document.getElementById('download-btn').style.display = 'block';
+                    }
                 }, 600);
 
             } catch (err) {
