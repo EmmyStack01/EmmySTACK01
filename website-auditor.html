@@ -770,99 +770,126 @@
             const listContainer = document.getElementById('issues-list');
             listContainer.innerHTML = ''; 
 
-            // 1. Performance Focus: High-impact keys you specialize in fixing
+            // 1. PERFORMANCE: High-Impact List
             const highImpactKeys = [
                 'modern-image-formats', 'uses-optimized-images', 
                 'render-blocking-resources', 'server-response-time', 
-                'offscreen-images', 'unused-javascript'
+                'offscreen-images', 'unused-javascript', 'total-byte-weight'
             ];
 
             let failCount = 0;
 
+            // Create a section header for Performance
+            const perfHeader = document.createElement('h3');
+            perfHeader.innerHTML = `<i class="ri-dashboard-3-line"></i> Performance Findings`;
+            perfHeader.style.cssText = "color: #4facfe; margin: 20px 0 15px 0; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 5px;";
+            listContainer.appendChild(perfHeader);
+
             highImpactKeys.forEach((key, index) => {
                 const issue = audits[key];
-                // Only show if the score is below 90%
                 if (issue && issue.score < 0.9) {
                     failCount++;
                     const card = document.createElement('div');
                     card.className = 'audit-card';
-                    card.style.opacity = 0; // Prepare for GSAP animation
-
+                    card.style.opacity = 0;
                     card.innerHTML = `
-                        <div class="audit-header" style="border-left: 4px solid #ff4b2b; padding-left:15px; margin-bottom:15px;">
+                        <div class="audit-header" style="border-left: 4px solid #ff4b2b; padding-left:15px; margin-bottom:10px;">
                             <h4 style="color:#fff; margin:0;">${issue.title}</h4>
-                            <small style="color:#ff4b2b;">Potential Gain: ${issue.displayValue || 'High'}</small>
+                            <small style="color:#ff4b2b;">Impact: ${issue.displayValue || 'Significant'}</small>
                         </div>
-                        <p style="color:#ccc; font-size:14px;">${issue.description.split('.')[0]}.</p>
-                        <div class="solution-tag" style="color:#00ff88; font-size:12px; margin-top:10px;">
-                            <i class="ri-magic-line"></i> Emmy STACK01 Optimization Ready
-                        </div>
+                        <p style="color:#ccc; font-size:13px; margin-bottom:5px;">${issue.description.split('.')[0]}.</p>
                     `;
                     listContainer.appendChild(card);
-
-                    // GSAP Reveal: Reveal cards one by one for a premium feel
-                    gsap.to(card, {
-                        opacity: 1, 
-                        y: -10, 
-                        delay: index * 0.1, 
-                        duration: 0.5, 
-                        ease: "power2.out"
-                    });
+                    gsap.to(card, { opacity: 1, y: -5, delay: index * 0.05, duration: 0.4 });
                 }
             });
 
-            // 2. SEO Focus: Populating the hidden PDF template
-            // We pull these from rawData (which is your lighthouseResult)
+            // 2. SEO & ACCESSIBILITY: Summary Sections
+            // This part ensures that even if they are 100%, we acknowledge it in the main UI
+            const createSummaryCard = (title, icon, score, containerId) => {
+                const summary = document.createElement('div');
+                summary.className = 'audit-card';
+                summary.style.background = 'rgba(255,255,255,0.05)';
+                summary.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="color:#fff; margin:0;"><i class="${icon}"></i> ${title}</h4>
+                        <span style="color:${score >= 90 ? '#00ff88' : '#ffbb00'}">${score}%</span>
+                    </div>
+                    <p style="font-size:12px; color:#888; margin-top:5px;">
+                        ${score >= 90 ? 'All critical checks passed.' : 'Minor optimizations suggested in the PDF report.'}
+                    </p>
+                `;
+                listContainer.appendChild(summary);
+            };
+
+            const perfScore = parseInt(document.getElementById('perf-score').innerText);
+            const seoScore = parseInt(document.getElementById('seo-score').innerText);
+            const uxScore = parseInt(document.getElementById('ux-score').innerText);
+
+            createSummaryCard("Search Engine Optimization", "ri-search-eye-line", seoScore);
+            createSummaryCard("User Accessibility", "ri-user-smile-line", uxScore);
+
+            // 3. PDF SYNC (Keep your existing logic for pdf-seo-list and pdf-ux-list here)
             if (rawData && rawData.audits) {
+                // ... (Your existing SEO and UX logic for PDF remains the same) ...
+                // Ensure you include the 'failCount' update for the CTA
+            }
+
+            showCTA(failCount);
+
+            // 3. PDF SYNC (Section inside renderAudits)
+            if (rawData && rawData.audits) {
+                
+                // --- SEO PDF LOGIC ---
                 const criticalSEO = ['viewport', 'document-title', 'meta-description', 'http-status-code'];
                 let seoHTML = '';
 
                 criticalSEO.forEach(key => {
                     const seoAudit = rawData.audits[key];
                     if (seoAudit) {
-                        const statusColor = seoAudit.score === 1 ? '#00ff88' : '#ff4b2b';
-                        const statusIcon = seoAudit.score === 1 ? '✅' : '❌';
+                        // ADD THESE THREE LINES HERE:
+                        const statusIcon = seoAudit.score >= 0.9 ? '✅' : '❌';
+                        const statusText = seoAudit.score >= 0.9 ? 'Optimized' : 'Needs Fix';
+                        const statusColor = seoAudit.score >= 0.9 ? '#00ff88' : '#ff4b2b';
                         
                         seoHTML += `
                             <div style="background: #1a1a1a; padding: 10px; border-radius: 5px; border-left: 3px solid ${statusColor}; margin-bottom:10px;">
                                 <span style="font-size: 11px; color: #888; text-transform: uppercase;">${seoAudit.title}</span>
                                 <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 14px; color: #fff;">
-                                    ${statusIcon} ${seoAudit.score === 1 ? 'Optimized' : 'Needs Fix'}
+                                    ${statusIcon} ${statusText}
                                 </p>
                             </div>
                         `;
                     }
                 });
-
-                // Injecting into the hidden template for the PDF export
                 const seoContainer = document.getElementById('pdf-seo-list');
                 if (seoContainer) seoContainer.innerHTML = seoHTML;
-            }
 
-            // Accessibility (UX) Logic for PDF
-            if (rawData && rawData.audits) {
+                // --- ACCESSIBILITY (UX) PDF LOGIC ---
                 const uxKeys = ['color-contrast', 'button-name', 'image-alt', 'link-name', 'label'];
                 let uxHTML = '';
 
                 uxKeys.forEach(key => {
                     const audit = rawData.audits[key];
                     if (audit) {
-                        const isPass = audit.score === 1;
+                        // APPLY THE SAME LOGIC HERE:
+                        const uxIcon = audit.score >= 0.9 ? '✅' : '⚠️';
+                        const uxText = audit.score >= 0.9 ? 'Optimized' : 'Improvement Needed';
+                        const uxColor = audit.score >= 0.9 ? '#00ff88' : '#ffbb00';
+
                         uxHTML += `
-                            <div style="background: #1a1a1a; padding: 10px; border-radius: 5px; border-left: 3px solid ${isPass ? '#00ff88' : '#ffbb00'};">
+                            <div style="background: #1a1a1a; padding: 10px; border-radius: 5px; border-left: 3px solid ${uxColor}; margin-bottom:10px;">
                                 <span style="font-size: 10px; color: #888; text-transform: uppercase;">${audit.title}</span>
                                 <p style="margin: 3px 0 0 0; font-weight: bold; font-size: 12px; color: #fff;">
-                                    ${isPass ? '✅ Optimized' : '⚠️ Improvement Needed'}
+                                    ${uxIcon} ${uxText}
                                 </p>
                             </div>
                         `;
                     }
                 });
-                document.getElementById('pdf-ux-list').innerHTML = uxHTML;
+                const uxContainer = document.getElementById('pdf-ux-list');
+                if (uxContainer) uxContainer.innerHTML = uxHTML;
             }
-
-            // 3. Update the Call to Action area with the total leak count
-            showCTA(failCount);
         }
 
         // 6. UI: Call to Action
