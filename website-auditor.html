@@ -749,13 +749,16 @@
             );
         }
 
+        
         // 5. UI: Render Issue List (Filtered & High Impact)
         function renderAudits(audits, rawData) {
             const listContainer = document.getElementById('issues-list');
             listContainer.innerHTML = ''; 
+            
+            // This variable acts as your total "Leak Count"
             let failCount = 0;
 
-            // --- 0. SCORES: Grab these FIRST so the loop can use them ---
+            // --- 0. SCORES ---
             const perfScore = parseInt(document.getElementById('perf-score').innerText) || 0;
             const seoScore = parseInt(document.getElementById('seo-score').innerText) || 0;
             const uxScore = parseInt(document.getElementById('ux-score').innerText) || 0;
@@ -785,7 +788,9 @@
                     listContainer.appendChild(header);
 
                     issues.slice(0, 4).forEach((issue, index) => {
-                        failCount++;
+                        // ADDING TO THE LEAK COUNT HERE
+                        failCount++; 
+                        
                         const card = document.createElement('div');
                         card.className = 'audit-card';
                         card.style.opacity = 0;
@@ -822,9 +827,8 @@
             if (seoScore >= 90) createSummaryCard("Search Engine Optimization", "ri-search-eye-line", seoScore);
             if (uxScore >= 90) createSummaryCard("User Accessibility", "ri-user-smile-line", uxScore);
 
-            // --- 4. PDF SYNC ---
+            // --- 4. PDF SYNC (Internal Logic) ---
             if (rawData && rawData.audits) {
-                // SEO & UX Sections (Handled by rawData)
                 const renderPdfGroup = (containerId, keys, title, color) => {
                     const container = document.getElementById(containerId);
                     let html = '';
@@ -846,34 +850,28 @@
                 renderPdfGroup('pdf-seo-container', seoCriticalKeys, 'SEO Criticals', '#4facfe');
                 renderPdfGroup('pdf-ux-container', uxCriticalKeys, 'UX Blockers', '#ffbb00');
 
-                // Performance Section (Synced from listContainer)
                 const pdfIssuesList = document.getElementById('pdf-issues-list');
                 pdfIssuesList.innerHTML = listContainer.innerHTML; 
-                
-                // Remove Headers and Summary Cards from the Performance list in PDF
                 pdfIssuesList.querySelectorAll('h3, .summary-card').forEach(el => el.remove());
                 pdfIssuesList.querySelectorAll('.audit-card').forEach(card => card.style.opacity = "1");
-
                 document.getElementById('pdf-perf-container').style.display = pdfIssuesList.children.length > 0 ? 'block' : 'none';
             }
 
+            // Pass the calculated count to the CTA function
             showCTA(failCount);
-        }    
+        }
 
-
-        // 6. UI: Call to Action
+        // 6. UI: Call to Action (Updated WhatsApp Message)
         function showCTA(count) {
             const cta = document.getElementById('cta-area');
             const targetUrl = document.getElementById('url-input').value || "your website";
             const perf = parseInt(document.getElementById('perf-score').innerText) || 0;
             const seo = parseInt(document.getElementById('seo-score').innerText) || 0;
-            const ux = parseInt(document.getElementById('ux-score').innerText) || 0; // Grab Accessibility
+            const ux = parseInt(document.getElementById('ux-score').innerText) || 0;
             
-            // Dynamic message building
             let headline = "";
             let subtext = "";
 
-            // 1. Logic for Headline & Subtext
             if (perf < 50) {
                 headline = `Found ${count} critical performance leaks.`;
                 subtext = `Your SEO (${seo}%) and UX (${ux}%) are noted, but your site speed is currently a major revenue leak.`;
@@ -885,32 +883,33 @@
                 subtext = `Top-tier Performance, SEO, and Accessibility. You're leading the market.`;
             }
 
-            // 2. The WhatsApp Message (The "Lead Magnet")
             const myNumber = "2349076991076";
-            //Determine the closing line based on the count
+            
+            // DYNAMIC CLOSING LINE
+            const statusEmoji = count > 0 ? "⚠️" : "✅";
             const closingLine = count > 0 
-                ? `The tool identified ${count} leaks. I'd like to discuss fixing these!` 
-                : `The tool identified 0 leaks—excellent! I'd like to discuss maintaining this performance or adding new features.`;
+                ? `${statusEmoji} The tool identified ${count} critical leaks. I'd like to discuss fixing these bottlenecks!` 
+                : `${statusEmoji} The tool identified 0 leaks—excellent! I'd like to discuss maintaining this performance or adding new features.`;
 
-            //The Updated WhatsApp Message
+            // THE UPDATED WHATSAPP MESSAGE
             const message = encodeURIComponent(
                 `Hi Emmy STACK01! 🚀\n\n` +
-                `I just audited ${targetUrl} using the Digital DNA Auditor.\n\n` +
-                `📊 My Results:\n` +
-                `- Performance: ${perf}%\n` +
-                `- SEO: ${seo}%\n` +
-                `- Accessibility: ${ux}%\n\n` +
+                `I just audited my site using the Digital DNA Auditor:\n` +
+                `🔗 ${targetUrl}\n\n` +
+                `📊 *My Results:*\n` +
+                `• Performance: *${perf}%*\n` +
+                `• SEO Score: *${seo}%*\n` +
+                `• Accessibility: *${ux}%*\n\n` +
                 `${closingLine}`
             );
                         
             const waLink = `https://wa.me/${myNumber}?text=${message}`;
 
-            // 3. Render the Box
             cta.innerHTML = `
                 <div class="cta-box" style="background: rgba(79, 172, 254, 0.1); border: 1px solid #4facfe; padding: 25px; border-radius: 12px; text-align: center; margin-top: 30px;">
                     <h2 style="color: #fff; margin-bottom: 10px;">${headline}</h2>
                     <p style="color: #ccc; margin-bottom: 20px;">${subtext}</p>
-                    <a href="${waLink}" target="_blank" class="fix-btn" style="display: inline-block; text-decoration: none; cursor: pointer;">
+                    <a href="${waLink}" target="_blank" class="fix-btn" style="display: inline-block; text-decoration: none; cursor: pointer; background: #4facfe; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: bold;">
                         <i class="ri-whatsapp-line"></i> Discuss My Audit
                     </a>
                 </div>`;
