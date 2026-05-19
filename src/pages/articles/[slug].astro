@@ -1,0 +1,205 @@
+---
+// src/pages/articles/[slug].astro
+import { keystaticReader } from '../../reader';
+
+export async function getStaticPaths() {
+  // 1. Fetch ALL articles directly from the Keystatic CMS storage
+  const articles = await keystaticReader.collections.articles.all();
+ 
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: {
+      title: article.entry.title,
+      description: article.entry.description,
+      date: article.entry.date,
+      category: article.entry.category,
+      readingTime: article.entry.readingTime,
+      // 2. Keystatic passes the auto-generated asset path right here!
+      image: article.entry.coverImage,
+      author: article.entry.author,
+      content: article.entry.content
+    },
+  }));
+}
+
+const { title, description, date, readingTime, category, image, author, content } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+    <title>{title} | Emmy STACK01</title>
+    <meta name="description" content={description}>
+    <link rel="canonical" href={Astro.url.href}>
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={Astro.url.href}>
+    <meta property="og:image" content={image}>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={image}>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <style>
+      body {
+        background-color: #0d1117;
+        color: #c9d1d9;
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.7;
+      }
+      .title-font {
+        font-family: 'Orbitron', sans-serif;
+      }
+      .glass-card {
+        background: rgba(22, 27, 34, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(45, 102, 180, 0.2);
+        border-radius: 12px;
+      }
+      .back-btn {
+        color: #8b949e;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+      }
+      .back-btn:hover {
+        color: #00ccff;
+      }
+      /* Clean, focused layout tracking for article text content blocks */
+      .rich-text p {
+        margin-bottom: 1.75rem;
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+        font-weight: 300;
+        color: #e6edf3;
+      }
+      .rich-text h2 {
+        font-family: 'Orbitron', sans-serif;
+        color: #fff;
+        font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+        margin: 2.5rem 0 1rem 0;
+        letter-spacing: 0.5px;
+      }
+      .btn-glow {
+        background: linear-gradient(135deg, #2d66b4, #00ccff);
+        color: #fff;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        text-decoration: none;
+        font-weight: 600;
+        transition: box-shadow 0.2s;
+      }
+      .btn-glow:hover {
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+      }
+      /* Style lists injected from Keystatic Markdoc */
+        .rich-text ul, .rich-text ol {
+        margin-bottom: 1.75rem;
+        padding-left: 1.5rem;
+        color: #e6edf3;
+        }
+        .rich-text li {
+        margin-bottom: 0.5rem;
+        font-size: clamp(1rem, 2.5vw, 1.1rem);
+        font-weight: 300;
+        }
+
+        /* Style inline hyperlinks within the content */
+        .rich-text a {
+        color: #00ccff;
+        text-decoration: none;
+        border-bottom: 1px dashed rgba(0, 204, 255, 0.4);
+        transition: border-color 0.2s;
+        }
+        .rich-text a:hover {
+        border-bottom-style: solid;
+        }
+
+        /* Style bold phrases and blockquotes */
+        .rich-text strong {
+        color: #fff;
+        font-weight: 600;
+        }
+        .rich-text blockquote {
+        margin: 2rem 0;
+        padding-left: 1.25rem;
+        border-left: 3px solid #2d66b4;
+        color: #8b949e;
+        font-style: italic;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 0 1.5rem;">
+      <a href="/articles" class="back-btn">
+        <i class="ri-arrow-left-line"></i> Back to DNA Log
+      </a>
+    </div>
+
+    <main style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 6rem 1.5rem;">
+      
+      <header style="margin-bottom: 2.5rem;">
+        <span style="display: inline-block; background: rgba(0, 204, 255, 0.1); color: #00ccff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(0, 204, 255, 0.2); margin-bottom: 1rem;">
+          {category}
+        </span>
+        
+        <h1 class="title-font" style="font-size: clamp(1.75rem, 5vw, 2.6rem); color: #fff; line-height: 1.3; margin: 0 0 1.25rem 0; letter-spacing: 0.5px;">
+          {title}
+        </h1>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.85rem; color: #8b949e; border-bottom: 1px solid rgba(49, 56, 65, 0.6); padding-bottom: 1.5rem;">
+          <span><i class="ri-user-3-line" style="color: #2d66b4;"></i> By {author}</span>
+          <span><i class="ri-calendar-todo-line"></i> {date}</span>
+          <span><i class="ri-time-line"></i> {readingTime}</span>
+        </div>
+      </header>
+
+      {image && (
+        <div style="width: 100%; height: clamp(200px, 45vw, 400px); overflow: hidden; border-radius: 12px; margin-bottom: 3rem; border: 1px solid rgba(49, 56, 65, 0.4);">
+          <img src={image} alt={title} style="width: 100%; height: 100%; object-fit: cover;" />
+        </div>
+      )}
+
+      <article class="rich-text" style="margin-bottom: 5rem; color: #e6edf3; line-height: 1.8;">
+        <div class="prose prose-invert" style="max-width: 750px; margin: 0 auto; line-height: 1.8;">
+          <DocumentRenderer document={content} />
+        </div>
+      </article>
+
+      <section class="glass-card" style="padding: 2.5rem; text-align: center; border-color: rgba(0, 204, 255, 0.3);">
+        <h3 class="title-font" style="color: #fff; font-size: 1.4rem; margin: 0 0 0.75rem 0; letter-spacing: 0.5px;">
+          READY TO OWN YOUR DIGITAL IDENTITY?
+        </h3>
+        <p style="color: #8b949e; max-width: 550px; margin: 0 auto 2rem auto; font-size: 0.95rem; line-height: 1.6;">
+          Stop leaving your professional network pipeline in the hands of third-party platforms. Launch a high-performance digital identity card that scales your authority.
+        </p>
+        <div>
+          <a href="/products/digital-business-card" class="btn-glow" style="display: inline-block; padding: 0.8rem 2rem; border-radius: 6px; font-size: 0.9rem;">
+            Deploy Your Brand <i class="ri-rocket-2-line" style="margin-left: 6px; vertical-align: middle;"></i>
+          </a>
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>

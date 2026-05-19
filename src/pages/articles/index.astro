@@ -1,0 +1,759 @@
+---
+// src/pages/articles/index.astro
+import { keystaticReader } from '../../reader';
+
+// 1. Fetch all live entries from your Keystatic collection
+const rawArticles = await keystaticReader.collections.articles.all();
+
+// 2. Sort them by date descending (Newest first) so your absolute freshest insight is always featured
+const sortedArticles = rawArticles.sort((a, b) => {
+  return new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime();
+});
+
+// 3. Map the Keystatic structure into clean, flat objects that match your exact design markup variables
+const articles = sortedArticles.map(article => ({
+  title: article.entry.title,
+  description: article.entry.description,
+  slug: article.slug,
+  date: article.entry.date,
+  readingTime: article.entry.readingTime,
+  category: article.entry.category,
+  image: article.entry.coverImage
+}));
+
+// 4. Safely extract your featured banner and grid items using your original pattern
+const [featuredArticle, ...otherArticles] = articles;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+    <title>The Digital DNA Log | Emmy STACK01 Articles</title>
+    <meta name="description" content="Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026. Stay ahead with the Emmy STACK01 Digital DNA Log.">
+    
+    <link rel="canonical" href={Astro.url.href}>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Digital DNA Log: Insights by Emmy STACK01">
+    <meta property="og:description" content="Master your digital identity. Read the latest articles on professional branding and networking technology.">
+    <meta property="og:url" content={Astro.url.href}>
+    <meta property="og:image" content="https://emmystack01.com/asset/og-image4.jpg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Digital DNA Log: Insights by Emmy STACK01">
+    <meta name="twitter:description" content="Master your digital identity. Read the latest articles on professional branding and networking technology.">
+    <meta name="twitter:image" content="https://emmystack01.com/asset/og-image4.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    
+    <style>
+        :root {
+        /* Brand Colors */
+        --primary-color: #2d66b4;
+        --secondary-color: #22386e;
+        --accent-color: #00ccff;
+
+        /* Backgrounds */
+        --bg-dark: #000000;
+        --bg-light: #0a111f;
+
+        /* Typography */
+        --text-main: #ffffff;
+        --text-muted: #a0aec0;
+        --white: #ffffff;
+        }
+
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Stay on top of everything */
+        }
+
+        .dna-container {
+            position: relative;
+            width: 100px;
+            height: 160px;
+        }
+
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            color: var(--white);
+            font-family: 'Orbitron';
+            letter-spacing: 2px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        *::selection {background-color: var(--accent-color); color: var(--bg-dark);}
+
+        *{
+            -webkit-tap-highlight-color: transparent;
+            -moz-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            font-family: 'Montserrat';
+        }
+
+
+        /*NAV SECTION*/
+        .badge-earn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem;           /* Keeps it small and elegant */
+            font-weight: 700;
+            color: #00ccff;               /* Your signature blue */
+            border: 1px solid #00ccff;    /* Thin tech-style border */
+            padding: 2px 6px;
+            border-radius: 4px;           /* Slightly rounded corners */
+            margin-left: 8px;             /* Space between text and badge */
+            vertical-align: middle;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;    /* Smooth hover effect */
+        }
+
+        /* Optional: Make the badge glow when the user hovers over the link */
+        .nav-link:hover .badge-earn {
+            background-color: #00ccff;
+            color: #000;                  /* Flips to black for contrast */
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
+        }
+
+        /*new*/
+        .dropbtn {
+            background: none;
+            border: none;
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s ease;
+            font-size: inherit;
+            font-family: inherit;
+        }
+
+        /* Dropdown Container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(10, 15, 30, 0.95); /* Deep dark glass */
+            backdrop-filter: blur(15px);
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            z-index: 1000;
+            margin-top: 10px;
+            padding: 10px 0;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: 'Montserrat';
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        /* Hover effect for dropdown links */
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        /* Ensure the dropdown stays open when the class is active */
+        .dropdown.show-menu .dropdown-content {
+            display: block;
+            position: relative; /* Stacks links vertically on mobile */
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            box-shadow: none;
+        }
+
+        /* Optional: Rotate the arrow when open */
+        .dropdown.show-menu .ri-arrow-down-s-line {
+            transform: rotate(180deg);
+        }
+
+        /*FLAT NAV*/
+        @media screen and (min-width: 900.01px){
+            .navbar{display: none;}
+            .nav{
+                z-index: 1000;
+                padding: 0px 20px;
+                gap: 20px;
+                top: 0;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                background-color: rgba(255, 255, 255, 0.015);
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                position: fixed;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .logo, .nav-links{
+                display: flex;
+                flex-direction: row;
+                align-items: center;   
+            }
+
+            .nav-links{
+                margin-right: 20px;
+            }
+
+            .nav-links a{
+                text-decoration: none;
+                color: white;
+                transition: color 0.3s ease;
+            }
+
+            .nav-links a.nav-link-scrolled, button.nav-link-scrolled{
+                color: var(--primary-color)! important;
+            }
+
+
+            .nav-links a:hover, .nav-links button:hover{
+                transition: all 1s ease-in-out;
+                color: var(--accent-color);
+            }
+
+            .nav-list{
+                list-style: none;
+                padding: 15px;   
+            }
+        }
+
+
+        /* TOOGLE NAVBAR */
+        @media screen and (max-width: 900px) {
+            .nav{display: none;}
+            /* Main Header Bar */
+            .navbar {
+                z-index: 1001; /* Highest z-index to stay on top */
+                padding: 10px 20px;
+                top: 0;
+                left: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: rgba(255, 255, 255, 0.015);
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                position: fixed;
+                width: 100%;
+                height: 70px;
+                box-sizing: border-box;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            /* The Sidebar Menu */
+            .nav-link {
+                position: fixed;
+                z-index: 1000;
+                top: 0;
+                right: -100%; /* Fully hidden to the right */
+                width: 80%;   /* Adjust width as needed */
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.97);
+                -webkit-backdrop-filter: blur(15px);
+                backdrop-filter: blur(15px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+                transition: right 0.4s ease-in-out; /* Smooth slide effect */
+            }
+
+            /* Blue Sidebar Decoration (From your image) */
+            .nav-link::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 15%; /* The blue stripe width */
+                height: 100%;
+                background-color: rgba(59, 88, 151, 0.3);
+                z-index: -1;
+            }
+
+            /* State for OPEN Navigation */
+            .nav-link.open {
+                right: 0; /* Slides into view */
+            }
+
+            .nav-list {
+                width: 100%;
+                text-align: center;
+                padding: 20px 60px;
+            }
+
+            .nav-link a {
+                text-decoration: none;
+                color: var(--white);
+                font-size: 20px;
+                font-weight: bold;
+                transition: color 0.3s ease;
+            }
+
+            /* 1. Burger Button */
+            .nav-toggle {
+                background: none;
+                border: none;
+                cursor: pointer;
+                z-index: 1002; /* Ensure toggle stays above the sidebar */
+                padding: 10px;
+            }
+
+            .nav-toggle .line {
+                display: block;
+                width: 28px;
+                height: 3px;
+                margin: 6px 0;
+                background-color: var(--white); /* Dark color for visibility */
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* This ensures the lines turn dark/colored when over a white section */
+            .line-scrolled {
+                background-color: rgba(59, 88, 151, 0.3) !important;
+                transition: background-color 0.3s ease;
+            }
+
+            /* 2. X transformation */
+            .nav-toggle.open .line:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .nav-toggle.open .line:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.open .line:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            .dropbtn {
+                background: none;
+                border: none;
+                text-decoration: none;
+                color: var(--white);
+                font-size: 20px;
+                font-weight: bold;
+                transition: color 0.3s ease;
+            }
+            
+        }
+
+      /* Base Styling Integration to match your theme */
+      body {
+        background-color: #0d1117;
+        color: #c9d1d9;
+        font-family: 'Montserrat';
+        margin: 0;
+        padding: 0;
+      }
+      .title-font {
+        font-family: 'Orbitron';
+      }
+      .glass-card {
+        background: rgba(22, 27, 34, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(45, 102, 180, 0.2);
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        transform: translateY(-4px);
+        border-color: #00ccff;
+        box-shadow: 0 8px 30px rgba(0, 204, 255, 0.1);
+      }
+      .btn-glow {
+        background: linear-gradient(135deg, #2d66b4, #00ccff);
+        color: #fff;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      }
+      .btn-glow:hover {
+        box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
+      }
+      /*FOOTER-SECTION*/
+        .footer-section{
+            background-color: var(--bg-dark);
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            padding-top: 20px;
+            padding: 60px 20px 20px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .footer-column h3 i{
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .ri-verified-badge-fill {
+            font-style: normal;
+            font-size: 0.8rem;
+            color: #4CAF50; /* Trust Green */
+            margin-left: 4px;
+        }
+
+        .footer-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            margin: 40px 0 20px;
+        }
+
+        .footer-legal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-socials a i{
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .footer-socials a {
+            text-decoration: none;
+            color: var(----text-muted);
+        }
+
+        .footer-socials a i:hover {
+            color: var(--white);
+        }
+
+        .sep {
+            opacity: 0.3;
+        }
+
+        .copyright{
+            color: var(--text-muted);
+            font-size: clamp(0.75rem, 1vw, 0.88rem);
+        }
+
+        /* Responsive Logic */
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            .footer-legal {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+  </head>
+  
+  <body>
+    <div id="loader">
+        <div class="dna-container">
+            <div class="dna"></div>
+        </div>
+        <p class="loader-text">Sequencing Digital DNA...</p>
+    </div>
+    <nav class="nav">
+        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+        <ul class="nav-links">
+            <li class="nav-list"><a href="/">Home</a></li>
+            <li class="nav-list"><a href="/products">Product</a></li>
+            <li class="nav-list dropdown js-dropdown">
+                <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
+                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
+                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
+                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
+                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
+                </div>
+            </li>
+            <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
+            <li class="nav-list"><a href="/articles">Articles</a></li>
+        </ul>
+    </nav>
+    <nav class="navbar">
+        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+        
+        <button class="nav-toggle" aria-label="Toggle Navigation">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </button>
+
+        <ul class="nav-link" id="nav-link">
+            <li class="nav-list"><a href="/">Home</a></li>
+            <li class="nav-list"><a href="/products">Product</a></li>
+            <li class="nav-list dropdown js-dropdown">
+                <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
+                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
+                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
+                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
+                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
+                </div>
+            </li>
+            <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
+            <li class="nav-list"><a href="/articles">Articles</a></li>
+        </ul>
+    </nav>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem;">
+      
+        <header style="margin-top: clamp(2rem, 6vw, 4rem); margin-bottom: clamp(2rem, 6vw, 4rem); text-align: center;">
+            <span class="title-font" style="display: block; font-size: 0.8rem; color: #00ccff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">
+                The Digital DNA Log
+            </span>
+            
+            <h1 class="title-font" style="font-size: clamp(1.8rem, 4.5vw, 2.8rem); color: #fff; margin: 0 0 0.75rem 0; letter-spacing: 1px; line-height: 1.2;">
+                COMMAND CENTER INSIGHTS
+            </h1>
+            
+            <p style="color: #8b949e; max-width: 630px; margin: 0 auto; font-size: clamp(0.9rem, 2.2vw, 1rem); line-height: 1.6; font-weight: 300;">
+                Strategies on mastering digital identity, technical SEO personal portfolios, and scaling your web presence.
+            </p>
+        </header>
+
+        {featuredArticle ? (
+            <section style="margin-bottom: 4rem;">
+            <div class="glass-card" style="display: flex; flex-wrap: wrap; overflow: hidden;">
+                <div style="flex: 1 1 500px; max-height: 400px; overflow: hidden; position: relative;">
+                {featuredArticle.image ? (
+                    <img src={featuredArticle.image} alt={featuredArticle.title} style="width: 100%; height: 100%; object-fit: cover;" />
+                ) : (
+                    <div style="width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; background:#161b22; color:#313841;"><i class="ri-image-line" style="font-size:3rem;"></i></div>
+                )}
+                <span style="position: absolute; top: 1rem; left: 1rem; background: #2d66b4; color: #fff; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Featured
+                </span>
+                </div>
+                <div style="flex: 1 1 400px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center;">
+                <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: #8b949e; margin-bottom: 1rem;">
+                    <span><i class="ri-calendar-line"></i> {featuredArticle.date}</span>
+                    <span><i class="ri-time-line"></i> {featuredArticle.readingTime}</span>
+                </div>
+                <h2 class="title-font" style="font-size: 1.75rem; color: #fff; margin: 0 0 1rem 0; line-height: 1.3;">
+                    <a href={`/articles/${featuredArticle.slug}`} style="color: inherit; text-decoration: none;">{featuredArticle.title}</a>
+                </h2>
+                <p style="color: #8b949e; font-size: 0.95rem; line-height: 1.6; margin: 0 0 2rem 0;">
+                    {featuredArticle.description}
+                </p>
+                <div>
+                    <a href={`/articles/${featuredArticle.slug}`} class="btn-glow" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;">
+                    Read Strategy <i class="ri-arrow-right-line" style="vertical-align: middle; margin-left: 4px;"></i>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </section>
+        ) : (
+            <div style="text-align: center; padding: 6rem 2rem; border: 1px dashed rgba(49, 56, 65, 0.5); border-radius: 12px; margin-bottom: 4rem;">
+            <i class="ri-terminal-window-line" style="font-size: 3rem; color: #2d66b4; display: block; margin-bottom: 1.25rem;"></i>
+            <h3 class="title-font" style="color: #fff; margin: 0 0 0.5rem 0; font-size: 1.4rem;">DNA Log Workspace Clear</h3>
+            <p style="color: #8b949e; margin: 0; font-size: 0.95rem;">Publish records via Keystatic to populate your network workspace streams.</p>
+            </div>
+        )}
+
+        {otherArticles.length > 0 && (
+            <section>
+            <h3 class="title-font" style="font-size: 1.25rem; color: #fff; margin-bottom: 1.5rem; letter-spacing: 0.5px; border-left: 3px solid #00ccff; padding-left: 0.75rem;">
+                LATEST ENTRIES
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+                {otherArticles.map(article => (
+                <article class="glass-card" style="display: flex; flex-direction: column; overflow: hidden; height: 100%;">
+                    <div style="height: 200px; overflow: hidden; position: relative; background: #161b22;">
+                    {article.image ? (
+                        <img src={article.image} alt={article.title} style="width: 100%; height: 100%; object-fit: cover;" />
+                    ) : (
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#313841;"><i class="ri-image-line" style="font-size:2rem;"></i></div>
+                    )}
+                    <span style="position: absolute; top: 1rem; left: 1rem; background: rgba(13, 17, 23, 0.85); color: #00ccff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(0, 204, 255, 0.3);">
+                        {article.category}
+                    </span>
+                    </div>
+                    
+                    <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column;">
+                    <div style="display: flex; gap: 0.75rem; font-size: 0.75rem; color: #8b949e; margin-bottom: 0.75rem;">
+                        <span>{article.date}</span>
+                        <span>•</span>
+                        <span>{article.readingTime}</span>
+                    </div>
+                    <h4 class="title-font" style="font-size: 1.2rem; color: #fff; margin: 0 0 0.75rem 0; line-height: 1.4;">
+                        <a href={`/articles/${article.slug}`} style="color: inherit; text-decoration: none; transition: color 0.2s;">{article.title}</a>
+                    </h4>
+                    <p style="color: #8b949e; font-size: 0.85rem; line-height: 1.5; margin: 0 0 1.5rem 0; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        {article.description}
+                    </p>
+                    <div style="margin-top: auto;">
+                        <a href={`/articles/${article.slug}`} style="color: #00ccff; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                        Explore Entry <i class="ri-arrow-right-up-line"></i>
+                        </a>
+                    </div>
+                    </div>
+                </article>
+                ))}
+            </div>
+            </section>
+        )}  
+    </div>
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- Column 1: Ecosystem Hub -->
+            <div class="footer-column">
+                <h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/pricing">Pricing</a></li> <!-- White-Label info located here -->
+                    <li><a href="/articles">Articles</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Flagship Product -->
+            <div class="footer-column">
+                <h3><i class="ri-rocket-2-line"></i> Flagship Product</h3>
+                <ul>
+                    <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                    <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                    <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                    <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Technical Tools -->
+            <div class="footer-column">
+                <h3><i class="ri-tools-line"></i> Technical Tools</h3>
+                <ul>
+                    <li><a href="/tools/website-auditor">Website Auditor</a></li>
+                    <li><a href="/tools/social-architect">Social Architect</a></li>
+                    <li><a href="/tools/meeting_background_studio">Meeting Studio</a></li>
+                    <li><a href="/tools/naira-wise">Invoice Generator</a></li>
+                    <li><a href="/tools/emmy-sign">PDF Signer</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Partnership -->
+            <div class="footer-column">
+                <h3><i class="ri-team-line"></i> Partnership</h3>
+                <ul>
+                    <li><a href="/partnership">Partnership Program</a></li>
+                    <li><a href="/partnership/affiliate">Affiliate Portal</a></li>
+                    <li><a href="/partnership/policy">Partner Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <hr class="footer-divider">
+            <div class="footer-legal">
+                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
+                    <span class="sep">|</span>  
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/script/loading.js" defer></script>
+    <script src="/script/navbar.js" defer></script>
+    <script src="/script/year.js" defer></script>
+  </body>
+</html>
+
+
+
+

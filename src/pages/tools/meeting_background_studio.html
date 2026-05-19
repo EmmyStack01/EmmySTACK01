@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emmy STACK01 Meeting Background | Professional Brand Studio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <meta name="title" content="Emmy STACK01 | Professional Branded Meeting Background Generator">
+    <meta name="description" content="Elevate your digital presence. Create professional, high-fidelity meeting backgrounds with your custom logo and integrated QR code in seconds.">
+    <meta name="keywords" content="meeting backgrounds, virtual background generator, background studio, branded zoom background, qr code background, professional video call background, Emmy STACK01">
+    
+    <link rel="canonical" href="https://emmystack01.com/tools/meeting_background_studio">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#10b981">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/tools/meeting_background_studio">
+    <meta property="og:title" content="Emmy STACK01 | Create Your Branded Meeting Background">
+    <meta property="og:description" content="Generate high-fidelity backgrounds for Zoom, Teams, and Google Meet with your logo and a scan-to-connect QR code.">
+    <meta property="og:image" content="https://emmystack01.com/asset/meeting_background_studio-og.jpg"> 
+    <meta property="og:site_name" content="Emmy STACK01 Studio Meeting Background">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://emmystack01.com/tools/meeting_background_studio">
+    <meta property="twitter:title" content="Emmy STACK01 | Branded Background Generator">
+    <meta property="twitter:description" content="Elevate your digital presence. Create professional backgrounds for video calls with ease.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/meeting_background_studio-og.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <style>
+        :root {
+            --bg: #0d1117;
+            --panel: #161b22;
+            --primary: #10b981;
+            --border: rgba(255,255,255,0.1);
+
+            --emmy-green-light: #34d399;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans'; }
+        body { background: var(--bg); color: white; overflow: hidden; }    
+    
+        .back-btn {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        z-index: 3;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+        text-decoration: none;
+
+        /* Glass effect */
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(10px);
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        color: #f9fafb;
+        font-size: 1.2rem;
+
+        transition: all 0.3s ease;
+        }
+
+        .back-btn2{
+        top: 24px;
+        left: 24px;
+        z-index: 3;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+        text-decoration: none;
+
+        /* Glass effect */
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(10px);
+
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        color: #f9fafb;
+        font-size: 1.2rem;
+
+        transition: all 0.3s ease;
+        }
+
+        /* Hover = subtle but premium */
+        .back-btn:hover, .back-btn2:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px) scale(1.05);
+        border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Active click feel */
+        .back-btn:active, .back-btn2:active {
+        transform: scale(0.95);
+        }
+
+        /* Optional glow on hover (matches your green brand) */
+        .back-btn:hover i, .back-btn2:hover i {
+        color: #10b981;
+        }
+
+        /* Icon alignment fix */
+        .back-btn i, .back-btn2 i {
+        line-height: 1;
+        }
+
+        .back-btn::after {
+        content: "Home";
+        position: absolute;
+        left: 50px;
+        white-space: nowrap;
+
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.25s ease;
+
+        font-size: 0.85rem;
+        color: #9ca3af;
+        }
+        .back-btn2::after {
+        content: "Back";
+        position: absolute;
+        left: 50px;
+        white-space: nowrap;
+
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.25s ease;
+
+        font-size: 0.85rem;
+        color: #9ca3af;
+        }
+
+        .back-btn:hover::after, .back-btn2:hover::after {
+        opacity: 1;
+        transform: translateX(0);
+        }
+        
+
+
+        /* HERO SECTION */
+        .hero {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 6%;
+        overflow: hidden;
+
+        /* Replace with your studio image */
+        background: url("https://emmystack01.com/asset/The_Casual_Mid-Century_Living_Space.png") center/cover no-repeat;
+        }
+
+        /* DARK OVERLAY (depth + readability) */
+        .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            90deg,
+            rgba(13, 17, 23, 0.85) 0%,
+            rgba(13, 17, 23, 0.65) 45%,
+            rgba(13, 17, 23, 0.3) 100%
+        );
+        z-index: 1;
+        }
+
+        /* CONTENT */
+        .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        color: var(--text-primary);
+        }
+
+        /* LIVE BADGE */
+        .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-weight: 500;
+        }
+
+        .live-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--primary);
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+        }
+
+        /* HEADLINE */
+        .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 3.8rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin-bottom: 20px;
+        }
+
+        /* SUBTEXT */
+        .hero p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 30px;
+        }
+
+        /* CTA GROUP */
+        .cta-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        }
+
+        /* PRIMARY BUTTON */
+        .btn-primary {
+        background: linear-gradient(
+            135deg,
+            var(--primary),
+            var(--emmy-green-light)
+        );
+        color: #022c22;
+        padding: 14px 26px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+        }
+
+
+        /* LIVE DOT ANIMATION */
+        @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        }
+        }
+
+        /* SUBTLE BACKGROUND MOTION */
+        .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: inherit;
+        animation: slowZoom 20s ease-in-out infinite alternate;
+        z-index: 0;
+        }
+
+        @keyframes slowZoom {
+        from {
+            transform: scale(1);
+        }
+        to {
+            transform: scale(1.05);
+        }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+        .hero {
+            padding: 0 20px;
+            align-items: center;
+            padding-bottom: 60px;
+        }
+
+        .hero-content {
+            max-width: 100%;
+        }
+
+        .cta-group {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+        }
+
+        /* --- LAYOUT --- */
+        .studio { transition: opacity 0.8s ease; display: flex; height: 100vh; flex-direction: row; overflow: hidden; /* Prevent body scroll */ }
+
+        /* --- SIDEBAR (Responsive) --- */
+        .sidebar { 
+            width: 320px; background: var(--panel); padding: 24px; 
+            border-right: 1px solid var(--border); z-index: 100;
+            display: flex; flex-direction: column; gap: 20px;
+            overflow-y: auto; flex-shrink: 0; /* CRITICAL: Prevents the preview from pushing the sidebar */
+        }
+
+
+        .bg-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .bg-thumb {
+            aspect-ratio: 16 / 9;
+            border-radius: 6px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.2s;
+            opacity: 0.7;
+        }
+
+        .bg-thumb:hover {
+            opacity: 1;
+            border-color: var(--muted);
+        }
+
+        .bg-thumb.active {
+            opacity: 1;
+            border-color: var(--primary);
+        }
+
+        .secondary-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed var(--border);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* --- PREVIEW AREA --- */
+        .preview-container { 
+            flex: 1; display: flex; align-items: center; justify-content: center; 
+            padding: 40px; position: relative; background: #000; min-width: 0; /* Allows the container to shrink smaller than its children */
+        }
+
+        /* The Scalable Box */
+        .canvas-box {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            max-height: 85vh; /* Ensure it doesn't get taller than the screen */
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; z-index: 10; }
+        .bg-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+
+        /* --- MOCKUP OVERLAYS --- */
+        .mockup-ui {
+            position: absolute; inset: 0; pointer-events: none; z-index: 20; display: none;
+        }
+        
+        /* Zoom Mockup */
+        .zoom-ui .bottom-bar { position: absolute; bottom: 0; width: 100%; height: 8%; background: rgba(0,0,0,0.9); }
+        .zoom-ui .name-tag { position: absolute; bottom: 10%; left: 2%; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 4px; font-size: 1.2vw; }
+
+        /* Meet Mockup */
+        .meet-ui .bottom-controls { 
+            position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%);
+            width: 40%; height: 10%; background: #3c4043; border-radius: 50px;
+        }
+
+        /* --- UI ELEMENTS --- */
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-size: 12px; color: #8b949e; text-transform: uppercase; }
+        input, select { background: #0d1117; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; }
+        .btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+        button { padding: 10px; cursor: pointer; border-radius: 6px; border: 1px solid var(--border); background: #21262d; color: white; }
+        .main-button:hover{transform: translateY(-2px) scale(1.03); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);}
+        button.active { background: var(--primary); border-color: var(--primary); }
+        .export-btn { background: var(--primary); font-weight: bold; padding: 15px; margin-top: auto; }
+
+
+        /* Container for the input and button */
+        .qr-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* The Input Field */
+        #card-url {
+            width: 100%;
+            padding: 12px 90px 12px 15px; /* Extra right padding (90px) for the button */
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #fff;
+            outline: none;
+        }
+
+        /* The Button inside the input */
+        #generate-qr-btn {
+            position: absolute;
+            right: 5px; /* Small gap from the right edge */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 8px 15px;
+            height: 80%; /* Fits nicely inside the input height */
+            font-size: 0.85rem;
+            border-radius: 6px;
+            background: #10b981; /* Emmy Stack Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.3s ease;
+        }
+
+        #generate-qr-btn:hover {
+            background: #059669;
+        }
+
+        /* --- MOBILE BREAKPOINT --- */
+        @media (max-width: 850px) {
+            .studio { flex-direction: column; }
+            .sidebar { width: 100%; height: 40vh; border-right: none; border-top: 1px solid var(--border); }
+            .preview-container { height: 60vh; }
+
+            .sidebar::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .sidebar::-webkit-scrollbar-track {
+                background: var(--border);
+            }
+
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border); 
+                border-radius: 10px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb:hover {
+                background: var(--primary);
+            }
+        }
+        h2{
+            margin-top: 10px;
+            font-size: 1.5em;
+            width: 200px;
+            line-height: 0.9;
+            font-family: 'Plus Jakarta Sans';
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        h2 span{
+            font-size: 0.7em;
+            font-weight: 500;
+            color: var(--primary);
+            letter-spacing: 0px;
+            word-spacing: 1px;
+        }
+        #canvas-wrapper {
+            width: 100%;
+            max-width: 1200px; /* Or 1920px if you want it full-width on giant monitors */
+            margin: 0 auto;
+            position: relative;
+            
+            /* 1. Force the 16:9 shape even if empty */
+            aspect-ratio: 16 / 9; 
+            
+            /* 2. Standardize appearance */
+            background: #1a1a1a; 
+            overflow: hidden; /* Keeps "off-canvas" objects from causing side-scrolling */
+            
+            /* 3. Ensure it's a block for script calculations */
+            display: block; 
+        }
+
+        #main-canvas {
+            /* Let the Fabric.js script control the dimensions, 
+            but ensure it never overflows the phone screen */
+            max-width: 100%;
+            height: auto !important;
+        }
+        #qr-buffer {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            visibility: hidden;
+            /* DO NOT use display: none; */
+        }
+    </style>
+</head>
+<body>
+    <section id="hero-interface" class="hero">
+        <div class="overlay"></div>
+        <a href="/" class="back-btn">
+            <i class="ri-arrow-left-line"></i>
+        </a>
+
+        <div class="hero-content">
+            <span class="live-badge">Live Studio Preview</span>
+            <h1>Design Your Perfect Meeting Presence</h1>
+            <p>Create high-fidelity virtual backgrounds with your brand, your space, and your identity — in seconds.</p>
+            <div class="cta-group"><button class="btn-primary" onclick="launchStudio()">Start Designing →</button></div>
+        </div>
+    </section>
+
+    <div class="studio" id="main-studio" style="display: none; opacity: 0;">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div>
+                <button class="back-btn2" onclick="showHero(event)">
+                    <i class="ri-arrow-left-line"></i>
+                </button>
+                <h2>Emmy STACK01 <span>Meeting Background</span></h2>
+            </div>
+            
+            <div class="control-group">
+                <label>Mockup View</label>
+                <div class="btn-row">
+                    <button onclick="setMockup('none')" id="btn-none" class="active">Normal</button>
+                    <button onclick="setMockup('zoom')" id="btn-zoom">Zoom</button>
+                    <button onclick="setMockup('meet')" id="btn-meet">Meet</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Upload Logo</label>
+                <input type="file" id="logo-upload" accept="image/*">
+            </div>
+
+            <div class="control-group qr-input-group">
+                <label>QR Link</label>
+                <div class="qr-input-wrapper">
+                    <input type="text" id="card-url" placeholder="Your URL here...">
+                    <button id="generate-qr-btn" class="studio-btn">Apply QR</button>
+                </div>
+            </div>
+          
+            <div class="control-group">
+                <label>Background Studio</label>
+                <!-- Custom Upload Button -->
+                <div class="custom-upload-wrapper" style="margin-bottom: 12px;">
+                    <button onclick="document.getElementById('bg-upload').click()" class="secondary-btn" style="width: 100%;">
+                        + Upload Custom Background
+                    </button>
+                    <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
+                </div>
+
+                <!-- 6 Local Presets Grid -->
+                <div class="bg-grid" id="bg-presets">
+                    <div class="bg-thumb active" data-type="image" 
+                        data-src="/asset/The_Casual_Mid-Century_Living_Space.png" 
+                        style="background-image: url('/asset/The_Casual_Mid-Century_Living_Space.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="image" 
+                        data-src="/asset/The_Corporate_Executive_Library.png" 
+                        style="background-image: url('/asset/The_Corporate_Executive_Library.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="image" 
+                        data-src="/asset/The_Industrial_Coffee_Shop_Co-working.png" 
+                        style="background-image: url('/asset/The_Industrial_Coffee_Shop_Co-working.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="image" 
+                        data-src="/asset/The_New-York_Industrial_Loft.png" 
+                        style="background-image: url('/asset/The_New-York_Industrial_Loft.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="image" 
+                        data-src="/asset/The_Scandinavian_Loft_Office.png" 
+                        style="background-image: url('/asset/The_Scandinavian_Loft_Office.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="image" 
+                        data-src="/asset/The_Scandinavian_Morning_Nook.png" 
+                        style="background-image: url('/asset/The_Scandinavian_Morning_Nook.png')"></div>
+                        
+                    <div class="bg-thumb" data-type="video" 
+                        data-src="/asset/bg6.mp4" 
+                        style="background-color: #333; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 10px;">VIDEO</span>
+                    </div>
+                </div>
+            </div>
+
+            <button id="export-btn" class="export-btn main-button">Download Background</button>
+        </aside>
+
+        <!-- Main Canvas Area -->
+        <main class="preview-container">
+            <div class="canvas-box" id="canvas-wrapper">
+                <!-- Layers -->
+                <video id="bg-video" class="bg-layer" autoplay loop muted style="display:none;"></video>
+                <img id="bg-image" class="bg-layer" src="/asset/The_Casual_Mid-Century_Living_Space.png"> <!-- Default preset -->
+                <!-- Hidden input for custom uploads -->
+                <input type="file" id="bg-upload" accept="image/*,video/*" style="display:none;">
+
+                <canvas id="main-canvas"></canvas>
+
+                <!-- Zoom Mockup -->
+                <div id="mockup-zoom" class="mockup-ui zoom-ui">
+                    <div class="bottom-bar"></div>
+                    <div class="name-tag">Your Name</div>
+                </div>
+
+                <!-- Meet Mockup -->
+                <div id="mockup-meet" class="mockup-ui meet-ui">
+                    <div class="bottom-controls"></div>
+                </div>
+            </div>
+        </main>    
+    </div>
+
+    <div id="qr-buffer"></div>  
+
+    <script is:inline>
+        /**
+         * EMMY STACK01 STUDIO - Core Script
+         * Organized by: Initialization > UI Navigation > Canvas Engine > Exports
+         * Fixed: Canvas coordinate recalibration for hidden-to-visible transition
+         */
+
+        // 1. GLOBAL STATE & INITIALIZATION
+        const canvas = new fabric.Canvas('main-canvas', {
+            width: 1920,
+            height: 1080,
+            selection: true
+        });
+
+        let qrGroupRef = null; 
+
+        // UI Elements
+        const videoEl = document.getElementById('bg-video');
+        const imageEl = document.getElementById('bg-image');
+        const bgPresets = document.querySelectorAll('.bg-thumb');
+        const bgUpload = document.getElementById('bg-upload');
+
+
+        // 2. UI NAVIGATION (Hero <-> Studio)
+        function launchStudio() {
+            const hero = document.getElementById('hero-interface');
+            const studio = document.getElementById('main-studio');
+
+            // Fade and slide hero out
+            hero.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            hero.style.opacity = '0';
+            hero.style.transform = 'translateY(-30px)';
+
+            setTimeout(() => {
+                hero.style.display = 'none';
+                
+                // Show studio
+                studio.style.display = 'flex';
+                studio.style.opacity = '0';
+                studio.style.transform = 'translateY(20px)';
+                
+                // Force reflow
+                studio.offsetHeight; 
+
+                studio.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+                studio.style.opacity = '1';
+                studio.style.transform = 'translateY(0)';
+                
+                // --- CRITICAL FIX ---
+                // Fabric.js needs to re-run its internal offsets now that display is no longer 'none'
+                canvas.calcOffset(); 
+                resizeCanvas(); 
+            }, 500);
+        }
+
+        function showHero(e) {
+            if (e) e.preventDefault();
+            const hero = document.getElementById('hero-interface');
+            const studio = document.getElementById('main-studio');
+
+            studio.style.opacity = '0';
+            studio.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                studio.style.display = 'none';
+                hero.style.display = 'flex';
+                hero.offsetHeight;
+                hero.style.opacity = '1';
+                hero.style.transform = 'translateY(0)';
+            }, 500);
+        }
+
+        // 3. RESPONSIVE SYSTEM
+        const BASE_WIDTH = 1920;
+        const BASE_HEIGHT = 1080;
+                
+        function resizeCanvas() {
+            const wrapper = document.getElementById('canvas-wrapper');
+            if (!wrapper || wrapper.clientWidth === 0) return;
+
+            const scale = wrapper.clientWidth / BASE_WIDTH;
+
+            // Force the height to be exactly proportional to the 16:9 ratio
+            const calculatedHeight = wrapper.clientWidth * (BASE_HEIGHT / BASE_WIDTH);
+
+            canvas.setDimensions({ 
+                width: wrapper.clientWidth, 
+                height: calculatedHeight 
+            });
+
+            canvas.setZoom(scale);
+            canvas.calcOffset();
+            repositionObjects();
+        }
+        
+        function repositionObjects() {
+            const margin = BASE_WIDTH * 0.04;
+            
+            canvas.getObjects().forEach(obj => {
+                // LOGO LOGIC
+                if (obj.type === 'image' && obj !== qrGroupRef) {
+                    obj.set({ 
+                        left: margin, 
+                        top: margin,
+                        originX: 'left',
+                        originY: 'top'
+                    });
+                }
+
+                // QR GROUP LOGIC
+                if (obj === qrGroupRef) {
+                    obj.set({ 
+                        left: BASE_WIDTH - margin, // 1844px
+                        top: margin,
+                        originX: 'right', // Critical: Anchor to the right edge
+                        originY: 'top'
+                    });
+                    obj.bringToFront(); 
+                }
+                
+                // Update hit-box for mobile touch events
+                obj.setCoords();
+            });
+            
+            canvas.renderAll();
+        }
+
+
+        // 4. CUSTOM DELETE CONTROL
+        const deleteIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff4d4d' width='24px' height='24px'%3E%3Cpath d='M14.59 8L12 10.59 9.41 8 8 9.41 10.59 12 8 14.59 9.41 16 12 13.41 14.59 16 16 14.59 13.41 12 16 9.41 14.59 8zM12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/%3E%3C/svg%3E";
+        const deleteImg = document.createElement('img');
+        deleteImg.src = deleteIcon;
+
+        function renderDeleteControl(ctx, left, top, styleOverride, fabricObject) {
+            const size = 24;
+            ctx.save();
+            ctx.translate(left, top);
+            ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle));
+            ctx.drawImage(deleteImg, -size/2, -size/2, size, size);
+            ctx.restore();
+        }
+
+        function deleteObject(eventData, transform) {
+            const target = transform.target;
+            if (target === qrGroupRef) {
+                document.getElementById('card-url').value = "";
+                qrGroupRef = null;
+            }
+            canvas.remove(target);
+            canvas.requestRenderAll();
+        }
+
+        fabric.Object.prototype.transparentCorners = false;
+        fabric.Object.prototype.cornerColor = '#10b981';
+        fabric.Object.prototype.cornerStyle = 'circle';
+        fabric.Object.prototype.cornerSize = 12;
+
+        fabric.Object.prototype.controls.deleteControl = new fabric.Control({
+            x: 0.5, y: -0.5, offsetY: -16, offsetX: 16,
+            cursorStyle: 'pointer', mouseUpHandler: deleteObject,
+            render: renderDeleteControl, cornerSize: 24
+        });
+
+
+        // 5. MOCKUP & BACKGROUND ENGINE
+        function setMockup(type) {
+            document.querySelectorAll('.mockup-ui').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.btn-row button').forEach(el => el.classList.remove('active'));
+            if(type !== 'none') document.getElementById(`mockup-${type}`).style.display = 'block';
+            document.getElementById(`btn-${type}`).classList.add('active');
+        }
+
+        function updateBackground(src, isVideo = false) {
+            if (isVideo) {
+                imageEl.style.display = 'none';
+                videoEl.style.display = 'block';
+                videoEl.src = src;
+                videoEl.play().catch(e => console.log("Video Playback Logged"));
+            } else {
+                videoEl.pause();
+                videoEl.style.display = 'none';
+                imageEl.style.display = 'block';
+                imageEl.src = src;
+            }
+        }
+
+        bgPresets.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                bgPresets.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const isVideo = this.dataset.type === 'video' || this.getAttribute('data-type') === 'video';
+                const src = this.dataset.src || this.getAttribute('data-src');
+                updateBackground(src, isVideo);
+            });
+        });
+
+        bgUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                updateBackground(URL.createObjectURL(file), file.type.startsWith('video/'));
+                bgPresets.forEach(b => b.classList.remove('active'));
+            }
+        });
+
+
+        // 6. ASSET UPLOADS (Logo & QR) - MOBILE CENTERED FIX
+        document.getElementById('logo-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (f) => {
+                fabric.Image.fromURL(f.target.result, (img) => {
+                    // 1. Scale relative to the 1920 design
+                    img.scaleToWidth(300); 
+                    
+                    const margin = BASE_WIDTH * 0.04; // ~76px
+                    
+                    // 2. Set coordinates based on the FULL 1920 width
+                    img.set({
+                        left: margin,
+                        top: margin,
+                        originX: 'left',
+                        originY: 'top'
+                    });
+
+                    canvas.add(img);
+                    
+                    // 3. CRITICAL: Re-run resize to snap everything into view
+                    resizeCanvas();
+                    
+                    canvas.setActiveObject(img);
+                    if(qrGroupRef) qrGroupRef.bringToFront();
+                });
+            };
+            reader.readAsDataURL(file);
+            e.target.value = ""; 
+        });
+
+        // Function to handle QR Generation
+        function handleQRGeneration() {
+            let inputUrl = document.getElementById('card-url').value.trim();
+            if (!inputUrl) {
+                if (qrGroupRef) { canvas.remove(qrGroupRef); qrGroupRef = null; }
+                return canvas.requestRenderAll();
+            }
+        
+            let finalUrl = /^https?:\/\//i.test(inputUrl) ? inputUrl : 'https://' + inputUrl;
+            const buffer = document.getElementById('qr-buffer');
+            buffer.innerHTML = "";
+            
+            // Force the library to use 'canvas' mode instead of 'img'
+            new QRCode(buffer, { 
+                text: finalUrl, 
+                width: 512, 
+                height: 512, 
+                useSVG: false // This forces canvas mode
+            });
+        
+            setTimeout(() => {
+                // Find the canvas the library just created
+                const qrCanvas = buffer.querySelector('canvas');
+                if (!qrCanvas) return;
+        
+                // Convert that canvas directly to a DataURL
+                const qrDataUrl = qrCanvas.toDataURL("image/png");
+        
+                fabric.Image.fromURL(qrDataUrl, (qrImg) => {
+                    if (qrGroupRef) canvas.remove(qrGroupRef);
+        
+                    const whitePlate = new fabric.Rect({
+                        width: 340, height: 340, fill: '#fff', rx: 20, ry: 20,
+                        shadow: '0 10px 25px rgba(0,0,0,0.3)'
+                    });
+        
+                    qrImg.scaleToWidth(300);
+                    qrImg.set({ left: 20, top: 20 });
+        
+                    const margin = BASE_WIDTH * 0.04;
+                    
+                    qrGroupRef = new fabric.Group([whitePlate, qrImg], {
+                        left: BASE_WIDTH - margin,
+                        top: margin,
+                        originX: 'right',
+                        originY: 'top',
+                        objectCaching: false
+                    });
+        
+                    canvas.add(qrGroupRef);
+                    
+                    resizeCanvas();
+                    qrGroupRef.setCoords();
+                    qrGroupRef.bringToFront();
+                    canvas.requestRenderAll();
+                });
+            }, 300);
+        }
+
+        // Attach to Button Click
+        document.getElementById('generate-qr-btn').addEventListener('click', handleQRGeneration);
+
+        // Optional: Also trigger on 'Enter' key inside the input
+        document.getElementById('card-url').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleQRGeneration();
+        });
+
+
+        // 7. EXPORT SYSTEM
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 1920; 
+            exportCanvas.height = 1080;
+            const ctx = exportCanvas.getContext('2d');
+            const activeBg = (videoEl.style.display === 'block') ? videoEl : imageEl;
+
+            try {
+                // --- STEP 1: CENTER CROP THE BACKGROUND ---
+                // This ensures the export matches the "Cover" look of your studio
+                const imgWidth = activeBg.videoWidth || activeBg.naturalWidth;
+                const imgHeight = activeBg.videoHeight || activeBg.naturalHeight;
+                
+                const canvasRatio = 1920 / 1080;
+                const imgRatio = imgWidth / imgHeight;
+                
+                let sX, sY, sW, sH;
+
+                if (imgRatio > canvasRatio) {
+                    // Image is wider than canvas
+                    sH = imgHeight;
+                    sW = imgHeight * canvasRatio;
+                    sX = (imgWidth - sW) / 2;
+                    sY = 0;
+                } else {
+                    // Image is taller than canvas
+                    sW = imgWidth;
+                    sH = imgWidth / canvasRatio;
+                    sX = 0;
+                    sY = (imgHeight - sH) / 2;
+                }
+
+                ctx.drawImage(activeBg, sX, sY, sW, sH, 0, 0, 1920, 1080);
+                
+                // --- STEP 2: CAPTURE FABRIC OVERLAY ---
+                const currentScale = canvas.getZoom();
+                canvas.setZoom(1); 
+                canvas.setDimensions({ width: 1920, height: 1080 });
+
+                const fabricData = canvas.toDataURL({ 
+                    format: 'png',
+                    quality: 1.0
+                });
+
+                // Instant reset for the UI
+                canvas.setZoom(currentScale);
+                resizeCanvas(); 
+
+                // --- STEP 3: COMBINE ---
+                const tempImg = new Image();
+                tempImg.crossOrigin = "anonymous";
+                tempImg.onload = () => {
+                    ctx.drawImage(tempImg, 0, 0);
+                    const link = document.createElement('a');
+                    link.download = `EmmySTACK01_Studio_Background_${Date.now()}.jpg`;
+                    link.href = exportCanvas.toDataURL('image/jpeg', 0.95);
+                    link.click();
+
+                    // Clean up memory
+                    URL.revokeObjectURL(link.href);
+                };
+                tempImg.src = fabricData;
+
+            } catch (err) {
+                console.error("Export failed. This is usually a CORS issue with the background image.", err);
+                alert("Could not export. Please try using a different background or an uploaded image.");
+            }
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initialize on load
+    </script>
+</body>
+</html>
