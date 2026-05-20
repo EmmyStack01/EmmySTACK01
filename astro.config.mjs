@@ -6,12 +6,9 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  output: 'static', 
+  output: 'hybrid', // Pre-renders portfolio pages as static HTML while leaving CMS functions server-rendered
   adapter: vercel({
-    webAnalytics: { enabled: true },
-    // Explicitly force all SSR/dynamic routes to use Node Serverless instead of Edge
-    functionPerRoute: false, 
-    imagesConfig: { sizes: [320, 640, 1200] }
+    webAnalytics: { enabled: true }
   }),
   integrations: [
     markdoc(),

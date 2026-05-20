@@ -2,6 +2,17 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "dist/server/entry.mjs": {
+      "runtime": "nodejs20.x"
+    },
+    "index.js": {
+      "runtime": "nodejs20.x"
+    },
+    "src/pages/keystatic/[...id].astro": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "headers": [
     {
       "source": "/api/(.*)",
@@ -20,7 +31,7 @@
           "value": "same-origin"
         },
         {
-          "key": "Cross-Origin-Embedder-Policy", 
+          "key": "Cross-Origin-Embedder-Policy",
           "value": "unsafe-none"
         }
       ]
