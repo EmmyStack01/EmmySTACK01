@@ -1,10 +1,8 @@
 ---
 import { Keystatic } from '@keystatic/astro/ui';
 
-// Force Vercel to use standard Node.js serverless functions for this route
-export const config = {
-  runtime: 'nodejs20.x'
-};
+// 1. Force Astro to render this route dynamically on the server at runtime
+export const prerender = false;
 ---
 
 <Keystatic client:only="react" />

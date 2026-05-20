@@ -2,15 +2,13 @@ import { defineConfig } from 'astro/config';
 import markdoc from '@astrojs/markdoc';
 import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel/serverless'; // Make sure it's importing from /serverless
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  output: 'hybrid',
+  output: 'hybrid', // Keeps your portfolio static pages pre-built, but allows dynamic server functions
   adapter: vercel({
-    webAnalytics: { enabled: true },
-    // Ensures everything defaults to standard serverless node blocks
-    edgeMiddleware: false 
+    webAnalytics: { enabled: true }
   }),
   integrations: [
     markdoc(),
