@@ -6,7 +6,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "vercel-build": "npm install --legacy-peer-deps && astro build"
   },
   "dependencies": {
     "@astrojs/markdoc": "^0.7.0",
