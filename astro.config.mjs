@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  output: 'hybrid', 
+  output: 'static', 
   adapter: vercel({
     webAnalytics: { enabled: true },
     // Explicitly force all SSR/dynamic routes to use Node Serverless instead of Edge
