@@ -3,7 +3,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "render": {
+    "**/*.js": {
+      "runtime": "nodejs20.x"
+    },
+    "**/*.mjs": {
       "runtime": "nodejs20.x"
     }
   },
