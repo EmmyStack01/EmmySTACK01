@@ -2,14 +2,6 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "functions": {
-    "**/*.js": {
-      "runtime": "nodejs20.x"
-    },
-    "**/*.mjs": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",

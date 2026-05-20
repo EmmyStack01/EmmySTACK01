@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  output: 'hybrid', // Pre-renders portfolio pages as static HTML while leaving CMS functions server-rendered
+  output: 'server', // Enforces standard Node.js server environments globally
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
