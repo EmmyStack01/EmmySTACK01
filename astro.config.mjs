@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import markdoc from '@astrojs/markdoc';
 import sitemap from '@astrojs/sitemap';
 import keystatic from '@keystatic/astro';
-import vercel from '@astrojs/vercel';
+import vercel from '@astrojs/vercel/server';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
