@@ -25,4 +25,4 @@ User-agent: Bingbot
 Allow: /
 
 # 3. Sitemap location
-Sitemap: https://emmystack01.com/sitemap.xml
+Sitemap: https://emmystack01.com/sitemap-index.xml

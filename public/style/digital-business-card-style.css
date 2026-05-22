@@ -36,9 +36,7 @@
   --text-muted: #a0aec0;
   --white: #ffffff;
 }
-html{
-    scroll-behavior: smooth;
-}
+
 /* Add this to your digital-business-card.css */
 body.stop-scrolling {
     height: 100vh;

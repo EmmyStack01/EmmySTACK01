@@ -295,6 +295,12 @@ html{
         transition: all 0.3s ease-in-out;
     }
 
+    /* This ensures the lines turn dark/colored when over a white section */
+    .line-scrolled {
+        background-color: rgba(59, 88, 151, 0.3) !important;
+        transition: background-color 0.3s ease;
+    }
+
     /* 2. X transformation */
     .nav-toggle.open .line:nth-child(1) {
         transform: translateY(9px) rotate(45deg);
