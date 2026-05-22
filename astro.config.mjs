@@ -7,7 +7,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  output: 'hybrid', // <-- FIX: Keeps your pages static so 'window' works, while letting Keystatic run its server paths
+  output: 'server',
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
