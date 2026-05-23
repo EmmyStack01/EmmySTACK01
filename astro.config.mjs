@@ -11,10 +11,8 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
-  experimental: {
-    legacy: {
-      collections: true // <-- Tells Astro 6 to safely parse your old content setup
-    }
+  legacy: {
+    collectionsBackwardsCompat: true // <-- The correct Astro v6 flag for older collection formats
   },
   integrations: [
     markdoc(), 
