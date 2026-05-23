@@ -1,9 +1,9 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  // 1. Storage Strategy: Set to 'local' for development, switch to 'github' when deploying live
+  // 1. Storage Strategy: Safely switches using Vite's production environment flag
   storage: {
-    kind: process.env.NODE_ENV === 'production' ? 'github' : 'local',
+    kind: import.meta.env.PROD ? 'github' : 'local',
     repo: 'EmmyStack01/EmmySTACK01', 
   },
 
@@ -11,12 +11,12 @@ export default config({
     articles: collection({
       label: 'Articles (Log)',
       slugField: 'title',
-      path: 'src/content/articles/*', // Location for content data files
-      format: { data: 'json', contentField: 'content' }, // Keeps your schema clean and readable
+      // Keystatic maps content relative to the root. This path remains perfectly intact.
+      path: 'src/content/articles/*', 
+      format: { data: 'json', contentField: 'content' }, 
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
         
-        // Added author field to safely supply the dynamic loop requirement
         author: fields.text({
           label: 'Author Name',
           defaultValue: 'Wisdom Ezuduemoih',
@@ -50,14 +50,12 @@ export default config({
           description: 'e.g., 5 min read'
         }),
 
-        // Changed directory path to standard public/asset folder structure to align with test hooks
         coverImage: fields.image({
           label: 'Cover Image Artwork',
           directory: 'public/asset',
           publicPath: '/asset/',
         }),
 
-        // Rich Text Area using Markdoc
         content: fields.markdoc({
           label: 'Content',
           options: {
@@ -71,11 +69,10 @@ export default config({
     }),
   },
 
-  // 3. Global Site Terminals Configuration
   singletons: {
     settings: singleton({
       label: 'Site Settings',
-      path: 'src/content/settings',
+      path: 'src/content/settings', // Keystatic internal content paths map normally
       schema: {
         siteTitle: fields.text({ label: 'Site Title', defaultValue: 'Emmy STACK01' }),
         description: fields.text({ label: 'Global SEO Description', multiline: true }),
