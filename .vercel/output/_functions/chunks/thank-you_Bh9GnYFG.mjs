@@ -1,0 +1,129 @@
+function render({ slots: ___SLOTS___ }) {
+		return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You | Emmy STACK01</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-123456789"></script>   
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'AW-123456789'); // Your actual Google Ads ID
+        gtag('config', 'G-XXXXXXXXXX'); // Your GA4 ID
+    
+        const params = new URLSearchParams(window.location.search);
+        const orderType = params.get('type');
+    
+        if (orderType === 'card') {
+            // FLAT-RATE CONVERSION ($60)
+            gtag('event', 'conversion', {
+                'send_to': 'AW-123456789/LABEL_1',
+                'value': 60.0,
+                'currency': 'USD'
+            });
+            console.log("SUCCESS: Digital Business Card Conversion ($60) sent.");
+        } else if (orderType === 'project') {
+            // VARIABLE LEAD CONVERSION ($20 VALUE)
+            gtag('event', 'conversion', {
+                'send_to': 'AW-123456789/LABEL_2',
+                'value': 20.0,
+                'currency': 'USD'
+            });
+            console.log("SUCCESS: Custom Project Lead Conversion ($20) sent.");
+        } else {
+            console.warn("NOTICE: No specific order type detected in URL.");
+        }
+    </script>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+        <h1>Redirecting to WhatsApp...</h1>
+        <p>Thank you for choosing Emmy STACK01. Your chat will open in a moment.</p>
+
+        <div class="status-box">
+            <h2 id="status-text">Initializing Secure Chat...</h2>
+            <div class="loader-bar">
+                <div class="progress"></div>
+            </div>
+            <p class="subtext">Connecting you to our WhatsApp business portal.</p>
+        </div>
+        
+        <div class="trust-preview">
+            <p>While you wait, see why clients trust us:</p>
+            <div class="stars">★★★★★</div>
+            <a href="https://www.trustpilot.com/review/emmystack01.com" target="_blank">View Trustpilot Profile</a>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #0a0a0a; /* Deep Black */
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .redirect-container { text-align: center; max-width: 400px; padding: 20px; }
+        .loader-bar { width: 100%; height: 4px; background: #222; border-radius: 10px; overflow: hidden; margin: 20px 0; }
+        .progress { width: 0%; height: 100%; background: #2d66b4; animation: load 2.5s forwards; }
+        @keyframes load { to { width: 100%; } }
+        .subtext { font-size: 0.8rem; color: #888; }
+        .trust-preview { margin-top: 50px; border-top: 1px solid #222; padding-top: 20px; }
+        .stars { color: #ffb400; font-size: 1.2rem; margin-bottom: 5px; }
+        a { color: #00ff88; text-decoration: none; font-size: 0.9rem; }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            const stack = urlParams.get('stack');
+            
+            // Target the "Connecting..." subtext to give live updates
+            const subtext = document.querySelector('.connecting-subtext'); 
+        
+            let finalLink = "https://wa.me/2349076991076";
+        
+            if (type === 'card' && stack) {
+                const cleanStack = decodeURIComponent(stack);
+                // Using a cleaner bullet point for the WhatsApp message
+                const formattedStack = cleanStack.split(', ').map(item => \`%0A•%20\${item}\`).join('');
+                
+                const message = \`Hi Emmy! 👋 I want to build my Digital Business Card.%0A%0A*Selected Features:*\${formattedStack}%0A%0A*Total Investment:* $60%0A%0ALet's get started!\`;
+                finalLink = \`https://wa.me/2349076991076?text=\${message}\`;
+            } else if (type === 'project') {
+                // Punchy, direct text for custom website leads
+                finalLink = "https://wa.me/2349076991076?text=Hi%20Emmy,%20I%20need%20a%20custom%20website!";
+            }
+        
+            // Match the timing with your progress bar animation
+            setTimeout(() => {
+                if(subtext) subtext.innerText = "Security Handshake Complete...";
+            }, 2000);
+        
+            setTimeout(() => {
+                if(subtext) subtext.innerText = "Opening WhatsApp...";
+                window.location.href = finalLink;
+            }, 4000); 
+        });
+    </script>
+</body>
+</html>`
+	}
+render["astro:html"] = true;
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: render
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

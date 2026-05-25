@@ -1,0 +1,787 @@
+function render({ slots: ___SLOTS___ }) {
+		return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing & Growth Hub | Emmy STACK01</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <meta name="title" content="Pricing & Growth Hub | Emmy STACK01">
+    <meta name="description" content="Transparent pricing for high-performance web development, custom 'Digital DNA' profiles, and long-term brand management at Emmy STACK01.">
+    <link rel="canonical" href="https://emmystack01.com/pricing">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+
+    <meta property="og:site_name" content="Emmy STACK01 | Digital DNA">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/pricing">
+    <meta property="og:title" content="Pricing & Growth Hub | Emmy STACK01">
+    <meta property="og:description" content="Explore production stacks and management plans designed for owned media ecosystems and independent digital entrepreneurship.">
+    <meta property="og:image" content="https://emmystack01.com/asset/pricing.jpg">
+    <meta property="og:image:alt" content="Emmy STACK01 Pricing Hub - Production and Management Tiers">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta property="twitter:title" content="Pricing & Growth Hub | Emmy STACK01">
+    <meta property="twitter:description" content="Scale your professional brand with custom-coded core solutions, GSAP animations, and technical SEO management.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/pricing.jpg">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    
+    <style>
+        /* --- 1. SETTINGS & VARIABLES --- */
+        :root {
+            --primary-color: #2d66b4;
+            --secondary-color: #22386e;
+            --accent-color: #00ccff;
+            --bg-dark: #0d1117;
+            --bg-light: #161b22;
+            --text-main: #f5f7fa;
+            --text-muted: #a0aec0;
+            --white: #f5f7fa;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        /* --- 2. RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--white);
+        }
+
+        html { scroll-behavior: smooth; }
+        body { overflow-x: hidden; background-color: var(--bg-dark); }
+
+
+        /* Hide elements initially to prevent flicker */
+        .main, .price-card {
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* --- 3. LAYOUT SYSTEM --- */
+        .hero-section {
+            position: relative;
+            background-color: var(--secondary-color);
+            background-image: 
+                linear-gradient(rgba(34, 55, 110, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 55, 110, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 150px 20px;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 10%, var(--bg-dark) 85%);
+            pointer-events: none;
+        }
+
+        .main-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            background-color: var(--white);
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            max-width: 1200px;
+            width: 100%;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* RTL Layout for Variety */
+        .main-content.reverse {
+            grid-template-columns: 1.2fr 1fr;
+            direction: rtl;
+        }
+
+        .main-content.reverse > * { direction: ltr; }
+
+        /* --- 4. TYPOGRAPHY --- */
+        h1 {
+            font-family: 'Orbitron';
+            font-size: clamp(2.8rem, 6vw, 4.2rem);
+            color: var(--primary-color);
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(45, 102, 180, 0.3);
+        }
+
+        h2 {
+            font-family: 'Orbitron';
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--bg-dark);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .main p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--primary-color);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- 5. COMPONENTS --- */
+        
+        /* Navigation */
+        .back-btn { 
+            position: absolute; top: 24px; left: 24px; z-index: 10;
+            display: flex; align-items: center; justify-content: center; 
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease; text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-btn::after {
+            content: "Homepage"; position: absolute; left: 50px;
+            opacity: 0; transform: translateX(-10px);
+            transition: all 0.25s ease; font-size: 0.85rem; color: #9ca3af;
+        }
+        
+        .back-btn:hover::after { opacity: 1; transform: translateX(0); }
+
+        /* Pricing Cards */
+        .price-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            height: fit-content;
+        }
+
+        .toggle-container {
+            display: flex;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            flex: 1; padding: 12px; text-align: center;
+            cursor: pointer; border-radius: 10px;
+            font-weight: 700; font-size: 0.85rem;
+            transition: 0.3s; color: var(--bg-dark);
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(45, 102, 180, 0.4);
+        }
+
+        .pricing-section { display: none; animation: fadeIn 0.5s ease; min-height: 350px; }
+        .pricing-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title {
+            font-size: 0.75rem; color: var(--accent-color);
+            text-transform: uppercase; letter-spacing: 2px;
+            margin: 25px 0 15px; border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .price-item {
+            display: flex; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .price-item span:first-child { font-weight: 600; max-width: 70%; text-align: left; }
+        .price-item span:last-child { color: var(--accent-color); font-weight: 800; text-align: right; }
+
+        .price-item2 {
+            display: flex; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .price-item2 span:first-child { font-weight: 600; text-align: left; }
+
+        .add-ons {
+            background: rgba(45, 102, 180, 0.1);
+            padding: 15px; border-radius: 12px; margin: 20px 0;
+            font-size: 0.85rem; line-height: 1.5; border-left: 3px solid var(--primary-color);
+        }
+
+        /* Buttons */
+        .cta-btn {
+            display: inline-block;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 10px;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            background-color: #3a76d1;
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(43, 95, 176, 0.3);
+        }
+
+        /* Tooltips */
+        .info-wrapper { position: relative; margin-left: 6px; cursor: help; }
+        .info-icon { color: var(--accent-color); opacity: 0.7; }
+        .info-box {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(20, 20, 20, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            border-radius: 8px;
+            width: 220px;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            border: 1px solid var(--glass-border);
+            z-index: 100;
+            transition: all 0.3s ease;
+            pointer-events: none;
+
+            /* --- ADD THESE THREE LINES --- */
+            text-align: left !important;   /* Force left alignment */
+            color: #ffffff !important;      /* Force white text */
+            white-space: normal;            /* Prevents text from staying in one line */
+            font-weight: 350 !important;
+        }
+
+        /* Ensure all text inside the box (even if in spans) is white */
+        .info-box * {
+            color: #ffffff !important;
+        }
+        .info-box::after {
+            content: ""; position: absolute; top: 100%; left: 50%;
+            margin-left: -5px; border-width: 5px; border-style: solid;
+            border-color: var(--glass-border) transparent transparent transparent;
+        }
+        .info-wrapper:hover .info-box { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /*FOOTER-SECTION*/
+        .footer-section{
+            background-color: var(--bg-dark);
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            padding-top: 20px;
+            padding: 60px 20px 20px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .footer-column h3 i{
+            color: var(--accent-color);
+            font-size: 1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .ri-verified-badge-fill {
+            font-style: normal;
+            font-size: 0.8rem;
+            color: #4CAF50; /* Trust Green */
+            margin-left: 4px;
+        }
+
+        .footer-divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            margin: 40px 0 20px;
+        }
+
+        .footer-legal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-socials a i{
+            font-size: 20px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .footer-socials a {
+            text-decoration: none;
+            color: var(----text-muted);
+        }
+
+        .footer-socials a i:hover {
+            color: var(--white);
+        }
+
+        .sep {
+            opacity: 0.3;
+        }
+
+        .copyright, #year{
+            color: var(--text-muted);
+            font-size: clamp(0.75rem, 1vw, 0.88rem);
+        }
+
+        /* Responsive Logic */
+        @media (max-width: 900px) {
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+            .footer-legal {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        /* --- 7. RESPONSIVE --- */
+        @media (max-width: 992px) {
+            .main-content, .main-content.reverse { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+                gap: 40px; 
+            }
+            .main-section { padding: 60px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section { padding: 100px 20px; }
+            .price-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-btn" aria-label="Go Back"><i class="ri-arrow-left-line"></i></a>
+
+    <!-- Hero Header -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <div class="header">
+                <h1>Emmy STACK01</h1>
+                <p>Pricing, Management & Growth Hub</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section 1: Custom Projects -->
+    <main class="main-section" id="custom">
+        <section class="main-content">
+            <div class="main">
+                <h2>Custom project</h2>
+                <p>Production and Management Pricing</p>
+            </div>
+            
+            <div class="price-card">
+                <div class="toggle-container">
+                    <div class="toggle-btn active" onclick="switchSection('production', this)">Production</div>
+                    <div class="toggle-btn" onclick="switchSection('management', this)">Management</div>
+                </div>
+
+                <!-- Production Sub-section -->
+                <div id="production" class="pricing-section active">
+                    <div class="section-title">Production Stack</div>
+                    
+                    <div class="price-item">
+                        <span>Branding Kit
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image</span>
+                            </span>
+                        </span> 
+                        <span>$35</span>
+                    </div>
+
+                    <div class="price-item">
+                        <span>UI/UX Design
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">User Interface and User Experience Design for your web application</span>
+                            </span>
+                        </span> 
+                        <span>$20/pg</span>
+                    </div>
+
+                    <div class="price-item">
+                        <span>Web Dev & SEO
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Custom-Coded Core, GSAP Animations, On-Page SEO and Meta Tags, Robot.txt and Sitemap.xml files</span>
+                            </span>
+                        </span> 
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="color: var(--accent-color); font-weight: 800;">$50/Base&nbsp;pg</span>
+                            <span style="color: var(--accent-color); font-weight: 800;">$75/Adv&nbsp;pg</span>
+                        </div>
+                    </div>
+
+                    <div class="add-ons">
+                        <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration, Performance Testing, and 7 Days of Post-Launch Support.
+                    </div>
+                    
+                    <a class="cta-btn" href="thank-you.html?type=project" target="_blank" rel="noopener">Start your project</a>
+                </div>
+
+                <!-- Management Sub-section -->
+                <div id="management" class="pricing-section">
+                    <div class="section-title">Long-Term Management</div>
+                    <div class="price-item">
+                        <span>Minor Update
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh</span>
+                            </span>
+                        </span> 
+                        <span>$7/Update</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Major Update
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">New Section/Module, Integration Setup, SEO Overhaul, Animation Refinement, Layout Redesign</span>
+                            </span>
+                        </span> 
+                        <span>Custom quota</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Professional CMS
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Our Professional CMS offers a no-code dashboard for instant, real-time updates without technical skills. It preserves your "Cyber-Professional" speed and SEO while giving you total control, eliminating the need for a developer for daily content changes.</span>
+                            </span>
+                        </span> 
+                        <span>$100+</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Monthly Growth Retainer (MGR)
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Priority Support, 6 Minor Updates, Performance Monitoring, Security Audits, Traffic Insights</span>
+                            </span>
+                        </span> 
+                        <span>$25/mo</span>
+                    </div>
+                    <div class="add-ons" style="border-color: var(--accent-color);">
+                        <b>MGR Includes:</b> 6 Minor Updates, Security Audits, and Priority Support.
+                    </div>
+                    <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99ve%20just%20reviewed%20the%20Management%20Hub.%20I%E2%80%99d%20like%20to%20discuss%20the%20best%20long-term%20plan%20for%20my%20project's%20growth%20and%20maintenance." target="_blank" rel="noopener">Request a Management Plan</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Section 2: Digital Business Card -->
+    <main class="main-section" id="product">
+        <section class="main-content reverse">
+            <div class="main">
+                <h2>Digital Business Card</h2>
+                <p>Flat Rate Product</p>
+            </div>
+            <div class="price-card">
+                <div class="toggle-container">
+                    <div class="toggle-btn active">Production and Management</div>
+                </div>
+                <div class="pricing-section active">
+                    <div class="section-title">Digital Business Card</div>
+                    <div class="price-item"><span>Flat Price</span> <span>$60</span></div>
+                    <div class="add-ons">
+                        <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration and Basic CMS.
+                    </div>
+                    <a class="cta-btn" href="/products/digital-business-card">View Product</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Section 3: White Label -->
+    <main class="main-section" id="white-label">
+        <section class="main-content">
+            <div class="main">
+                <h2>White Label</h2>
+                <p>Professional Brand License</p>
+            </div>
+            <div class="price-card">
+                <div class="toggle-container">
+                    <div class="toggle-btn active">The Benefits</div>
+                </div>
+                <div class="pricing-section active">
+                    <div class="section-title">Professional Brand License</div>
+                    
+                    <div class="price-item2">
+                        <span style="color: white;">Total Ownership & IP Rights
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">You own the source code and the "Digital DNA" architecture entirely.</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="price-item2">
+                        <span style="color: white;">Remove Attribution
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Strip all developer branding to present the project as your own 100% proprietary tech.</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="price-item2">
+                        <span style="color: white;">Independent Scaling
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Host on any server or private infrastructure without reliance on our maintenance ecosystem.</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="price-item2">
+                        <span style="color: white;">Asset Valuation
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Increase your brand's market value by owning the underlying software assets instead of just a managed service.</span>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="price-item2">
+                        <span style="color: white;">Unlimited Modification
+                            <span class="info-wrapper">
+                                <i class="ri-information-line info-icon"></i>
+                                <span class="info-box">Full freedom to modify, fork, or redistribute the code for your internal business needs.</span>
+                            </span>
+                        </span>
+                    </div>
+                    
+                    <div class="price-item"><span>License Fee</span> <span>$100</span></div>
+                    <div class="add-ons"><b>Note:</b> Only available for custom projects.</div>
+                    <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99m%20interested%20in%20securing%20the%20Professional%20Brand%20License%20for%20my%20project.%20I%E2%80%99d%20like%20to%20discuss%20the%20transition%20to%20full%20code%20ownership%20and%20removing%20the%20developer%20attribution." target="_blank" rel="noopener">Request License</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="footer-container">
+            <!-- Column 1: Ecosystem Hub -->
+            <div class="footer-column">
+                <h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">Products</a></li>
+                    <li><a href="/pricing">Pricing</a></li> <!-- White-Label info located here -->
+                    <li><a href="/articles">Articles</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 2: Flagship Product -->
+            <div class="footer-column">
+                <h3><i class="ri-rocket-2-line"></i> Flagship Product</h3>
+                <ul>
+                    <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                    <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                    <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                    <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Technical Tools -->
+            <div class="footer-column">
+                <h3><i class="ri-tools-line"></i> Technical Tools</h3>
+                <ul>
+                    <li><a href="/tools/website-auditor">Website Auditor</a></li>
+                    <li><a href="/tools/social-architect">Social Architect</a></li>
+                    <li><a href="/tools/meeting_background_studio">Meeting Studio</a></li>
+                    <li><a href="/tools/naira-wise">Invoice Generator</a></li>
+                    <li><a href="/tools/emmy-sign">PDF Signer</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Partnership -->
+            <div class="footer-column">
+                <h3><i class="ri-team-line"></i> Partnership</h3>
+                <ul>
+                    <li><a href="/partnership">Partnership Program</a></li>
+                    <li><a href="/partnership/affiliate">Affiliate Portal</a></li>
+                    <li><a href="/partnership/policy">Partner Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <hr class="footer-divider">
+            <div class="footer-legal">
+                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
+                    <span class="sep">|</span>  
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-fill"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function switchSection(sectionId, btn) {
+            // Get the parent container to scope the search
+            const card = btn.closest('.price-card');
+            
+            // Toggle Sections within this card
+            card.querySelectorAll('.pricing-section').forEach(s => s.classList.remove('active'));
+            card.querySelector(\`#\${sectionId}\`).classList.add('active');
+
+            // Toggle Buttons within this card
+            card.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        // 2. Scroll Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.set(".main, .price-card ", { opacity: "1" });
+
+            // Hero Animation
+            gsap.from(".hero-content", {
+                y: 60,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power4.out"
+            });
+
+            // Animate each main-section
+            const containers = gsap.utils.toArray('.main-content');
+
+            containers.forEach((container) => {
+                const isReverse = container.classList.contains('reverse');
+                const textSide = container.querySelector('.main');
+                const cardSide = container.querySelector('.price-card');
+                const items = container.querySelectorAll('.price-item, .add-ons');
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+
+                // Slide text and card in from opposite sides
+                tl.from(textSide, {
+                    x: isReverse ? 80 : -80,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "expo.out"
+                })
+                .from(cardSide, {
+                    x: isReverse ? -80 : 80,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "expo.out"
+                }, "-=0.8")
+                .from(items, {
+                    y: 20,
+                    opacity: 0,
+                    stagger: 0.1,
+                    duration: 0.5,
+                    ease: "power2.out"
+                }, "-=0.5");
+            });
+        });
+    </script>
+    <script src="/script/year.js" defer></script>
+</body>
+</html>`
+	}
+render["astro:html"] = true;
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: render
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

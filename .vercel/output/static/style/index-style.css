@@ -1,0 +1,978 @@
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Stay on top of everything */
+}
+
+.dna-container {
+    position: relative;
+    width: 100px;
+    height: 160px;
+}
+
+.dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-color);
+    border-radius: 50%;
+}
+
+.loader-text {
+    margin-top: 20px;
+    color: var(--white);
+    font-family: 'Orbitron';
+    letter-spacing: 2px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+*::selection {background-color: var(--accent-color); color: var(--bg-dark);}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+    -moz-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+:root {
+  /* Brand Colors */
+  --primary-color: #2d66b4;
+  --secondary-color: #22386e;
+  --accent-color: #00ccff;
+
+  /* Backgrounds */
+  --bg-dark: #000000;
+  --bg-light: #0a111f;
+
+  /* Typography */
+  --text-main: #ffffff;
+  --text-muted: #a0aec0;
+  --white: #ffffff;
+}
+
+/* Prevent Flash of Unstyled Content (FOUC) */
+.line-one, .line-two, .content-p, .hero-cta, .menu-tile, .process-step, .process-arrow, .product-info, .product-image {
+    visibility: hidden;
+}
+
+/*NAV SECTION*/
+.badge-earn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;           /* Keeps it small and elegant */
+    font-weight: 700;
+    color: #00ccff;               /* Your signature blue */
+    border: 1px solid #00ccff;    /* Thin tech-style border */
+    padding: 2px 6px;
+    border-radius: 4px;           /* Slightly rounded corners */
+    margin-left: 8px;             /* Space between text and badge */
+    vertical-align: middle;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;    /* Smooth hover effect */
+}
+
+/* Optional: Make the badge glow when the user hovers over the link */
+.nav-link:hover .badge-earn {
+    background-color: #00ccff;
+    color: #000;                  /* Flips to black for contrast */
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
+}
+
+/*new*/
+.dropbtn {
+    background: none;
+    border: none;
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+/* Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: rgba(10, 15, 30, 0.95); /* Deep dark glass */
+    backdrop-filter: blur(15px);
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: 'Montserrat';
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+/* Hover effect for dropdown links */
+.dropdown-content a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+/* Ensure the dropdown stays open when the class is active */
+.dropdown.show-menu .dropdown-content {
+    display: block;
+    position: relative; /* Stacks links vertically on mobile */
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    box-shadow: none;
+}
+
+/* Optional: Rotate the arrow when open */
+.dropdown.show-menu .ri-arrow-down-s-line {
+    transform: rotate(180deg);
+}
+
+/*FLAT NAV*/
+@media screen and (min-width: 900.01px){
+    .navbar{display: none;}
+    .nav{
+        z-index: 1000;
+        padding: 10px 20px;
+        gap: 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .logo, .nav-links{
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .nav-links{
+        margin-right: 20px;
+    }
+
+    .nav-links a{
+        text-decoration: none;
+        color: white;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a.nav-link-scrolled, button.nav-link-scrolled{
+        color: var(--primary-color)! important;
+    }
+
+
+    .nav-links a:hover, .nav-links button:hover{
+        transition: all 1s ease-in-out;
+        color: var(--accent-color);
+    }
+
+    .nav-list{
+        list-style: none;
+        padding: 15px;   
+    }
+}
+
+
+/* TOOGLE NAVBAR */
+@media screen and (max-width: 900px) {
+    .nav{display: none;}
+    /* Main Header Bar */
+    .navbar {
+        z-index: 1001; /* Highest z-index to stay on top */
+        padding: 10px 20px;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.015);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        height: 70px;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* The Sidebar Menu */
+    .nav-link {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: -100%; /* Fully hidden to the right */
+        width: 80%;   /* Adjust width as needed */
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.97);
+        -webkit-backdrop-filter: blur(15px);
+        backdrop-filter: blur(15px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        transition: right 0.4s ease-in-out; /* Smooth slide effect */
+    }
+
+    /* Blue Sidebar Decoration (From your image) */
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 15%; /* The blue stripe width */
+        height: 100%;
+        background-color: rgba(59, 88, 151, 0.3);
+        z-index: -1;
+    }
+
+    /* State for OPEN Navigation */
+    .nav-link.open {
+        right: 0; /* Slides into view */
+    }
+
+    .nav-list {
+        width: 100%;
+        text-align: center;
+        padding: 20px 60px;
+    }
+
+    .nav-link a {
+        text-decoration: none;
+        color: var(--white);
+        font-size: 20px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    /* 1. Burger Button */
+    .nav-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1002; /* Ensure toggle stays above the sidebar */
+        padding: 10px;
+    }
+
+    .nav-toggle .line {
+        display: block;
+        width: 28px;
+        height: 3px;
+        margin: 6px 0;
+        background-color: var(--white); /* Dark color for visibility */
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* This ensures the lines turn dark/colored when over a white section */
+    .line-scrolled {
+        background-color: rgba(59, 88, 151, 0.3) !important;
+        transition: background-color 0.3s ease;
+    }
+
+    /* 2. X transformation */
+    .nav-toggle.open .line:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .nav-toggle.open .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.open .line:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    .dropbtn {
+        background: none;
+        border: none;
+        text-decoration: none;
+        color: var(--white);
+        font-size: 20px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+    
+}
+
+body, html {
+    scroll-behavior: smooth;
+}
+
+
+
+/*HERO SECTION*/
+.video-background {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Fills the screen height */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1; /* Puts video behind content */
+  transform: translate(-50%, -50%);
+  object-fit: cover; /* Ensures it fills the space without stretching */
+}
+/* Optional: Dark overlay to make text pop */
+.video-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* 40% black tint */
+  z-index: 0;
+}
+.content {
+    position: relative;
+    z-index: 1;
+    color: #ffffff;
+    text-align: center;
+    
+    /* THE GUARDRAIL: This prevents text from touching the screen edges */
+    padding: 0 20px; 
+    width: 100%;
+    box-sizing: border-box; /* Crucial so padding doesn't break the width */
+}
+
+
+h1 {
+    /* Responsive spacing: tighter on mobile, breathing room on desktop */
+    margin-bottom: clamp(20px, 5vh, 40px); 
+    line-height: 1.1; /* Keeps the two spans close and punchy */
+}
+
+h1 span {
+    display: block;
+}
+
+.line-one {
+    font-family: 'Orbitron';
+    /* Min: 2.8rem (previously 2.5rem), Scale: 9vw, Max: 4.5rem */
+    font-size: clamp(2.8rem, 9vw, 4.5rem); 
+    text-transform: uppercase;
+    color: var(--primary-color);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    line-height: 1.05; /* Tighter fit for the bigger font */
+    text-shadow: 0 0 15px rgba(34, 55, 110, 0.4); /* Subtle cyber-glow */
+}
+
+.line-two {
+    font-family: 'Orbitron';
+    /* Min: 2rem (previously 1.8rem), Scale: 7vw, Max: 3.5rem */
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    color: var(--white);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+}
+
+.content p {
+    font-weight: 500;
+    color: var(--white);
+    /* Keeps the paragraph readable but significant */
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    max-width: 650px; 
+    margin: 0 auto;
+    padding-bottom: 40px;
+    line-height: 1.6;
+}
+
+
+.hero-cta {
+    font-family: 'Orbitron';
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+
+    color: var(--text-main);
+    background-color: var(--primary-color);
+    padding: 12px 28px;
+    border-radius: 20px;
+    text-decoration: none;
+    
+    /* ADD THESE TWO LINES */
+    position: relative;
+    top: 0;
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-cta:hover {
+    /* INSTEAD OF translateY, WE USE TOP */
+    top: -5px; 
+    
+    box-shadow: 0 4px 15px var(--accent-color);
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+
+/*MENU SECTION*/
+.menu-section{
+    background-color: var(--white);
+    position: sticky;
+    width: 100%;
+    height: auto;
+    top: 0;
+    z-index: 1;
+}
+
+@media screen and (max-width: 860px) {
+    body, html {
+    overflow-x: hidden; /* Prevents side-scrolling entirely */
+    }
+    .menu-section{
+        position: relative;
+        z-index: 2;
+    }
+}
+.menu-section h2{
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-family: 'Orbitron';
+    color: var(--secondary-color);
+    padding: 20px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-tile {
+    display: flex;
+    align-items: flex-start;
+    background: #f9f9f9; /* Or your dark mode equivalent */
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid var(--secondary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    margin-bottom: 10px;
+    height: 100%;
+}
+
+
+.menu-tile:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: var(--white);
+}
+
+.tile-icon {
+    font-size: 28px;
+    color: var(--secondary-color);
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+.tile-content h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--bg-dark);
+}
+
+.tile-content p {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tile-content span {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+
+/*PROCESS SECTION*/
+.process-section {
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    padding: 60px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 20px 40px rgba(0,0,0,0.05); /* Adds internal depth */
+    background: linear-gradient(180deg, 
+    #22376e 0%,  
+    #a0aec0 85%, 
+    #22376e 100%
+);
+}
+
+/* Add a subtle decorative element behind the steps */
+.process-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(34, 55, 110, 0.03) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.process-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.process-step {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 1;
+
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Blurs the gradient behind the step */
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+.process-step:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.step-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: rgba(34, 55, 110, 0.1); /* Subtle secondary color */
+    margin-right: 15px;
+}
+
+.step-info h3 {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.step-info p {
+    font-size: 0.9rem;
+    color: #333;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5); /* Helps visibility on dark blue */
+    line-height: 1.4;
+}
+
+
+.process-arrow {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-left: auto;
+    padding: 0 10px;
+}
+
+/* RESPONSIVE: Stack vertically on mobile */
+@media screen and (max-width: 860px) {
+    .process-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+    }
+    
+    .process-arrow {
+        display: none; /* Hide arrows on mobile to save space */
+    }
+
+    .step-number {
+        font-size: 2rem;
+    }
+}
+
+
+/*PRICING SECTION*/
+.pricing-section{
+    background-color: var(--secondary-color);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+}
+
+.pricing{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+}
+
+.pricing-logo{
+    animation: FadeIn 2s ease-in;
+}
+@keyframes FadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@media screen and (max-width: 1150px){
+.pricing-logo{display: none;}
+.pricing-section{ padding-top: 10px; padding-bottom: 40px; padding-left:  20px; padding-right:  20px;}
+}
+
+
+
+.pricing-info{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center; 
+}
+
+.pricing-section h2{
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    color: var(--text-main);
+    font-family: 'Orbitron';
+    padding: 20px;
+}
+
+.pricing-section p{
+    color: #c9d7e8;
+    font-weight: 600;
+
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+}
+
+
+.pricing-cta{
+    color: var(--bg-dark);
+    background-color: var(--white);
+    width: 200px;
+    padding: 12px 28px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    
+    /* ADD THESE TWO LINES */
+    position: relative;
+    top: 0;
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-cta:hover {
+    top: -5px; 
+    box-shadow: 0 4px 15px var(--text-muted);
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/*PRODUCT SECTION*/
+.product-section{
+    background-color: var(--white);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+}
+
+.product{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.product-info{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+}
+
+.product-image{
+    margin: 15px;
+}
+
+.product-section h2{
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    color: var(--secondary-color);
+    font-family: 'Orbitron';
+    padding: 20px;
+}
+
+.product-section p{
+    color: var(--primary-color);
+    font-weight: 600;
+
+    max-width: 600px;
+}
+
+.product-cta{
+    color: var(--text-main);
+    background-color: var(--secondary-color);
+    width: 200px;
+    padding: 12px 28px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    
+    /* ADD THESE TWO LINES */
+    position: relative;
+    top: 0;
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+.product-cta:hover{
+    top: -5px; 
+    box-shadow: 0 4px 15px var(--accent-color);
+    transition: top 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media screen and (max-width: 950px){
+.product{
+    flex-direction: column;
+    text-align: center;
+}
+.product-info{
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+.product-image img{
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 500px;
+}
+.product-cta, .pricing-cta{width: 100%; text-align: center;}
+}
+
+/*FAQS-SECTION*/
+.faq-section{
+    background-color: var(--bg-dark);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+}
+
+.faq-section h2{
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    color: var(--text-main);
+    font-family: 'Orbitron';
+    padding: 20px;
+}
+
+.faq-item{
+    padding: 20px 30px;
+    cursor: pointer;
+}
+
+.faq-question{
+    background-color: var(--bg-dark);
+    color: var(--accent-color);
+    
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+}
+
+/* Hide answer by default */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease;
+    color: var(--white);
+    padding: 0 30px;
+    letter-spacing: 0.5px;
+
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Show answer when parent is active */
+.faq-item.active .faq-answer {
+    padding-top: 2px;
+}
+
+/* Rotate Chevron */
+.faq-item.active .chevron {
+    transform: rotate(180deg);
+    display: inline-block;
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+}
+
+/*FOOTER-SECTION*/
+.footer-section{
+    background-color: var(--bg-dark);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    padding-top: 20px;
+    padding: 60px 20px 20px;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+.footer-column h3 {
+    color: var(--white);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+.footer-column h3 i{
+    color: var(--accent-color);
+    font-size: 1rem;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: var(--accent-color);
+}
+
+.ri-verified-badge-fill {
+    font-style: normal;
+    font-size: 0.8rem;
+    color: #4CAF50; /* Trust Green */
+    margin-left: 4px;
+}
+
+.footer-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 40px 0 20px;
+}
+
+.footer-legal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.footer-socials a i{
+    font-size: 20px;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+.footer-socials a {
+    text-decoration: none;
+    color: var(----text-muted);
+}
+
+.footer-socials a i:hover {
+    color: var(--white);
+}
+
+.sep {
+    opacity: 0.3;
+}
+
+.copyright{
+    color: var(--text-muted);
+    font-size: clamp(0.75rem, 1vw, 0.88rem);
+}
+
+/* Responsive Logic */
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+    .footer-legal {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}
+
+/* --- GLOBAL TYPOGRAPHY UPDATES --- */
+.pricing-section p, .product-section p, .faq-answer {
+    /* Scales from 15px to 18px */
+    font-size: clamp(0.93rem, 1vw + 0.5rem, 1.125rem);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}

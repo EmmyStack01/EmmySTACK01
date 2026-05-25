@@ -7,6 +7,7 @@ import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
+  trailingSlash: 'never',
   output: 'server',
   adapter: vercel({
     webAnalytics: { enabled: true }

@@ -1,0 +1,192 @@
+function render({ slots: ___SLOTS___ }) {
+		return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Emmy STACK01</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <style>
+        :root {
+            --primary-color: #2d66b4;
+            --secondary-color: #22386e;
+            --accent-color: #00ccff;
+            --danger: #ff4d4d;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Montserrat'; 
+            margin: 0; 
+            background: #000; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        #vanta-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .container { 
+            max-width: 1100px; 
+            margin: auto; 
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-family: 'Orbitron';
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive size */
+            text-align: center;
+            margin-bottom: 10px;
+            cursor: default;
+            color: transparent;
+            background-image: repeating-linear-gradient(45deg, #f1f1f1 0px, #f1f1f1 144px, gray 144px, gray 288px, #bebebe 288px, #bebebe 432px);
+            background-size: 250%;
+            background-position: 0%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: stripeAnimation 3s linear infinite paused;
+        }
+
+        h1:hover { animation-play-state: running; }
+
+        @keyframes stripeAnimation {
+            100% { background-position: 165%; }
+        }
+
+        .success-wrapper {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            text-align: center;
+            border-radius: 24px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .check-icon {
+            font-size: 80px;
+            color: #00ff88;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { transform: scale(0); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div id="vanta-canvas"></div>
+    
+    <div class="container">
+        <div class="success-wrapper glass">
+            <div class="check-icon">
+                <i class="ri-checkbox-circle-fill"></i>
+            </div>
+            
+            <h1>Payment Received!</h1>
+            <p>Thank you for choosing <b>Emmy STACK01</b>. Your transaction was processed successfully. A formal receipt has been sent to your email address.</p>
+
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 20px;">
+                *International payments are processed through our secure gateway. Your bank statement will reflect the final conversion from USD to your local currency.
+            </p>
+
+            <div class="action-btns">
+                <a href="/" class="btn-primary">Return to Home</a>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 Logo" style="width: 120px; opacity: 0.8;">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script>
+        VANTA.NET({
+            el: "#vanta-canvas",
+            mouseControls: true, touchControls: true, gyroControls: false,
+            minHeight: 200.00, minWidth: 200.00,
+            scale: 1.00, scaleMobile: 1.00,
+            color: 0x2d66b4, backgroundColor: 0x0
+        })
+        // Reference script
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+
+        if (ref) {
+            document.getElementById('ref-display').innerText = "Reference: " + ref;
+        }
+    </script>
+</body>
+</html>`
+	}
+render["astro:html"] = true;
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: render
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

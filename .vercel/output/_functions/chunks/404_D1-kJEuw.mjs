@@ -1,0 +1,86 @@
+function render({ slots: ___SLOTS___ }) {
+		return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Expired or Invalid | Emmy STACK01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <style>
+        body {
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 { font-family: 'Orbitron'; font-size: 3rem; margin-bottom: 10px;}
+        h1 {
+        background: linear-gradient(90deg, #2d66b4, #00ccff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        }
+        p { font-size: 1.2rem; opacity: 0.8; color: #a0aec0; font-family: 'Montserrat'; }
+        .btn {
+            font-family: 'Montserrat';
+            margin-top: 25px;
+            padding: 12px 30px;
+            background: transparent;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            cursor: pointer;
+            color: #000;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .btn::before {
+        content:"";
+        position:absolute; inset:-2px;
+        background:linear-gradient(90deg, #2d66b4, #00ccff);
+        z-index:-1;
+        border-radius:inherit;
+        }
+        .btn:hover { box-shadow: 0 0 25px #00ccff; }
+    </style>
+</head>
+<body>
+    <h1>SYSTEM ERROR 404</h1>
+    <p>The link may be mistyped or the partner is no longer active.</p>
+    <p>Automatic Reboot to Homepage in 10 Sec</p>
+    
+    <a href="https://emmystack01.com" class="btn">Return to Home</a>
+    
+    <script>
+        // Optional: Auto-redirect home after 10 seconds
+        setTimeout(() => {
+            window.location.href = "https://emmystack01.com";
+        }, 10000);
+    </script>
+</body>
+</html>`
+	}
+render["astro:html"] = true;
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: render
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

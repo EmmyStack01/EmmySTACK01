@@ -1,0 +1,887 @@
+function render({ slots: ___SLOTS___ }) {
+		return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Invoice Generator for Nigerian Freelancers | Emmy STACK01</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <meta name="title" content="Free Invoice Generator for Nigerian Freelancers | Naira-Wise by Emmy STACK01">
+    <meta name="description" content="Generate professional PDF invoices in NGN & USD. Designed for Nigerian freelancers and small businesses. Fast, secure, and powered by Emmy STACK01.">
+    <meta name="keywords" content="invoice generator Nigeria, free invoice maker, Naira invoice tool, Emmy STACK01, freelancer billing, NGN PDF invoice, digital business cards Nigeria">
+    <link rel="canonical" href="https://emmystack01.com/tools/naira-wise">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emmystack01.com/tools/naira-wise">
+    <meta property="og:title" content="Free Invoice Generator for Nigerian Freelancers | Naira-Wise">
+    <meta property="og:description" content="Fast, clean, and professional PDF invoicing for the modern Nigerian business. No sign-up required.">
+    <meta property="og:image" content="https://emmystack01.com/asset/naira-wise-og.jpg"> 
+    <meta property="og:site_name" content="Naira-Wise by Emmy STACK01">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://emmystack01.com/tools/naira-wise">
+    <meta property="twitter:title" content="Naira-Wise: Professional Invoices by Emmy STACK01">
+    <meta property="twitter:description" content="Generate high-performance PDF Invoices for your clients in seconds. Optimized for NGN and USD billing.">
+    <meta property="twitter:image" content="https://emmystack01.com/asset/naira-wise-og.jpg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            /* Main Dark Backgrounds */
+            --bg: #0f172a;           /* Deep Navy/Slate */
+            --card: #1e293b;         /* Lighter Slate for containers */
+        
+            /* Branding Colors (Kept from Emmy STACK01) */
+            --primary: #818cf8;      /* Lightened indigo for better dark-mode visibility */
+            --primary-dark: #4f46e5;
+            --accent: #f8fafc;       /* Off-white for high-contrast accents */
+        
+            /* Text Colors */
+            --text-main: #f1f5f9;    /* Clean white-grey for readability */
+            --text-light: #94a3b8;   /* Muted slate for labels and secondary text */
+        
+            /* Borders & Inputs */
+            --border: #334155;       /* Subtle dark border */
+            --input-bg: #0f172a;     /* Match main bg for inset feel */
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); margin: 0; padding: 20px; color: var(--text-main); overflow-x: hidden; font-family: 'Montserrat'; }
+
+        /*Old code start*/
+        .container { 
+            max-width: 1400px; 
+            margin: auto; 
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 20px;
+            position: relative;
+            cursor: default;
+        }
+
+        /* Navigation */
+        .back-btn {
+            position: absolute;
+            left: 0;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .pill-nav {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            gap: 15px;
+            border-radius: 50px;
+            transition: transform 0.3s ease;
+            border: 2px solid var(--border);
+            box-shadow: 0 0 2px var(--primary);
+        }
+
+        .pill-nav:hover { transform: scale(1.02); box-shadow: 0 0 10px var(--primary)}
+
+        .nav-text {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        /*Old code end*/
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 30px;
+        }
+
+        .controls {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            border-top: 6px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+            overflow-y: auto;
+            max-height: 95vh;
+        }
+        
+        
+        .hero-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem); /* Responsive size */
+            font-weight: 700;
+            line-height: 1.2;
+            color: #e5e7eb; /* soft white */
+            letter-spacing: -0.02em;
+            max-width: 600px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Gradient highlight */
+        .highlight {
+            background: linear-gradient(90deg, #6366f1, #22d3ee, #6366f1);
+            background-size: 200% auto;
+            animation: shimmer 4s linear infinite;
+            -webkit-background-clip: text;
+            background-clip: var(--text-main);
+            color: var(--bg);
+            
+        }
+
+        /* Optional glow effect */
+        .hero-title {
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+        }
+
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+        h2 { margin-top: 0; color: var(--accent); font-weight: 800; }
+        .branding-p { font-size: 0.85rem; color: var(--text-light); margin-bottom: 25px; }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; margin-bottom: 5px; }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+        input:focus, textarea:focus, select:focus{
+            border-color: var(--primary);
+            outline: none;
+        }
+       
+
+        
+        .item-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 40px; gap: 10px; margin-bottom: 10px; }
+        .btn-add { background: var(--bg); border: 1px solid var(--primary); color: var(--primary); padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 15px; }
+        .btn-remove { background: none; border: none; color: #ef4444; font-size: 1.2rem; cursor: pointer; }
+
+        /* --- PREVIEW AREA & PAN/ZOOM --- */
+        .preview-area { 
+            position: sticky; 
+            top: 20px; 
+            display: flex; 
+            justify-content: center; /* Centers horizontally */
+            align-items: center;     /* Centers vertically */
+            background: #0d1117; 
+            padding: 0;
+            border-radius: 16px;
+            overflow: hidden; 
+            height: 90vh;
+            cursor: grab;
+            border: 2px solid var(--border);
+            position: relative;
+        }
+
+        .preview-area:active { cursor: grabbing; }
+
+        .invoice-paper {
+            background: white;
+            color: #1e293b;
+            width: 794px; /* Strict A4 Width */
+            height: auto;
+            padding: 50px;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            transform-origin: center center; 
+            flex-shrink: 0;
+            user-select: none;
+            transition: transform 0.1s ease-out;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Invoice Internal Styles */
+        .inv-header { display: flex; justify-content: space-between; margin-bottom: 25px; }
+        .biz-title { font-size: 1.8rem; font-weight: 900; color: var(--primary-dark); margin: 0; }
+        .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .invoice-table th { text-align: left; border-bottom: 2px solid #f1f5f9; padding: 10px; font-size: 11px; color: var(--text-light); }
+        .invoice-table td { padding: 12px 10px; border-bottom: 1px solid #f8fafc; font-size: 0.95rem; }
+        
+        .total-card { background: #f8fafc; padding: 20px; border-radius: 12px; width: 280px; margin-left: auto; }
+        .grand-total { font-size: 1.5rem; font-weight: 900; color: var(--primary-dark); border-top: 1px solid #e2e8f0; margin-top: 10px; padding-top: 10px; display: flex; justify-content: space-between; }
+
+
+        /* Update your existing .inv-footer class */
+        .inv-footer { 
+            margin-top: auto; /* Pushes to bottom if inside a flex container */
+            background: var(--bg); 
+            color: white; 
+            padding: 10px 30px; 
+            display: flex; 
+            justify-content: center; 
+            font-size: 10px;
+            width: 100%;
+        }
+
+        .emmystack01 a{
+            color: white;
+        }
+
+        /* Ensure the invoice paper is a flex container to support the footer logic */
+        .invoice-paper {
+            display: flex;
+            flex-direction: column;
+            /* keep your other existing styles */
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 1100px) {
+            .app-container { grid-template-columns: 1fr; }
+            .preview-area { height: 70vh; }
+        }
+
+        /* Removes the default arrows for a cleaner 'Cyber-Professional' look */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* For Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: none;
+            margin: 0;
+        }
+
+
+        .controls::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .controls::-webkit-scrollbar-track {
+            background: var(--bg); /* Deep slate */
+        }
+
+        .controls::-webkit-scrollbar-thumb {
+            background: var(--border); /* Subtle dark border color */
+            border-radius: 10px;
+        }
+
+        .controls::-webkit-scrollbar-thumb:hover {
+            background: var(--primary); /* Indigo highlight on hover */
+        }
+
+
+        input[type="file"]::file-selector-button {
+            background: var(--card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif; /* Your brand font */
+            transition: 0.3s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+
+        /* Active state when dragging the invoice */
+        .preview-area:active {
+            cursor: grabbing; /* Closed hand */
+        }
+
+        /* Hover state for line items */
+        .item-row:hover {
+            background: rgba(99, 102, 241, 0.05); /* Slight indigo tint */
+            border-radius: 8px;
+        }
+
+        /* Container for the checkbox */
+        .vat-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Hide the default checkbox */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Checkbox hover effect */
+        input[type="checkbox"]:hover {
+            border-color: var(--primary);
+        }
+
+        /* Checked state */
+        input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* The checkmark (✓) */
+        input[type="checkbox"]:checked::after {
+            content: '\\eb7a'; /* Remixicon checkmark code */
+            font-family: 'remixicon';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
+        .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
+        .ownership { text-align: center; margin-bottom: 10px; }
+        .branding { font-size: 0.9rem; color: #94a3b8; }
+        .branding a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+        .socials { display: flex; justify-content: center; gap: 20px; }
+        .socials a {
+            text-decoration: none;
+            display: flex; justify-content: center; align-items: center;
+            width: 45px; height: 45px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .socials a:hover {
+            background: var(--border);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 800px) {
+            .header-wrapper { flex-direction: column; gap: 15px; }
+            .back-btn { position: static; margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/" title="back" class="back-btn">
+                <span>&#8592;</span> 
+            </a>
+
+            <div class="header-wrapper">
+                <div class="navbar-container">
+                    <div class="pill-nav glass">
+                        <img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="30px" width="auto" class="nav-logo">
+                        <span class="nav-text">Invoice Generator</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <h1 class="hero-title">
+            Naira-Wise: Fast, Professional Invoices in
+            <span class="highlight">NGN & USD</span>
+        </h1>    
+        <main class="app-container">
+            <div class="controls">
+                <h2>Naira-Wise</h2>
+                <p class="branding-p">Smart Invoicing by Emmy STACK01</p>
+
+                <div class="form-group">
+                    <label>Logo & Branding</label>
+                    <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label>Currency</label>
+                            <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
+                        </div>
+                        <div class="field-group">
+                            <label>Due Date</label>
+                            <input type="date" id="dueDate" oninput="update()">
+                        </div>
+                    </div>
+                    <input style="margin-top: 5px;" type="text" id="bizName" placeholder="Business Name">
+                </div>
+
+                <div class="form-group"><label>Address</label><textarea id="bizAddress" placeholder="Your Business Address"></textarea></div>
+                <div class="form-group"><label>Bill To</label><input type="text" id="clientName" placeholder="Client Name"></div>
+
+                <div id="itemsList"></div>
+                <button class="btn-add" onclick="addItem()">+ Add Line Item</button>
+
+                <div style="margin-top:20px; padding:15px; background:var(--bg); border-radius:12px;">
+                    <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:10px;">
+                        <input type="checkbox" id="vatToggle" onchange="update()"> <span>Add 7.5% VAT</span>
+                    </label>
+                    <label>Bank Info / Payment Method</label>
+                    <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
+                </div>
+
+                <button onclick="downloadPDF()" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
+            </div>
+
+            <div class="preview-area" id="previewContainer">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoom(0.1)">+</button>
+                    <button class="zoom-btn" onclick="zoom(-0.1)">-</button>
+                    <button class="zoom-btn" onclick="resetView()">Reset</button>
+                </div>
+
+                <div id="invoice-capture" class="invoice-paper">
+                    <div class="inv-header">
+                        <div>
+                            <img id="logoPreview" style="max-height:60px; display:none; margin-bottom:10px;">
+                            <h2 id="prevBizName" class="biz-title">YOUR BUSINESS</h2>
+                            <p id="prevBizAddr" style="font-size:12px; color:var(--text-light); white-space:pre-line;"></p>
+                        </div>
+                        <div style="text-align:right">
+                            <h1 style="margin:0; font-size:3rem; opacity:0.1;">INVOICE</h1>
+                            <p style="font-size:11px; font-weight:700;">NO: <span id="prevNo">#0000</span></p>
+                            <p style="font-size:11px; font-weight:700;">ISSUE DATE: <span id="prevDate"></span></p>
+                            <p style="font-size:11px; font-weight:700;">DUE DATE: <span id="prevDueDate"></span></p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:30px;">
+                        <label style="color:var(--primary); font-size:10px; font-weight:800;">BILL TO</label>
+                        <h3 id="prevClientName" style="margin:5px 0; font-size:1.4rem;">Client Name</h3>
+                    </div>
+
+                    <table class="invoice-table">
+                        <thead><tr><th>Description</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead>
+                        <tbody id="prevTableBody"></tbody>
+                    </table>
+
+                    <div class="total-card">
+                        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                            <span>Subtotal</span><span><span class="curr">₦</span><span id="displaySub">0</span></span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px;">
+                            <span>VAT (7.5%)</span><span><span class="curr">₦</span><span id="displayVat">0</span></span>
+                        </div>
+                        <div class="grand-total">
+                            <span>Total</span><span><span class="curr">₦</span><span id="displayTotal">0</span></span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:40px; margin-bottom: 40px;"><label style="font-size:10px; font-weight:800; color:var(--primary);">PAYMENT METHOD</label><p id="prevBank" style="font-weight:700; margin:5px 0;"></p></div>
+
+                    <div class="inv-footer">
+                        <span class="emmystack01">POWERED BY <a href="https://emmystack01.com/">EMMYSTACK01.COM</a></span>
+                    </div>
+                </div>
+            </div>
+            <span class="coffee-section">
+                <a href="/payment">
+                    <i class="ri-drinks-fill coffee" id="coffee-icon"></i>
+                </a>
+                <span class="coffee-info">Enjoying the invoice tool? Buy Emmy a coffee!</span>
+            </span>
+            <style>
+                .coffee-section {
+                    position: fixed;
+                    bottom: 30px; right: 30px;
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .coffee-section a{
+                    text-decoration: none;
+                }
+
+                .coffee {
+                    font-size: 30px;
+                    color: var(--primary);
+                    background: rgba(20, 20, 20, 0.6);
+                    border: 2px solid var(--glass-border);
+                    border-radius: 50%;
+                    padding: 12px;
+                    backdrop-filter: blur(5px);
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                    animation: coffee-float 4s ease-in-out infinite;
+                }
+
+                @keyframes coffee-float {
+                    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+                    50% { transform: translate(-5px, -10px) rotate(-2deg); }
+                }
+
+                .shake-coffee { animation: coffee-shake 0.5s ease-in-out !important; }
+
+                @keyframes coffee-shake {
+                    0%, 100% { transform: translateX(0); }
+                    25% { transform: translateX(-10px); }
+                    75% { transform: translateX(10px); }
+                }
+
+                .coffee-info {
+                    visibility: hidden; opacity: 0;
+                    position: absolute; bottom: 125%; right: 0;
+                    background: rgba(20, 20, 20, 0.95);
+                    backdrop-filter: blur(10px);
+                    color: #fff; padding: 10px; border-radius: 8px;
+                    width: 160px; font-size: 0.75rem; text-align: center;
+                    border: 1px solid var(--glass-border);
+                    transition: all 0.3s ease;
+                }
+
+                .coffee-section:hover .coffee-info { visibility: visible; opacity: 1; }
+            </style>
+        </main>
+        <footer class="footer-section">
+            <hr class="line">
+            <div class="footer">
+                <div class="ownership">
+                    <p class="branding">
+                        Built by <a href="https://emmystack01.com/" target="_blank" rel="noopener nofollow">Emmy STACK01</a>
+                    </p>
+                </div>
+                <div class="socials"> 
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer"><i class="ri-twitter-x-line"></i></a> 
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-fill"></i></a>
+                </div>
+            </div>
+        </footer>        
+    </div>    
+<script is:inline>
+    let items = [{ id: Date.now(), desc: '', qty: 1, price: 0 }];
+    let mathStore = { subtotal: 0, vat: 0, total: 0 };
+
+    // PAN & ZOOM STATE
+    let scale = 0.55; 
+    let posX = 0;
+    let posY = 0;
+    let isDragging = false;
+    let startX, startY;
+
+    // Function to set default date to Today
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('dueDate');
+        
+        if (dateInput) {
+            dateInput.value = today;
+        }
+    }
+
+    // Call this when the script runs
+    setDefaultDates();
+
+    function init() {
+        document.getElementById('prevNo').innerText = '#' + Math.floor(Math.random()*90000+10000);
+        document.getElementById('prevDate').innerText = new Date().toLocaleDateString('en-GB');
+        
+        ['bizName', 'bizAddress', 'clientName', 'currency'].forEach(id => {
+            document.getElementById(id).addEventListener('input', update);
+        });
+
+        setupPanAndZoom();
+        renderItems();
+        update();
+        applyTransform();
+    }
+
+    function setupPanAndZoom() {
+        const area = document.getElementById('previewContainer');
+
+        area.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.zoom-controls')) return;
+            isDragging = true;
+            startX = e.clientX - posX;
+            startY = e.clientY - posY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            posX = e.clientX - startX;
+            posY = e.clientY - startY;
+            applyTransform();
+        });
+
+        window.addEventListener('mouseup', () => isDragging = false);
+
+        area.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.05 : 0.05;
+            zoom(delta);
+        }, { passive: false });
+    }
+
+    function zoom(delta) {
+        scale = Math.min(Math.max(0.1, scale + delta), 2);
+        applyTransform();
+    }
+
+    function resetView() {
+        scale = 0.55;
+        posX = 0;
+        posY = 0;
+        applyTransform();
+    }
+
+    function applyTransform() {
+        const paper = document.getElementById('invoice-capture');
+        paper.style.transform = \`translate(\${posX}px, \${posY}px) scale(\${scale})\`;
+    }
+
+    function addItem() {
+        const rows = document.querySelectorAll('.item-row');
+        rows.forEach((row, i) => {
+            const ins = row.querySelectorAll('input');
+            items[i].desc = ins[0].value;
+            items[i].qty = parseFloat(ins[1].value) || 0;
+            items[i].price = parseFloat(ins[2].value) || 0;
+        });
+
+        items.push({ id: Date.now(), desc: '', qty: 1, price: 0 });
+        renderItems();
+        update();
+    }
+
+    function removeItem(id) {
+        if(items.length > 1) {
+            items = items.filter(i => i.id !== id);
+            renderItems();
+            update();
+        }
+    }
+
+    function renderItems() {
+        const list = document.getElementById('itemsList');
+        list.innerHTML = '';
+        
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item-row';
+            
+            // Updated innerHTML with your new labels and structure
+            div.innerHTML = \`
+                <div class="field-group desc">
+                    <label>Description</label>
+                    <input type="text" placeholder="Description" value="\${item.desc}" 
+                        oninput="updateItem(\${item.id}, 'desc', this.value)">
+                </div>
+                <div class="field-group qty">
+                    <label>Qty</label>
+                    <input type="number" value="\${item.qty}" style="text-align:center" 
+                        oninput="updateItem(\${item.id}, 'qty', this.value)">
+                </div>
+                <div class="field-group price">
+                    <label>Amount</label>
+                    <input type="number" value="\${item.price}" style="text-align:right" 
+                        oninput="updateItem(\${item.id}, 'price', this.value)">
+                </div>
+                <button class="btn-remove" onclick="removeItem(\${item.id})">&times;</button>
+            \`;
+            list.appendChild(div);
+        });
+    }
+
+    function updateItem(id, field, val) {
+        const item = items.find(i => i.id === id);
+        item[field] = (field === 'desc') ? val : (parseFloat(val) || 0);
+        update();
+    }
+
+    function update() {
+        let sub = 0;
+        const tbody = document.getElementById('prevTableBody');
+        tbody.innerHTML = '';
+
+        items.forEach(item => {
+            const lineTotal = item.qty * item.price;
+            sub += lineTotal;
+            tbody.innerHTML += \`<tr>
+                <td>\${item.desc || '---'}</td>
+                <td style="text-align:center">\${item.qty}</td>
+                <td style="text-align:right">\${item.price.toLocaleString()}</td>
+                <td style="text-align:right; font-weight:700;">\${lineTotal.toLocaleString()}</td>
+            </tr>\`;
+        });
+
+        // Force the document title to INVOICE
+        const docTitle = document.getElementById('prevDocTitle');
+        if (docTitle) docTitle.innerText = "INVOICE";
+
+        const dateVal = document.getElementById('dueDate').value;
+        // Format the date for the invoice (e.g., DD/MM/YYYY)
+        if (dateVal) {
+            const [y, m, d] = dateVal.split('-');
+            document.getElementById('prevDueDate').innerText = \`\${d}/\${m}/\${y}\`;
+        }
+
+        const hasVat = document.getElementById('vatToggle').checked;
+        const vVal = hasVat ? sub * 0.075 : 0;
+        const tVal = sub + vVal;
+
+        gsap.to(mathStore, {
+            subtotal: sub,
+            vat: vVal,
+            total: tVal,
+            duration: 0.4,
+            onUpdate: () => {
+                document.getElementById('displaySub').innerText = Math.ceil(mathStore.subtotal).toLocaleString();
+                document.getElementById('displayVat').innerText = Math.ceil(mathStore.vat).toLocaleString();
+                document.getElementById('displayTotal').innerText = Math.ceil(mathStore.total).toLocaleString();
+            }
+        });
+
+        document.getElementById('prevBizName').innerText = document.getElementById('bizName').value || 'YOUR BUSINESS';
+        document.getElementById('prevBizAddr').innerText = document.getElementById('bizAddress').value;
+        document.getElementById('prevClientName').innerText = document.getElementById('clientName').value || 'Client Name';
+        document.getElementById('prevBank').innerText = document.getElementById('bankInfo').value;
+        document.querySelectorAll('.curr').forEach(c => c.innerText = document.getElementById('currency').value);
+    }
+
+    async function downloadPDF() {
+        const element = document.getElementById('invoice-capture');
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'fixed';
+        wrapper.style.top = '0';
+        wrapper.style.left = '0';
+        wrapper.style.opacity = '0';
+        wrapper.style.pointerEvents = 'none';
+        wrapper.style.width = '794px';
+        wrapper.style.background = '#fff';
+
+        document.body.appendChild(wrapper);
+
+        const clone = element.cloneNode(true);
+        wrapper.appendChild(clone);
+
+        clone.style.transform = 'none';
+        clone.style.position = 'relative';
+        clone.style.boxShadow = 'none';
+        clone.style.display = 'flex';
+        clone.style.flexDirection = 'column';
+        clone.style.minHeight = 'unset';
+        clone.style.height = 'auto';
+
+        const opt = {
+            margin: 0,
+            filename: 'Naira-Wise_Invoice.pdf',
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                scrollY: 0
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'a4',
+                orientation: 'portrait'
+            },
+            pagebreak: {
+                mode: ['avoid-all'] // 🔥 IMPORTANT
+            }
+        };
+
+        try {
+            await html2pdf().set(opt).from(clone).save();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            document.body.removeChild(wrapper);
+        }
+    }
+    document.getElementById("logoUpload").addEventListener("change", function(e){
+        if (e.target.files && e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = document.getElementById("logoPreview");
+                img.src = reader.result; 
+                img.style.display = "block";
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    window.onload = init;
+</script>
+</body>
+</html>`
+	}
+render["astro:html"] = true;
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+    __proto__: null,
+    default: render
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
