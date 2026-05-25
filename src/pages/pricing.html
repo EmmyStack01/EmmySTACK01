@@ -37,6 +37,173 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+            "@type": "Service",
+            "@id": "#production-stack",
+            "name": "Custom Project Production Stack",
+            "description": "Custom-coded web application production including Branding Kit, UI/UX Design, and Web Dev & SEO.",
+            "provider": {
+                "@type": "LocalBusiness",
+                "name": "Emmy STACK01"
+            },
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Production Services",
+                "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Branding Kit",
+                    "description": "Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image"
+                    },
+                    "price": "35.00",
+                    "priceCurrency": "USD"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "UI/UX Design",
+                    "description": "User Interface and User Experience Design per page"
+                    },
+                    "price": "20.00",
+                    "priceCurrency": "USD",
+                    "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "price": "20.00",
+                    "priceCurrency": "USD",
+                    "referenceQuantity": {
+                        "@type": "QuantitativeValue",
+                        "value": "1",
+                        "unitCode": "PGE" 
+                    }
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Web Dev & SEO (Base Page)",
+                    "description": "Custom-Coded Core, GSAP Animations, On-Page SEO, Meta Tags, Robots.txt, and Sitemap.xml"
+                    },
+                    "price": "50.00",
+                    "priceCurrency": "USD"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Web Dev & SEO (Advanced Page)",
+                    "description": "Custom-Coded Core with advanced integrations or complex animations"
+                    },
+                    "price": "75.00",
+                    "priceCurrency": "USD"
+                }
+                ]
+            }
+            },
+            {
+            "@type": "Service",
+            "@id": "#management-hub",
+            "name": "Long-Term Project Management",
+            "description": "Post-launch updates, custom no-code CMS integration, and monthly growth retainers.",
+            "provider": {
+                "@type": "LocalBusiness",
+                "name": "Emmy STACK01"
+            },
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Management & Maintenance Plans",
+                "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Minor Update",
+                    "description": "Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh"
+                    },
+                    "price": "7.00",
+                    "priceCurrency": "USD"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Professional CMS",
+                    "description": "No-code dashboard for real-time updates preserving speed and SEO performance."
+                    },
+                    "price": "100.00",
+                    "priceCurrency": "USD",
+                    "priceSpecification": {
+                    "@type": "PriceSpecification",
+                    "minPrice": "100.00",
+                    "priceCurrency": "USD"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                    "@type": "Service",
+                    "name": "Monthly Growth Retainer (MGR)",
+                    "description": "Includes 6 Minor Updates, Security Audits, Priority Support, Performance Monitoring, and Traffic Insights."
+                    },
+                    "price": "25.00",
+                    "priceCurrency": "USD",
+                    "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "price": "25.00",
+                    "priceCurrency": "USD",
+                    "referenceQuantity": {
+                        "@type": "QuantitativeValue",
+                        "value": "1",
+                        "unitCode": "MON"
+                    }
+                    }
+                }
+                ]
+            }
+            },
+            {
+            "@type": "Product",
+            "@id": "#digital-card",
+            "name": "Digital Business Card",
+            "description": "Flat rate digital business card including GitHub hosting, domain config, and basic CMS.",
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": "60.00",
+                "availability": "https://schema.org/InStock",
+                "seller": {
+                "@type": "LocalBusiness",
+                "name": "Emmy STACK01"
+                }
+            }
+            },
+            {
+            "@type": "Product",
+            "@id": "#white-label-license",
+            "name": "White Label Professional Brand License",
+            "description": "Total ownership, IP rights, and independent scaling assets for custom projects.",
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": "100.00",
+                "availability": "https://schema.org/InStock",
+                "seller": {
+                "@type": "LocalBusiness",
+                "name": "Emmy STACK01"
+                }
+            }
+            }
+        ]
+        }
+    </script>
     
     <style>
         /* --- 1. SETTINGS & VARIABLES --- */
@@ -452,199 +619,199 @@
             </div>
         </div>
     </header>
-
-    <!-- Section 1: Custom Projects -->
-    <main class="main-section" id="custom">
-        <section class="main-content">
-            <div class="main">
-                <h2>Custom project</h2>
-                <p>Production and Management Pricing</p>
-            </div>
-            
-            <div class="price-card">
-                <div class="toggle-container">
-                    <div class="toggle-btn active" onclick="switchSection('production', this)">Production</div>
-                    <div class="toggle-btn" onclick="switchSection('management', this)">Management</div>
+    <main id="pricing-hub">
+        <!-- Section 1: Custom Projects -->
+        <section class="main-section" id="custom">
+            <div class="main-content">
+                <div class="main">
+                    <h2>Custom project</h2>
+                    <p>Production and Management Pricing</p>
                 </div>
-
-                <!-- Production Sub-section -->
-                <div id="production" class="pricing-section active">
-                    <div class="section-title">Production Stack</div>
-                    
-                    <div class="price-item">
-                        <span>Branding Kit
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image</span>
-                            </span>
-                        </span> 
-                        <span>$35</span>
+                
+                <div class="price-card">
+                    <div class="toggle-container">
+                        <div class="toggle-btn active" onclick="switchSection('production', this)">Production</div>
+                        <div class="toggle-btn" onclick="switchSection('management', this)">Management</div>
                     </div>
 
-                    <div class="price-item">
-                        <span>UI/UX Design
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">User Interface and User Experience Design for your web application</span>
-                            </span>
-                        </span> 
-                        <span>$20/pg</span>
-                    </div>
-
-                    <div class="price-item">
-                        <span>Web Dev & SEO
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Custom-Coded Core, GSAP Animations, On-Page SEO and Meta Tags, Robot.txt and Sitemap.xml files</span>
-                            </span>
-                        </span> 
-                        <div style="display: flex; flex-direction: column;">
-                            <span style="color: var(--accent-color); font-weight: 800;">$50/Base&nbsp;pg</span>
-                            <span style="color: var(--accent-color); font-weight: 800;">$75/Adv&nbsp;pg</span>
+                    <!-- Production Sub-section -->
+                    <div id="production" class="pricing-section active">
+                        <div class="section-title">Production Stack</div>
+                        
+                        <div class="price-item">
+                            <span>Branding Kit
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image</span>
+                                </span>
+                            </span> 
+                            <span>$35</span>
                         </div>
+
+                        <div class="price-item">
+                            <span>UI/UX Design
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">User Interface and User Experience Design for your web application</span>
+                                </span>
+                            </span> 
+                            <span>$20/pg</span>
+                        </div>
+
+                        <div class="price-item">
+                            <span>Web Dev & SEO
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Custom-Coded Core, GSAP Animations, On-Page SEO and Meta Tags, Robot.txt and Sitemap.xml files</span>
+                                </span>
+                            </span> 
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="color: var(--accent-color); font-weight: 800;">$50/Base&nbsp;pg</span>
+                                <span style="color: var(--accent-color); font-weight: 800;">$75/Adv&nbsp;pg</span>
+                            </div>
+                        </div>
+
+                        <div class="add-ons">
+                            <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration, Performance Testing, and 7 Days of Post-Launch Support.
+                        </div>
+                        
+                        <a class="cta-btn" href="thank-you.html?type=project" target="_blank" rel="noopener">Start your project</a>
                     </div>
 
-                    <div class="add-ons">
-                        <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration, Performance Testing, and 7 Days of Post-Launch Support.
+                    <!-- Management Sub-section -->
+                    <div id="management" class="pricing-section">
+                        <div class="section-title">Long-Term Management</div>
+                        <div class="price-item">
+                            <span>Minor Update
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh</span>
+                                </span>
+                            </span> 
+                            <span>$7/Update</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Major Update
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">New Section/Module, Integration Setup, SEO Overhaul, Animation Refinement, Layout Redesign</span>
+                                </span>
+                            </span> 
+                            <span>Custom quota</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Professional CMS
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Our Professional CMS offers a no-code dashboard for instant, real-time updates without technical skills. It preserves your "Cyber-Professional" speed and SEO while giving you total control, eliminating the need for a developer for daily content changes.</span>
+                                </span>
+                            </span> 
+                            <span>$100+</span>
+                        </div>
+                        <div class="price-item">
+                            <span>Monthly Growth Retainer (MGR)
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Priority Support, 6 Minor Updates, Performance Monitoring, Security Audits, Traffic Insights</span>
+                                </span>
+                            </span> 
+                            <span>$25/mo</span>
+                        </div>
+                        <div class="add-ons" style="border-color: var(--accent-color);">
+                            <b>MGR Includes:</b> 6 Minor Updates, Security Audits, and Priority Support.
+                        </div>
+                        <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99ve%20just%20reviewed%20the%20Management%20Hub.%20I%E2%80%99d%20like%20to%20discuss%20the%20best%20long-term%20plan%20for%20my%20project's%20growth%20and%20maintenance." target="_blank" rel="noopener">Request a Management Plan</a>
                     </div>
-                    
-                    <a class="cta-btn" href="thank-you.html?type=project" target="_blank" rel="noopener">Start your project</a>
-                </div>
-
-                <!-- Management Sub-section -->
-                <div id="management" class="pricing-section">
-                    <div class="section-title">Long-Term Management</div>
-                    <div class="price-item">
-                        <span>Minor Update
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh</span>
-                            </span>
-                        </span> 
-                        <span>$7/Update</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Major Update
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">New Section/Module, Integration Setup, SEO Overhaul, Animation Refinement, Layout Redesign</span>
-                            </span>
-                        </span> 
-                        <span>Custom quota</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Professional CMS
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Our Professional CMS offers a no-code dashboard for instant, real-time updates without technical skills. It preserves your "Cyber-Professional" speed and SEO while giving you total control, eliminating the need for a developer for daily content changes.</span>
-                            </span>
-                        </span> 
-                        <span>$100+</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Monthly Growth Retainer (MGR)
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Priority Support, 6 Minor Updates, Performance Monitoring, Security Audits, Traffic Insights</span>
-                            </span>
-                        </span> 
-                        <span>$25/mo</span>
-                    </div>
-                    <div class="add-ons" style="border-color: var(--accent-color);">
-                        <b>MGR Includes:</b> 6 Minor Updates, Security Audits, and Priority Support.
-                    </div>
-                    <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99ve%20just%20reviewed%20the%20Management%20Hub.%20I%E2%80%99d%20like%20to%20discuss%20the%20best%20long-term%20plan%20for%20my%20project's%20growth%20and%20maintenance." target="_blank" rel="noopener">Request a Management Plan</a>
                 </div>
             </div>
         </section>
-    </main>
 
-    <!-- Section 2: Digital Business Card -->
-    <main class="main-section" id="product">
-        <section class="main-content reverse">
-            <div class="main">
-                <h2>Digital Business Card</h2>
-                <p>Flat Rate Product</p>
-            </div>
-            <div class="price-card">
-                <div class="toggle-container">
-                    <div class="toggle-btn active">Production and Management</div>
+        <!-- Section 2: Digital Business Card -->
+        <section class="main-section" id="product">
+            <div class="main-content reverse">
+                <div class="main">
+                    <h2>Digital Business Card</h2>
+                    <p>Flat Rate Product</p>
                 </div>
-                <div class="pricing-section active">
-                    <div class="section-title">Digital Business Card</div>
-                    <div class="price-item"><span>Flat Price</span> <span>$60</span></div>
-                    <div class="add-ons">
-                        <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration and Basic CMS.
+                <div class="price-card">
+                    <div class="toggle-container">
+                        <div class="toggle-btn active">Production and Management</div>
                     </div>
-                    <a class="cta-btn" href="/products/digital-business-card">View Product</a>
+                    <div class="pricing-section active">
+                        <div class="section-title">Digital Business Card</div>
+                        <div class="price-item"><span>Flat Price</span> <span>$60</span></div>
+                        <div class="add-ons">
+                            <b>Included for Free:</b> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration and Basic CMS.
+                        </div>
+                        <a class="cta-btn" href="/products/digital-business-card">View Product</a>
+                    </div>
                 </div>
             </div>
         </section>
-    </main>
 
-    <!-- Section 3: White Label -->
-    <main class="main-section" id="white-label">
-        <section class="main-content">
-            <div class="main">
-                <h2>White Label</h2>
-                <p>Professional Brand License</p>
-            </div>
-            <div class="price-card">
-                <div class="toggle-container">
-                    <div class="toggle-btn active">The Benefits</div>
+        <!-- Section 3: White Label -->
+        <section class="main-section" id="white-label">
+            <div class="main-content">
+                <div class="main">
+                    <h2>White Label</h2>
+                    <p>Professional Brand License</p>
                 </div>
-                <div class="pricing-section active">
-                    <div class="section-title">Professional Brand License</div>
-                    
-                    <div class="price-item2">
-                        <span style="color: white;">Total Ownership & IP Rights
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">You own the source code and the "Digital DNA" architecture entirely.</span>
-                            </span>
-                        </span>
+                <div class="price-card">
+                    <div class="toggle-container">
+                        <div class="toggle-btn active">The Benefits</div>
                     </div>
-                    <div class="price-item2">
-                        <span style="color: white;">Remove Attribution
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Strip all developer branding to present the project as your own 100% proprietary tech.</span>
+                    <div class="pricing-section active">
+                        <div class="section-title">Professional Brand License</div>
+                        
+                        <div class="price-item2">
+                            <span style="color: white;">Total Ownership & IP Rights
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">You own the source code and the "Digital DNA" architecture entirely.</span>
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                    <div class="price-item2">
-                        <span style="color: white;">Independent Scaling
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Host on any server or private infrastructure without reliance on our maintenance ecosystem.</span>
+                        </div>
+                        <div class="price-item2">
+                            <span style="color: white;">Remove Attribution
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Strip all developer branding to present the project as your own 100% proprietary tech.</span>
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                    <div class="price-item2">
-                        <span style="color: white;">Asset Valuation
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Increase your brand's market value by owning the underlying software assets instead of just a managed service.</span>
+                        </div>
+                        <div class="price-item2">
+                            <span style="color: white;">Independent Scaling
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Host on any server or private infrastructure without reliance on our maintenance ecosystem.</span>
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                    <div class="price-item2">
-                        <span style="color: white;">Unlimited Modification
-                            <span class="info-wrapper">
-                                <i class="ri-information-line info-icon"></i>
-                                <span class="info-box">Full freedom to modify, fork, or redistribute the code for your internal business needs.</span>
+                        </div>
+                        <div class="price-item2">
+                            <span style="color: white;">Asset Valuation
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Increase your brand's market value by owning the underlying software assets instead of just a managed service.</span>
+                                </span>
                             </span>
-                        </span>
+                        </div>
+                        <div class="price-item2">
+                            <span style="color: white;">Unlimited Modification
+                                <span class="info-wrapper">
+                                    <i class="ri-information-line info-icon"></i>
+                                    <span class="info-box">Full freedom to modify, fork, or redistribute the code for your internal business needs.</span>
+                                </span>
+                            </span>
+                        </div>
+                        
+                        <div class="price-item"><span>License Fee</span> <span>$100</span></div>
+                        <div class="add-ons"><b>Note:</b> Only available for custom projects.</div>
+                        <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99m%20interested%20in%20securing%20the%20Professional%20Brand%20License%20for%20my%20project.%20I%E2%80%99d%20like%20to%20discuss%20the%20transition%20to%20full%20code%20ownership%20and%20removing%20the%20developer%20attribution." target="_blank" rel="noopener">Request License</a>
                     </div>
-                    
-                    <div class="price-item"><span>License Fee</span> <span>$100</span></div>
-                    <div class="add-ons"><b>Note:</b> Only available for custom projects.</div>
-                    <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99m%20interested%20in%20securing%20the%20Professional%20Brand%20License%20for%20my%20project.%20I%E2%80%99d%20like%20to%20discuss%20the%20transition%20to%20full%20code%20ownership%20and%20removing%20the%20developer%20attribution." target="_blank" rel="noopener">Request License</a>
                 </div>
             </div>
         </section>
-    </main>
-
+    </main>    
     <!-- Footer -->
     <footer class="footer-section">
         <div class="footer-container">
