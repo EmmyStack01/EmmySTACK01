@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "framework": null,
+  "framework": "astro",
   "buildCommand": "npm run vercel-build",
   "installCommand": "npm install --legacy-peer-deps",
   "cleanUrls": true,
