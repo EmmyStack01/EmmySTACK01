@@ -43,13 +43,29 @@
         "@context": "https://schema.org",
         "@graph": [
             {
+            "@type": "ItemPage",
+            "@id": "https://emmystack01.com/pricing#webpage",
+            "url": "https://emmystack01.com/pricing",
+            "name": "Transparent Pricing | Emmy STACK01",
+            "description": "Explore custom-coded web production architectures, asset management plans, and digital identity pricing.",
+            "isPartOf": {
+                "@type": "WebSite",
+                "@id": "https://emmystack01.com/#website",
+                "name": "Emmy STACK01",
+                "url": "https://emmystack01.com"
+            }
+            },
+            {
             "@type": "Service",
-            "@id": "#production-stack",
+            "@id": "https://emmystack01.com/pricing#production-stack",
             "name": "Custom Project Production Stack",
             "description": "Custom-coded web application production including Branding Kit, UI/UX Design, and Web Dev & SEO.",
+            "mainEntityOfPage": { "@id": "https://emmystack01.com/pricing#webpage" },
             "provider": {
                 "@type": "LocalBusiness",
-                "name": "Emmy STACK01"
+                "@id": "https://emmystack01.com/#organization",
+                "name": "Emmy STACK01",
+                "url": "https://emmystack01.com"
             },
             "hasOfferCatalog": {
                 "@type": "OfferCatalog",
@@ -110,12 +126,15 @@
             },
             {
             "@type": "Service",
-            "@id": "#management-hub",
+            "@id": "https://emmystack01.com/pricing#management-hub",
             "name": "Long-Term Project Management",
             "description": "Post-launch updates, custom no-code CMS integration, and monthly growth retainers.",
+            "mainEntityOfPage": { "@id": "https://emmystack01.com/pricing#webpage" },
             "provider": {
                 "@type": "LocalBusiness",
-                "name": "Emmy STACK01"
+                "@id": "https://emmystack01.com/#organization",
+                "name": "Emmy STACK01",
+                "url": "https://emmystack01.com"
             },
             "hasOfferCatalog": {
                 "@type": "OfferCatalog",
@@ -171,39 +190,90 @@
             },
             {
             "@type": "Product",
-            "@id": "#digital-card",
+            "@id": "https://emmystack01.com/products#digital-business-card",
             "name": "Digital Business Card",
             "description": "Flat rate digital business card including GitHub hosting, domain config, and basic CMS.",
+            "image": "https://emmystack01.com/asset/Checkout-our-Demos.png",
+            "mainEntityOfPage": { "@id": "https://emmystack01.com/pricing#webpage" },
+            "brand": {
+                "@type": "Brand",
+                "name": "Emmy STACK01"
+            },
             "offers": {
                 "@type": "Offer",
                 "priceCurrency": "USD",
                 "price": "60.00",
                 "availability": "https://schema.org/InStock",
+                "url": "https://emmystack01.com/products/digital-business-card",
+                "category": "Digital Goods",
                 "seller": {
                 "@type": "LocalBusiness",
+                "@id": "https://emmystack01.com/#organization",
                 "name": "Emmy STACK01"
+                },
+                "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+                "shippingRate": { "@type": "MonetaryAmount", "value": "0.00", "currency": "USD" },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" },
+                    "transitTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" }
+                }
+                },
+                "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "returnPolicyType": "https://schema.org/NoReturns"
                 }
             }
             },
             {
             "@type": "Product",
-            "@id": "#white-label-license",
+            "@id": "https://emmystack01.com/pricing#white-label-license",
             "name": "White Label Professional Brand License",
             "description": "Total ownership, IP rights, and independent scaling assets for custom projects.",
+            "image": "https://emmystack01.com/asset/white-label-license-preview.png",
+            "mainEntityOfPage": { "@id": "https://emmystack01.com/pricing#webpage" },
+            "isRelatedTo": { "@id": "https://emmystack01.com/pricing#production-stack" },
+            "brand": {
+                "@type": "Brand",
+                "name": "Emmy STACK01"
+            },
             "offers": {
                 "@type": "Offer",
                 "priceCurrency": "USD",
                 "price": "100.00",
                 "availability": "https://schema.org/InStock",
+                "url": "https://emmystack01.com/pricing",
+                "category": "Digital Goods",
                 "seller": {
                 "@type": "LocalBusiness",
+                "@id": "https://emmystack01.com/#organization",
                 "name": "Emmy STACK01"
+                },
+                "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+                "shippingRate": { "@type": "MonetaryAmount", "value": "0.00", "currency": "USD" },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" },
+                    "transitTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" }
+                }
+                },
+                "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "returnPolicyType": "https://schema.org/NoReturns"
                 }
             }
             }
         ]
         }
     </script>
+    
+
     
     <style>
         /* --- 1. SETTINGS & VARIABLES --- */

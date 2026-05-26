@@ -61,6 +61,26 @@ const [featuredArticle, ...otherArticles] = articles;
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     
+    <script type="application/ld+json" is:inline define:vars={{ articles }}>
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "The Digital DNA Log | Emmy STACK01 Articles",
+        "description": "Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026.",
+        "url": window.location.href,
+        "mainEntity": {
+          "@type": "ItemList",
+          "numberOfItems": articles.length,
+          "itemListElement": articles.map((article, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "url": `${window.location.origin}/articles/${article.slug}`,
+            "name": article.title
+          }))
+        }
+      }
+    </script>
+
     <style>
         :root {
         /* Brand Colors */

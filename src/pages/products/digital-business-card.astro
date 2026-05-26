@@ -63,10 +63,11 @@
             },
             {
             "@type": "Product",
-            "@id": "https://emmystack01.com/products/digital-business-card#product",
+            "@id": "https://emmystack01.com/products#digital-business-card",
+            "mainEntityOfPage": { "@id": "https://emmystack01.com/products/digital-business-card#webpage" },
             "name": "Digital Business Card",
-            "image": "https://emmystack01.com/asset/Checkout-our-Demos.png",
-            "description": "Custom-coded, lightning-fast digital profiles featuring one-tap contact saving, QR integration, and zero-bloat performance.",
+            "description": "A lightning-fast, SEO-optimized digital card built to display your work, share your socials, and convert visitors into clients with a single tap.",
+            "image": "https://emmystack01.com/asset/Checkout-our-Demos.png", 
             "brand": {
                 "@type": "Brand",
                 "name": "Emmy STACK01"
@@ -76,10 +77,41 @@
                 "price": "60.00",
                 "priceCurrency": "USD",
                 "availability": "https://schema.org/InStock",
-                "priceValidUntil": "2027-12-31",
                 "url": "https://emmystack01.com/products/digital-business-card",
+                "category": "Digital Goods",
+                "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": "US"
+                },
+                "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "value": "0.00",
+                    "currency": "USD"
+                },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "maxValue": 0,
+                    "unitCode": "DAY"
+                    },
+                    "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "maxValue": 0,
+                    "unitCode": "DAY"
+                    }
+                }
+                },
+                "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "returnPolicyType": "https://schema.org/NoReturns"
+                },
                 "seller": {
-                "@type": "Organization",
+                "@type": "LocalBusiness",
+                "@id": "https://emmystack01.com/#organization",
                 "name": "Emmy STACK01",
                 "url": "https://emmystack01.com"
                 }

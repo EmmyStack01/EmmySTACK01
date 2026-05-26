@@ -56,6 +56,35 @@ const { title, description, date, readingTime, category, image, author, content 
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
 
+    <script type="application/ld+json" is:inline define:vars={{ title, description, date, image, author }}>
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": title,
+        "description": description,
+        "image": image ? (image.startsWith('http') ? image : `${window.location.origin}${image}`) : `${window.location.origin}/asset/og-image4.jpg`,
+        "datePublished": new Date(date).toISOString(),
+        "dateModified": new Date(date).toISOString(),
+        "url": window.location.href,
+        "author": {
+          "@type": "Person",
+          "name": author || "Emmy STACK01"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Emmy STACK01",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${window.location.origin}/asset/emmy-stack01-logo.png`
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": window.location.href
+        }
+      }
+    </script>
+
     <style>
       body {
         background-color: #0d1117;

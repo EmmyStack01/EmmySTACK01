@@ -51,32 +51,55 @@
             "@id": "https://emmystack01.com/products#webpage",
             "url": "https://emmystack01.com/products",
             "name": "The Lineup | Emmy STACK01 - Next-Gen Digital Identity",
-            "description": "Explore the Emmy STACK01 flagship Digital Business Card and custom-coded solutions. High-performance digital DNA for modern founders.",
+            "description": "Explore the Emmy STACK01 flagship Digital Business Card and high-fidelity technical tools.",
             "isPartOf": {
                 "@type": "WebSite",
+                "@id": "https://emmystack01.com/#website",
                 "name": "Emmy STACK01",
                 "url": "https://emmystack01.com"
             },
-            "mainEntity": {
+            "mainEntity": [
+                {
                 "@type": "Product",
                 "@id": "https://emmystack01.com/products#digital-business-card",
                 "name": "Digital Business Card",
                 "description": "A lightning-fast, SEO-optimized digital card built to display your work, share your socials, and convert visitors into clients with a single tap.",
                 "image": "https://emmystack01.com/asset/Checkout-our-Demos.png",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "Emmy STACK01"
+                },
                 "offers": {
-                "@type": "Offer",
-                "price": "60.00",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock",
-                "url": "https://emmystack01.com/products/digital-business-card",
-                "seller": {
+                    "@type": "Offer",
+                    "price": "60.00",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock",
+                    "url": "https://emmystack01.com/products/digital-business-card",
+                    "category": "Digital Goods",
+                    "seller": {
                     "@type": "LocalBusiness",
+                    "@id": "https://emmystack01.com/#organization",
                     "name": "Emmy STACK01",
-                    "url": "https://emmystack01.com",
-                    "logo": "https://emmystack01.com/asset/emmy-stack01-logo.png"
+                    "url": "https://emmystack01.com"
+                    },
+                    "shippingDetails": {
+                    "@type": "OfferShippingDetails",
+                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
+                    "shippingRate": { "@type": "MonetaryAmount", "value": "0.00", "currency": "USD" },
+                    "deliveryTime": {
+                        "@type": "ShippingDeliveryTime",
+                        "handlingTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" },
+                        "transitTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" }
+                    }
+                    },
+                    "hasMerchantReturnPolicy": {
+                    "@type": "MerchantReturnPolicy",
+                    "applicableCountry": "US",
+                    "returnPolicyType": "https://schema.org/NoReturns"
+                    }
                 }
                 }
-            }
+            ]
             }
         ]
         }
