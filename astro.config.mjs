@@ -10,6 +10,14 @@ export default defineConfig({
   site: 'https://emmystack01.com',
   trailingSlash: 'never',
   output: 'server',
+  vite: {
+    optimizeDeps: {
+      include: ['react', 'react-dom'] // Forces Vite to pre-bundle CommonJS exports into clean ES modules
+    },
+    build: {
+      sourcemap: false // Keeps your terminal clear of those yellow warnings!
+    }
+  },
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
@@ -17,6 +25,7 @@ export default defineConfig({
     collectionsBackwardsCompat: true // <-- The correct Astro v6 flag for older collection formats
   },
   integrations: [
+    react(), // <-- FIXED: Always initialize React first so Keystatic can consume it safely
     markdoc(), 
     keystatic(), 
     sitemap({
@@ -29,11 +38,9 @@ export default defineConfig({
         !page.includes('/payment') &&
         !page.includes('/preview')
     }), 
-    react(),
     indexnow({
       site: 'https://emmystack01.com',
       key: 'ec64748f40c8436da57b45e04b431172',
-      // Optional: points the engines to your hosted key file if needed
       keyLocation: 'https://emmystack01.com/ec64748f40c8436da57b45e04b431172.txt'
     })
   ],
