@@ -18,6 +18,16 @@
     { "source": "/digital-business-card", "destination": "/products/digital-business-card", "permanent": true },
     { "source": "/meeting_background_studio", "destination": "/tools/meeting_background_studio", "permanent": true }
   ],
+  "rewrites": [
+    {
+      "source": "/document-engine",
+      "destination": "https://emmy-document-engine.vercel.app"
+    },
+    {
+      "source": "/document-engine/:path*",
+      "destination": "https://emmy-document-engine.vercel.app/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
@@ -38,18 +48,6 @@
         {
           "key": "Cross-Origin-Embedder-Policy",
           "value": "unsafe-none"
-        }
-      ]
-    },
-    {
-      "rewrites": [
-        {
-          "source": "/document-engine",
-          "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/"
-        },
-        {
-          "source": "/document-engine/:path*",
-          "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/:path*"
         }
       ]
     }
