@@ -492,7 +492,7 @@
                 </div>
             </div>
             
-            <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">
+            <button class="theme-switch" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle dark and light theme">
                 <i class="ri-sun-line"></i>
             </button>
         </nav>
@@ -543,13 +543,13 @@
         <footer>
             <p>Built by <a class="p" href="https://emmystack01.com/">Emmy STACK01</a></p>
             <div class="socials">
-                <a href="https://x.com/Emmy_STACK01"><i class="ri-twitter-x-line"></i></a>
-                <a href="https://wa.me/2349076991076"><i class="ri-whatsapp-fill"></i></a>
+                <a href="https://x.com/Emmy_STACK01" aria-label="Follow Emmy STACK01 on X (Twitter)"><i class="ri-twitter-x-line"></i></a>
+                <a href="https://wa.me/2349076991076" aria-label="Chat with Emmy STACK01 on WhatsApp"><i class="ri-whatsapp-fill"></i></a>
             </div>
         </footer>
     </div>
 
-    <script is:inline>
+    <script>
         // --- LOGIC ENGINE ---
         const lexicons = {
             corporate: ['strategy', 'launch', 'result', 'optimized', 'professional', 'performance', 'identity', 'integrated', 'revenue', 'growth'],

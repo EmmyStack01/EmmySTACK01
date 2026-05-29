@@ -442,6 +442,10 @@
             font-size: 14px;
         }
 
+        .download-button:hover {
+            transform: scale(1.03) translateY(-2px);
+        }
+
         .footer-section { margin-top: 30px; padding: 20px 0; width: 100%; }
         .line { border: 0; border-top: 1px solid #444; width: 300px; margin: 10px auto; }
         .ownership { text-align: center; margin-bottom: 10px; }
@@ -498,15 +502,15 @@
 
                 <div class="form-group">
                     <label>Logo & Branding</label>
-                    <input type="file" id="logoUpload" accept="image/*" style="margin-bottom: 10px;">
+                    <input type="file" id="logoUpload" aria-label="Upload Your Business Logo" accept="image/*" style="margin-bottom: 10px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div>
                             <label>Currency</label>
-                            <select id="currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
+                            <select id="currency" aria-label="Select Currency"><option value="₦">NGN (₦)</option><option value="$">USD ($)</option></select>
                         </div>
                         <div class="field-group">
                             <label>Due Date</label>
-                            <input type="date" id="dueDate" oninput="update()">
+                            <input type="date" id="dueDate" aria-label="Invoice Due Date" oninput="update()">
                         </div>
                     </div>
                     <input style="margin-top: 5px;" type="text" id="bizName" placeholder="Business Name">
@@ -526,7 +530,7 @@
                     <input type="text" id="bankInfo" placeholder="Bank - Account Number" oninput="update()">
                 </div>
 
-                <button onclick="downloadPDF()" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
+                <button onclick="downloadPDF()" class="download-button" style="width:100%; background:var(--primary); color:white; padding:18px; border:none; border-radius:12px; margin-top:20px; font-weight:800; cursor:pointer;">DOWNLOAD RECEIPT</button>
             </div>
 
             <div class="preview-area" id="previewContainer">
@@ -581,7 +585,7 @@
                 </div>
             </div>
             <span class="coffee-section">
-                <a href="/payment">
+                <a href="/payment" aria-label="Buy Emmy Coffee">
                     <i class="ri-drinks-fill coffee" id="coffee-icon"></i>
                 </a>
                 <span class="coffee-info">Enjoying the invoice tool? Buy Emmy a coffee!</span>
@@ -648,13 +652,13 @@
                     </p>
                 </div>
                 <div class="socials"> 
-                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer"><i class="ri-twitter-x-line"></i></a> 
-                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-fill"></i></a>
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" aria-label="Follow Emmy STACK01 on X (Twitter)"><i class="ri-twitter-x-line"></i></a> 
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" aria-label="Chat with Emmy STACK01 on WhatsApp"><i class="ri-whatsapp-fill"></i></a>
                 </div>
             </div>
         </footer>        
     </div>    
-<script is:inline>
+<script>
     let items = [{ id: Date.now(), desc: '', qty: 1, price: 0 }];
     let mathStore = { subtotal: 0, vat: 0, total: 0 };
 
@@ -769,17 +773,17 @@
             div.innerHTML = `
                 <div class="field-group desc">
                     <label>Description</label>
-                    <input type="text" placeholder="Description" value="${item.desc}" 
+                    <input type="text" placeholder="Description" value="${item.desc}" aria-label="Item name or description"
                         oninput="updateItem(${item.id}, 'desc', this.value)">
                 </div>
                 <div class="field-group qty">
                     <label>Qty</label>
-                    <input type="number" value="${item.qty}" style="text-align:center" 
+                    <input type="number" value="${item.qty}" style="text-align:center" aria-label="Quantity of item"
                         oninput="updateItem(${item.id}, 'qty', this.value)">
                 </div>
                 <div class="field-group price">
                     <label>Amount</label>
-                    <input type="number" value="${item.price}" style="text-align:right" 
+                    <input type="number" value="${item.price}" style="text-align:right" aria-label="Price per item"
                         oninput="updateItem(${item.id}, 'price', this.value)">
                 </div>
                 <button class="btn-remove" onclick="removeItem(${item.id})">&times;</button>

@@ -21,6 +21,25 @@ const articles = sortedArticles.map(article => ({
   image: article.entry.coverImage
 }));
 
+// Create the clean schema object on the server side
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "The Digital DNA Log | Emmy STACK01 Articles",
+  "description": "Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026.",
+  "url": Astro.url.href,
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": articles.length,
+    "itemListElement": articles.map((article, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `${Astro.url.origin}/articles/${article.slug}`,
+      "name": article.title
+    }))
+  }
+};
+
 // 4. Safely extract your featured banner and grid items using your original pattern
 const [featuredArticle, ...otherArticles] = articles;
 ---
@@ -61,25 +80,8 @@ const [featuredArticle, ...otherArticles] = articles;
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     
-    <script type="application/ld+json" is:inline define:vars={{ articles }}>
-      {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "The Digital DNA Log | Emmy STACK01 Articles",
-        "description": "Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026.",
-        "url": window.location.href,
-        "mainEntity": {
-          "@type": "ItemList",
-          "numberOfItems": articles.length,
-          "itemListElement": articles.map((article, index) => ({
-            "@type": "ListItem",
-            "position": index + 1,
-            "url": `${window.location.origin}/articles/${article.slug}`,
-            "name": article.title
-          }))
-        }
-      }
-    </script>
+    <!-- JSON-LD Structured Data Fix -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
     <style>
         :root {

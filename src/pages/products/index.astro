@@ -69,6 +69,47 @@
                     "@type": "Brand",
                     "name": "Emmy STACK01"
                 },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.5",
+                    "reviewCount": "2",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                },
+                "review": [
+                    {
+                    "@type": "Review",
+                    "author": {
+                        "@type": "Person",
+                        "name": "Abbey"
+                    },
+                    "reviewRating": {
+                        "@type": "Rating",
+                        "ratingValue": "4"
+                    },
+                    "reviewBody": "The website has been great for me. It makes people easily know what I’m about and how to reach me. It has mostly been useful for my WhatsApp community, creating an easy way to connect with new minds.",
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "Google Business Profile"
+                    }
+                    },
+                    {
+                    "@type": "Review",
+                    "author": {
+                        "@type": "Person",
+                        "name": "Prosper Zekeli"
+                    },
+                    "reviewRating": {
+                        "@type": "Rating",
+                        "ratingValue": "5"
+                    },
+                    "reviewBody": "Honestly speaking I checked out Emmy Stack , it’s a neat and great tool for anyone looking to build an online presence quickly. The way it turns links into a searchable domain is clever you literally just click and Google can find it. Super simple to use, and it gives your project or profile a professional touch without overcomplicating things. It's really worth it 🔥 The setup was smooth and fast, and the interface is very user-friendly. It helps me manage my online presence more efficiently, and I can easily access or share my links whenever I need to. Overall, it’s a very useful tool for anyone who wants to keep their social accounts organized and accessible in one place. I’d definitely recommend it for convenience and ease of use.",
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "Google Business Profile & Trustpilot"
+                    }
+                    }
+                ],
                 "offers": {
                     "@type": "Offer",
                     "price": "60.00",
@@ -84,17 +125,44 @@
                     },
                     "shippingDetails": {
                     "@type": "OfferShippingDetails",
-                    "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "US" },
-                    "shippingRate": { "@type": "MonetaryAmount", "value": "0.00", "currency": "USD" },
+                    "shippingDestination": { 
+                        "@type": "DefinedRegion", 
+                        "addressCountry": "US" 
+                    },
+                    "shippingRate": { 
+                        "@type": "MonetaryAmount", 
+                        "value": "0.00", 
+                        "currency": "USD" 
+                    },
                     "deliveryTime": {
                         "@type": "ShippingDeliveryTime",
-                        "handlingTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" },
-                        "transitTime": { "@type": "QuantitativeValue", "maxValue": 0, "unitCode": "DAY" }
+                        "handlingTime": { 
+                        "@type": "QuantitativeValue", 
+                        "minValue": 0,
+                        "maxValue": 0, 
+                        "unitCode": "DAY" 
+                        },
+                        "transitTime": { 
+                        "@type": "QuantitativeValue", 
+                        "minValue": 0,
+                        "maxValue": 0, 
+                        "unitCode": "DAY" 
+                        }
                     }
                     },
                     "hasMerchantReturnPolicy": {
                     "@type": "MerchantReturnPolicy",
-                    "applicableCountry": "US",
+                    "applicableCountry": [
+                        {
+                        "@type": "Country",
+                        "name": "NG"
+                        },
+                        {
+                        "@type": "Country",
+                        "name": "US"
+                        }
+                    ],
+                    "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
                     "returnPolicyType": "https://schema.org/NoReturns"
                     }
                 }
