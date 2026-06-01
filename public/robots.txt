@@ -24,5 +24,20 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 # 3. Sitemap location
 Sitemap: https://emmystack01.com/sitemap-index.xml
