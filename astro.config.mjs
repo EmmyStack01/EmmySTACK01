@@ -29,6 +29,8 @@ export default defineConfig({
     markdoc(), 
     keystatic(), 
     sitemap({
+      lastmod: new Date(),
+      
       filter: (page) => 
         !page.includes('/script') && 
         !page.includes('/success') &&

@@ -811,43 +811,47 @@
                 });
             }
 
-            // Card Scroll Animations
-            // Target all cards and loop through them
-            const allCards = gsap.utils.toArray(".card-animate");
+            // --- CREATE MATCHMEDIA INTERFACE ---
+            let mm = gsap.matchMedia();
 
-            allCards.forEach((card) => {
-                gsap.from(card, {
+            // This block only runs when the viewport is WIDER than 480px
+            mm.add("(min-width: 481px)", () => {
+                
+                // Card Scroll Animations
+                const allCards = gsap.utils.toArray(".card-animate");
+                allCards.forEach((card) => {
+                    gsap.from(card, {
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 90%",
+                            toggleActions: "play none none none",
+                        },
+                        y: 60,
+                        opacity: 0,
+                        duration: 1.2,
+                        ease: "power3.out"
+                    });
+                });
+
+                // 5. DEMO SECTION: Entrance Animation
+                gsap.from(".card", {
                     scrollTrigger: {
-                        trigger: card,      // The card itself triggers the animation
-                        start: "top 90%",   // Start when the top of the card is 90% down the screen
-                        toggleActions: "play none none none", // Plays once when entering
-                        // markers: true,   // Uncomment this to see the start/end lines for debugging
+                        trigger: ".container",
+                        start: "top 85%",
+                        toggleActions: "play none none none",
                     },
-                    y: 60,                  // Slightly reduced distance for a smoother feel
+                    x: -800,
+                    rotation: -20,
                     opacity: 0,
+                    stagger: 0.15,
                     duration: 1.2,
-                    ease: "power3.out"      // Power3 provides a more natural "organic" deceleration
+                    ease: "power4.out",
+                    onComplete: function() {
+                        gsap.set(".card", { clearProps: "x,opacity,rotation" });
+                    }
                 });
             });
-
-            // 5. DEMO SECTION: Entrance Animation
-            gsap.from(".card", {
-                scrollTrigger: {
-                    trigger: ".container",
-                    start: "top 85%", // Triggers when the container is 85% from the top
-                    toggleActions: "play none none none",
-                },
-                x: -800,          // Start 800px to the left (off-screen)
-                rotation: -20,    // Add a slight tilt as they fly in
-                opacity: 0,
-                stagger: 0.15,    // Time gap between each card "dealing"
-                duration: 1.2,
-                ease: "power4.out", // Fast start, smooth deceleration
-                onComplete: function() {
-                    // Crucial: Clear the inline 'x' and 'opacity' so your CSS takes back over
-                    gsap.set(".card", { clearProps: "x,opacity,rotation" });
-                }
-            });
+            // --- END MATCHMEDIA ---
             // 7. FOOTER: Smooth Fade
             gsap.from(".footer", {
                 scrollTrigger: {
