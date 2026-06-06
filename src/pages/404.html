@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Expired or Invalid | Emmy STACK01</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
@@ -16,7 +13,7 @@
     <style>
         body {
             background-color: #000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -25,45 +22,120 @@
             margin: 0;
             text-align: center;
         }
-        h1 { font-family: 'Orbitron'; font-size: 3rem; margin-bottom: 10px;}
-        h1 {
-        background: linear-gradient(90deg, #2d66b4, #00ccff);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        }
-        p { font-size: 1.2rem; opacity: 0.8; color: #a0aec0; font-family: 'Montserrat'; }
-        .btn {
-            font-family: 'Montserrat';
-            margin-top: 25px;
-            padding: 12px 30px;
-            background: transparent;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            cursor: pointer;
-            color: #000;
-            font-weight: 500;
-            position: relative;
+        .system-error-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #000000;
+        color: #ffffff;
+        font-family: sans-serif; /* Use your platform's main geometric font */
+        padding: 24px;
+        text-align: center;
         }
 
-        .btn::before {
-        content:"";
-        position:absolute; inset:-2px;
-        background:linear-gradient(90deg, #2d66b4, #00ccff);
-        z-index:-1;
-        border-radius:inherit;
+        .brand-logo img {
+        max-width: 140px;
         }
-        .btn:hover { box-shadow: 0 0 25px #00ccff; }
+
+        .error-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+        }
+
+        .error-subtitle {
+        font-size: 0.95rem;
+        color: #a0a0a0;
+        max-width: 320px;
+        line-height: 1.5;
+        margin-bottom: 36px;
+        }
+
+        .status-box {
+        width: 100%;
+        max-width: 340px;
+        margin-bottom: 30px;
+        }
+
+        .status-heading {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        }
+
+        /* Progress Bar Tracking the Redirect Layout */
+        .progress-bar-container {
+        width: 100%;
+        height: 4px;
+        background-color: #1a1a1a;
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        }
+
+        .progress-bar-fill {
+        height: 100%;
+        width: 100%;
+        background-color: #00bfff; /* Your core accent cyan/blue */
+        animation: countdownProgress 10s linear forwards;
+        }
+
+        .status-subtext {
+        font-size: 0.85rem;
+        color: #666666;
+        }
+
+        /* Fallback Button matching the layout theme */
+        .btn-fallback {
+        display: inline-block;
+        background: linear-gradient(90deg, #1e40af, #00bfff);
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        padding: 12px 32px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+        }
+
+        /* CSS Animation for the Bar */
+        @keyframes countdownProgress {
+        from { width: 100%; }
+        to { width: 0%; }
+        }
     </style>
 </head>
 <body>
-    <h1>SYSTEM ERROR 404</h1>
-    <p>The link may be mistyped or the partner is no longer active.</p>
-    <p>Automatic Reboot to Homepage in 10 Sec</p>
-    
-    <a href="https://emmystack01.com" class="btn">Return to Home</a>
+    <div class="system-error-container">
+        <!-- Brand Header -->
+        <div class="brand-logo">
+            <img src="https://emmystack01.com/asset/emmy-stack01-logo.png" alt="Emmy STACK01" />
+        </div>
+
+        <!-- Error Messaging -->
+        <h1 class="error-title">System Error 404</h1>
+        <p class="error-subtitle">The link may be mistyped or the resource is no longer active.</p>
+
+        <!-- Dynamic Status Box -->
+        <div class="status-box">
+            <h3 class="status-heading">Initiating Auto-Reboot...</h3>
+            
+            <!-- The Redirect-style Progress Bar -->
+            <div class="progress-bar-container">
+            <div class="progress-bar-fill"></div>
+            </div>
+            
+            <p class="status-subtext">Returning you to the core homepage in <span id="countdown">10</span>s</p>
+        </div>
+
+        <!-- Manual Override Button -->
+        <a href="/" class="btn-fallback">Return to Home</a>
+    </div>
     
     <script>
         // Optional: Auto-redirect home after 10 seconds
