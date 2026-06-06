@@ -1,31 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Redirecting | Emmy STACK01</title>
-    <meta name="robots" content="noindex, nofollow">
-    <style>
-        body { background: #000; color: #00ccff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .loader { border: 3px solid #111; border-top: 3px solid #00ccff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Connecting...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;600;700&display=swap">
+  <style>
+    body {
+      background-color: #000000; 
+      margin: 0; 
+      padding: 0;
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .redirect-container {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      color: #ffffff; 
+      font-family: 'Montserrat', sans-serif; 
+      padding: 24px; 
+      box-sizing: border-box;
+    }
+    .brand-logo img {
+      max-width: 140px;
+      margin-bottom: 24px;
+    }
+    .redirect-title {
+      font-size: 1.8rem; 
+      font-weight: 700; 
+      margin-bottom: 12px; 
+      letter-spacing: -0.02em;
+    }
+    .redirect-subtitle {
+      font-size: 0.95rem; 
+      color: #a0a0a0; 
+      max-width: 290px; 
+      line-height: 1.5; 
+      margin-bottom: 32px;
+    }
+    .secure-status-box {
+      width: 100%; 
+      max-width: 340px; 
+      margin-bottom: 28px;
+    }
+    .status-heading {
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      color: #666666; 
+      margin-bottom: 8px; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em;
+    }
+    .referral-badge {
+      font-family: 'Orbitron', sans-serif; 
+      font-size: 1.5rem; 
+      font-weight: 700; 
+      color: #00bfff; 
+      letter-spacing: 0.05em; 
+      margin-bottom: 20px;
+    }
+    .btn-action {
+      display: inline-block; 
+      background: linear-gradient(90deg, #1e40af, #00bfff); 
+      color: #ffffff; 
+      text-decoration: none; 
+      font-weight: 600; 
+      font-size: 0.85rem; 
+      letter-spacing: 0.05em; 
+      padding: 14px 36px; 
+      border-radius: 4px; 
+      text-transform: uppercase; 
+      width: 100%; 
+      max-width: 340px; 
+      box-sizing: border-box;
+      transition: opacity 0.2s ease;
+    }
+    .btn-action:active {
+      opacity: 0.9;
+    }
+    .error-text {
+      color: #ff3333;
+    }
+  </style>
 </head>
 <body>
-    <div class="loader"></div>
-    <script>
-        // Catch the partner ID from the URL (e.g., ?id=WI204EZ)
-        const urlParams = new URLSearchParams(window.location.search);
-        const partnerId = urlParams.get('id');
-        
-        // Your Master Apps Script URL
-        const apiURL = "https://script.google.com/macros/s/AKfycbxAwTnsifM_D4qkCHhhYpouZOxoc1ux0-hj-zEI7hxG0MKY1EzxuHxsQEbogsG_HloR/exec";
 
-        if (partnerId) {
-            // Forward to Apps Script for the Hit Counter + WhatsApp Redirect
-            window.location.replace(`${apiURL}?partner=${partnerId}`);
-        } else {
-            // Fallback if no ID is provided
-            window.location.href = "https://emmystack01.com";
-        }
-    </script>
+  <div class="redirect-container">
+    <div class="brand-logo">
+      <img src="https://emmystack01.com/asset/emmy-stack01-logo.png" alt="Emmy STACK01">
+    </div>
+    
+    <h1 class="redirect-title" id="main-title">Verifying Connection...</h1>
+    <p class="redirect-subtitle" id="main-subtitle">Securing database routing parameters. Please hold.</p>
+    
+    <div class="secure-status-box" id="badge-container" style="display: none;">
+      <h3 class="status-heading">Verified Referral Code</h3>
+      <div class="referral-badge" id="code-display">-----</div>
+    </div>
+    
+    <a href="#" id="wa-btn" class="btn-action" style="display: none;">Continue to WhatsApp</a>
+  </div>
+
+  <script>
+    // Handles reading either ?id= or ?partner= smoothly
+    const urlParams = new URLSearchParams(window.location.search);
+    const partnerId = urlParams.get('id') || urlParams.get('partner');
+
+    const mainTitle = document.getElementById('main-title');
+    const mainSubtitle = document.getElementById('main-subtitle');
+    const badgeContainer = document.getElementById('badge-container');
+    const codeDisplay = document.getElementById('code-display');
+    const waBtn = document.getElementById('wa-btn');
+
+    // Your exact Master Apps Script endpoint
+    const apiURL = "https://script.google.com/macros/s/AKfycbzVY7X9D_7I1NBzG_n5iv14kpcy4GRSq2w4DxyTlRhW4_snm79KlukuC8eEnMhYeAMr/exec";
+
+    if (partnerId) {
+      const partnerCode = partnerId.replace(/;/g, '').trim().toUpperCase();
+      
+      // Update the clean interface layout immediately
+      mainTitle.textContent = "Redirect Initialized via Partner";
+      mainSubtitle.textContent = "Security verification completed. Please click the secure button below to proceed to our WhatsApp Business Portal.";
+      codeDisplay.textContent = partnerCode;
+      badgeContainer.style.display = "block";
+      
+      // Map out the targeted custom WhatsApp destination link
+      const waMsg = "Hey+Emmy,+I+need+a+website.+I+was+referred+for+a+5%+off.+" + partnerCode;
+      const waUrl = "https://wa.me/2349076991076?text=" + waMsg;
+      waBtn.href = waUrl;
+      waBtn.style.display = "inline-block";
+
+      // Quietly update your Google Sheet hit counter in the background without modifying browser views
+      fetch(`${apiURL}?apiHit=true&partner=${encodeURIComponent(partnerCode)}`, {
+        method: 'GET',
+        mode: 'no-cors'
+      }).catch(err => console.log("Analytics logged."));
+      
+    } else {
+      // Graceful fallback error handling if a bad link is hit
+      mainTitle.textContent = "Link Parameter Error";
+      mainTitle.classList.add('error-text');
+      mainSubtitle.textContent = "No valid partner routing signature detected. Please double-check your partner link configuration.";
+    }
+  </script>
 </body>
 </html>
