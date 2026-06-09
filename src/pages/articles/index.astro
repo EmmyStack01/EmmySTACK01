@@ -668,6 +668,113 @@ const [featuredArticle, ...otherArticles] = articles;
             </div>
         )}
 
+        <!-- ================= KIT NEWSLETTER INTEGRATION ================= -->
+        <section class="glass-card" id="newsletter" style="padding: 3rem 2rem; margin-bottom: 4rem; text-align: center; border-color: rgba(45, 102, 180, 0.3); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-color);"></div>
+          
+          <span class="title-font" style="display: block; font-size: 0.75rem; color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">
+            The Emmy STACK01 Insider Log
+          </span>
+          <h2 class="title-font" style="font-size: clamp(1.4rem, 3.5vw, 2rem); color: #fff; margin: 0 0 0.75rem 0; letter-spacing: 0.5px;">
+            STAY AHEAD OF THE ECOSYSTEM
+          </h2>
+          <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto 2rem auto; font-size: 0.95rem; line-height: 1.6;">
+            Get early access to premium product releases, exclusive discount deals, hidden technical tips, and open tracking opportunities in our 16.67% Partnership Program.
+          </p>
+
+          <!-- Raw Zero-Bloat Form pointing directly to Kit -->
+          <form 
+            action="https://app.kit.com/forms/9527987/subscriptions" 
+            method="post" 
+            style="max-width: 500px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0.75rem;"
+          >
+            <input 
+              type="email" 
+              name="email_address" 
+              required 
+              placeholder="Enter your professional email..." 
+              style="flex: 1 1 300px; background: rgba(10, 15, 30, 0.8); border: 1px solid rgba(45, 102, 180, 0.4); border-radius: 6px; padding: 0.85rem 1.25rem; color: #fff; font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;"
+              onfocus="this.style.borderColor='#00ccff'"
+              onblur="this.style.borderColor='rgba(45, 102, 180, 0.4)'"
+            />
+            <button 
+              type="submit" 
+              class="btn-glow" 
+              style="flex: 1 1 auto; padding: 0.85rem 1.75rem; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Orbitron';"
+            >
+              SUBSCRIBE
+            </button>
+          </form>
+        </section>
+        <!-- ================= STACK01 DUAL-STATUS MODAL ================= -->
+        <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center;">
+        
+        <!-- Modal Content Box -->
+        <div class="glass-card" style="position: relative; width: 90%; max-width: 450px; padding: 3rem 2rem; text-align: center; background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(45, 102, 180, 0.4); border-radius: 12px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); overflow: hidden; font-family: inherit;">
+            
+            <!-- Top Accent Bar -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent-color, #00ccff);"></div>
+            
+            <!-- Close Button -->
+            <button onclick="closeSuccessModal()" style="position: absolute; top: 1rem; right: 1.25rem; background: none; border: none; color: var(--text-muted, #a0aec0); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted, #a0aec0)'">&times;</button>
+            
+            <!-- Dynamic Icon -->
+            <div id="modalIcon" style="margin: 0 auto 1.25rem auto; width: 50px; height: 50px; line-height: 50px; border-radius: 50px; background: rgba(0, 204, 255, 0.1); color: var(--accent-color, #00ccff); font-size: 1.5rem; font-weight: bold; font-family: 'Orbitron', sans-serif;">
+            ✓
+            </div>
+
+            <!-- Dynamic Subtitle -->
+            <span id="modalSubtitle" class="title-font" style="display: block; font-size: 0.75rem; color: var(--accent-color, #00ccff); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600; font-family: 'Orbitron', sans-serif;">
+            Transmission Successful
+            </span>
+            
+            <!-- Dynamic Title -->
+            <h2 id="modalTitle" class="title-font" style="font-size: 1.6rem; color: #fff; margin: 0 0 1rem 0; letter-spacing: 0.5px; font-family: 'Orbitron', sans-serif; font-weight: bold;">
+            ACCESS INITIATED
+            </h2>
+            
+            <!-- Dynamic Description -->
+            <p id="modalDescription" style="color: var(--text-muted, #a0aec0); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+            You're almost in. We just sent a verification link to your inbox. Check your email to confirm your subscription and unlock the STACK01 Ecosystem.
+            </p>
+        </div>
+        </div>
+
+        <script>
+        function checkSubscriptionStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            
+            if (status === 'success' || status === 'confirmed') {
+            const modal = document.getElementById('successModal');
+            
+            // If the user clicked the link in their email and is fully confirmed:
+            if (status === 'confirmed') {
+                document.getElementById('modalSubtitle').innerText = "Verification Complete";
+                document.getElementById('modalTitle').innerText = "INTEGRATION COMPLETE";
+                document.getElementById('modalDescription').innerHTML = "Welcome to the <strong>STACK01 Ecosystem</strong>. Your insider access is officially active. Prepare for upcoming premium drops, hidden technical documentation, and tracking updates sent straight to your inbox.";
+                // Optional: Change icon to something cooler for full verification
+                document.getElementById('modalIcon').innerText = "✦"; 
+            }
+            
+            // Reveal the pop-up
+            modal.style.display = 'flex';
+            
+            // Polish the browser URL bar so the parameters vanish
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+            }
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        window.addEventListener('DOMContentLoaded', checkSubscriptionStatus);
+        </script>
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+
         {otherArticles.length > 0 && (
             <section>
             <h3 class="title-font" style="font-size: 1.25rem; color: #fff; margin-bottom: 1.5rem; letter-spacing: 0.5px; border-left: 3px solid #00ccff; padding-left: 0.75rem;">

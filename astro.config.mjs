@@ -11,26 +11,28 @@ export default defineConfig({
   trailingSlash: 'never',
   output: 'server',
   vite: {
-    optimizeDeps: {
-      include: ['react', 'react-dom'] // Forces Vite to pre-bundle CommonJS exports into clean ES modules
-    },
     build: {
-      sourcemap: false // Keeps your terminal clear of those yellow warnings!
+      sourcemap: false
+    },
+    resolve: {
+      dedupe: ['react', 'react-dom']
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react-dom/client']
     }
   },
   adapter: vercel({
     webAnalytics: { enabled: true }
   }),
   legacy: {
-    collectionsBackwardsCompat: true // <-- The correct Astro v6 flag for older collection formats
+    collectionsBackwardsCompat: true
   },
   integrations: [
-    react(), // <-- FIXED: Always initialize React first so Keystatic can consume it safely
+    react(),
     markdoc(), 
     keystatic(), 
     sitemap({
       lastmod: new Date(),
-      
       filter: (page) => 
         !page.includes('/script') && 
         !page.includes('/success') &&

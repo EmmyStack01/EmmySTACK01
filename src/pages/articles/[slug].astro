@@ -1,32 +1,27 @@
 ---
 // src/pages/articles/[slug].astro
 import { keystaticReader } from '../../reader';
+import ArticleRenderer from '../../components/ArticleRenderer';
 
-export async function getStaticPaths() {
-  // 1. Fetch ALL articles directly from the Keystatic CMS storage
-  const articles = await keystaticReader.collections.articles.all();
- 
-  return articles.map(article => ({
-    params: { slug: article.slug },
-    props: {
-      title: article.entry.title,
-      description: article.entry.description,
-      date: article.entry.date,
-      category: article.entry.category,
-      readingTime: article.entry.readingTime,
-      // 2. Keystatic passes the auto-generated asset path right here!
-      image: article.entry.coverImage,
-      author: article.entry.author,
-      content: article.entry.content
-    },
-  }));
+const { slug } = Astro.params;
+
+const article = await keystaticReader.collections.articles.read(slug);
+
+if (!article) {
+  return Astro.redirect('/articles');
 }
 
-const { title, description, date, readingTime, category, image, author, content } = Astro.props;
+const content = await article.content();
+const title = article.title;
+const description = article.description;
+const date = article.date;
+const category = article.category;
+const readingTime = article.readingTime;
+const image = article.coverImage;
+const author = article.author;
 
-// Build fully qualified images on the server side
-const fullyQualifiedImage = image 
-  ? (image.startsWith('http') ? image : `${Astro.url.origin}${image}`) 
+const fullyQualifiedImage = image
+  ? (image.startsWith('http') ? image : `${Astro.url.origin}${image}`)
   : `${Astro.url.origin}/asset/og-image4.jpg`;
 
 const articleSchema = {
@@ -35,8 +30,8 @@ const articleSchema = {
   "headline": title,
   "description": description,
   "image": fullyQualifiedImage,
-  "datePublished": new Date(date).toISOString(),
-  "dateModified": new Date(date).toISOString(),
+  "datePublished": date ? new Date(date).toISOString() : new Date().toISOString(),
+  "dateModified": date ? new Date(date).toISOString() : new Date().toISOString(),
   "url": Astro.url.href,
   "author": {
     "@type": "Person",
@@ -72,12 +67,12 @@ const articleSchema = {
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
     <meta property="og:url" content={Astro.url.href}>
-    <meta property="og:image" content={image}>
+    <meta property="og:image" content={fullyQualifiedImage}>
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content={title}>
     <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={image}>
+    <meta name="twitter:image" content={fullyQualifiedImage}>
 
     <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
@@ -88,100 +83,210 @@ const articleSchema = {
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
 
-    <!-- JSON-LD Structured Data Fix -->
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
-    <style>
-      body {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Montserrat', sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.7;
-      }
-      .title-font {
-        font-family: 'Orbitron', sans-serif;
-      }
-      .glass-card {
-        background: rgba(22, 27, 34, 0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(45, 102, 180, 0.2);
-        border-radius: 12px;
-      }
-      .back-btn {
-        color: #8b949e;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.9rem;
-        transition: color 0.2s ease;
-      }
-      .back-btn:hover {
-        color: #00ccff;
-      }
-      /* Clean, focused layout tracking for article text content blocks */
-      .rich-text p {
-        margin-bottom: 1.75rem;
-        font-size: clamp(1rem, 2.5vw, 1.1rem);
-        font-weight: 300;
-        color: #e6edf3;
-      }
-      .rich-text h2 {
-        font-family: 'Orbitron', sans-serif;
-        color: #fff;
-        font-size: clamp(1.3rem, 3.5vw, 1.75rem);
-        margin: 2.5rem 0 1rem 0;
-        letter-spacing: 0.5px;
-      }
-      .btn-glow {
-        background: linear-gradient(135deg, #2d66b4, #00ccff);
-        color: #fff;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        text-decoration: none;
-        font-weight: 600;
-        transition: box-shadow 0.2s;
-      }
-      .btn-glow:hover {
-        box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
-      }
-      /* Style lists injected from Keystatic Markdoc */
-        .rich-text ul, .rich-text ol {
-        margin-bottom: 1.75rem;
-        padding-left: 1.5rem;
-        color: #e6edf3;
-        }
-        .rich-text li {
-        margin-bottom: 0.5rem;
-        font-size: clamp(1rem, 2.5vw, 1.1rem);
-        font-weight: 300;
-        }
+    <style is:global>
+    /* ==========================================================================
+      1. Global Setup & Layouts
+      ========================================================================== */
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+    }
+    .title-font {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .glass-card {
+      background: rgba(22, 27, 34, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(45, 102, 180, 0.2);
+      border-radius: 12px;
+    }
+    .back-btn {
+      color: #8b949e;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .back-btn:hover {
+      color: #00ccff;
+    }
 
-        /* Style inline hyperlinks within the content */
-        .rich-text a {
-        color: #00ccff;
-        text-decoration: none;
-        border-bottom: 1px dashed rgba(0, 204, 255, 0.4);
-        transition: border-color 0.2s;
-        }
-        .rich-text a:hover {
-        border-bottom-style: solid;
-        }
+    /* ==========================================================================
+      2. Base Document / Rich-Text Typography
+      ========================================================================== */
+    .rich-text p {
+      margin-top: 0;
+      margin-bottom: 1.75rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      font-weight: 300;
+      color: #e6edf3;
+    }
+    .rich-text h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+      margin: 2.5rem 0 1rem 0;
+      letter-spacing: 0.5px;
+    }
+    .rich-text h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      margin: 2rem 0 0.75rem 0;
+    }
+    .rich-text ul,
+    .rich-text ol {
+      margin-bottom: 1.75rem;
+      padding-left: 1.5rem;
+      color: #e6edf3;
+    }
+    .rich-text li {
+      margin-bottom: 0.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      font-weight: 300;
+    }
+    .rich-text a {
+      color: #00ccff;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .rich-text strong {
+      color: #fff;
+      font-weight: 600;
+    }
 
-        /* Style bold phrases and blockquotes */
-        .rich-text strong {
-        color: #fff;
-        font-weight: 600;
-        }
-        .rich-text blockquote {
-        margin: 2rem 0;
-        padding-left: 1.25rem;
-        border-left: 3px solid #2d66b4;
-        color: #8b949e;
-        font-style: italic;
-        }
-    </style>
+    /* ==========================================================================
+      3. Native Dash Quotes / Callouts (Tip & Warning Workspace)
+      ========================================================================== */
+    .rich-text blockquote {
+      margin: 2rem 0;
+      padding: 1.25rem 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 0 8px 8px 0;
+      border-left: 3px solid #00ccff; /* Default Theme Neon Blue Accent */
+      color: #e6edf3;
+    }
+    .rich-text blockquote p {
+      margin: 0 !important;
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .rich-text blockquote strong {
+      color: #fff;
+    }
+
+    /* ==========================================================================
+      4. Code Block Layout Layout Safeties
+      ========================================================================== */
+    .rich-text pre {
+      background: rgba(22, 27, 34, 0.8);
+      border: 1px solid rgba(45, 102, 180, 0.2);
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1.75rem;
+    }
+    .rich-text pre code {
+      background: transparent;
+      color: #00ccff;
+      padding: 0;
+      border-radius: 0;
+      font-size: 0.9em;
+    }
+    .rich-text :not(pre) > code {
+      background: rgba(45, 102, 180, 0.15);
+      color: #00ccff;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    /* ==========================================================================
+      5. Custom Built Utility Foundations
+      ========================================================================== */
+    .btn-glow {
+      background: linear-gradient(135deg, #1d3d6a, #21687a);
+      color: #fff !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      text-decoration: none;
+      font-weight: 600;
+      transition: box-shadow 0.2s;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+    }
+
+    /* ==========================================================================
+      6. Keystatic Custom Components
+      ========================================================================== */
+    /* --- CTA Block --- */
+    .keystatic-cta-block {
+      margin: 3rem 0;
+      padding: 2rem;
+      border-color: rgba(0, 204, 255, 0.2);
+      text-align: left;
+      position: relative;
+    }
+    .keystatic-cta-block h4 {
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.15rem;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 0.5px;
+    }
+    .keystatic-cta-block p {
+      color: #8b949e !important;
+      font-size: 0.9rem !important;
+      margin: 0 0 1.5rem 0 !important;
+      line-height: 1.5 !important;
+    }
+    .keystatic-cta-block a {
+      display: inline-block;
+      padding: 0.65rem 1.25rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      color: #fff !important;
+      border-bottom: none !important;
+    }
+    .keystatic-cta-block a:hover {
+      border-bottom: none !important;
+    }
+
+    /* --- Alert Component Fallback Bounds --- */
+    .keystatic-alert-block {
+      margin: 2rem 0;
+      padding: 1.25rem 1.5rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 0 8px 8px 0;
+    }
+    .rich-text .keystatic-alert-block p {
+      color: #e6edf3 !important;
+      font-size: 0.95rem !important;
+      font-style: italic !important;
+      margin: 0 !important;
+      line-height: 1.6 !important;
+      display: block !important;
+    }
+    .keystatic-alert-block.alert-tip {
+      border-left: 3px solid #00ccff;
+    }
+    .keystatic-alert-block.alert-warning {
+      border-left: 3px solid #ffcc00;
+      background: rgba(255, 204, 0, 0.04);
+    }
+  </style>
   </head>
 
   <body>
@@ -216,24 +321,10 @@ const articleSchema = {
       )}
 
       <article class="rich-text" style="margin-bottom: 5rem; color: #e6edf3; line-height: 1.8;">
-        <div class="prose prose-invert" style="max-width: 750px; margin: 0 auto; line-height: 1.8;">
-          <DocumentRenderer document={content} />
+        <div style="max-width: 750px; margin: 0 auto; line-height: 1.8;">
+          <ArticleRenderer document={content} />
         </div>
       </article>
-
-      <section class="glass-card" style="padding: 2.5rem; text-align: center; border-color: rgba(0, 204, 255, 0.3);">
-        <h3 class="title-font" style="color: #fff; font-size: 1.4rem; margin: 0 0 0.75rem 0; letter-spacing: 0.5px;">
-          READY TO OWN YOUR DIGITAL IDENTITY?
-        </h3>
-        <p style="color: #8b949e; max-width: 550px; margin: 0 auto 2rem auto; font-size: 0.95rem; line-height: 1.6;">
-          Stop leaving your professional network pipeline in the hands of third-party platforms. Launch a high-performance digital identity card that scales your authority.
-        </p>
-        <div>
-          <a href="/products/digital-business-card" class="btn-glow" style="display: inline-block; padding: 0.8rem 2rem; border-radius: 6px; font-size: 0.9rem;">
-            Deploy Your Brand <i class="ri-rocket-2-line" style="margin-left: 6px; vertical-align: middle;"></i>
-          </a>
-        </div>
-      </section>
 
     </main>
   </body>

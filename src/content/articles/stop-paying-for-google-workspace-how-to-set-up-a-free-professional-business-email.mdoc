@@ -1,0 +1,87 @@
+---
+{
+  "title": "Stop Paying for Google Workspace: How to Set Up a Free Professional Business Email",
+  "author": "Wisdom Ezuduemoih",
+  "description": "Stop burning $6 to $14 monthly per user just to use a professional custom email domain. Learn how to route your custom domain directly through personal Gmail using secure Google App Passwords for $0.00/month.",
+  "date": "2026-06-09",
+  "category": "Web Development",
+  "readingTime": "5 min read",
+  "coverImage": "/asset/stop-paying-for-google-workspace-how-to-set-up-a-free-professional-business-email/coverImage.jpg"
+}
+---
+Having a custom domain like hello@yourdomain.com is non-negotiable for professional credibility. But paying $6 to $14 per month *per user* for Google Workspace or Microsoft 365 just to send and receive emails is a tax you don't need to pay.
+
+If you already own your domain name, you can route incoming mail directly to your existing personal Gmail and configure Gmail's secure outgoing servers to send replies from your custom alias.
+
+**Total cost: $0.00/month.** Here is how to build it in under 5 minutes.
+
+### Phase 1: Set Up Incoming Email Redirects (Your Registrar)
+
+Before you can send emails, you must ensure you can receive them. This step tells your domain registrar to catch any mail sent to your professional address and instantly throw it into your personal Gmail inbox.
+
+Using your domain registrar's dashboard (like Namecheap or GoDaddy):
+
+1. Log in to your registrar and locate your **Domain List**.
+1. Click **Manage** next to your domain.
+1. Scroll down to the **Advanced DNS** or **Email Forwarding** section.
+1. Click **Add Redirect** (sometimes called *Add Forwarder*).
+1. Set it up exactly like this:
+   - **Alias / Source:** `hello` (or whatever prefix you want, like `info` or your name).
+   - **Forward to / Destination:** Your full personal Gmail address (`yourname@gmail.com`).
+1. Save changes.
+
+> **Tip:** It can take anywhere from 2 to 10 minutes for your registrar's DNS updates to become active worldwide. Once active, any email sent to your domain will automatically land inside your Gmail.
+
+### Phase 2: Generate a Secure Google App Password
+
+Because Google blocks third-party setups from using your primary login password, you need an isolated 16-character security key.
+
+1. Go to your Google Account Security settings page.
+1. Ensure **2-Step Verification** is turned **ON**.
+1. Search for **"App Passwords"** in the top search bar.
+1. Enter an app name (e.g., `Custom Domain Email`) and click **Create**.
+1. **Copy the 16-character code** provided. Save it securely—you will only see it once.
+
+### Phase 3: Configure Gmail Outgoing SMTP Servers
+
+1. Open Gmail on a desktop browser window.
+1. Click the **Gear Icon (Settings)** ➔ **See all settings**.
+1. Navigate to the **Accounts and Import** tab.
+1. Under the **"Send mail as"** section, click **Add another email address**.
+
+A yellow popup window will appear. Configure the options exactly as follows:
+
+#### Screen 1: Identity
+
+- **Name:** Your Name or Company Name (e.g., `Emmy STACK01`)
+- **Email Address:** Your custom domain email (e.g., `hello@yourdomain.com`)
+- **Treat as an alias:** Keep **Checked**.
+- Click **Next Step**.
+
+#### Screen 2: SMTP Configuration
+
+- **SMTP Server:** `smtp.gmail.com`
+- **Port:** `587`
+- **Username:** Your full personal Gmail address (`yourname@gmail.com`)
+- **Password:** Paste the **16-character App Password** you copied in Phase 2.
+- **Connection:** Choose **Secured using TLS** (Recommended).
+- Click **Add Account**.
+
+### Phase 4: Verify and Lock Settings
+
+1. Check your personal Gmail inbox. Because your registrar redirect is active, Google's verification code will land there instantly.
+1. Copy the code, paste it into the yellow popup window, and hit **Verify**.
+
+#### Crucial Step: Fix Your Reply Behavior
+
+To prevent accidentally replying to a business client from your personal email address, change this final setting in Gmail:
+
+1. Return to **Settings** ➔ **Accounts and Import** ➔ **Send mail as**.
+1. Locate the section titled: *"When replying to a message"*.
+1. Change the selection from "Always reply from default address" to **"Reply from the same address the message was sent to."**
+
+{% cta
+   title="IS YOUR HOMEPAGE CURRENTLY SITTING EMPTY?"
+   text="Now that your business email is firing flawlessly for free, don't leave your root domain unmapped or locked to heavy, slow-loading link-in-bio builders. Get a bespoke, blazing-fast personal brand card optimized for human conversion and AI search engines."
+   btnText="DEPLOY YOUR DIGITAL DNA ➔"
+   btnLink="/products/digital-business-card" /%}

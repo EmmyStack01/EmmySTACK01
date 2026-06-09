@@ -1,4 +1,4 @@
-import { config, fields, collection, singleton } from '@keystatic/core';
+import { config, fields, collection, singleton, component } from '@keystatic/core';
 
 export default config({
   // 1. Storage Strategy: Safely switches using Vite's production environment flag
@@ -11,7 +11,6 @@ export default config({
     articles: collection({
       label: 'Articles (Log)',
       slugField: 'title',
-      // Keystatic maps content relative to the root. This path remains perfectly intact.
       path: 'src/content/articles/*', 
       format: { data: 'json', contentField: 'content' }, 
       schema: {
@@ -56,14 +55,27 @@ export default config({
           publicPath: '/asset/',
         }),
 
-        content: fields.markdoc({
+        content: fields.document({
           label: 'Content',
-          options: {
-            image: {
-              directory: 'public/asset/blog-inline',
-              publicPath: '/asset/blog-inline/',
-            },
+          formatting: true,
+          dividers: true,
+          links: true,
+          images: {
+            directory: 'public/asset/blog-inline',
+            publicPath: '/asset/blog-inline/',
           },
+          componentBlocks: {
+            cta: component({
+              label: 'Contextual Action Card',
+              schema: {
+                title: fields.text({ label: 'Card Title', defaultValue: 'IS YOUR HOMEPAGE CURRENTLY SITTING EMPTY?' }),
+                text: fields.text({ label: 'Description', multiline: true }),
+                btnText: fields.text({ label: 'Button Text', defaultValue: 'DEPLOY YOUR DIGITAL DNA ➔' }),
+                btnLink: fields.text({ label: 'Redirect Link', defaultValue: '/products/digital-business-card' })
+              },
+              preview: (props) => props.fields.title.value || 'Contextual Action Card'
+            })
+          }
         }),
       },
     }),
@@ -72,7 +84,7 @@ export default config({
   singletons: {
     settings: singleton({
       label: 'Site Settings',
-      path: 'src/content/settings', // Keystatic internal content paths map normally
+      path: 'src/content/settings', 
       schema: {
         siteTitle: fields.text({ label: 'Site Title', defaultValue: 'Emmy STACK01' }),
         description: fields.text({ label: 'Global SEO Description', multiline: true }),

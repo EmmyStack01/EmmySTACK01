@@ -807,38 +807,63 @@ h1 span {
     height: auto;
 }
 
+.faq{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
 .faq-section h2{
     font-size: clamp(1.75rem, 5vw, 3rem);
     color: var(--text-main);
     font-family: 'Orbitron';
-    padding: 20px;
+    padding: 20px 20px 5px 20px;
+
+    /* --- Add these lines --- */
+    align-self: flex-start;  /* Forces the H2 to the left side of the flex container */
+    width: 100%;             /* Ensures it spans the available workspace area */
+    max-width: 900px;       /* Matches the max-width of your .faq-item boxes */
+    margin: 0 auto;          /* Keeps it perfectly aligned with the edges of your items */
+    box-sizing: border-box;  /* Prevents padding from breaking layout limits */
 }
 
 .faq-item{
-    padding: 20px 30px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 204, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
     cursor: pointer;
+    max-width: 900px;
 }
 
 .faq-question{
-    background-color: var(--bg-dark);
-    color: var(--accent-color);
-    
+    width: 100%;
+    padding: 20px;
+    background: none;
+    border: none;
+    color: #00ccff;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 600;
+}
+.ri-add-line {
+    padding-left: 10px;
+    align-self: center;
 }
 
 /* Hide answer by default */
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out, padding 0.4s ease;
-    color: var(--white);
-    padding: 0 30px;
-    letter-spacing: 0.5px;
-
-    font-weight: 400;
-    opacity: 0.9;
+    padding: 0 20px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    color: #ccc;
+    font-size: 0.95rem;
 }
 
 /* Show answer when parent is active */
@@ -846,15 +871,6 @@ h1 span {
     padding-top: 2px;
 }
 
-/* Rotate Chevron */
-.faq-item.active .chevron {
-    transform: rotate(180deg);
-    display: inline-block;
-}
-
-.chevron {
-    transition: transform 0.3s ease;
-}
 
 /*FOOTER-SECTION*/
 .footer-section{
