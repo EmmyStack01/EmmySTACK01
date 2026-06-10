@@ -1,7 +1,13 @@
 ---
+export const prerender = true;
 // src/pages/articles/[slug].astro
 import { keystaticReader } from '../../reader';
 import ArticleRenderer from '../../components/ArticleRenderer';
+
+export async function getStaticPaths() {
+  const slugs = await keystaticReader.collections.articles.list();
+  return slugs.map(slug => ({ params: { slug } }));
+}
 
 const { slug } = Astro.params;
 
