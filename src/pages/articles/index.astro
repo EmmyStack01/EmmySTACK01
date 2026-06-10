@@ -1208,7 +1208,7 @@ const [featuredArticle, ...otherArticles] = articles;
             }
         }
 
-        function closeSuccessModal() {
+        window.closeSuccessModal = function() {
             document.getElementById('successModal').style.display = 'none';
         }
 
