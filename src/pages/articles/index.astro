@@ -557,6 +557,451 @@ const [featuredArticle, ...otherArticles] = articles;
                 text-align: center;
             }
         }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        /* Page Header */
+        .main-header {
+            margin-top: clamp(5rem, 10vw, 7rem);
+            margin-bottom: clamp(3rem, 6vw, 5rem);
+            text-align: center;
+        }
+        .main-header-eyebrow {
+            display: block;
+            font-size: 0.8rem;
+            color: #00ccff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .main-header h1 {
+            font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+            color: #fff;
+            margin: 0 0 0.75rem 0;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        .main-header p {
+            color: #8b949e;
+            max-width: 630px;
+            margin: 0 auto;
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Featured Article Section */
+        .featured-section {
+            margin-bottom: 4rem;
+        }
+        .featured-card {
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        .featured-image-wrap {
+            flex: 1 1 500px;
+            max-height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        .featured-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .featured-image-placeholder {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #161b22;
+            color: #313841;
+        }
+        .featured-image-placeholder i {
+            font-size: 3rem;
+        }
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #2d66b4;
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .featured-body {
+            flex: 1 1 400px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .featured-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-bottom: 1rem;
+        }
+        .featured-body h2 {
+            font-size: 1.75rem;
+            color: #fff;
+            margin: 0 0 1rem 0;
+            line-height: 1.3;
+        }
+        .featured-body h2 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .featured-body p {
+            color: #8b949e;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0 0 2rem 0;
+        }
+        .featured-cta {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .featured-cta i {
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            border: 1px dashed rgba(49, 56, 65, 0.5);
+            border-radius: 12px;
+            margin-bottom: 4rem;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #2d66b4;
+            display: block;
+            margin-bottom: 1.25rem;
+        }
+        .empty-state h3 {
+            color: #fff;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.4rem;
+        }
+        .empty-state p {
+            color: #8b949e;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            padding: 3rem 2rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            border-color: rgba(45, 102, 180, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .newsletter-accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-color);
+        }
+        .newsletter-eyebrow {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .newsletter-section h2 {
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            color: #fff;
+            margin: 0 0 0.75rem 0;
+            letter-spacing: 0.5px;
+        }
+        .newsletter-section p {
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 2rem auto;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .newsletter-form input[type="email"] {
+            flex: 1 1 300px;
+            background: rgba(10, 15, 30, 0.8);
+            border: 1px solid rgba(45, 102, 180, 0.4);
+            border-radius: 6px;
+            padding: 0.85rem 1.25rem;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .newsletter-form input[type="email"]:focus {
+            border-color: #00ccff;
+        }
+        .newsletter-form button {
+            flex: 1 1 auto;
+            padding: 0.85rem 1.75rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Orbitron';
+        }
+
+        /* Modal */
+        .success-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5, 7, 15, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 450px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: rgba(10, 15, 30, 0.95);
+            border: 1px solid rgba(45, 102, 180, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            font-family: inherit;
+        }
+        .modal-top-bar {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: var(--accent-color, #00ccff);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem; right: 1.25rem;
+            background: none;
+            border: none;
+            color: var(--text-muted, #a0aec0);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close-btn:hover { color: #fff; }
+        .modal-icon {
+            margin: 0 auto 1.25rem auto;
+            width: 50px; height: 50px;
+            line-height: 50px;
+            border-radius: 50px;
+            background: rgba(0, 204, 255, 0.1);
+            color: var(--accent-color, #00ccff);
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .modal-subtitle {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--accent-color, #00ccff);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .modal-title {
+            font-size: 1.6rem;
+            color: #fff;
+            margin: 0 0 1rem 0;
+            letter-spacing: 0.5px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+        }
+        .modal-desc {
+            color: var(--text-muted, #a0aec0);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* Latest Entries Grid */
+        .latest-section-title {
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            border-left: 3px solid #00ccff;
+            padding-left: 0.75rem;
+        }
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .article-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+        }
+        .article-image-wrap {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: #161b22;
+        }
+        .article-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .article-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #313841;
+        }
+        .article-image-placeholder i { font-size: 2rem; }
+        .article-category-badge {
+            position: absolute;
+            top: 1rem; left: 1rem;
+            background: rgba(13, 17, 23, 0.85);
+            color: #00ccff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+        .article-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .article-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            color: #8b949e;
+            margin-bottom: 0.75rem;
+        }
+        .article-body h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin: 0 0 0.75rem 0;
+            line-height: 1.4;
+        }
+        .article-body h4 a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .article-body p {
+            color: #8b949e;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0 0 1.5rem 0;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .article-footer { margin-top: auto; }
+        .article-read-link {
+            color: #00ccff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── MOBILE OPTIMIZATIONS (max-width: 768px) ── */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 1rem;
+            }
+            .featured-image-wrap {
+                flex: 1 1 100%;
+                max-height: 240px;
+            }
+            .featured-body {
+                flex: 1 1 100%;
+                padding: 1.5rem;
+            }
+            .featured-body h2 { font-size: 1.4rem; }
+            .featured-body p  { margin-bottom: 1.25rem; }
+            .newsletter-section {
+                padding: 2rem 1.25rem;
+            }
+            .newsletter-form {
+                flex-direction: column;
+            }
+            .newsletter-form input[type="email"],
+            .newsletter-form button {
+                flex: unset;
+                width: 100%;
+            }
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            .empty-state { padding: 3rem 1rem; }
+        }
+
+        /* ── SMALL MOBILE (max-width: 480px) ── */
+        @media (max-width: 480px) {
+            .main-content { padding: 1.5rem 0.875rem; }
+            .featured-image-wrap { max-height: 200px; }
+            .featured-body { padding: 1.25rem; }
+            .featured-body h2 { font-size: 1.2rem; }
+            .success-modal-box { padding: 2.5rem 1.25rem; }
+            .modal-title { font-size: 1.3rem; }
+        }
     </style>
   </head>
   
@@ -612,73 +1057,73 @@ const [featuredArticle, ...otherArticles] = articles;
             <li class="nav-list"><a href="/articles">Articles</a></li>
         </ul>
     </nav>
-    <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem;">
+    <main class="main-content">
       
-        <header style="margin-top: clamp(2rem, 6vw, 4rem); margin-bottom: clamp(2rem, 6vw, 4rem); text-align: center;">
-            <span class="title-font" style="display: block; font-size: 0.8rem; color: #00ccff; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">
+        <header class="main-header">
+            <span class="title-font main-header-eyebrow">
                 The Digital DNA Log
             </span>
             
-            <h1 class="title-font" style="font-size: clamp(1.8rem, 4.5vw, 2.8rem); color: #fff; margin: 0 0 0.75rem 0; letter-spacing: 1px; line-height: 1.2;">
+            <h1 class="title-font">
                 COMMAND CENTER INSIGHTS
             </h1>
             
-            <p style="color: #8b949e; max-width: 630px; margin: 0 auto; font-size: clamp(0.9rem, 2.2vw, 1rem); line-height: 1.6; font-weight: 300;">
+            <p>
                 Strategies on mastering digital identity, technical SEO personal portfolios, and scaling your web presence.
             </p>
         </header>
 
         {featuredArticle ? (
-            <section style="margin-bottom: 4rem;">
-            <div class="glass-card" style="display: flex; flex-wrap: wrap; overflow: hidden;">
-                <div style="flex: 1 1 500px; max-height: 400px; overflow: hidden; position: relative;">
+            <section class="featured-section">
+            <div class="glass-card featured-card">
+                <div class="featured-image-wrap">
                 {featuredArticle.image ? (
-                    <img src={featuredArticle.image} alt={featuredArticle.title} style="width: 100%; height: 100%; object-fit: cover;" />
+                    <img src={featuredArticle.image} alt={featuredArticle.title} />
                 ) : (
-                    <div style="width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; background:#161b22; color:#313841;"><i class="ri-image-line" style="font-size:3rem;"></i></div>
+                    <div class="featured-image-placeholder"><i class="ri-image-line"></i></div>
                 )}
-                <span style="position: absolute; top: 1rem; left: 1rem; background: #2d66b4; color: #fff; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span class="featured-badge">
                     Featured
                 </span>
                 </div>
-                <div style="flex: 1 1 400px; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center;">
-                <div style="display: flex; gap: 1rem; font-size: 0.8rem; color: #8b949e; margin-bottom: 1rem;">
+                <div class="featured-body">
+                <div class="featured-meta">
                     <span><i class="ri-calendar-line"></i> {featuredArticle.date}</span>
                     <span><i class="ri-time-line"></i> {featuredArticle.readingTime}</span>
                 </div>
-                <h2 class="title-font" style="font-size: 1.75rem; color: #fff; margin: 0 0 1rem 0; line-height: 1.3;">
-                    <a href={`/articles/${featuredArticle.slug}`} style="color: inherit; text-decoration: none;">{featuredArticle.title}</a>
+                <h2 class="title-font">
+                    <a href={`/articles/${featuredArticle.slug}`}>{featuredArticle.title}</a>
                 </h2>
-                <p style="color: #8b949e; font-size: 0.95rem; line-height: 1.6; margin: 0 0 2rem 0;">
+                <p>
                     {featuredArticle.description}
                 </p>
                 <div>
-                    <a href={`/articles/${featuredArticle.slug}`} class="btn-glow" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;">
-                    Read Strategy <i class="ri-arrow-right-line" style="vertical-align: middle; margin-left: 4px;"></i>
+                    <a href={`/articles/${featuredArticle.slug}`} class="btn-glow featured-cta">
+                    Read Strategy <i class="ri-arrow-right-line"></i>
                     </a>
                 </div>
                 </div>
             </div>
             </section>
         ) : (
-            <div style="text-align: center; padding: 6rem 2rem; border: 1px dashed rgba(49, 56, 65, 0.5); border-radius: 12px; margin-bottom: 4rem;">
-            <i class="ri-terminal-window-line" style="font-size: 3rem; color: #2d66b4; display: block; margin-bottom: 1.25rem;"></i>
-            <h3 class="title-font" style="color: #fff; margin: 0 0 0.5rem 0; font-size: 1.4rem;">DNA Log Workspace Clear</h3>
-            <p style="color: #8b949e; margin: 0; font-size: 0.95rem;">Publish records via Keystatic to populate your network workspace streams.</p>
+            <div class="empty-state">
+            <i class="ri-terminal-window-line"></i>
+            <h3 class="title-font">DNA Log Workspace Clear</h3>
+            <p>Publish records via Keystatic to populate your network workspace streams.</p>
             </div>
         )}
 
         <!-- ================= KIT NEWSLETTER INTEGRATION ================= -->
-        <section class="glass-card" id="newsletter" style="padding: 3rem 2rem; margin-bottom: 4rem; text-align: center; border-color: rgba(45, 102, 180, 0.3); position: relative; overflow: hidden;">
-          <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-color);"></div>
+        <section class="glass-card newsletter-section" id="newsletter">
+          <div class="newsletter-accent-bar"></div>
           
-          <span class="title-font" style="display: block; font-size: 0.75rem; color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">
+          <span class="title-font newsletter-eyebrow">
             The Emmy STACK01 Insider Log
           </span>
-          <h2 class="title-font" style="font-size: clamp(1.4rem, 3.5vw, 2rem); color: #fff; margin: 0 0 0.75rem 0; letter-spacing: 0.5px;">
+          <h2 class="title-font">
             STAY AHEAD OF THE ECOSYSTEM
           </h2>
-          <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto 2rem auto; font-size: 0.95rem; line-height: 1.6;">
+          <p>
             Get early access to premium product releases, exclusive discount deals, hidden technical tips, and open tracking opportunities in our 16.67% Partnership Program.
           </p>
 
@@ -686,55 +1131,51 @@ const [featuredArticle, ...otherArticles] = articles;
           <form 
             action="https://app.kit.com/forms/9527987/subscriptions" 
             method="post" 
-            style="max-width: 500px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 0.75rem;"
+            class="newsletter-form"
           >
             <input 
               type="email" 
               name="email_address" 
               required 
               placeholder="Enter your professional email..." 
-              style="flex: 1 1 300px; background: rgba(10, 15, 30, 0.8); border: 1px solid rgba(45, 102, 180, 0.4); border-radius: 6px; padding: 0.85rem 1.25rem; color: #fff; font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;"
-              onfocus="this.style.borderColor='#00ccff'"
-              onblur="this.style.borderColor='rgba(45, 102, 180, 0.4)'"
             />
             <button 
               type="submit" 
-              class="btn-glow" 
-              style="flex: 1 1 auto; padding: 0.85rem 1.75rem; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Orbitron';"
+              class="btn-glow"
             >
               SUBSCRIBE
             </button>
           </form>
         </section>
         <!-- ================= STACK01 DUAL-STATUS MODAL ================= -->
-        <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 7, 15, 0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center;">
+        <div id="successModal" class="success-modal-overlay">
         
         <!-- Modal Content Box -->
-        <div class="glass-card" style="position: relative; width: 90%; max-width: 450px; padding: 3rem 2rem; text-align: center; background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(45, 102, 180, 0.4); border-radius: 12px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); overflow: hidden; font-family: inherit;">
+        <div class="glass-card success-modal-box">
             
             <!-- Top Accent Bar -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent-color, #00ccff);"></div>
+            <div class="modal-top-bar"></div>
             
             <!-- Close Button -->
-            <button onclick="closeSuccessModal()" style="position: absolute; top: 1rem; right: 1.25rem; background: none; border: none; color: var(--text-muted, #a0aec0); font-size: 1.5rem; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--text-muted, #a0aec0)'">&times;</button>
+            <button onclick="closeSuccessModal()" class="modal-close-btn">&times;</button>
             
             <!-- Dynamic Icon -->
-            <div id="modalIcon" style="margin: 0 auto 1.25rem auto; width: 50px; height: 50px; line-height: 50px; border-radius: 50px; background: rgba(0, 204, 255, 0.1); color: var(--accent-color, #00ccff); font-size: 1.5rem; font-weight: bold; font-family: 'Orbitron', sans-serif;">
+            <div id="modalIcon" class="title-font modal-icon">
             ✓
             </div>
 
             <!-- Dynamic Subtitle -->
-            <span id="modalSubtitle" class="title-font" style="display: block; font-size: 0.75rem; color: var(--accent-color, #00ccff); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600; font-family: 'Orbitron', sans-serif;">
+            <span id="modalSubtitle" class="title-font modal-subtitle">
             Transmission Successful
             </span>
             
             <!-- Dynamic Title -->
-            <h2 id="modalTitle" class="title-font" style="font-size: 1.6rem; color: #fff; margin: 0 0 1rem 0; letter-spacing: 0.5px; font-family: 'Orbitron', sans-serif; font-weight: bold;">
+            <h2 id="modalTitle" class="title-font modal-title">
             ACCESS INITIATED
             </h2>
             
             <!-- Dynamic Description -->
-            <p id="modalDescription" style="color: var(--text-muted, #a0aec0); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0;">
+            <p id="modalDescription" class="modal-desc">
             You're almost in. We just sent a verification link to your inbox. Check your email to confirm your subscription and unlock the STACK01 Ecosystem.
             </p>
         </div>
@@ -777,38 +1218,38 @@ const [featuredArticle, ...otherArticles] = articles;
 
         {otherArticles.length > 0 && (
             <section>
-            <h3 class="title-font" style="font-size: 1.25rem; color: #fff; margin-bottom: 1.5rem; letter-spacing: 0.5px; border-left: 3px solid #00ccff; padding-left: 0.75rem;">
+            <h3 class="title-font latest-section-title">
                 LATEST ENTRIES
             </h3>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+            <div class="articles-grid">
                 {otherArticles.map(article => (
-                <article class="glass-card" style="display: flex; flex-direction: column; overflow: hidden; height: 100%;">
-                    <div style="height: 200px; overflow: hidden; position: relative; background: #161b22;">
+                <article class="glass-card article-card">
+                    <div class="article-image-wrap">
                     {article.image ? (
-                        <img src={article.image} alt={article.title} style="width: 100%; height: 100%; object-fit: cover;" />
+                        <img src={article.image} alt={article.title} />
                     ) : (
-                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#313841;"><i class="ri-image-line" style="font-size:2rem;"></i></div>
+                        <div class="article-image-placeholder"><i class="ri-image-line"></i></div>
                     )}
-                    <span style="position: absolute; top: 1rem; left: 1rem; background: rgba(13, 17, 23, 0.85); color: #00ccff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(0, 204, 255, 0.3);">
+                    <span class="article-category-badge">
                         {article.category}
                     </span>
                     </div>
                     
-                    <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column;">
-                    <div style="display: flex; gap: 0.75rem; font-size: 0.75rem; color: #8b949e; margin-bottom: 0.75rem;">
+                    <div class="article-body">
+                    <div class="article-meta">
                         <span>{article.date}</span>
                         <span>•</span>
                         <span>{article.readingTime}</span>
                     </div>
-                    <h4 class="title-font" style="font-size: 1.2rem; color: #fff; margin: 0 0 0.75rem 0; line-height: 1.4;">
-                        <a href={`/articles/${article.slug}`} style="color: inherit; text-decoration: none; transition: color 0.2s;">{article.title}</a>
+                    <h4 class="title-font">
+                        <a href={`/articles/${article.slug}`}>{article.title}</a>
                     </h4>
-                    <p style="color: #8b949e; font-size: 0.85rem; line-height: 1.5; margin: 0 0 1.5rem 0; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    <p>
                         {article.description}
                     </p>
-                    <div style="margin-top: auto;">
-                        <a href={`/articles/${article.slug}`} style="color: #00ccff; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                    <div class="article-footer">
+                        <a href={`/articles/${article.slug}`} class="article-read-link">
                         Explore Entry <i class="ri-arrow-right-up-line"></i>
                         </a>
                     </div>
@@ -818,7 +1259,7 @@ const [featuredArticle, ...otherArticles] = articles;
             </div>
             </section>
         )}  
-    </div>
+    </main>
     <footer class="footer-section">
         <div class="footer-container">
             <!-- Column 1: Ecosystem Hub -->
