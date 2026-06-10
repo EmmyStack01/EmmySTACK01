@@ -6,8 +6,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "vercel-build": "astro build"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/markdoc": "^1.0.6",
