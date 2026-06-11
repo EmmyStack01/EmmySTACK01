@@ -3,7 +3,7 @@ import { config, fields, collection, singleton, component } from '@keystatic/cor
 export default config({
   // 1. Storage Strategy: Safely switches using Vite's production environment flag
   storage: {
-    kind: import.meta.env.PROD ? 'github' : 'local',
+    kind: process.env.NODE_ENV === 'production' ? 'github' : 'local',
     repo: 'EmmyStack01/EmmySTACK01', 
   },
 
