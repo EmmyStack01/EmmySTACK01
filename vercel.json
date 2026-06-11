@@ -20,10 +20,6 @@
   ],
   "rewrites": [
     {
-      "source": "/api/keystatic/(.*)",
-      "destination": "/_render"
-    },
-    {
       "source": "/document-engine",
       "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/"
     },
