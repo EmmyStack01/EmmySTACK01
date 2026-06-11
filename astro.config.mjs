@@ -8,6 +8,7 @@ import indexnow from 'astro-indexnow';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
+  trailingSlash: 'ignore',
   output: 'server',
   vite: {
     build: {
