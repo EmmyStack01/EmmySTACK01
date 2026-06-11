@@ -9,7 +9,7 @@ export async function GET() {
     'NODE_ENV'
   ];
 
-  const result: Record<string, string> = {};
+  const result = {};
   for (const key of keys) {
     const val = process.env[key];
     result[key] = val ? `SET (length: ${val.length})` : 'MISSING';
