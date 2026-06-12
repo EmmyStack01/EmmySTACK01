@@ -942,29 +942,54 @@ h1 span {
     align-items: center;
     color: var(--text-muted);
     font-size: 0.85rem;
+    gap: 20px; /* Prevents text from crashing into each other on smaller screens */
+    flex-wrap: wrap; /* Allows stacking on mobile devices */
 }
 
-.footer-socials a i{
-    font-size: 20px;
-    margin: 0 10px;
-    transition: color 0.3s ease;
+.footer-cta-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px; /* Adds clean spacing between "Contact Emmy..." and the pill container */
 }
+
+.footer-socials-text {
+    font-weight: 500; /* Replaced the invalid 5px */
+}
+
+.footer-socials {
+    background: var(--accent-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin: 5px;
+    display: flex; /* Added flex to make gap work */
+    gap: 14px;    /* Perfectly spaces your icons inside the pill */
+}
+
 .footer-socials a {
     text-decoration: none;
-    color: var(----text-muted);
+    color: var(--bg-dark);
+    display: flex; 
+    align-items: center;
+}
+
+.footer-socials a i {
+    font-size: 20px;
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease; /* Transition both transform and color */
 }
 
 .footer-socials a i:hover {
-    color: var(--white);
+    transform: scale(1.2);
+    /* Optional: Add a slight opacity change or color shift on hover if desired */
 }
 
-.sep {
-    opacity: 0.3;
-}
-
-.copyright{
+.copyright {
     color: var(--text-muted);
     font-size: clamp(0.75rem, 1vw, 0.88rem);
+    white-space: nowrap; /* Keeps the copyright on one line if space permits */
 }
 
 /* Responsive Logic */

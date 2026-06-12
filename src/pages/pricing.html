@@ -588,7 +588,10 @@
         }
 
         /* Ensure all text inside the box (even if in spans) is white */
-        .info-box * {
+        .info-box p,
+        .info-box span,
+        .info-box b,
+        .info-box li {
             color: #ffffff !important;
         }
         .info-box::after {
@@ -668,29 +671,54 @@
             align-items: center;
             color: var(--text-muted);
             font-size: 0.85rem;
+            gap: 20px; /* Prevents text from crashing into each other on smaller screens */
+            flex-wrap: wrap; /* Allows stacking on mobile devices */
         }
 
-        .footer-socials a i{
-            font-size: 20px;
-            margin: 0 10px;
-            transition: color 0.3s ease;
+        .footer-cta-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            gap: 8px; /* Adds clean spacing between "Contact Emmy..." and the pill container */
         }
+
+        .footer-socials-text {
+            font-weight: 500; /* Replaced the invalid 5px */
+        }
+
+        .footer-socials {
+            background: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 5px;
+            display: flex; /* Added flex to make gap work */
+            gap: 14px;    /* Perfectly spaces your icons inside the pill */
+        }
+
         .footer-socials a {
             text-decoration: none;
-            color: var(----text-muted);
+            color: var(--bg-dark);
+            display: flex; 
+            align-items: center;
+        }
+
+        .footer-socials a i {
+            font-size: 20px;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease; /* Transition both transform and color */
         }
 
         .footer-socials a i:hover {
-            color: var(--white);
-        }
-
-        .sep {
-            opacity: 0.3;
+            transform: scale(1.2);
+            /* Optional: Add a slight opacity change or color shift on hover if desired */
         }
 
         .copyright, #year{
             color: var(--text-muted);
             font-size: clamp(0.75rem, 1vw, 0.88rem);
+            white-space: nowrap; /* Keeps the copyright on one line if space permits */
         }
 
         /* Responsive Logic */
@@ -841,7 +869,7 @@
                         <div class="add-ons" style="border-color: var(--accent-color);">
                             <b>MGR Includes:</b> 6 Minor Updates, Security Audits, and Priority Support.
                         </div>
-                        <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99ve%20just%20reviewed%20the%20Management%20Hub.%20I%E2%80%99d%20like%20to%20discuss%20the%20best%20long-term%20plan%20for%20my%20project's%20growth%20and%20maintenance." target="_blank" rel="noopener">Request a Management Plan</a>
+                        <a class="cta-btn" href="/thank_you.html?type=maintenance" target="_blank" rel="noopener">Request a Management Plan</a>
                     </div>
                 </div>
             </div>
@@ -927,7 +955,7 @@
                         
                         <div class="price-item"><span>License Fee</span> <span>$100</span></div>
                         <div class="add-ons"><b>Note:</b> Only available for custom projects.</div>
-                        <a class="cta-btn" href="https://wa.me/2349076991076?text=Hello%20Emmy%20STACK01!%20I%E2%80%99m%20interested%20in%20securing%20the%20Professional%20Brand%20License%20for%20my%20project.%20I%E2%80%99d%20like%20to%20discuss%20the%20transition%20to%20full%20code%20ownership%20and%20removing%20the%20developer%20attribution." target="_blank" rel="noopener">Request License</a>
+                        <a class="cta-btn" href="/thank_you.html?type=license" target="_blank" rel="noopener">Request License</a>
                     </div>
                 </div>
             </div>
@@ -983,12 +1011,15 @@
         <div class="footer-bottom">
             <hr class="footer-divider">
             <div class="footer-legal">
-                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
-                <div class="footer-socials">
-                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
-                    <span class="sep">|</span>  
-                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-fill"></i></a>
+                <div class="footer-cta-container">
+                    <div class="footer-socials-text">Socials & Contact</div>
+                    <div class="footer-socials">
+                        <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
+                        <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-line"></i></a>
+                        <a href="mailto:hello@emmystack01.com" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 Email Address"><i class="ri-mail-line"></i></a>  
+                    </div>
                 </div>
+                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
