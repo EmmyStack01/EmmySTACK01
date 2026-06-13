@@ -274,30 +274,60 @@
     </nav>
     <nav class="navbar">
         <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-        
-        <button class="nav-toggle" aria-label="Toggle Navigation">
+        <button class="nav-toggle" id="openMenu" aria-label="Open Navigation">
             <span class="line"></span>
             <span class="line"></span>
             <span class="line"></span>
         </button>
+    </nav>
 
-        <ul class="nav-link" id="nav-link">
-            <li class="nav-list"><a href="/">Home</a></li>
-            <li class="nav-list"><a href="/products">Product</a></li>
-            <li class="nav-list dropdown js-dropdown">
-                <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
-                <div class="dropdown-content">
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay" role="presentation"></div>
+
+    <!-- DRAWER -->
+    <aside class="drawer" id="drawer" role="navigation" aria-label="Site navigation">
+
+        <div class="drawer-header">
+            <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation">✕</button>
+        </div>
+
+        <nav>
+            <a href="/" class="nav-link active">
+                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-home-line"></i></span> Home</span>
+            </a>
+            <a href="/products" class="nav-link">
+                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-rocket-2-line"></i></span> Product</span>
+            </a>
+
+            <button class="dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-tools-line"></i></span> Tools</span>
+                <span class="arrow" id="toolsArrow"><i class="ri-arrow-down-s-line"></i></span>
+            </button>
+            <div class="submenu" id="toolsMenu" role="region">
+                <div class="submenu-inner">
                     <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
                     <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
                     <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
                     <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
                     <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
                 </div>
-            </li>
-            <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
-            <li class="nav-list"><a href="/articles">Articles</a></li>
-        </ul>
-    </nav>
+            </div>
+
+            <a href="/partnership" class="nav-link" target="_blank">
+                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-team-line"></i></span> Partnership Program</span>
+                <span class="earn-badge">EARN</span>
+            </a>
+            <a href="/articles" class="nav-link">
+                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-article-line"></i></span> Articles</span>
+            </a>
+
+            <div class="divider"></div>
+        </nav>
+
+        <button class="project-btn" onclick="window.open('/thank-you.html?type=project','_blank')">Start Your Project →</button>
+
+    </aside>
     <header class="hero-section">
         <div class="video-background">
             <video autoplay muted loop playsinline poster="/asset/bg-image.png">
@@ -693,6 +723,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <script src="/script/loading.js" defer></script>
+<script>
+    // ── DRAWER ─────────────────────────────────────────────
+    const drawer   = document.getElementById("drawer");
+    const overlay  = document.getElementById("overlay");
+    const openBtn  = document.getElementById("openMenu");
+    const toolsBtn   = document.getElementById("toolsBtn");
+    const toolsMenu  = document.getElementById("toolsMenu");
+    const toolsArrow = document.getElementById("toolsArrow");
+
+    function openDrawer()  {
+        drawer.classList.add("open");
+        overlay.classList.add("show");
+        openBtn.classList.add("open");
+    }
+    function closeDrawer() {
+        drawer.classList.remove("open");
+        overlay.classList.remove("show");
+        openBtn.classList.remove("open");
+    }
+
+    openBtn.addEventListener("click", openDrawer);
+    document.getElementById("closeMenu").addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+    // Tools submenu
+    toolsMenu.style.height = "0px";
+    let toolsOpen = false;
+    toolsBtn.addEventListener("click", () => {
+        toolsOpen = !toolsOpen;
+        if (toolsOpen) {
+            toolsMenu.style.height = toolsMenu.scrollHeight + "px";
+            toolsArrow.classList.add("rotate");
+            toolsBtn.setAttribute("aria-expanded", "true");
+        } else {
+            toolsMenu.style.height = "0px";
+            toolsArrow.classList.remove("rotate");
+            toolsBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+</script>
 <script src="/script/navbar.js" defer></script>
 <script src="/script/nav-link.js" defer></script>
 <script src="/script/faq.js" defer></script>

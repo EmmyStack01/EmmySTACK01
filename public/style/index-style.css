@@ -210,87 +210,34 @@
 }
 
 
-/* TOOGLE NAVBAR */
+/* ── MOBILE NAVBAR BAR (≤ 900px) ─────────────────────── */
 @media screen and (max-width: 900px) {
-    .nav{display: none;}
-    /* Main Header Bar */
+    .nav { display: none; }
+
     .navbar {
-        z-index: 1001; /* Highest z-index to stay on top */
-        padding: 10px 20px;
+        z-index: 1001;
+        position: fixed;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 70px;
+        padding: 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background-color: rgba(255, 255, 255, 0.015);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
-        position: fixed;
-        width: 100%;
-        height: 70px;
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         box-sizing: border-box;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    /* The Sidebar Menu */
-    .nav-link {
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        right: -100%; /* Fully hidden to the right */
-        width: 80%;   /* Adjust width as needed */
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.97);
-        -webkit-backdrop-filter: blur(15px);
-        backdrop-filter: blur(15px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        transition: right 0.4s ease-in-out; /* Smooth slide effect */
-    }
-
-    /* Blue Sidebar Decoration (From your image) */
-    .nav-link::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 15%; /* The blue stripe width */
-        height: 100%;
-        background-color: rgba(59, 88, 151, 0.3);
-        z-index: -1;
-    }
-
-    /* State for OPEN Navigation */
-    .nav-link.open {
-        right: 0; /* Slides into view */
-    }
-
-    .nav-list {
-        width: 100%;
-        text-align: center;
-        padding: 20px 60px;
-    }
-
-    .nav-link a {
-        text-decoration: none;
-        color: var(--white);
-        font-size: 20px;
-        font-weight: bold;
-        transition: color 0.3s ease;
-    }
-
-    /* 1. Burger Button */
+    /* Burger Button */
     .nav-toggle {
         background: none;
         border: none;
         cursor: pointer;
-        z-index: 1002; /* Ensure toggle stays above the sidebar */
+        z-index: 1002;
         padding: 10px;
     }
 
@@ -299,44 +246,236 @@
         width: 28px;
         height: 3px;
         margin: 6px 0;
-        background-color: var(--white); /* Dark color for visibility */
+        background-color: var(--white);
+        border-radius: 2px;
         transition: all 0.3s ease-in-out;
     }
 
-    /* This ensures the lines turn dark/colored when over a white section */
-    .line-scrolled {
-        background-color: rgba(59, 88, 151, 0.3) !important;
-        transition: background-color 0.3s ease;
-    }
-
-    /* 2. X transformation */
+    /* X transformation when drawer is open */
     .nav-toggle.open .line:nth-child(1) {
         transform: translateY(9px) rotate(45deg);
     }
-
     .nav-toggle.open .line:nth-child(2) {
         opacity: 0;
     }
-
     .nav-toggle.open .line:nth-child(3) {
         transform: translateY(-9px) rotate(-45deg);
     }
 
-    .dropbtn {
-        background: none;
-        border: none;
-        text-decoration: none;
-        color: var(--white);
-        font-size: 20px;
-        font-weight: bold;
-        transition: color 0.3s ease;
+    /* Scrolled state — lines tint to brand blue */
+    .line-scrolled {
+        background-color: rgba(59, 88, 151, 0.3) !important;
+        transition: background-color 0.3s ease;
     }
-    
 }
+
+/* ── DRAWER OVERLAY ──────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1200;
+}
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ── DRAWER PANEL ────────────────────────────────────── */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 360px;
+    height: 100vh;
+    padding: 24px 22px 28px;
+    background: rgba(5, 10, 25, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(0, 204, 255, 0.15);
+    box-shadow: -12px 0 48px rgba(0, 0, 0, 0.6);
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 1300;
+}
+.drawer.open {
+    transform: translateX(0);
+}
+.drawer::-webkit-scrollbar { width: 5px; }
+.drawer::-webkit-scrollbar-track { background: rgba(0, 204, 255, 0.05); }
+.drawer::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2d66b4, #00ccff);
+    border-radius: 10px;
+}
+
+/* ── DRAWER HEADER ───────────────────────────────────── */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+}
+.close-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+}
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── DRAWER NAV LINKS ────────────────────────────────── */
+.drawer nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+.drawer .nav-link,
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 14px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    text-align: left;
+}
+.nav-link-inner {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.nav-icon {
+    font-size: 17px;
+    width: 22px;
+    text-align: center;
+    opacity: 0.8;
+}
+.drawer .nav-link:hover,
+.dropdown-btn:hover {
+    background: rgba(0, 204, 255, 0.08);
+    color: white;
+}
+.drawer .nav-link.active {
+    background: rgba(0, 204, 255, 0.10);
+    border-left: 3px solid var(--accent-color);
+    padding-left: 11px;
+    color: white;
+}
+
+/* ── EARN BADGE (drawer version) ─────────────────────── */
+.earn-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-color);
+    border: 1px solid rgba(0, 204, 255, 0.5);
+    letter-spacing: 0.05em;
+    background: rgba(0, 204, 255, 0.06);
+    flex-shrink: 0;
+}
+
+/* ── DROPDOWN ARROW ──────────────────────────────────── */
+.arrow {
+    display: inline-block;
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+    line-height: 1;
+}
+.arrow.rotate { transform: rotate(180deg); }
+
+/* ── SUBMENU ─────────────────────────────────────────── */
+.submenu {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    margin-left: 36px;
+}
+.submenu-inner {
+    padding: 6px 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.submenu a {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.18s, color 0.18s;
+}
+.submenu a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── DIVIDER (drawer) ────────────────────────────────── */
+.drawer .divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    margin: 8px 0;
+}
+
+/* ── PROJECT CTA BUTTON ──────────────────────────────── */
+.project-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    background: var(--primary-color);
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s, transform 0.15s;
+}
+.project-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.project-btn:active { transform: translateY(0); }
 
 body, html {
     scroll-behavior: smooth;
 }
+
 
 
 
