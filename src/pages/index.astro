@@ -256,7 +256,7 @@
     <nav class="nav">
         <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
         <ul class="nav-links">
-            <li class="nav-list"><a href="/">Home</a></li>
+            <li class="nav-list"><a href="/" class="nav-link-active">Home</a></li>
             <li class="nav-list"><a href="/products">Product</a></li>
             <li class="nav-list dropdown js-dropdown">
                 <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
@@ -270,11 +270,12 @@
             </li>
             <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
             <li class="nav-list"><a href="/articles">Articles</a></li>
+            <li class="nav-list"><a href="/thank-you.html?type=project" class="nav-cta" target="_blank" rel="noopener noreferrer">Start Your Project →</a></li>
         </ul>
     </nav>
     <nav class="navbar">
         <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-        <button class="nav-toggle" id="openMenu" aria-label="Open Navigation">
+        <button class="nav-toggle" id="openMenu" aria-label="Toggle Navigation">
             <span class="line"></span>
             <span class="line"></span>
             <span class="line"></span>
@@ -326,7 +327,6 @@
         </nav>
 
         <button class="project-btn" onclick="window.open('/thank-you.html?type=project','_blank')">Start Your Project →</button>
-
     </aside>
     <header class="hero-section">
         <div class="video-background">
@@ -723,49 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 <script src="/script/loading.js" defer></script>
-<script>
-    // ── DRAWER ─────────────────────────────────────────────
-    const drawer   = document.getElementById("drawer");
-    const overlay  = document.getElementById("overlay");
-    const openBtn  = document.getElementById("openMenu");
-    const toolsBtn   = document.getElementById("toolsBtn");
-    const toolsMenu  = document.getElementById("toolsMenu");
-    const toolsArrow = document.getElementById("toolsArrow");
-
-    function openDrawer()  {
-        drawer.classList.add("open");
-        overlay.classList.add("show");
-        openBtn.classList.add("open");
-    }
-    function closeDrawer() {
-        drawer.classList.remove("open");
-        overlay.classList.remove("show");
-        openBtn.classList.remove("open");
-    }
-
-    openBtn.addEventListener("click", openDrawer);
-    document.getElementById("closeMenu").addEventListener("click", closeDrawer);
-    overlay.addEventListener("click", closeDrawer);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
-
-    // Tools submenu
-    toolsMenu.style.height = "0px";
-    let toolsOpen = false;
-    toolsBtn.addEventListener("click", () => {
-        toolsOpen = !toolsOpen;
-        if (toolsOpen) {
-            toolsMenu.style.height = toolsMenu.scrollHeight + "px";
-            toolsArrow.classList.add("rotate");
-            toolsBtn.setAttribute("aria-expanded", "true");
-        } else {
-            toolsMenu.style.height = "0px";
-            toolsArrow.classList.remove("rotate");
-            toolsBtn.setAttribute("aria-expanded", "false");
-        }
-    });
-</script>
 <script src="/script/navbar.js" defer></script>
-<script src="/script/nav-link.js" defer></script>
 <script src="/script/faq.js" defer></script>
 <script src="/script/year.js" defer></script>
 </body>

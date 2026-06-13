@@ -55,276 +55,478 @@
   --text-muted: #a0aec0;
   --white: #ffffff;
 }
-html{
-    scroll-behavior: smooth;
-}
 
-/*NAV SECTION*/
-.badge-earn {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.65rem;           /* Keeps it small and elegant */
-    font-weight: 700;
-    color: #00ccff;               /* Your signature blue */
-    border: 1px solid #00ccff;    /* Thin tech-style border */
-    padding: 2px 6px;
-    border-radius: 4px;           /* Slightly rounded corners */
-    margin-left: 8px;             /* Space between text and badge */
-    vertical-align: middle;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 0.3s ease;    /* Smooth hover effect */
-}
+/*NAV SECTION — shared globals*/
 
-/* Optional: Make the badge glow when the user hovers over the link */
-.navi:hover .badge-earn {
-    background-color: #00ccff;
-    color: #000;                  /* Flips to black for contrast */
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.6);
-}
-
-/*new*/
-.dropbtn {
-    background: none;
-    border: none;
-    text-decoration: none;
-    color: white;
-    transition: color 0.3s ease;
-    font-size: inherit;
-    font-family: inherit;
-}
-
-/* Dropdown Container */
-.dropdown {
-    position: relative;
+/* Dropdown arrow rotation (shared) */
+.ri-arrow-down-s-line {
     display: inline-block;
+    transition: transform 0.3s ease;
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background: rgba(10, 15, 30, 0.95); /* Deep dark glass */
-    backdrop-filter: blur(15px);
-    min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    z-index: 1000;
-    margin-top: 10px;
-    padding: 10px 0;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-    color: white;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-family: 'Montserrat';
-    font-size: 0.9rem;
-    transition: 0.3s;
-}
-
-/* Hover effect for dropdown links */
-.dropdown-content a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--accent-color);
-}
-
-.dropdown.active .dropdown-content {
-    display: block;
-}
-
-/* Ensure the dropdown stays open when the class is active */
-.dropdown.show-menu .dropdown-content {
-    display: block;
-    position: relative; /* Stacks links vertically on mobile */
-    background: rgba(255, 255, 255, 0.05);
-    border: none;
-    box-shadow: none;
-}
-
-/* Optional: Rotate the arrow when open */
-.dropdown.show-menu .ri-arrow-down-s-line {
-    transform: rotate(180deg);
-}
 
 
 /*FLAT NAV*/
-@media screen and (min-width: 900.01px){
-    .navbar{display: none;}
-    .nav{
+@media screen and (min-width: 1070.01px){
+    .navbar, .drawer, .overlay { display: none; }
+
+    .nav {
         z-index: 1000;
-        padding: 10px 20px;
-        gap: 20px;
+        padding: 0 28px;
         top: 0;
         left: 0;
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        background-color: rgba(255, 255, 255, 0.015);
+        background-color: rgba(0, 0, 0, 0.326);
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         position: fixed;
         width: 100%;
+        height: 68px;
         box-sizing: border-box;
     }
 
-    .logo, .nav-links{
+    .logo {
         display: flex;
-        flex-direction: row;
-        
+        align-items: center;
     }
 
-    .nav-links{
-        margin-right: 20px;
-    }
-
-    .nav-links a{
-        text-decoration: none;
-        color: white;
-        transition: color 0.3s ease;
-    }
-
-    .nav-links a.nav-link-scrolled, button.nav-link-scrolled{
-        color: var(--primary-color)! important;
-    }
-
-
-    .nav-links a:hover, .nav-links button:hover{
-        transition: all 1s ease-in-out;
-        color: var(--accent-color);
-    }
-
-    .nav-list{
+    /* ── Links list ── */
+    .nav-links {
+        display: flex;
+        align-items: center;
         list-style: none;
-        padding: 15px;   
-    }
-}
-
-/* TOOGLE NAVBAR */
-@media screen and (max-width: 900px) {
-    .nav{display: none;}
-    /* Main Header Bar */
-    .navbar {
-        z-index: 1001; /* Highest z-index to stay on top */
-        padding: 10px 20px;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: rgba(255, 255, 255, 0.015);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        position: fixed;
-        width: 100%;
-        height: 70px;
-        box-sizing: border-box;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    /* The Sidebar Menu */
-    .nav-link {
-        position: fixed;
-        z-index: 1000;
-        top: 0;
-        right: -100%; /* Fully hidden to the right */
-        width: 80%;   /* Adjust width as needed */
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.97);
-        -webkit-backdrop-filter: blur(15px);
-        backdrop-filter: blur(15px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        gap: 4px;
         margin: 0;
         padding: 0;
-        list-style: none;
-        transition: right 0.4s ease-in-out; /* Smooth slide effect */
-    }
-
-    /* Blue Sidebar Decoration (From your image) */
-    .nav-link::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 15%; /* The blue stripe width */
-        height: 100%;
-        background-color: rgba(59, 88, 151, 0.3);
-        z-index: -1;
-    }
-
-    /* State for OPEN Navigation */
-    .nav-link.open {
-        right: 0; /* Slides into view */
     }
 
     .nav-list {
-        width: 100%;
-        text-align: center;
-        padding: 20px 60px;
+        list-style: none;
+        padding: 0;
+        position: relative;
     }
 
-    .nav-link a {
+    /* Base link style — matches drawer's font/weight */
+    .nav-links a,
+    .nav-links .dropbtn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 10px;
         text-decoration: none;
-        color: var(--white);
-        font-size: 20px;
-        font-weight: bold;
-        transition: color 0.3s ease;
-    }
-
-    /* 1. Burger Button */
-    .nav-toggle {
-        background: none;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        background: transparent;
         border: none;
         cursor: pointer;
-        z-index: 1002; /* Ensure toggle stays above the sidebar */
-        padding: 10px;
+        transition: background 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    /* Hover — same cyan tint as drawer */
+    .nav-links a:hover,
+    .nav-links .dropbtn:hover {
+        background: rgba(0, 204, 255, 0.08);
+        color: white;
+    }
+
+    /* Active page indicator — matches drawer's left-border style via bottom underline */
+    .nav-links a.nav-link-active {
+        color: white;
+        background: rgba(0, 204, 255, 0.08);
+        box-shadow: inset 0 -2px 0 var(--accent-color);
+    }
+
+    /* Scrolled state — consistent with mobile (muted, not jarring) */
+    .nav-links a.nav-link-scrolled,
+    .nav-links button.nav-link-scrolled {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    .nav-links a.nav-link-scrolled:hover,
+    .nav-links button.nav-link-scrolled:hover {
+        color: white;
+    }
+
+    /* ── Desktop dropdown panel — matches drawer submenu aesthetic ── */
+    .dropdown-content {
+        display: block;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) translateY(-8px);
+        background: rgba(5, 10, 25, 0.97);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        min-width: 200px;
+        border: 1px solid rgba(0, 204, 255, 0.15);
+        border-radius: 14px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        z-index: 1100;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: opacity 0.25s ease, transform 0.25s ease, max-height 0.3s ease, visibility 0.25s;
+    }
+
+    .dropdown-content a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: var(--text-muted);
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .dropdown-content a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+    }
+
+    .dropdown.active .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+        max-height: 400px;
+    }
+
+    /* Rotate arrow when open */
+    .dropdown.active .dropbtn .ri-arrow-down-s-line {
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+
+    /* ── Desktop EARN badge — unified with drawer .earn-badge ── */
+    .badge-earn {
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--accent-color);
+        border: 1px solid rgba(0, 204, 255, 0.5);
+        letter-spacing: 0.05em;
+        background: rgba(0, 204, 255, 0.06);
+        vertical-align: middle;
+        margin-left: 6px;
+        text-transform: uppercase;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    /* ── Desktop CTA button — matches drawer project-btn ── */
+    .nav-cta {
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 18px;
+        border-radius: 10px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        color: white !important;
+        background: var(--primary-color) !important;
+        text-decoration: none;
+        letter-spacing: 0.04em;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s !important;
+        box-shadow: none !important;
+    }
+    .nav-cta:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+        background: var(--primary-color) !important;
+        color: white !important;
+    }
+}
+
+
+/* ── MOBILE NAVBAR BAR (≤ 1070px) ─────────────────────── */
+@media screen and (max-width: 1070px) {
+    .nav { display: none; }
+
+    .navbar {
+        z-index: 1001;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.326);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        box-sizing: border-box;
+    }
+
+    /* Burger — circular container matching close-btn */
+    .nav-toggle {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        background: rgba(0, 0, 0, 0.326);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.2s, border-color 0.2s;
+        z-index: 1002;
+    }
+    .nav-toggle:hover {
+        background: rgba(0, 204, 255, 0.1);
+        border-color: rgba(0, 204, 255, 0.3);
     }
 
     .nav-toggle .line {
         display: block;
-        width: 28px;
-        height: 3px;
-        margin: 6px 0;
-        background-color: var(--white); /* Dark color for visibility */
+        width: 18px;
+        height: 2px;
+        background-color: var(--white);
+        border-radius: 2px;
         transition: all 0.3s ease-in-out;
     }
 
-    /* This ensures the lines turn dark/colored when over a white section */
-    .line-scrolled {
-        background-color: rgba(59, 88, 151, 0.3) !important;
-        transition: background-color 0.3s ease;
-    }
-
-    /* 2. X transformation */
+    /* X transformation when drawer is open */
     .nav-toggle.open .line:nth-child(1) {
-        transform: translateY(9px) rotate(45deg);
+        transform: translateY(7px) rotate(45deg);
     }
-
     .nav-toggle.open .line:nth-child(2) {
         opacity: 0;
+        transform: scaleX(0);
     }
-
     .nav-toggle.open .line:nth-child(3) {
-        transform: translateY(-9px) rotate(-45deg);
-    }
-
-    .dropbtn {
-        background: none;
-        border: none;
-        text-decoration: none;
-        color: var(--white);
-        font-size: 20px;
-        font-weight: bold;
-        transition: color 0.3s ease;
+        transform: translateY(-7px) rotate(-45deg);
     }
 }
 
+/* ── DRAWER OVERLAY ──────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1200;
+}
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ── DRAWER PANEL ────────────────────────────────────── */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 88%;
+    max-width: 360px;
+    height: 100vh;
+    padding: 24px 22px 28px;
+    background: rgba(5, 10, 25, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(0, 204, 255, 0.15);
+    box-shadow: -12px 0 48px rgba(0, 0, 0, 0.6);
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 1300;
+}
+.drawer.open {
+    transform: translateX(0);
+}
+.drawer::-webkit-scrollbar { width: 5px; }
+.drawer::-webkit-scrollbar-track { background: rgba(0, 204, 255, 0.05); }
+.drawer::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #2d66b4, #00ccff);
+    border-radius: 10px;
+}
+
+/* ── DRAWER HEADER ───────────────────────────────────── */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+}
+.close-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+}
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── DRAWER NAV LINKS ────────────────────────────────── */
+.drawer nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+.drawer .nav-link,
+.dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 14px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    text-align: left;
+}
+.nav-link-inner {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.nav-icon {
+    font-size: 17px;
+    width: 22px;
+    text-align: center;
+    opacity: 0.8;
+}
+.drawer .nav-link:hover,
+.dropdown-btn:hover {
+    background: rgba(0, 204, 255, 0.08);
+    color: white;
+}
+.drawer .nav-link.active {
+    background: rgba(0, 204, 255, 0.10);
+    border-left: 3px solid var(--accent-color);
+    padding-left: 11px;
+    color: white;
+}
+
+/* ── EARN BADGE (drawer version) ─────────────────────── */
+.earn-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-color);
+    border: 1px solid rgba(0, 204, 255, 0.5);
+    letter-spacing: 0.05em;
+    background: rgba(0, 204, 255, 0.06);
+    flex-shrink: 0;
+}
+
+/* ── DROPDOWN ARROW ──────────────────────────────────── */
+.arrow {
+    display: inline-block;
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+    line-height: 1;
+}
+.arrow.rotate { transform: rotate(180deg); }
+
+/* ── SUBMENU ─────────────────────────────────────────── */
+.submenu {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    margin-left: 36px;
+}
+.submenu-inner {
+    padding: 6px 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.submenu a {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.18s, color 0.18s;
+}
+.submenu a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── DIVIDER (drawer) ────────────────────────────────── */
+.drawer .divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    margin: 8px 0;
+}
+
+/* ── PROJECT CTA BUTTON ──────────────────────────────── */
+.products-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    background: var(--primary-color);
+    letter-spacing: 0.03em;
+    transition: opacity 0.2s, transform 0.15s;
+}
+.products-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.products-btn:active { transform: translateY(0); }
+
+body, html {
+    scroll-behavior: smooth;
+}
 
 *::selection {background-color: var(--accent-color); color: var(--bg-dark);}
 
