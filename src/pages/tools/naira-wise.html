@@ -131,7 +131,8 @@
             justify-content: center;
             align-items: center;
             text-decoration: none;
-            color: white;
+            color: var(--primary);
+            opacity: 0.7;
             backdrop-filter: blur(12px);
             transition: all 0.3s ease;
             font-size: 1.2rem;
@@ -141,6 +142,7 @@
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.1);
+            opacity: 1;
         }
 
         .pill-nav {
@@ -479,7 +481,7 @@
     <div class="container">
         <nav>
             <a href="/" title="back" class="back-btn">
-                <span>&#8592;</span> 
+                <i class="ri-arrow-left-line"></i> 
             </a>
 
             <div class="header-wrapper">
