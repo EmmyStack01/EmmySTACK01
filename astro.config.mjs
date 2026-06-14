@@ -8,7 +8,7 @@ import indexnow from 'astro-indexnow';
 
 export default defineConfig({
   site: 'https://emmystack01.com',
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   output: 'server',
   vite: {
     build: {
@@ -40,7 +40,11 @@ export default defineConfig({
         !page.includes('/go') &&
         !page.includes('/.well-known') &&
         !page.includes('/payment') &&
-        !page.includes('/preview')
+        !page.includes('/preview'),
+      serialize(item) {
+        item.url = item.url.replace(/\/$/, '');
+        return item;
+      }
     }), 
     indexnow({
       site: 'https://emmystack01.com',
