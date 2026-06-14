@@ -21,7 +21,7 @@
   "rewrites": [
     {
       "source": "/api/keystatic/:path*",
-      "destination": "/_render"
+      "destination": "/_render?path=/api/keystatic/:path*"
     },
     {
       "source": "/document-engine",
