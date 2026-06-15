@@ -5,9 +5,8 @@ export default config({
   storage: {
     kind: 'github',
     repo: 'EmmyStack01/EmmySTACK01',
-    clientId: 'Ov23liiWkFQmHreEOPia',
-    clientSecret: '353f3b642bbf67c8246ba7bbd6a5080b11d654b0',
-    secret: 'f7K9pL2qR8vT5wX1zB4mN6yA0cE34q4q',
+    clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID,
+    clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
   },
 
   collections: {
