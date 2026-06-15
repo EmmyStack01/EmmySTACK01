@@ -4,7 +4,6 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
   "cleanUrls": true,
-  "trailingSlash": false,
   "redirects": [
     { "source": "/partner-kit", "destination": "/partnership/affiliate/partner-kit", "permanent": true },
     { "source": "/affiliate", "destination": "/partnership/affiliate", "permanent": true },
@@ -19,10 +18,6 @@
     { "source": "/meeting_background_studio", "destination": "/tools/meeting_background_studio", "permanent": true }
   ],
   "rewrites": [
-    {
-      "source": "/api/keystatic/:path*",
-      "destination": "/_render?path=/api/keystatic/:path*"
-    },
     {
       "source": "/document-engine",
       "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/"
@@ -45,14 +40,8 @@
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin"
-        },
-        {
-          "key": "Cross-Origin-Embedder-Policy",
-          "value": "unsafe-none"
-        }
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+        { "key": "Cross-Origin-Embedder-Policy", "value": "unsafe-none" }
       ]
     }
   ]
