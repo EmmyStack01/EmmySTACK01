@@ -351,19 +351,20 @@ h1 span {
 }
 
 
-.brand{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:12px 20px;
-    margin:2px;
-    border-radius:14px;
-    font-size:1rem;
-    font-weight:700;
-    letter-spacing:-0.02em;
-    transition:all 0.3s ease;
-    cursor:pointer;
-    backdrop-filter:blur(10px);
+.brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    margin: 2px;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 /* GOOGLE MAPS */
@@ -434,8 +435,8 @@ h1 span {
 }
 
 /* HOVER EFFECT */
-.brand:hover{
-    transform:translateY(-4px) scale(1.03);
+.brand:hover {
+    transform: translateY(-4px);
 }
 
 
