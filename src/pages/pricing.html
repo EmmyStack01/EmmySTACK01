@@ -405,13 +405,19 @@
             align-items: center;
         }
 
-        /* RTL Layout for Variety */
+        /* SAFE LAYOUT INVERSION - NO DIRECTION HIGHLIGHT GLITCHES */
         .main-content.reverse {
             grid-template-columns: 1.2fr 1fr;
-            direction: rtl;
         }
 
-        .main-content.reverse > * { direction: ltr; }
+        @media (min-width: 993px) {
+            .main-content.reverse > .main {
+                order: 2;
+            }
+            .main-content.reverse > .price-card {
+                order: 1;
+            }
+        }
 
         /* --- 4. TYPOGRAPHY --- */
         h1 {
@@ -1049,7 +1055,7 @@
                 ease: "power4.out"
             });
 
-            // Animate each main-section
+            // Animate each main-section safely without breaking viewports
             const containers = gsap.utils.toArray('.main-content');
 
             containers.forEach((container) => {
@@ -1057,35 +1063,41 @@
                 const textSide = container.querySelector('.main');
                 const cardSide = container.querySelector('.price-card');
                 const items = container.querySelectorAll('.price-item, .add-ons');
+            
+                // Adjust animation offset dynamically for clean mobile scaling
+                const slideDistance = window.innerWidth < 768 ? 30 : 60;
+
+                // Apply light performance hint directly to elements being animated
+                gsap.set([textSide, cardSide], { willChange: "transform, opacity" });
 
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: container,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
+                        start: "top 88%",
+                        toggleActions: "play none none none",
+                        fastScrollEnd: true // Prevents animation calculations from falling behind fast swiping
                     }
                 });
 
-                // Slide text and card in from opposite sides
                 tl.from(textSide, {
-                    x: isReverse ? 80 : -80,
+                    x: isReverse ? slideDistance : -slideDistance,
                     opacity: 0,
-                    duration: 1,
-                    ease: "expo.out"
+                    duration: 0.8,
+                    ease: "power2.out"
                 })
                 .from(cardSide, {
-                    x: isReverse ? -80 : 80,
+                    x: isReverse ? -slideDistance : slideDistance,
                     opacity: 0,
-                    duration: 1,
-                    ease: "expo.out"
-                }, "-=0.8")
-                .from(items, {
-                    y: 20,
-                    opacity: 0,
-                    stagger: 0.1,
-                    duration: 0.5,
+                    duration: 0.8,
                     ease: "power2.out"
-                }, "-=0.5");
+                }, "-=0.65")
+                .from(items, {
+                    y: 15,
+                    opacity: 0,
+                    stagger: 0.08,
+                    duration: 0.4,
+                    ease: "power1.out"
+                }, "-=0.4");
             });
         });
     </script>

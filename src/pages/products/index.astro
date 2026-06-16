@@ -510,6 +510,21 @@
                 gsap.to(image, { rotationY: 0, rotationX: 0, duration: 1 });
             });
         }
+        // --- SMOOTH ANCHOR NAVIGATION LINK COUPLING ---
+        document.querySelectorAll('a[href^="/products#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href').split('#')[1];
+                const targetElement = document.getElementById(targetId);
+            
+                if (targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     });
     </script>
     <script src="/script/loading.js" defer></script>
