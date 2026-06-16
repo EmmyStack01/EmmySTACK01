@@ -1149,27 +1149,29 @@ h1 span {
     margin-bottom: 50px;
 }
 
-/* 1. Add a base transition for all transforms */
 .card {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.326);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    /* OPTIMIZATION: Use a solid dark color or a fast gradient instead of heavy blur if mobile lag persists */
+    background-color: rgba(15, 15, 15, 0.85);
     border-radius: 15px;
     padding: 20px;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.15);
+   
     /* Improve transition for smoother movement */
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), z-index 0s, opacity 0.5s;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Ensure the card doesn't block clicks to cards behind it if not active */
     pointer-events: auto;
+
+    /* OPTIMIZATION: Force the phone's GPU hardware to handle the card stack movement */
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 /* 2. Update Stacking Logic to use a Variable */
@@ -1239,11 +1241,13 @@ h1 span {
 .gif-area img {
     width: 100%;
     max-height: 310px;
-    background: #eee;
+    background: #111;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
+    object-fit: cover;
+   
+    /* OPTIMIZATION: Prevents the phone from re-rendering the image graphics while layout changes */
+    will-change: auto;
 }
 
 
