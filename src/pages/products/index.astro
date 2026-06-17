@@ -522,12 +522,12 @@
                     e.preventDefault();
                     
                     gsap.to(window, {
-                        duration: 1.5, // <-- Adjust this (in seconds) to speed up or slow down
+                        duration: 2,
                         scrollTo: {
-                            y: targetElement,
-                            offsetY: 20 // Extra breathing room at the top (change to match header height if needed)
+                            y: "#products", // Directly targeting the structural wrapper ID string
+                            offsetY: 40
                         },
-                        ease: "power3.out" // A clean, professional decelerating ease curve
+                        ease: "power2.out"
                     });
                 }
             });
