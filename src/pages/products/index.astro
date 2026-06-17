@@ -41,7 +41,6 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" defer></script>
 
     <script type="application/ld+json">
         {
@@ -511,23 +510,17 @@
                 gsap.to(image, { rotationY: 0, rotationX: 0, duration: 1 });
             });
         }
-
-        // --- SMOOTH ANCHOR NAVIGATION LINK COUPLING (GSAP EDITION) ---
+        // --- SMOOTH ANCHOR NAVIGATION LINK COUPLING ---
         document.querySelectorAll('a[href^="/products#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href').split('#')[1];
                 const targetElement = document.getElementById(targetId);
-                
+            
                 if (targetElement) {
                     e.preventDefault();
-                    
-                    gsap.to(window, {
-                        duration: 2,
-                        scrollTo: {
-                            y: "#products", // Directly targeting the structural wrapper ID string
-                            offsetY: 40
-                        },
-                        ease: "power2.out"
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
                 }
             });

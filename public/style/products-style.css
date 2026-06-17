@@ -690,9 +690,6 @@ h1 span {
     margin-top: 30px; /* Pushes the video down so the white bar doesn't cover content */
     object-fit: cover;
     display: block;
-
-    aspect-ratio: 9 / 19.5; /* Matches modern premium smartphone layouts */
-    background-color: #000; /* Pre-reserves black container space instantly */
 }
 
 .phone-glare {
@@ -716,9 +713,6 @@ h1 span {
     background-color: var(--white);
     position: relative;
     z-index: 5;
-
-    overflow-x: hidden; 
-    contain: content; /* Isolates layout rendering to keep scroll calculations lightning-fast */
 }
 
 .section-header {
@@ -862,9 +856,6 @@ h1 span {
     box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Image has its own shadow */
     position: relative;
     z-index: 2;
-
-    aspect-ratio: 16 / 10; /* Matches your Cloudinary banner canvas dimensions */
-    background-color: #111; /* Seamlessly holds space matching dark theme values */
 }
 
 /* RESPONSIVE: Stack them on mobile */
