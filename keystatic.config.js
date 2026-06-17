@@ -1,12 +1,15 @@
 import { config, fields, collection, singleton, component } from '@keystatic/core';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export default config({
-  // 1. Storage Strategy: Safely switches using Vite's production environment flag
-  storage: {
+  storage: isProd ? {
     kind: 'github',
     repo: 'EmmyStack01/EmmySTACK01',
     clientId: process.env.KEYSTATIC_GITHUB_CLIENT_ID,
     clientSecret: process.env.KEYSTATIC_GITHUB_CLIENT_SECRET,
+  } : {
+    kind: 'local',
   },
 
   collections: {
