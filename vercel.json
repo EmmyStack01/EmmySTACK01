@@ -29,8 +29,12 @@
   {
     "source": "/document-engine/:path*",
     "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/:path*"
+  },
+  {
+    "source": "/mily-wayz/:path*",
+    "destination": "https://milywayz.wezuduemoih.workers.dev/:path*"
   }
-],
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
