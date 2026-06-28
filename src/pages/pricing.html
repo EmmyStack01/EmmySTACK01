@@ -1054,57 +1054,51 @@
                 duration: 1.2,
                 ease: "power4.out"
             });
+
+            // Animate each main-section safely without breaking viewports
+            const containers = gsap.utils.toArray('.main-content');
+
+            containers.forEach((container) => {
+                const isReverse = container.classList.contains('reverse');
+                const textSide = container.querySelector('.main');
+                const cardSide = container.querySelector('.price-card');
+                const items = container.querySelectorAll('.price-item, .add-ons');
             
-            // --- START MATCHMEDIA ---
-            let mm = gsap.matchMedia();
-            mm.add("(min-width: 800px)", () => {
+                // Adjust animation offset dynamically for clean mobile scaling
+                const slideDistance = window.innerWidth < 768 ? 30 : 60;
 
-                // Animate each main-section safely without breaking viewports
-                const containers = gsap.utils.toArray('.main-content');
+                // Apply light performance hint directly to elements being animated
+                gsap.set([textSide, cardSide], { willChange: "transform, opacity" });
 
-                containers.forEach((container) => {
-                    const isReverse = container.classList.contains('reverse');
-                    const textSide = container.querySelector('.main');
-                    const cardSide = container.querySelector('.price-card');
-                    const items = container.querySelectorAll('.price-item, .add-ons');
-                
-                    // Adjust animation offset dynamically for clean mobile scaling
-                    const slideDistance = window.innerWidth < 768 ? 30 : 60;
-
-                    // Apply light performance hint directly to elements being animated
-                    gsap.set([textSide, cardSide], { willChange: "transform, opacity" });
-
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: container,
-                            start: "top 88%",
-                            toggleActions: "play none none none",
-                            fastScrollEnd: true // Prevents animation calculations from falling behind fast swiping
-                        }
-                    });
-
-                    tl.from(textSide, {
-                        x: isReverse ? slideDistance : -slideDistance,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out"
-                    })
-                    .from(cardSide, {
-                        x: isReverse ? -slideDistance : slideDistance,
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out"
-                    }, "-=0.65")
-                    .from(items, {
-                        y: 15,
-                        opacity: 0,
-                        stagger: 0.08,
-                        duration: 0.4,
-                        ease: "power1.out"
-                    }, "-=0.4");
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 88%",
+                        toggleActions: "play none none none",
+                        fastScrollEnd: true // Prevents animation calculations from falling behind fast swiping
+                    }
                 });
+
+                tl.from(textSide, {
+                    x: isReverse ? slideDistance : -slideDistance,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                })
+                .from(cardSide, {
+                    x: isReverse ? -slideDistance : slideDistance,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                }, "-=0.65")
+                .from(items, {
+                    y: 15,
+                    opacity: 0,
+                    stagger: 0.08,
+                    duration: 0.4,
+                    ease: "power1.out"
+                }, "-=0.4");
             });
-            // --- END MATCHMEDIA ---    
         });
     </script>
     <script src="/script/year.js" defer></script>
