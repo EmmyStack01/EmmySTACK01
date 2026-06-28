@@ -23,10 +23,6 @@
     "destination": "/_render"
   },
   {
-    "source": "/document-engine",
-    "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/"
-  },
-  {
     "source": "/document-engine/:path*",
     "destination": "https://emmystack01.github.io/Emmy_STACK01-Document-Engine-Website/:path*"
   },
