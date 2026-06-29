@@ -270,7 +270,7 @@
             </li>
             <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
             <li class="nav-list"><a href="/articles">Articles</a></li>
-            <li class="nav-list"><a href="/thank-you.html?type=project" class="nav-cta" target="_blank" rel="noopener noreferrer">Start Your Project →</a></li>
+            <li class="nav-list"><a href="#project-modal" class="nav-cta trigger-project-modal" rel="noopener noreferrer">Start Your Project <i class="ri-arrow-right-line"></i></a></li>
         </ul>
     </nav>
     <nav class="navbar">
@@ -326,7 +326,7 @@
             <div class="divider"></div>
         </nav>
 
-        <button class="project-btn" onclick="window.open('/thank-you.html?type=project','_blank')">Start Your Project →</button>
+        <button class="project-btn trigger-project-modal">Start Your Project <i class="ri-arrow-right-line"></i></button>
     </aside>
     <header class="hero-section">
         <div class="video-background">
@@ -339,10 +339,28 @@
             <div class="content">
                 <h1><span class="line-one">Build your website,</span><span class="line-two">from scratch to the Internet.</span></h1>
                 <p class="content-p">High-performance digital DNA for personal brands and businesses.</p>
-                <a class="hero-cta" href="/thank-you.html?type=project" target="_blank" rel="noopener noreferrer">Start your project</a>
+                <a class="hero-cta trigger-project-modal" href="#project-modal" target="_blank" rel="noopener noreferrer">Start your project</a>
             </div>
         </div>
     </header>
+    <div id="project-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal" aria-label="Close modal">&times;</button>
+            
+            <h3 class="modal-title">Connect via WhatsApp</h3>
+            <p class="modal-text">Select how you'd like to get started with Emmy STACK01:</p>
+            
+            <div class="modal-actions">
+            <a href="/thank-you.html?type=project" class="btn-modal btn-primary" target="_blank">
+                <i class="ri-rocket-2-line"></i> Start a Project
+            </a>
+            
+            <a href="/thank-you.html?type=inquiry" class="btn-modal btn-secondary" target="_blank">
+                <i class="ri-question-answer-line"></i> Make an Inquiry
+            </a>
+            </div>
+        </div>
+    </div>
     <main class="main-section">
         <section class="menu-section">
             <h2 class="section-title">The STACK01 Build Menu</h2>
@@ -720,6 +738,38 @@ document.addEventListener("DOMContentLoaded", () => {
         stagger: 0.2,
         duration: 0.8
     });
+
+    // HERO CTA POPUP START
+        // Select all instances of the trigger button class across the UI
+        const startProjectButtons = document.querySelectorAll('.trigger-project-modal'); 
+        const modal = document.getElementById('project-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        if (modal && closeModal && startProjectButtons.length > 0) {
+            
+            // Loop through each button instance and attach the click trigger
+            startProjectButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Stop any anchor jumps or unexpected behaviors
+                modal.classList.add('is-active');
+                modal.setAttribute('aria-hidden', 'false');
+            });
+            });
+
+            // Close Modal Function
+            const hideModal = () => {
+            modal.classList.remove('is-active');
+            modal.setAttribute('aria-hidden', 'true');
+            };
+
+            closeModal.addEventListener('click', hideModal);
+
+            // Close when clicking outside the content container
+            modal.addEventListener('click', (e) => {
+            if (e.target === modal) hideModal();
+            });
+        }
+    // HERO CTA POPUP END
 });
     
 
