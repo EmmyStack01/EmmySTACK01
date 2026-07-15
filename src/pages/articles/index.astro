@@ -101,43 +101,6 @@ const [featuredArticle, ...otherArticles] = articles;
         --white: #ffffff;
         }
 
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg-dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* Stay on top of everything */
-        }
-
-        .dna-container {
-            position: relative;
-            width: 100px;
-            height: 160px;
-        }
-
-        .dot {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-color);
-            border-radius: 50%;
-        }
-
-        .loader-text {
-            margin-top: 20px;
-            color: var(--white);
-            font-family: 'Orbitron';
-            letter-spacing: 2px;
-            font-size: 14px;
-            text-transform: uppercase;
-        }
-
         *::selection {background-color: var(--accent-color); color: var(--bg-dark);}
 
         *{
@@ -1238,12 +1201,6 @@ const [featuredArticle, ...otherArticles] = articles;
   </head>
   
   <body>
-    <div id="loader">
-        <div class="dna-container">
-            <div class="dna"></div>
-        </div>
-        <p class="loader-text">Sequencing Digital DNA...</p>
-    </div>
     <nav class="nav">
         <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
         <ul class="nav-links">
@@ -1583,7 +1540,6 @@ const [featuredArticle, ...otherArticles] = articles;
             </div>
         </div>
     </footer>
-    <script src="/script/loading.js" defer></script>
     <script src="/script/navbar.js" defer></script>
     <script src="/script/year.js" defer></script>
   </body>
