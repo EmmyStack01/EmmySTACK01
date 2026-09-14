@@ -732,11 +732,13 @@ h1 span {
 /*MENU SECTION*/
 .menu-section{
     background-color: var(--white);
-    position: sticky;
     width: 100%;
     height: auto;
     top: 0;
-    z-index: 1;
+    /*position: sticky;*/
+    /*z-index: 1;*/
+    position: relative;
+    z-index: 2;
 }
 
 @media screen and (max-width: 860px) {
