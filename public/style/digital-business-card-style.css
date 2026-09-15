@@ -1141,6 +1141,7 @@ h1 span {
     font-family: 'Orbitron';
     color: var(--text-main);
     margin-bottom: 100px;
+    text-align: center;
 }
 
 .container {
