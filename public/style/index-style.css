@@ -1072,6 +1072,10 @@ h1 span {
     max-height: 500px;
 }
 .product-cta, .pricing-cta{width: 100%; text-align: center;}
+
+.pricing-info{
+    text-align: center;
+}
 }
 
 /*FAQS-SECTION*/
