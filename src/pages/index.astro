@@ -1,785 +1,408 @@
 ---
-// This is the Astro code fence. Leave this empty for now!
+export const prerender = true;
+import SocialLinks from '../components/SocialLinks.astro';
+
+const site = "https://emmystack01.com";
+const title = "Web Design & Development Agency in Nigeria | Emmy STACK01";
+const desc = "Emmy STACK01 builds high-performance websites for businesses, personal brands, creators and professionals in Nigeria, with UI/UX design, branding and on-page SEO.";
+const ogDesc = "A one-stop digital agency specializing in Brand Identity, UI/UX design, and high-performance web development.";
+
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line", c: "DeveloperApplication", d: "A technical optimization utility designed to scan and audit website performance, structural health, and SEO setups." },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree", c: "BusinessApplication", d: "A mobile hook formatter designed for structuring and optimizing content streams on LinkedIn and X." },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line", c: "MultimediaApplication", d: "A custom layout studio providing professional virtual assets and interface environments for live video calls." },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line", c: "BusinessApplication", d: "A secure, zero-bloat browser utility engineered for signing documents and processing PDFs directly on the web." },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line", c: "BusinessApplication", d: "A clean, functional utility designed for digital service providers to generate professional business invoices seamlessly." },
+];
+
+const tiles = [
+  { i: "ri-id-card-line", id: "digital-business-card", t: "Digital Business Card Website", f: "Entrepreneurs, Professionals & Creators", d: "A professional digital card with one-tap contact sharing.", v: "card" },
+  { i: "ri-palette-line", id: "creator-portfolio-websites", t: "Creator & Portfolio Websites", f: "Photographers, Musicians & Creators", d: "Portfolio websites built to showcase your work and brand.", v: "port" },
+  { i: "ri-article-line", id: "resume-personal-websites", t: "Resume & Personal Websites", f: "Job Seekers & Tech Professionals", d: "Personal websites for your CV, experience and work.", v: "resume" },
+  { i: "ri-edit-line", id: "blog-content-websites", t: "Blog & Content Websites", f: "Writers, Influencers & Publishers", d: "Fast-loading blog websites for content and audience growth.", v: "blog" },
+  { i: "ri-briefcase-line", id: "business-service-websites", t: "Business & Service Websites", f: "Law Firms, Clinics, Shops & Service Businesses", d: "Business websites built for enquiries, bookings and customers.", v: "biz" },
+  { i: "ri-home-4-line", id: "real-estate-websites", t: "Real Estate Websites", f: "Real Estate Agents & Developers", d: "Property websites with listings, galleries and a premium feel.", v: "estate" },
+  { i: "ri-command-line", id: "startup-saas-websites", t: "Startup & SaaS Websites", f: "Startups, Agencies & Product Teams", d: "Fast websites and tools built for digital products.", v: "saas" },
+  { i: "ri-rocket-line", id: "landing-pages-brochures", t: "Landing Pages & Digital Brochures", f: "Product Launches, Apps & Campaigns", d: "High-speed landing pages for products, services and offers.", v: "land" },
+];
+
+// Decorative mini-website visuals for the stacked cards (CSS-drawn, hidden from screen readers)
+const L = (w, c = "") => `<i class="mk-line ${c}" style="--w:${w}"></i>`;
+const visuals = {
+  card: `<div class="mk mk-card"><span class="mk-cover g2"></span><span class="mk-avatar g1"></span>${L(44, "strong")}${L(30)}<span class="mk-row"><b class="mk-btn">Save contact</b><b class="mk-btn ghost">WhatsApp</b></span><span class="mk-icons"><i></i><i></i><i></i><i></i></span></div>`,
+  port: `<div class="mk mk-port"><span class="mk-nav">${L(20, "strong")}<em></em><em></em><em></em></span><span class="mk-mosaic"><i class="g2 a"></i><i class="g1 b"></i><i class="g3 c"></i><i class="g4 d"></i><i class="g5 e"></i></span></div>`,
+  resume: `<div class="mk mk-resume"><span class="mk-side"><span class="mk-avatar g1"></span>${L(72, "strong")}${L(52)}<span class="mk-chips"><i></i><i></i><i></i></span></span><span class="mk-main">${L(42, "strong")}${L(96)}${L(82)}${L(42, "strong")}${L(92)}${L(70)}${L(86)}</span></div>`,
+  blog: `<div class="mk mk-blog"><span class="mk-feature g2"></span>${L(72, "strong")}${L(96)}<span class="mk-list"><span class="mk-item"><i class="g1"></i><span>${L(84)}${L(52)}</span></span><span class="mk-item"><i class="g3"></i><span>${L(74)}${L(60)}</span></span></span></div>`,
+  biz: `<div class="mk mk-biz"><span class="mk-hero"><span class="mk-hero-text">${L(86, "strong")}${L(62, "strong")}${L(94)}<b class="mk-btn">Book now</b></span><span class="mk-hero-img g2"></span></span><span class="mk-tiles"><i></i><i></i><i></i></span></div>`,
+  estate: `<div class="mk mk-estate"><span class="mk-prop"><i class="g2"><b>For sale</b></i>${L(76, "strong")}${L(46)}</span><span class="mk-prop"><i class="g1"><b>4 bed</b></i>${L(66, "strong")}${L(56)}</span><span class="mk-prop"><i class="g3"><b>New</b></i>${L(80, "strong")}${L(40)}</span></div>`,
+  saas: `<div class="mk mk-saas"><span class="mk-hero2">${L(62, "strong")}${L(88)}<b class="mk-btn">Start free</b></span><span class="mk-dash"><span class="mk-chart"><i style="--h:40"></i><i style="--h:62"></i><i style="--h:48"></i><i style="--h:80"></i><i style="--h:68"></i><i style="--h:94"></i></span><span class="mk-stats"><i class="g1"></i><i class="g5"></i></span></span></div>`,
+  land: `<div class="mk mk-land"><span class="mk-badge">New launch</span>${L(74, "strong")}${L(52, "strong")}<b class="mk-btn">Get the app</b><span class="mk-product"><i class="g2"></i><i class="g1"></i><i class="g3"></i></span></div>`,
+};
+
+const steps = [
+  { t: "Choose Your Website", d: "Select the website type for your industry and goal." },
+  { t: "Strategy Sync", d: "A quick chat to align your website, goals and brand." },
+  { t: "Rapid Launch", d: "Your custom-coded site goes live within 14 days." },
+];
+
+const ticker = ["High-performance websites", "Digital identities", "SEO", "Performance", "Conversion"];
+
+const faqs = [
+  { q: "What is Emmy STACK01?", a: "Emmy STACK01 is a web design and development agency that builds high-performance websites for businesses, personal brands, creators and professionals. We also handle UI/UX design, branding, on-page SEO, hosting setup and Google indexing." },
+  { q: "Why does Emmy STACK01 charge per page?", a: "We use a per-page pricing model to ensure total cost transparency. Whether you need a high-converting one-page landing site or a multi-page corporate website, you’ll know the exact investment required before we begin. This eliminates hidden fees and allows us to scale our website design and development services to fit your specific budget." },
+  { q: "Are the technical services like hosting and Google indexing really free?", a: "Yes! While other agencies charge monthly maintenance fees, we provide free website hosting via GitHub Pages and complimentary Google search indexing. We also handle your domain name configuration and SSL setup at no extra cost. Our goal is to lower the barrier to entry for your digital presence, saving you significant annual costs on traditional hosting providers." },
+  { q: "Why is there a “Built by Emmy STACK01” tag on my site?", a: "We take immense pride in every project we launch. This tag serves as a seal of quality, letting your visitors know your site was built to professional standards. It also allows other businesses to easily find the same high-performance web development and design services that we provided for you." },
+  {
+    q: "How does Emmy STACK01 handle website updates after the launch?",
+    a: "We offer three flexible ways to keep your digital presence updated:",
+    list: [
+      ["Minor Updates (“The Quick Tweak”)", "Best for text changes, image swaps, or small styling tweaks to existing sections. These are billed as a flat fee per request."],
+      ["Major Updates (“The Evolution”)", "For new pages, structural layout changes, or added functionality (like a newsletter or dark mode). These are treated as new project modules and quoted separately."],
+      ["CMS Integration (“The Control”)", "We can integrate a custom Content Management System (CMS) that allows you to edit your own content (blogs, portfolio, prices) in real-time without writing a single line of code. This is a one-time setup fee."],
+    ],
+    after: "For clients who want hands-off peace of mind, we also offer a Monthly Growth Retainer which includes priority support, security audits, and regular maintenance.",
+  },
+];
+const plain = (f) => [f.a, ...(f.list || []).map(([h, t], i) => `${i + 1}. ${h}: ${t}`), f.after || ""].join(" ").trim();
+
+const org = `${site}/#organization`;
+const schema = [
+  {
+    "@context": "https://schema.org", "@type": "Organization", "@id": org, name: "Emmy STACK01", url: `${site}/`,
+    logo: { "@type": "ImageObject", url: `${site}/asset/emmy-stack01-logo.png` },
+    description: "Emmy STACK01 is a web design and development agency building high-performance websites for businesses, personal brands, creators and professionals, with branding, UI/UX design and on-page SEO.",
+    sameAs: ["https://x.com/Emmy_STACK01", "https://github.com/EmmyStack01", "https://wa.me/2349076991076", "https://www.trustpilot.com/review/emmystack01.com", "https://themanifest.com/company/emmy-stack01"],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog", name: "The STACK01 Build Menu",
+      itemListElement: tiles.map((t) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: t.t, description: `${t.d} For ${t.f}.` } })),
+    },
+  },
+  ...tools.map((t) => ({
+    "@context": "https://schema.org", "@type": "WebApplication", "@id": `${site}/tools/${t.s}/#webapp`, name: t.n,
+    url: `${site}/tools/${t.s}`, applicationCategory: t.c, operatingSystem: "All",
+    browserRequirements: "Requires HTML5 compatible browser.", description: t.d, creator: { "@id": org },
+  })),
+  {
+    "@context": "https://schema.org", "@type": "FAQPage", about: { "@id": org },
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: plain(f) } })),
+  },
+];
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="/script/meta-logic.js" is:inline></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Design & Development Agency in Nigeria | Emmy STACK01</title>
-    <link rel="stylesheet" href="/style/index-style.css">
-    <link rel="preload" href="/style/index-style.css" as="style">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
-
-    <meta name="title" content="Web Design & Development Agency in Nigeria | Emmy STACK01">
-    <meta name="description" content="Emmy STACK01 builds high-performance websites for businesses, personal brands, creators and professionals in Nigeria, with UI/UX design, branding and on-page SEO.">
-    <link rel="canonical" href="https://emmystack01.com/">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={`${site}/`}>
     <meta name="robots" content="index, follow">
     <meta name="author" content="Emmy STACK01">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <link rel="preload" href="/asset/hero-character.png" as="image" fetchpriority="high">
+    <link rel="stylesheet" href="/style/index-style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
 
     <meta property="og:site_name" content="Emmy STACK01 | Digital Agency">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emmystack01.com/">
+    <meta property="og:url" content={`${site}/`}>
     <meta property="og:title" content="Emmy STACK01 | Digital Agency">
-    <meta property="og:description" content="A one-stop digital agency specializing in Brand Identity, UI/UX design, and high-performance web development.">
-    <meta property="og:image" content="https://emmystack01.com/asset/og-image.jpg">
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:image" content={`${site}/asset/og-image.jpg`}>
     <meta property="og:image:alt" content="Emmy STACK01 Banner">
-    <meta property="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@Emmy_STACK01">
-    <meta property="twitter:title" content="Emmy STACK01 | Digital Agency">
-    <meta property="twitter:description" content="A one-stop digital agency specializing in Brand Identity, UI/UX design, and high-performance web development.">
-    <meta property="twitter:image" content="https://emmystack01.com/asset/og-image.jpg">
-
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
+    <meta name="twitter:title" content="Emmy STACK01 | Digital Agency">
+    <meta name="twitter:description" content={ogDesc}>
+    <meta name="twitter:image" content={`${site}/asset/og-image.jpg`}>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
-    <script type="application/ld+json">
-        [
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "@id": "https://emmystack01.com/#organization",
-            "name": "Emmy STACK01",
-            "url": "https://emmystack01.com/",
-            "logo": {
-            "@type": "ImageObject",
-            "url": "https://emmystack01.com/asset/emmy-stack01-logo.png"
-            },
-            "description": "Emmy STACK01 is a web design and development agency building high-performance websites for businesses, personal brands, creators and professionals, with branding, UI/UX design and on-page SEO.",
-            "sameAs": [
-            "https://x.com/Emmy_STACK01",
-            "https://github.com/EmmyStack01",
-            "https://wa.me/2349076991076",
-            "https://www.trustpilot.com/review/emmystack01.com",
-            "https://themanifest.com/company/emmy-stack01"
-            ],
-            "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "The STACK01 Build Menu",
-            "itemListElement": [
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Professional vCard",
-                    "description": "Digital DNA profiles with a one-tap 'Save Contact' button designed for Founders & Executives."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Artist/Creator Portfolio",
-                    "description": "High-impact visual sites built for showcasing talent, customized for Photographers & Musicians."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "The Resume Hub",
-                    "description": "Custom-coded personal sites built with minimalist, zero-bloat tech to stand out in the job market."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "The Content Blog",
-                    "description": "Clean, fast-loading journals optimized for maximum readability, tailored for Writers & Influencers."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Service-Based Sites",
-                    "description": "Direct, conversion-optimized sites built to turn visitors into confirmed bookings for Law Firms, Clinics & Shops."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Real Estate Showcases",
-                    "description": "Property catalogs featuring interactive galleries and a premium, high-end feel for Agents & Developers."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "Micro-SaaS Tools",
-                    "description": "Lightweight utilities, calculators, and custom functional components built natively for the web."
-                }
-                },
-                {
-                "@type": "Offer",
-                "itemOffered": {
-                    "@type": "Service",
-                    "name": "The Digital Brochure",
-                    "description": "High-speed, high-converting landing pages built for single-product authority and Product Launches."
-                }
-                }
-            ]
-            }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "@id": "https://emmystack01.com/tools/website-auditor/#webapp",
-            "name": "Website Auditor",
-            "url": "https://emmystack01.com/tools/website-auditor",
-            "applicationCategory": "DeveloperApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires HTML5 compatible browser.",
-            "description": "A technical optimization utility designed to scan and audit website performance, structural health, and SEO setups.",
-            "creator": { "@id": "https://emmystack01.com/#organization" }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "@id": "https://emmystack01.com/tools/social-architect/#webapp",
-            "name": "Social Architect",
-            "url": "https://emmystack01.com/tools/social-architect",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires HTML5 compatible browser.",
-            "description": "A mobile hook formatter designed for structuring and optimizing content streams on LinkedIn and X.",
-            "creator": { "@id": "https://emmystack01.com/#organization" }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "@id": "https://emmystack01.com/tools/meeting_background_studio/#webapp",
-            "name": "Meeting Background Studio",
-            "url": "https://emmystack01.com/tools/meeting_background_studio",
-            "applicationCategory": "MultimediaApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires HTML5 compatible browser.",
-            "description": "A custom layout studio providing professional virtual assets and interface environments for live video calls.",
-            "creator": { "@id": "https://emmystack01.com/#organization" }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "@id": "https://emmystack01.com/tools/emmy-sign/#webapp",
-            "name": "PDF Signer",
-            "url": "https://emmystack01.com/tools/emmy-sign",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires HTML5 compatible browser.",
-            "description": "A secure, zero-bloat browser utility engineered for signing documents and processing PDFs directly on the web.",
-            "creator": { "@id": "https://emmystack01.com/#organization" }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "@id": "https://emmystack01.com/tools/naira-wise/#webapp",
-            "name": "Invoice Generator",
-            "url": "https://emmystack01.com/tools/naira-wise",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires HTML5 compatible browser.",
-            "description": "A clean, functional utility designed for digital service providers to generate professional business invoices seamlessly.",
-            "creator": { "@id": "https://emmystack01.com/#organization" }
-        },
-        {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "about": { "@id": "https://emmystack01.com/#organization" },
-            "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "What is Emmy STACK01?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Emmy STACK01 is a web design and development agency that builds high-performance websites for businesses, personal brands, creators and professionals. We also handle UI/UX design, branding, on-page SEO, hosting setup and Google indexing."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Why does Emmy STACK01 charge per page?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We use a per-page pricing model to ensure total cost transparency. Whether you need a high-converting one-page landing site or a multi-page corporate website, you’ll know the exact investment required before we begin."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Are the technical services like hosting and Google indexing really free?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes! While other agencies charge monthly maintenance fees, we provide free website hosting via GitHub Pages and complimentary Google search indexing."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Why is there a 'Built by Emmy STACK01' tag on my site?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We take immense pride in every project we launch. This tag serves as a seal of quality, letting your visitors know your site was built to professional standards."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "How do Emmy STACK01 handle website updates after the launch?",
-                "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We offer three flexible ways to keep your digital presence updated: 1. Minor Updates ('The Quick Tweak') for text changes or styling tweaks. 2. Major Updates ('The Evolution') for new layouts or structural features. 3. CMS Integration ('The Control') utilizing custom-built dashboard architecture for zero-code content management."
-                }
-            }
-            ]
-        }
-        ]
-    </script>
-              
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 </head>
 <body>
-    <div id="loader">
-        <div class="dna-container">
-            <div class="dna"></div>
-        </div>
-        <p class="loader-text">Building Your Website...</p>
-    </div>
-    <nav class="nav">
-        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+    <div id="loader" aria-hidden="true"><span class="spinner"></span><p>Building your website…</p></div>
+
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
         <ul class="nav-links">
-            <li class="nav-list"><a href="/" class="nav-link-active">Home</a></li>
-            <li class="nav-list"><a href="/products">Product</a></li>
-            <li class="nav-list dropdown js-dropdown">
-                <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
+            <li><a href="/" class="nav-link-active" aria-current="page">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
                 <div class="dropdown-content">
-                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
-                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
-                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
-                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
-                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
                 </div>
             </li>
-            <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
-            <li class="nav-list"><a href="/articles">Articles</a></li>
-            <li class="nav-list"><a href="#project-modal" class="nav-cta trigger-project-modal" rel="noopener noreferrer">Start Your Project <i class="ri-arrow-right-line"></i></a></li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span> </a></li>
+            <li><a href="/articles">Articles</a></li>
         </ul>
+        <a href="#project-modal" class="cta nav-cta trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></a>
     </nav>
-    <nav class="navbar">
-        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-        <button class="nav-toggle" id="openMenu" aria-label="Toggle Navigation">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
         </button>
-    </nav>
+    </div>
 
-    <!-- OVERLAY -->
-    <div class="overlay" id="overlay" role="presentation"></div>
-
-    <!-- DRAWER -->
-    <aside class="drawer" id="drawer" role="navigation" aria-label="Site navigation">
-
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
         <div class="drawer-header">
-            <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-            <button id="closeMenu" class="close-btn" aria-label="Close navigation">✕</button>
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
         </div>
-
-        <nav>
-            <a href="/" class="nav-link active">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-home-line"></i></span> Home</span>
-            </a>
-            <a href="/products" class="nav-link">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-rocket-2-line"></i></span> Product</span>
-            </a>
-
-            <button class="dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-tools-line"></i></span> Tools</span>
-                <span class="arrow" id="toolsArrow"><i class="ri-arrow-down-s-line"></i></span>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link active"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
             </button>
-            <div class="submenu" id="toolsMenu" role="region">
-                <div class="submenu-inner">
-                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
-                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
-                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
-                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
-                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <button class="cta project-btn trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></button>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="hero">
+        <div class="hero-inner">
+            <div class="hero-copy">
+                <h1 class="hero-title"><span class="t1">Build your</span><span class="t2">website</span><span class="t3">from scratch to the internet.</span></h1>
+                <p class="hero-sub">High-performance websites for businesses, personal brands, creators and professionals in Nigeria.</p>
+            </div>
+            <div class="hero-art">
+                <div class="art-stage">
+                    <div class="art-card">
+                        <img src="/asset/hero-card.svg" alt="" width="1316" height="1049" aria-hidden="true">
+                        <a class="hero-cta art-cta trigger-project-modal" href="#project-modal"><span>Start your project</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                    </div>
+                    <img class="art-person" src="/asset/hero-character.png" alt="Developer pointing to the Start your project button" width="1013" height="729" fetchpriority="high">
                 </div>
             </div>
-
-            <a href="/partnership" class="nav-link" target="_blank">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-team-line"></i></span> Partnership Program</span>
-                <span class="earn-badge">EARN</span>
-            </a>
-            <a href="/articles" class="nav-link">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-article-line"></i></span> Articles</span>
-            </a>
-
-            <div class="divider"></div>
-        </nav>
-
-        <button class="project-btn trigger-project-modal">Start Your Project <i class="ri-arrow-right-line"></i></button>
-    </aside>
-    <header class="hero-section">
-        <div class="video-background">
-            <video autoplay muted loop playsinline poster="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto,q_auto/v1781613417/bg-image_pnpk2y.png">
-                <source src="https://res.cloudinary.com/dq7dwhxqn/video/upload/f_auto,q_auto/v1781613229/bg_bxztba.webm" type="video/webm">
-                <source src="https://res.cloudinary.com/dq7dwhxqn/video/upload/f_auto,q_auto/v1781613229/bg_bxztba.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        
-            <div class="content">
-                <h1><span class="line-one">Build your website,</span><span class="line-two">from scratch to the Internet.</span></h1>
-                <p class="content-p">High-performance websites for businesses, personal brands, creators and professionals in Nigeria.</p>
-                <a class="hero-cta trigger-project-modal" href="#project-modal" target="_blank" rel="noopener noreferrer">Start your project</a>
+        </div>
+        <div class="ticker" aria-label="What we deliver">
+            <div class="ticker-track">
+                <ul class="tick-set">{ticker.map((x) => [<li>{x}</li>, <li class="dot" aria-hidden="true"></li>])}</ul>
+                <ul class="tick-set" aria-hidden="true">{ticker.map((x) => [<li>{x}</li>, <li class="dot" aria-hidden="true"></li>])}</ul>
             </div>
         </div>
     </header>
+
     <div id="project-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal-content">
-            <button class="modal-close" id="close-modal" aria-label="Close modal">&times;</button>
-            
-            <h3 class="modal-title">Connect via WhatsApp</h3>
-            <p class="modal-text">Select how you'd like to get started with Emmy STACK01:</p>
-            
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" id="close-modal" aria-label="Close"><i class="ri-close-line"></i></button>
+            <h3 class="modal-title" id="modal-title">Connect via WhatsApp</h3>
+            <p class="modal-text">Select how you’d like to get started with Emmy STACK01:</p>
             <div class="modal-actions">
-            <a href="/thank-you.html?type=project" class="btn-modal btn-primary" target="_blank">
-                <i class="ri-rocket-2-line"></i> Start a Project
-            </a>
-            
-            <a href="/thank_you.html?type=inquiry" class="btn-modal btn-secondary" target="_blank">
-                <i class="ri-question-answer-line"></i> Make an Inquiry
-            </a>
+                <a href="/thank-you?type=project" class="btn-modal btn-primary" target="_blank" rel="noopener"><i class="ri-rocket-2-line"></i> Start a Project</a>
+                <a href="/thank-you?type=inquiry" class="btn-modal btn-secondary" target="_blank" rel="noopener"><i class="ri-question-answer-line"></i> Make an Inquiry</a>
             </div>
         </div>
     </div>
-    <main class="main-section">
-        <section class="menu-section">
-            <h2 class="section-title">Website Solutions for Brands</h2>
-            
-            <div class="menu-grid">
-                <a href="/products/digital-business-card" class="menu-tile">
-                <div class="tile-icon"><i class="ri-id-card-line"></i></div>
-                <div class="tile-content">
-                    <h3>Digital Business Card Website</h3>
-                    <p><strong>FOR:</strong> Entrepreneurs, Professionals & Creators</p>
-                    <span>A professional digital card with one-tap contact sharing.</span>
-                </div>
-                </a>
 
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-palette-line"></i></div>
-                <div class="tile-content">
-                    <h3>Creator & Portfolio Websites</h3>
-                    <p><strong>FOR:</strong> Photographers, Musicians & Creators</p>
-                    <span>Portfolio websites built to showcase your work and brand.</span>
+    <main>
+        <section class="solutions" id="solutions">
+            <div class="section">
+                <div class="solutions-head">
+                    <h2 class="sec-title">Website solutions for brands</h2>
+                    <p class="solutions-intro">Pick the website that fits your goal. Every site is custom-coded and goes live within 14 days.</p>
                 </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-article-line"></i></div>
-                <div class="tile-content">
-                    <h3>Resume & Personal Websites</h3>
-                    <p><strong>FOR:</strong> Job Seekers & Tech Professionals</p>
-                    <span>Personal websites for your CV, experience and work.</span>
-                </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-edit-line"></i></div>
-                <div class="tile-content">
-                    <h3>Blog & Content Websites</h3>
-                    <p><strong>FOR:</strong> Writers, Influencers & Publishers</p>
-                    <span>Fast-loading blog websites for content and audience growth.</span>
-                </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-briefcase-line"></i></div>
-                <div class="tile-content">
-                    <h3>Business & Service Websites</h3>
-                    <p><strong>FOR:</strong> Law Firms, Clinics, Shops & Service Businesses</p>
-                    <span>Business websites built for enquiries, bookings and customers.</span>
-                </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-home-4-line"></i></div>
-                <div class="tile-content">
-                    <h3>Real Estate Websites</h3>
-                    <p><strong>FOR:</strong> Real Estate Agents & Developers</p>
-                    <span>Property websites with listings, galleries and a premium feel.</span>
-                </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-command-line"></i></div>
-                <div class="tile-content">
-                    <h3>Startup & SaaS Websites</h3>
-                    <p><strong>FOR:</strong> Startups, Agencies & Product Teams</p>
-                    <span>Fast websites and tools built for digital products.</span>
-                </div>
-                </div>
-
-                <div class="menu-tile">
-                <div class="tile-icon"><i class="ri-rocket-line"></i></div>
-                <div class="tile-content">
-                    <h3>Landing Pages & Digital Brochures</h3>
-                    <p><strong>FOR:</strong> Product Launches, Apps & Campaigns</p>
-                    <span>High-speed landing pages for products, services and offers.</span>
-                </div>
+                <div class="stack">
+                    {tiles.map((t, i) => (
+                        <article class="stack-card" style={`--i:${i}`}>
+                            <div class="stack-copy">
+                                <span class="tile-icon"><i class={t.i} aria-hidden="true"></i></span>
+                                <h3>{t.t}</h3>
+                                <p class="stack-for"><strong>For:</strong> {t.f}</p>
+                                <p class="stack-desc">{t.d}</p>
+                                <a class="cta stack-link" href={`/websites#${t.id}`}>Explore this solution <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="visual" aria-hidden="true">
+                                <div class="browser">
+                                    <div class="bar"><i></i><i></i><i></i><b></b></div>
+                                    <Fragment set:html={visuals[t.v]} />
+                                </div>
+                            </div>
+                        </article>
+                    ))}
                 </div>
             </div>
         </section>
-        <section class="process-section white-section">
-            <div class="process-container">
-                <div class="process-step">
-                    <div class="step-number">01</div>
-                    <div class="step-info">
-                        <h3>Choose Your Website</h3>
-                        <p>Select the website type for your industry and goal.</p>
-                    </div>
-                    <i class="ri-arrow-right-s-line process-arrow"></i>
-                </div>
 
-                <div class="process-step">
-                    <div class="step-number">02</div>
-                    <div class="step-info">
-                        <h3>Strategy Sync</h3>
-                        <p>A quick chat to align your website, goals and brand.</p>
-                    </div>
-                    <i class="ri-arrow-right-s-line process-arrow"></i>
-                </div>
-
-                <div class="process-step">
-                    <div class="step-number">03</div>
-                    <div class="step-info">
-                        <h3>Rapid Launch</h3>
-                        <p>Your custom-coded site goes live within 14 days.</p>
-                    </div>
+        <section class="band">
+            <div class="section">
+                <h2 class="sec-title">How it works</h2>
+                <div class="process">
+                    {steps.map((s, i) => (
+                        <div class="process-step reveal">
+                            <div class="step-number">{String(i + 1).padStart(2, "0")}</div>
+                            <div><h3>{s.t}</h3><p>{s.d}</p></div>
+                            {i < steps.length - 1 && <i class="ri-arrow-right-s-line process-arrow" aria-hidden="true"></i>}
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
-        <section class="pricing-section">
-            <div class="pricing">
-                <div class="pricing-info">
-                    <h2>Website Design & Development</h2>
+
+        <section class="section">
+            <div class="pricing reveal">
+                <div class="pricing-copy">
+                    <h2>Website Design &amp; Development</h2>
                     <p>Simple per-page pricing. Technical deployment included.</p>
-                    <a class="pricing-cta" href="/pricing" rel="noopener noreferrer">View Rate Card</a>
                 </div>
-                <span class="pricing-logo"><img src="/asset/emmy%20pricing%20logo.svg" alt="pricing-logo" width="450px" height="450px"></span>                
-            </div>            
+                <a class="btn-white" href="/pricing">View rate card <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            </div>
         </section>
-        <section class="product-section white-section">
-            <div class="product">
-                <div class="product-info">
-                    <h2>Digital Business Card Website</h2>
+
+        <section class="band">
+            <div class="section product reveal">
+                <div>
+                    <h2 class="sec-title">Digital Business Card Website</h2>
                     <p>Design your own professional digital business card website.</p>
-                    <a href="/products/digital-business-card" class="product-cta">Build Your Card</a>
+                    <a href="/products/digital-business-card" class="cta btn-grad">Build your card <i class="ri-arrow-right-line"></i></a>
                 </div>
-                <span class="product-image"><img src="/asset/Checkout-our-Demos.png" alt="Emmy STACK01 Business Card Demos" width="500px" height="500px"></span>
+                <video autoplay muted loop playsinline preload="metadata" aria-label="Emmy STACK01 Business Card Webpage">
+                    <source src="/asset/product-page.webm" type="video/webm">
+                </video>
             </div>
         </section>
-        <section class="faq-section">
-            <div class="faq">
-                <h2>Website Design & Development FAQs</h2>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        What is Emmy STACK01?
-                        <i class="ri-add-line"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Emmy STACK01 is a web design and development agency that builds high-performance websites for businesses, personal brands, creators and professionals. We also handle UI/UX design, branding, on-page SEO, hosting setup and Google indexing.</p>
-                    </div>
+
+        <section class="section faq">
+            <h2 class="sec-title">Website design &amp; development FAQs</h2>
+            {faqs.map((f) => (
+                <div class="faq-item reveal">
+                    <h3><button type="button" class="faq-question" aria-expanded="false">{f.q}<i class="ri-add-line"></i></button></h3>
+                    <div class="faq-answer"><div>
+                        <p>{f.a}</p>
+                        {f.list && <ol>{f.list.map(([h, t]) => <li><b>{h}:</b> {t}</li>)}</ol>}
+                        {f.after && <p>{f.after} <a href="/pricing#custom">View management page</a></p>}
+                    </div></div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Why does Emmy STACK01 charge per page?
-                        <i class="ri-add-line"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We use a per-page pricing model to ensure total cost transparency. Whether you need a high-converting one-page landing site or a multi-page corporate website, you’ll know the exact investment required before we begin. This eliminates hidden fees and allows us to scale our website design and development services to fit your specific budget.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Are the technical services like hosting and Google indexing really free?
-                        <i class="ri-add-line"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes! While other agencies charge monthly maintenance fees, we provide free website hosting via GitHub Pages and complimentary Google search indexing. We also handle your domain name configuration and SSL setup at no extra cost. Our goal is to lower the barrier to entry for your digital presence, saving you significant annual costs on traditional hosting providers.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Why is there a "Built by Emmy STACK01" tag on my site?
-                        <i class="ri-add-line"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We take immense pride in every project we launch. This tag serves as a seal of quality, letting your visitors know your site was built to professional standards. It also allows other businesses to easily find the same high-performance web development and design services that we provided for you.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        How do Emmy STACK01 handle website updates after the launch?
-                        <i class="ri-add-line"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>
-                            We offer three flexible ways to keep your digital presence updated:
-                            <ol style="margin-left: 20px; margin-top: 15px; margin-bottom: 15px; line-height: 1.6;">
-                                <li><b>Minor Updates ("The Quick Tweak"):</b> Best for text changes, image swaps, or small styling tweaks to existing sections. These are billed as a flat fee per request.</li>
-                                <li><b>Major Updates ("The Evolution"):</b> For new pages, structural layout changes, or added functionality (like a newsletter or dark mode). These are treated as new project modules and quoted separately.</li>
-                                <li><b>CMS Integration ("The Control"):</b> We can integrate a custom Content Management System (CMS) that allows you to edit your own content (blogs, portfolio, prices) in real-time without writing a single line of code. This is a one-time setup fee.</li>
-                            </ol>
-                            For clients who want hands-off peace of mind, we also offer a <b>Monthly Growth Retainer</b> which includes priority support, security audits, and regular maintenance. <br><br>
-                            <a href="pricing#custom" style="color: #00ccff; font-weight: bold; text-decoration: none;">View Management Page</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            ))}
         </section>
     </main>
-    <footer class="footer-section">
+
+    <footer class="footer">
         <div class="footer-container">
-            <!-- Column 1: Ecosystem Hub -->
-            <div class="footer-column">
-                <h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/pricing">Pricing</a></li> <!-- White-Label info located here -->
-                    <li><a href="/articles">Articles</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 2: Flagship Product -->
-            <div class="footer-column">
-                <h3><i class="ri-rocket-2-line"></i> Flagship Product</h3>
-                <ul>
-                    <li><a href="/products/digital-business-card">Digital Business Card</a></li>
-                    <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
-                    <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
-                    <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3: Technical Tools -->
-            <div class="footer-column">
-                <h3><i class="ri-tools-line"></i> Technical Tools</h3>
-                <ul>
-                    <li><a href="/tools/website-auditor">Website Auditor</a></li>
-                    <li><a href="/tools/social-architect">Social Architect</a></li>
-                    <li><a href="/tools/meeting_background_studio">Meeting Studio</a></li>
-                    <li><a href="/tools/naira-wise">Invoice Generator</a></li>
-                    <li><a href="/tools/emmy-sign">PDF Signer</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 4: Partnership -->
-            <div class="footer-column">
-                <h3><i class="ri-team-line"></i> Partnership</h3>
-                <ul>
-                    <li><a href="/partnership">Partnership Program</a></li>
-                    <li><a href="/partnership/affiliate">Affiliate Portal</a></li>
-                    <li><a href="/partnership/policy">Partner Policy</a></li>
-                </ul>
-            </div>
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
         </div>
         <div class="footer-bottom">
-            <hr class="footer-divider">
             <div class="footer-legal">
-                <div class="footer-cta-container">
-                    <div class="footer-socials-text">Socials & Contact</div>
-                    <div class="footer-socials">
-                        <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
-                        <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-line"></i></a>
-                        <a href="mailto:hello@emmystack01.com" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 Email Address"><i class="ri-mail-line"></i></a>  
-                    </div>
-                </div>
-                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
-<script>
+
+<script is:inline>
 document.addEventListener("DOMContentLoaded", () => {
-    // Register ScrollTrigger plugin
-    gsap.registerPlugin(ScrollTrigger);
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-    gsap.set(".line-one, .line-two, .content-p, .hero-cta, .menu-tile, .process-step, .process-arrow, .product-info, .product-image", { visibility: "visible" });
+  // Loader
+  const loader = $("#loader"), hide = () => loader && loader.classList.add("done");
+  window.addEventListener("load", hide); setTimeout(hide, 3000);
 
-    // 1. HERO SECTION (Runs on Page Load)
-    const heroTl = gsap.timeline();
+  // Drawer
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
 
-    heroTl.from(".line-one", { 
-        x: -50, 
-        opacity: 0, 
-        duration: 2, 
-        ease: "power4.out" 
-    })
-    .from(".line-two", { 
-        x: 50, 
-        opacity: 0, 
-        duration: 1.2, 
-        ease: "power4.out" 
-    }, "-=1")
-    .from(".content-p", { 
-        y: 20, 
-        opacity: 0, 
-        duration: 0.8 
-    }, "-=0.5")
-    .from(".hero-cta", { 
-        scale: 0, 
-        opacity: 0, 
-        duration: 0.5, 
-        ease: "back.out(1.7)" 
-    }, "-=0.3");
+  // Desktop dropdown (click for touch, hover/focus via CSS)
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
 
-    // 2. Animate the Section Heading (h2) - Your existing code works fine here
-    gsap.from(".menu-section h2", {
-        scrollTrigger: {
-            trigger: ".menu-section h2",
-            start: "top 90%",
-            toggleActions: "play none none none"
-        },
-        y: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out"
+  // FAQ
+  $$(".faq-question").forEach((b) => b.addEventListener("click", () => {
+    const item = b.closest(".faq-item"), o = item.classList.toggle("open");
+    b.setAttribute("aria-expanded", String(o));
+  }));
+
+  // Modal
+  const modal = $("#project-modal"), closeBtn = $("#close-modal"); let lastFocus;
+  const showModal = (open) => {
+    modal.classList.toggle("is-active", open); modal.setAttribute("aria-hidden", String(!open));
+    if (open) { lastFocus = document.activeElement; closeBtn.focus(); } else if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+  $$(".trigger-project-modal").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); setDrawer(false); showModal(true); }));
+  closeBtn.addEventListener("click", () => showModal(false));
+  modal.addEventListener("click", (e) => { if (e.target === modal) showModal(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (modal.classList.contains("is-active")) showModal(false);
+    else if (drawer.classList.contains("open")) setDrawer(false);
+  });
+
+  // Animation: nothing is hidden in CSS, so the page stays visible if GSAP fails to load
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+    gsap.timeline({ defaults: { ease: "power4.out" } })
+      .from(".hero-title span", { y: 40, opacity: 0, duration: 0.9, stagger: 0.15 })
+      .from(".hero-sub", { y: 16, opacity: 0, duration: 0.6 }, "-=0.4")
+      .from(".hero-art", { x: 60, opacity: 0, duration: 1 }, "-=0.9");
+    $$(".reveal").forEach((el) => gsap.from(el, {
+      y: 36, opacity: 0, duration: 0.8, ease: "power2.out",
+      scrollTrigger: { trigger: el, start: "top 90%", once: true },
+    }));
+    gsap.to(".process-arrow", { x: 5, repeat: -1, yoyo: true, duration: 0.8, ease: "sine.inOut" });
+  });
+  // Stacked cards: each card eases back a little as the next one slides over it
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference) and (min-height: 641px)", () => {
+    const cards = $$(".stack-card");
+    cards.forEach((card, i) => {
+      const next = cards[i + 1];
+      if (!next) return;
+      gsap.to(card, { scale: 0.95, ease: "none", scrollTrigger: { trigger: next, start: "top 85%", end: "top 25%", scrub: true } });
     });
-
-    // 3. Updated Grid Animation for Menu Tiles
-    const menuTiles = document.querySelectorAll(".menu-tile");
-
-    menuTiles.forEach((tile, index) => {
-        gsap.from(tile, {
-            scrollTrigger: {
-                trigger: tile,      // Each tile is its own trigger
-                start: "top 88%",   // Starts when the individual tile is near the bottom
-                toggleActions: "play none none none",
-                // markers: true,   // Uncomment this to see exactly where they trigger
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            // No stagger needed here because the scroll itself creates the delay!
-
-            delay: (index % 2) * 0.15 // Adds a 0.15s delay to every second tile (the right column)
-        });
-    });
-
-    const processSteps = document.querySelectorAll(".process-step");
-
-    // Process section
-    processSteps.forEach((step, index) => {
-        gsap.from(step, {
-            scrollTrigger: {
-                trigger: step,       // Each step triggers itself
-                start: "top 85%",    // Animates when the step is 85% from the top
-                toggleActions: "play none none none"
-            },
-            y: 60,                   // Moves up from 60px below
-            opacity: 0,
-            duration: 1.2,
-            ease: "power4.out",      // Smooth, high-end feel
-            // Small delay for desktop if they are side-by-side
-            delay: window.innerWidth > 860 ? index * 0.1 : 0 
-        });
-    });
-    // Optional: Make the arrows pulse slightly after the step appears
-    gsap.to(".process-arrow", {
-        x: 5,
-        repeat: -1,
-        yoyo: true,
-        duration: 0.8,
-        ease: "sine.inOut"
-    });
-
-    // Product Section Slide In
-    gsap.from(".product-info", {
-        scrollTrigger: {
-            trigger: ".product",
-            start: "top 75%",
-        },
-        x: -100,
-        opacity: 0,
-        duration: 2,
-        ease: "power2.out"
-    });
-
-    gsap.from(".product-image", {
-        scrollTrigger: {
-            trigger: ".product",
-            start: "top 75%",
-        },
-        x: 100,
-        opacity: 0,
-        duration: 2,
-        ease: "power2.out"
-    });
-
-    // FAQ Items Fade In
-    gsap.from(".faq-item", {
-        scrollTrigger: {
-            trigger: ".faq",
-            start: "top 85%",
-        },
-        opacity: 0,
-        y: 20,
-        stagger: 0.2,
-        duration: 0.8
-    });
-
-    // HERO CTA POPUP START
-        // Select all instances of the trigger button class across the UI
-        const startProjectButtons = document.querySelectorAll('.trigger-project-modal'); 
-        const modal = document.getElementById('project-modal');
-        const closeModal = document.getElementById('close-modal');
-
-        if (modal && closeModal && startProjectButtons.length > 0) {
-            
-            // Loop through each button instance and attach the click trigger
-            startProjectButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault(); // Stop any anchor jumps or unexpected behaviors
-                modal.classList.add('is-active');
-                modal.setAttribute('aria-hidden', 'false');
-            });
-            });
-
-            // Close Modal Function
-            const hideModal = () => {
-            modal.classList.remove('is-active');
-            modal.setAttribute('aria-hidden', 'true');
-            };
-
-            closeModal.addEventListener('click', hideModal);
-
-            // Close when clicking outside the content container
-            modal.addEventListener('click', (e) => {
-            if (e.target === modal) hideModal();
-            });
-        }
-    // HERO CTA POPUP END
+  });
 });
-    
-
 </script>
-<script src="/script/loading.js" defer></script>
-<script src="/script/navbar.js" defer></script>
-<script src="/script/faq.js" defer></script>
 <script src="/script/year.js" defer></script>
 </body>
 </html>

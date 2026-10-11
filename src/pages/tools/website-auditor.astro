@@ -1,0 +1,266 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/tools/website-auditor.astro — Styles: /style/index-style.css + /style/tool-audit.css · Script: /script/tool-audit.js · API: /api/audit
+const site = "https://emmystack01.com";
+const url = `${site}/tools/website-auditor`;
+const title = "Digital DNA Auditor | Free Website Speed & SEO Test by Emmy STACK01";
+const desc = "Instantly analyze your website's performance, SEO, and accessibility. Identify digital leaks and optimize your site's Digital DNA for maximum speed and conversion.";
+const ogTitle = "Is Your Website Leaking Revenue? | Digital DNA Auditor";
+const ogDesc = "Get a free high-performance audit. Check your site's speed, SEO, and UX instantly with the Emmy STACK01 Auditor.";
+const ogImage = `${site}/asset/website-auditor-og.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const checks = [
+  { i: "ri-dashboard-3-line", t: "Performance", d: "Load speed, render-blocking files, image formats, page weight and layout shifts: the things that make visitors leave." },
+  { i: "ri-search-eye-line", t: "SEO", d: "Title, meta description, mobile viewport, crawlability and status codes, so search engines can find and rank your pages." },
+  { i: "ri-user-smile-line", t: "Accessibility", d: "Color contrast, button and link names, image descriptions and form labels, so everyone can use your site." },
+];
+const steps = [
+  { t: "Enter your address", d: "Type your website address. We tidy it up for you, so \"example.com\" works." },
+  { t: "We analyze it", d: "Google's Lighthouse engine tests the live page for speed, SEO and accessibility. It takes about 20 to 40 seconds." },
+  { t: "Review and download", d: "See what is costing you visitors, then download the full report as a PDF." },
+];
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication", "@id": `${url}#webapp`, url, name: "Digital DNA Auditor", description: desc,
+      applicationCategory: "DeveloperApplication", operatingSystem: "All", browserRequirements: "Requires JavaScript. Requires HTML5.",
+      isAccessibleForFree: true, offers: { "@type": "Offer", price: "0.00", priceCurrency: "USD" },
+      author: { "@id": `${site}/#organization` }, creator: { "@id": `${site}/#organization` },
+    },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Tools", item: `${site}/tools` }, { "@type": "ListItem", position: 3, name: "Website Auditor", item: url }] },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="keywords" content="website speed test, seo audit tool, website performance auditor, digital dna, emmy stack01, website optimization nigeria, core web vitals checker">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/tool-audit.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Emmy STACK01 Website Auditor">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content="Digital DNA Auditor: Fix Your Site Speed & SEO">
+    <meta name="twitter:description" content="Stop losing customers to a slow website. Run a free audit and optimize your Digital DNA today.">
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn is-current" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "website-auditor" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/pricing" class="cta nav-cta">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn active" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "website-auditor" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/pricing" class="cta project-btn">Start your project <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="au-hero">
+        <div class="au-hero-inner">
+            <span class="au-eyebrow">Free tool · Digital DNA Auditor</span>
+            <h1>Website speed test &amp; <em>Digital DNA Auditor</em></h1>
+            <p class="lead">Run a professional performance audit to find SEO leaks and speed bottlenecks in seconds.</p>
+
+            <form class="au-form" id="audit-form" novalidate>
+                <label class="au-lbl" for="url-input">Website address</label>
+                <div class="au-row">
+                    <input class="au-input" type="text" inputmode="url" id="url-input" name="url" placeholder="yourwebsite.com" autocomplete="url" autocapitalize="off" spellcheck="false" required>
+                    <button type="submit" id="audit-btn" class="cta au-go"><i class="ri-radar-line" aria-hidden="true"></i> <span>Analyze site</span></button>
+                </div>
+                <div class="au-opts">
+                    <div class="au-seg" role="radiogroup" aria-label="Device to test">
+                        <label><input type="radio" name="strategy" value="mobile" checked><span><i class="ri-smartphone-line" aria-hidden="true"></i>&nbsp;Mobile</span></label>
+                        <label><input type="radio" name="strategy" value="desktop"><span><i class="ri-computer-line" aria-hidden="true"></i>&nbsp;Desktop</span></label>
+                    </div>
+                    <span class="au-hint">Free. No sign-up. Takes about 30 seconds.</span>
+                </div>
+                <p class="au-err" id="audit-err" role="alert" hidden></p>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div class="au-wrap">
+            <div class="au-scan" id="au-scan" role="status" aria-live="polite" hidden>
+                <span class="au-scan-line" aria-hidden="true"></span>
+                <div>
+                    <p class="au-status" id="au-status">Fetching DOM structure…</p>
+                    <small>Large sites can take up to a minute.</small>
+                </div>
+            </div>
+
+            <section id="au-results" aria-labelledby="au-results-title" hidden>
+                <div class="au-results-head">
+                    <h2 class="au-title" id="au-results-title" tabindex="-1">Results</h2>
+                    <p class="au-sub" id="au-meta"></p>
+                </div>
+
+                <div class="au-gauges">
+                    <div class="au-gcard"><h3>Performance</h3><div class="au-gauge" id="g-performance" role="img"><b>0</b></div><span class="au-pill"></span></div>
+                    <div class="au-gcard"><h3>SEO</h3><div class="au-gauge" id="g-seo" role="img"><b>0</b></div><span class="au-pill"></span></div>
+                    <div class="au-gcard"><h3>Accessibility</h3><div class="au-gauge" id="g-accessibility" role="img"><b>0</b></div><span class="au-pill"></span></div>
+                </div>
+
+                <dl class="au-metrics" id="au-metrics" aria-label="Key metrics"></dl>
+
+                <div class="au-leaks">
+                    <h2 class="au-title">Identified leaks</h2>
+                    <div id="au-issues"></div>
+                </div>
+
+                <div class="au-cta">
+                    <div id="au-cta"></div>
+                    <div class="au-actions">
+                        <button type="button" id="download-btn" class="btn-white au-dl"><i class="ri-file-download-line" aria-hidden="true"></i> <span>Download full report (PDF)</span></button>
+                    </div>
+                </div>
+                <p class="au-note">Scores are lab data from Google PageSpeed Insights (Lighthouse) and can vary a little between runs.</p>
+            </section>
+        </div>
+
+        <section class="au-section" aria-labelledby="checks">
+            <h2 id="checks">What we check</h2>
+            <ul class="au-cards">
+                {checks.map((c) => <li class="au-info"><i class={c.i} aria-hidden="true"></i><h3>{c.t}</h3><p>{c.d}</p></li>)}
+            </ul>
+        </section>
+
+        <section class="au-section" aria-labelledby="how">
+            <h2 id="how">How it works</h2>
+            <ol class="au-cards au-steps">
+                {steps.map((s) => <li class="au-info"><h3>{s.t}</h3><p>{s.d}</p></li>)}
+            </ol>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
+<script src="/script/tool-audit.js" defer></script>
+<script src="/script/year.js" defer></script>
+</body>
+</html>

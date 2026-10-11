@@ -1,0 +1,169 @@
+---
+// Emmy STACK01 — single thank-you / WhatsApp hand-off page.
+// Replaces thank-you.html AND thank_you.html. Pick the flow with ?type=…
+//   ?type=card&stack=Feature A, Feature B   Digital Business Card ($60 conversion)
+//   ?type=project                           Custom website lead   ($20 conversion)
+//   ?type=license                           Professional Brand License / white-label
+//   ?type=hub  |  ?type=maintenance         Management Hub / long-term plan
+//   ?type=inquiry                           General pre-sales question
+//   ?type=portfolio | resume | blog | business | real-estate | saas | landing
+//                                           Website types from /websites (counted as $20 project leads)
+//   (anything else)                         Plain chat
+
+const phone = "2349076991076";
+const delay = 3; // seconds before auto-opening WhatsApp
+
+// ⚠️ Replace these placeholders with your real IDs.
+const ads = "AW-123456789";
+const ga4 = "G-XXXXXXXXXX";
+const conversions = {
+  card:    { send_to: `${ads}/LABEL_1`, value: 60.0, currency: "USD" },
+  project: { send_to: `${ads}/LABEL_2`, value: 20.0, currency: "USD" },
+};
+// The /websites CTAs now come straight here (no modal), so each website type counts as a custom website lead.
+const websiteTypes = ["portfolio", "resume", "blog", "business", "real-estate", "saas", "landing"];
+for (const t of websiteTypes) conversions[t] = conversions.project;
+
+// Plain-text messages (encoded in the browser).
+const messages = {
+  project:     "Hi Emmy, I need a custom website!",
+  license:     "Hello Emmy STACK01! I’m interested in securing the Professional Brand License for my project. I’d like to discuss the transition to full code ownership and removing the developer attribution.",
+  hub:         "Hello Emmy STACK01! I’ve just reviewed the Management Hub. I’d like to discuss the best long-term plan for my project’s growth and maintenance.",
+  inquiry:     "Hi Emmy STACK01, I have a few questions about your services before getting started.",
+  portfolio:   "Hi Emmy STACK01, I’m interested in a Creator & Portfolio Website to showcase my work. I’d like to talk about what it would include and how to get started.",
+  resume:      "Hi Emmy STACK01, I’m interested in a Resume & Personal Website for my experience, projects and skills. I’d like to talk about what it would include and how to get started.",
+  blog:        "Hi Emmy STACK01, I’m interested in a Blog & Content Website to publish my articles. I’d like to talk about what it would include and how to get started.",
+  business:    "Hi Emmy STACK01, I’m interested in a Business & Service Website so customers can find my services and contact me. I’d like to talk about what it would include and how to get started.",
+  "real-estate": "Hi Emmy STACK01, I’m interested in a Real Estate Website to present my property listings. I’d like to talk about what it would include and how to get started.",
+  saas:        "Hi Emmy STACK01, I’m interested in a Startup & SaaS Website to explain and promote my product. I’d like to talk about what it would include and how to get started.",
+  landing:     "Hi Emmy STACK01, I’m interested in a Landing Page for a product, campaign or offer. I’d like to talk about what it would include and how to get started.",
+};
+messages.maintenance = messages.hub;
+const card = { intro: "Hi Emmy! 👋 I want to build my Digital Business Card.", features: "*Selected Features:*", total: "*Total Investment:* $60", outro: "Let's get started!" };
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You | Emmy STACK01</title>
+    <meta name="description" content="Thank you for choosing Emmy STACK01. We're opening WhatsApp so we can continue the conversation.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0b1020">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <noscript><meta http-equiv="refresh" content={`${delay};url=https://wa.me/${phone}`}></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${ads}`}></script>
+    <script is:inline define:vars={{ ads, ga4, conversions }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag("js", new Date());
+        gtag("config", ads);
+        gtag("config", ga4);
+        // Fire the conversion for this order type once, as soon as the page loads.
+        const type = new URLSearchParams(location.search).get("type");
+        if (conversions[type]) gtag("event", "conversion", conversions[type]);
+    </script>
+    <style>
+        body { min-height: 100vh; min-height: 100dvh; background: var(--b-dark); color: var(--text-main); }
+        .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+        .thanks {
+            position: relative; isolation: isolate; overflow: hidden;
+            display: grid; place-items: center; min-height: inherit;
+            padding: clamp(2rem, 6vw, 4rem) var(--pad);
+            text-align: center;
+            background:
+                radial-gradient(700px 420px at 85% 0%, color-mix(in srgb, var(--accent-color) 20%, transparent), transparent 70%),
+                radial-gradient(640px 400px at 5% 100%, color-mix(in srgb, var(--primary-color) 32%, transparent), transparent 70%),
+                var(--b-dark);
+        }
+        .thanks::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                linear-gradient(color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+        }
+        .thanks-inner { display: grid; justify-items: center; width: 100%; max-width: 34rem; }
+        .thanks .logo { color: var(--text-main); font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem); }
+        .tick {
+            display: grid; place-items: center; width: clamp(4rem, 3rem + 5vw, 5.5rem); aspect-ratio: 1; margin-top: clamp(1.5rem, 5vw, 2.5rem);
+            border-radius: 50%; background: var(--grad); color: var(--b-dark); font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+            box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent-color) 14%, transparent), 0 18px 40px color-mix(in srgb, var(--primary-color) 45%, transparent);
+        }
+        .thanks h1 {
+            margin-top: 1.4rem; font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -.01em;
+            font-size: clamp(2.2rem, 1.4rem + 3.6vw, 3.8rem); text-wrap: balance;
+        }
+        .thanks .sub { margin-top: .9rem; max-width: 36ch; color: var(--text-muted); font-size: clamp(1rem, .94rem + .3vw, 1.15rem); text-wrap: pretty; }
+        .status { width: 100%; max-width: 22rem; margin-top: clamp(1.75rem, 5vw, 2.5rem); }
+        .status-heading { font-size: var(--fs-small); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-color); }
+        .meter { height: 6px; margin: .8rem 0 .7rem; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--text-main) 12%, transparent); }
+        .meter-fill { height: 100%; width: 100%; border-radius: inherit; background: var(--grad); transform: scaleX(0); transform-origin: left center; animation: fill var(--secs, 3s) linear forwards; }
+        @keyframes fill { to { transform: scaleX(1); } }
+        .status-sub { font-size: var(--fs-small); color: var(--text-muted); }
+        .thanks .cta { margin-top: clamp(1.25rem, 4vw, 1.75rem); }
+        .trust { width: 100%; max-width: 22rem; margin-top: clamp(1.75rem, 5vw, 2.5rem); padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--text-main) 12%, transparent); }
+        .trust p { font-size: var(--fs-small); color: var(--text-muted); }
+        .stars { margin: .35rem 0 .15rem; font-size: 1.3rem; letter-spacing: .12em; color: #ffb400; }
+        .trust a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--fs-small); font-weight: 700; color: var(--accent-color); text-decoration: underline; text-underline-offset: 3px; }
+        .thanks :focus-visible { outline-color: var(--accent-color); }
+        @media (prefers-reduced-motion: reduce) { .meter-fill { animation: none !important; transform: none; } }
+    </style>
+</head>
+<body>
+    <main class="thanks">
+        <div class="thanks-inner">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+
+            <div class="tick" aria-hidden="true"><i class="ri-check-line"></i></div>
+            <h1>Thank you!</h1>
+            <p class="sub">Thanks for choosing Emmy STACK01. We’re opening WhatsApp so we can pick up the conversation.</p>
+
+            <div class="status">
+                <p class="status-heading" id="status-text" role="status">Preparing your message…</p>
+                <div class="meter" aria-hidden="true"><div class="meter-fill" style={`--secs:${delay}s`}></div></div>
+                <p class="status-sub">If WhatsApp doesn’t open on its own, use the button below.</p>
+            </div>
+
+            <a id="wa-link" class="cta" href={`https://wa.me/${phone}`}><i class="ri-whatsapp-line" aria-hidden="true"></i> Open WhatsApp</a>
+
+            <div class="trust">
+                <p>While you wait, see why clients trust us:</p>
+                <div class="stars" aria-hidden="true">★★★★★</div>
+                <a href="https://www.trustpilot.com/review/emmystack01.com" target="_blank" rel="noopener noreferrer">View our Trustpilot profile<span class="sr-only"> (opens in a new tab)</span></a>
+            </div>
+        </div>
+    </main>
+
+    <script is:inline define:vars={{ phone, delay, messages, card }}>
+        const params = new URLSearchParams(location.search);
+        const type = params.get("type");
+        let text = messages[type] || "";
+
+        if (type === "card") {
+            // URLSearchParams already decodes the value, so don't decode it again.
+            const features = (params.get("stack") || "").split(",").map(s => s.trim()).filter(Boolean);
+            text = [card.intro, ...(features.length ? ["", card.features, ...features.map(f => "• " + f)] : []), "", card.total, "", card.outro].join("\n");
+        }
+
+        const link = `https://wa.me/${phone}` + (text ? `?text=${encodeURIComponent(text)}` : "");
+        const btn = document.getElementById("wa-link");
+        const status = document.getElementById("status-text");
+        if (btn) btn.href = link;
+
+        setTimeout(() => { if (status) status.textContent = "Opening WhatsApp…"; }, Math.max(0, delay * 1000 - 700));
+        // replace() keeps this page out of the history, so Back doesn't bounce the visitor straight into WhatsApp again.
+        setTimeout(() => location.replace(link), delay * 1000);
+    </script>
+</body>
+</html>

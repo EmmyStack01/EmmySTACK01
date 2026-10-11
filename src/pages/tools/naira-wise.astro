@@ -1,0 +1,341 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/tools/naira-wise.astro — Styles: /style/index-style.css + /style/tool-invoice.css · Script: /script/tool-invoice.js
+const site = "https://emmystack01.com";
+const url = `${site}/tools/naira-wise`;
+const title = "Free Invoice Generator for Nigerian Freelancers | Naira-Wise by Emmy STACK01";
+const desc = "Create professional PDF invoices in Naira (NGN) or US dollars. Free, no sign-up, with optional 7.5% VAT. Built for Nigerian freelancers and small businesses.";
+const ogTitle = "Free Invoice Generator for Nigerian Freelancers | Naira-Wise";
+const ogDesc = "Fast, clean, professional PDF invoicing in NGN and USD. No sign-up required.";
+const ogImage = `${site}/asset/naira-wise-og.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const features = [
+  { i: "ri-money-dollar-circle-line", t: "Naira and dollars", d: "Switch between NGN (₦) and USD ($) in one click. Amounts are calculated to the kobo and cent." },
+  { i: "ri-percent-line", t: "Optional 7.5% VAT", d: "Turn VAT on if you are VAT-registered. The subtotal, VAT and total update as you type." },
+  { i: "ri-shield-check-line", t: "Private by design", d: "Everything happens in your browser. Your client details and invoice are never uploaded to our servers." },
+];
+const faqs = [
+  { q: "Is the Naira-Wise invoice generator free?", a: "Yes. It is free to use, with no account, no watermark fee and no limit on how many invoices you create." },
+  { q: "Are my invoice details stored anywhere?", a: "No. Invoices are built in your browser and downloaded straight to your device. Only your business name, address, payment details, currency and VAT choice are remembered in this browser so you do not retype them next time." },
+  { q: "Should I charge VAT on my invoice?", a: "Only if your business is registered for VAT. Nigeria's standard VAT rate is 7.5%, which you can switch on above. If you are unsure, check with your accountant or the tax authority." },
+  { q: "Can I add my logo?", a: "Yes. Upload a PNG, JPG, WebP or SVG logo and it appears in the preview and on the PDF." },
+  { q: "Does it support more than one page?", a: "Yes. Long invoices continue onto extra pages, and the table headings repeat on each page." },
+];
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication", "@id": `${url}#webapp`, url, name: "Naira-Wise Invoice Generator", alternateName: "Naira-Wise", description: desc,
+      applicationCategory: "BusinessApplication", operatingSystem: "All", browserRequirements: "Requires JavaScript. Requires HTML5.",
+      isAccessibleForFree: true, offers: { "@type": "Offer", price: "0.00", priceCurrency: "USD" },
+      keywords: "invoice generator, Nigeria invoice, NGN invoice, USD invoice, freelancer billing, PDF invoice",
+      featureList: [
+        "Live invoice preview that updates as you type",
+        "Line items with automatic subtotal, optional 7.5% VAT and total",
+        "PDF export with selectable text and automatic extra pages",
+        "NGN and USD billing",
+        "Your own logo, payment details and notes",
+        "Private: invoices are created in your browser and never uploaded",
+      ],
+      author: { "@id": `${site}/#organization` }, creator: { "@id": `${site}/#organization` }, publisher: { "@id": `${site}/#organization` }, inLanguage: "en",
+    },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Tools", item: `${site}/tools` }, { "@type": "ListItem", position: 3, name: "Naira-Wise", item: url }] },
+    { "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="keywords" content="invoice generator Nigeria, free invoice maker, Naira invoice tool, NGN PDF invoice, freelancer billing, Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/tool-invoice.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Naira-Wise by Emmy STACK01">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content="Naira-Wise: Professional Invoices by Emmy STACK01">
+    <meta name="twitter:description" content="Generate clean PDF invoices for your clients in seconds. Optimized for NGN and USD billing.">
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn is-current" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "naira-wise" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/pricing" class="cta nav-cta">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn active" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "naira-wise" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/pricing" class="cta project-btn">Start your project <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="nw-hero">
+        <div class="nw-hero-inner">
+            <span class="nw-eyebrow">Free tool · Naira-Wise</span>
+            <h1>Professional invoices in <em>NGN &amp; USD</em></h1>
+            <p class="lead">Fill in the details, watch the invoice build itself, and download a clean PDF for your client. No sign-up needed.</p>
+            <ul class="nw-badges">
+                <li><i class="ri-flashlight-line" aria-hidden="true"></i> Free</li>
+                <li><i class="ri-lock-line" aria-hidden="true"></i> Private: stays in your browser</li>
+                <li><i class="ri-file-pdf-2-line" aria-hidden="true"></i> Multi-page PDF</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="nw-wrap">
+            <div class="nw-app">
+                <form class="nw-form" id="nw-form" autocomplete="off" novalidate onsubmit="return false">
+                    <fieldset class="nw-card">
+                        <legend>Your business</legend>
+                        <div class="nw-field">
+                            <span class="nw-lbl" id="nw-logo-lbl">Logo <span class="opt">(optional)</span></span>
+                            <div class="nw-logo-row">
+                                <label class="nw-file"><i class="ri-image-add-line" aria-hidden="true"></i> <span>Upload logo</span><input type="file" id="nw-logo" accept="image/*" aria-labelledby="nw-logo-lbl"></label>
+                                <img class="nw-thumb" id="nw-logo-thumb" alt="Your uploaded logo" hidden>
+                                <button type="button" class="nw-link-btn" id="nw-logo-clear" hidden>Remove logo</button>
+                            </div>
+                            <p class="nw-hint" id="nw-logo-err" role="alert" hidden style="color:#b42318;font-weight:700"></p>
+                        </div>
+                        <div class="nw-field"><label for="nw-biz">Business name</label><input class="nw-in" type="text" id="nw-biz" maxlength="120" placeholder="Your business name" autocomplete="organization"></div>
+                        <div class="nw-field"><label for="nw-addr">Address &amp; contact</label><textarea class="nw-ta" id="nw-addr" maxlength="400" placeholder="Street, city, phone, email"></textarea></div>
+                    </fieldset>
+
+                    <fieldset class="nw-card">
+                        <legend>Invoice details</legend>
+                        <div class="nw-grid">
+                            <div class="nw-field"><label for="nw-no">Invoice no.</label><input class="nw-in" type="text" id="nw-no" maxlength="30" value="INV-001"></div>
+                            <div class="nw-field"><label for="nw-cur">Currency</label><select class="nw-sel" id="nw-cur"><option value="NGN">NGN (₦)</option><option value="USD">USD ($)</option></select></div>
+                            <div class="nw-field"><label for="nw-issue">Issue date</label><input class="nw-in" type="date" id="nw-issue"></div>
+                            <div class="nw-field"><label for="nw-due">Due date</label><input class="nw-in" type="date" id="nw-due"></div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="nw-card">
+                        <legend>Bill to</legend>
+                        <div class="nw-field"><label for="nw-client">Client name</label><input class="nw-in" type="text" id="nw-client" maxlength="120" placeholder="Client or company name"></div>
+                        <div class="nw-field"><label for="nw-client-info">Client address / email <span class="opt">(optional)</span></label><textarea class="nw-ta" id="nw-client-info" maxlength="300" placeholder="Address, email or phone"></textarea></div>
+                    </fieldset>
+
+                    <fieldset class="nw-card">
+                        <legend>Line items</legend>
+                        <div class="nw-items" id="nw-items"></div>
+                        <button type="button" class="nw-add" id="nw-add"><i class="ri-add-line" aria-hidden="true"></i> Add line item</button>
+                    </fieldset>
+
+                    <fieldset class="nw-card">
+                        <legend>Tax &amp; payment</legend>
+                        <label class="nw-check"><input type="checkbox" id="nw-vat"> <span>Add 7.5% VAT</span></label>
+                        <div class="nw-field"><label for="nw-bank">Payment details <span class="opt">(optional)</span></label><textarea class="nw-ta" id="nw-bank" maxlength="300" placeholder="Bank name&#10;Account name&#10;Account number"></textarea></div>
+                        <div class="nw-field"><label for="nw-notes">Notes <span class="opt">(optional)</span></label><textarea class="nw-ta" id="nw-notes" maxlength="500" placeholder="Thank you for your business. Payment due within 7 days."></textarea></div>
+                        <p class="nw-hint" style="margin-top:.9rem">Your business details, payment details, currency and VAT choice are remembered in this browser only.</p>
+                    </fieldset>
+
+                    <div class="nw-download">
+                        <button type="button" class="cta nw-dl" id="nw-dl"><i class="ri-file-download-line" aria-hidden="true"></i> <span>Download invoice (PDF)</span></button>
+                        <p class="nw-status" id="nw-status" role="status" aria-live="polite"></p>
+                    </div>
+                </form>
+
+                <section class="nw-preview" aria-labelledby="nw-prev-title">
+                    <h2 class="nw-title" id="nw-prev-title">Live preview</h2>
+                    <div class="nw-toolbar" role="group" aria-label="Preview zoom">
+                        <button type="button" class="nw-tb" id="nw-zout" aria-label="Zoom out"><i class="ri-subtract-line" aria-hidden="true"></i></button>
+                        <span class="nw-zoom" id="nw-zval" aria-live="polite">100%</span>
+                        <button type="button" class="nw-tb" id="nw-zin" aria-label="Zoom in"><i class="ri-add-line" aria-hidden="true"></i></button>
+                        <button type="button" class="nw-tb" id="nw-zfit"><i class="ri-fullscreen-line" aria-hidden="true"></i> Fit width</button>
+                    </div>
+                    <div class="nw-stage" id="nw-stage" tabindex="0" role="region" aria-label="Invoice preview. Scroll to move around.">
+                        <div class="nw-sizer" id="nw-sizer">
+                            <article class="nw-paper" id="nw-paper" aria-label="Invoice">
+                                <div class="nw-p-head">
+                                    <div>
+                                        <img class="nw-p-logo" id="nw-p-logo" alt="" hidden>
+                                        <h3 class="nw-p-biz" id="nw-p-biz">Your business</h3>
+                                        <p class="nw-p-addr" id="nw-p-addr" hidden></p>
+                                    </div>
+                                    <div class="nw-p-meta">
+                                        <p class="nw-p-doc">INVOICE</p>
+                                        <dl>
+                                            <dt>Invoice no.</dt><dd id="nw-p-no"></dd>
+                                            <dt>Issue date</dt><dd id="nw-p-issue"></dd>
+                                            <dt>Due date</dt><dd id="nw-p-due"></dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                                <div class="nw-p-bill">
+                                    <p class="nw-p-lbl">Bill to</p>
+                                    <p class="nw-p-client" id="nw-p-client"></p>
+                                    <p class="nw-p-clientinfo" id="nw-p-clientinfo" hidden></p>
+                                </div>
+                                <table class="nw-table">
+                                    <thead><tr><th scope="col">Description</th><th scope="col">Qty</th><th scope="col">Price</th><th scope="col">Total</th></tr></thead>
+                                    <tbody id="nw-p-body"></tbody>
+                                </table>
+                                <div class="nw-p-totals">
+                                    <div><span>Subtotal</span><span id="nw-p-sub"></span></div>
+                                    <div id="nw-p-vatrow" hidden><span>VAT (7.5%)</span><span id="nw-p-vat"></span></div>
+                                    <div class="grand"><span>Total</span><span id="nw-p-total"></span></div>
+                                </div>
+                                <div class="nw-p-block" id="nw-p-bankblock" hidden><p class="nw-p-lbl">Payment details</p><p id="nw-p-bank"></p></div>
+                                <div class="nw-p-block notes" id="nw-p-notesblock" hidden><p class="nw-p-lbl">Notes</p><p id="nw-p-notes"></p></div>
+                                <div class="nw-p-foot">POWERED BY <a href="https://emmystack01.com/">EMMYSTACK01.COM</a></div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <section class="nw-section" aria-labelledby="why">
+            <h2 id="why">Why Naira-Wise</h2>
+            <ul class="nw-cards">
+                {features.map((f) => <li class="nw-info"><i class={f.i} aria-hidden="true"></i><h3>{f.t}</h3><p>{f.d}</p></li>)}
+            </ul>
+        </section>
+
+        <section class="nw-section" aria-labelledby="faq">
+            <h2 id="faq">Questions</h2>
+            <div class="nw-faq">
+                {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+            </div>
+        </section>
+
+        <div class="nw-coffee">
+            <div class="nw-coffee-box">
+                <h2>Enjoying the invoice tool?</h2>
+                <p>Naira-Wise is free to use. If it saves you time, you can buy Emmy a coffee to keep it that way.</p>
+                <a href="/payment" class="btn-white"><i class="ri-cup-line" aria-hidden="true"></i> Buy Emmy a coffee</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
+<script src="/script/tool-invoice.js" defer></script>
+<script src="/script/year.js" defer></script>
+</body>
+</html>

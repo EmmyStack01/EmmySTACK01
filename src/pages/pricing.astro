@@ -1,0 +1,470 @@
+---
+export const prerender = true;
+import SocialLinks from '../components/SocialLinks.astro';
+
+const site = "https://emmystack01.com";
+const url = `${site}/pricing`;
+const org = `${site}/#organization`;
+const title = "Pricing & Growth Hub | Emmy STACK01";
+const desc = "Transparent pricing for high-performance web development, custom 'Digital DNA' profiles, and long-term brand management at Emmy STACK01.";
+
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+
+/* ---------- Page content (prices and wording are unchanged from the old page) ---------- */
+const production = [
+  { n: "Branding Kit", p: ["$35"], d: "Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image" },
+  { n: "UI/UX Design", p: ["$20/pg"], d: "User Interface and User Experience Design for your web application" },
+  { n: "Web Dev & SEO", p: ["$50/Base pg", "$75/Adv pg"], d: "Custom-Coded Core, GSAP Animations, On-Page SEO and Meta Tags, robots.txt and sitemap.xml files" },
+];
+const productionFree = "GitHub Hosting Setup, Domain Configuration, Google Search Console Integration, Performance Testing, and 7 Days of Post-Launch Support.";
+
+const management = [
+  { n: "Minor Update", p: ["$7/Update"], d: "Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh" },
+  { n: "Major Update", p: ["Custom quota"], d: "New Section/Module, Integration Setup, SEO Overhaul, Animation Refinement, Layout Redesign" },
+  { n: "Professional CMS", p: ["$100+"], d: "Our Professional CMS offers a no-code dashboard for instant, real-time updates without technical skills. It preserves your “Cyber-Professional” speed and SEO while giving you total control, eliminating the need for a developer for daily content changes." },
+  { n: "Monthly Growth Retainer (MGR)", p: ["$25/mo"], d: "Priority Support, 6 Minor Updates, Performance Monitoring, Security Audits, Traffic Insights" },
+];
+
+const benefits = [
+  { n: "Total Ownership & IP Rights", d: "You own the source code and the “Digital DNA” architecture entirely." },
+  { n: "Remove Attribution", d: "Strip all developer branding to present the project as your own 100% proprietary tech." },
+  { n: "Independent Scaling", d: "Host on any server or private infrastructure without reliance on our maintenance ecosystem." },
+  { n: "Asset Valuation", d: "Increase your brand's market value by owning the underlying software assets instead of just a managed service." },
+  { n: "Unlimited Modification", d: "Full freedom to modify, fork, or redistribute the code for your internal business needs." },
+];
+
+// Keeps the info button attached to the last word, so it never wraps onto a line of its own
+const split = (n) => { const i = n.lastIndexOf(" "); return i < 0 ? ["", n] : [n.slice(0, i + 1), n.slice(i + 1)]; };
+
+/* ---------- Structured data ---------- */
+const provider = { "@id": org };
+const shipping = {
+  "@type": "OfferShippingDetails",
+  shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
+  shippingRate: { "@type": "MonetaryAmount", value: "0.00", currency: "USD" },
+  deliveryTime: {
+    "@type": "ShippingDeliveryTime",
+    handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+    transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+  },
+};
+const returns = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: [{ "@type": "Country", name: "NG" }, { "@type": "Country", name: "US" }],
+  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+  returnPolicyType: "https://schema.org/NoReturns",
+};
+const svc = (name, description) => ({ "@type": "Service", name, description });
+const per = (price, unitCode) => ({
+  "@type": "UnitPriceSpecification", price, priceCurrency: "USD",
+  referenceQuantity: { "@type": "QuantitativeValue", value: "1", unitCode },
+});
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ItemPage", "@id": `${url}#webpage`, url, name: "Transparent Pricing | Emmy STACK01",
+      description: "Explore custom-coded web production architectures, asset management plans, and digital identity pricing.",
+      isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
+    },
+    {
+      "@type": "Service", "@id": `${url}#production-stack`, name: "Custom Project Production Stack",
+      description: "Custom-coded web application production including Branding Kit, UI/UX Design, and Web Dev & SEO.",
+      mainEntityOfPage: { "@id": `${url}#webpage` }, provider,
+      hasOfferCatalog: {
+        "@type": "OfferCatalog", name: "Production Services",
+        itemListElement: [
+          { "@type": "Offer", itemOffered: svc("Branding Kit", "Custom Color Palette, Typography, Favicon set, Open Graph/Twitter Tags and Images, QR code Image"), price: "35.00", priceCurrency: "USD" },
+          { "@type": "Offer", itemOffered: svc("UI/UX Design", "User Interface and User Experience Design per page"), price: "20.00", priceCurrency: "USD", priceSpecification: per("20.00", "C62") },
+          { "@type": "Offer", itemOffered: svc("Web Dev & SEO (Base Page)", "Custom-Coded Core, GSAP Animations, On-Page SEO, Meta Tags, Robots.txt, and Sitemap.xml"), price: "50.00", priceCurrency: "USD" },
+          { "@type": "Offer", itemOffered: svc("Web Dev & SEO (Advanced Page)", "Custom-Coded Core with advanced integrations or complex animations"), price: "75.00", priceCurrency: "USD" },
+        ],
+      },
+    },
+    {
+      "@type": "Service", "@id": `${url}#management-hub`, name: "Long-Term Project Management",
+      description: "Post-launch updates, custom no-code CMS integration, and monthly growth retainers.",
+      mainEntityOfPage: { "@id": `${url}#webpage` }, provider,
+      hasOfferCatalog: {
+        "@type": "OfferCatalog", name: "Management & Maintenance Plans",
+        itemListElement: [
+          { "@type": "Offer", itemOffered: svc("Minor Update", "Text & Copy Changes, Media Swaps, Link Management, Color Scheme Adjustment, QR Code Refresh"), price: "7.00", priceCurrency: "USD" },
+          { "@type": "Offer", itemOffered: svc("Professional CMS", "No-code dashboard for real-time updates preserving speed and SEO performance."), price: "100.00", priceCurrency: "USD", priceSpecification: { "@type": "PriceSpecification", minPrice: "100.00", priceCurrency: "USD" } },
+          { "@type": "Offer", itemOffered: svc("Monthly Growth Retainer (MGR)", "Includes 6 Minor Updates, Security Audits, Priority Support, Performance Monitoring, and Traffic Insights."), price: "25.00", priceCurrency: "USD", priceSpecification: per("25.00", "MON") },
+        ],
+      },
+    },
+    {
+      "@type": "Product", "@id": `${site}/products#digital-business-card`, name: "Digital Business Card",
+      description: "Flat rate digital business card including GitHub hosting, domain config, and basic CMS.",
+      image: `${site}/asset/Checkout-our-Demos.png`, mainEntityOfPage: { "@id": `${url}#webpage` },
+      brand: { "@type": "Brand", name: "Emmy STACK01" },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: "4.5", reviewCount: "2", bestRating: "5", worstRating: "1" },
+      review: [
+        { "@type": "Review", author: { "@type": "Person", name: "Abbey" }, reviewRating: { "@type": "Rating", ratingValue: "4" },
+          reviewBody: "The website has been great for me. It makes people easily know what I’m about and how to reach me. It has mostly been useful for my WhatsApp community, creating an easy way to connect with new minds.",
+          publisher: { "@type": "Organization", name: "Google Business Profile" } },
+        { "@type": "Review", author: { "@type": "Person", name: "Prosper Zekeli" }, reviewRating: { "@type": "Rating", ratingValue: "5" },
+          reviewBody: "Honestly speaking I checked out Emmy Stack , it’s a neat and great tool for anyone looking to build an online presence quickly. The way it turns links into a searchable domain is clever you literally just click and Google can find it. Super simple to use, and it gives your project or profile a professional touch without overcomplicating things. It's really worth it 🔥 The setup was smooth and fast, and the interface is very user-friendly. It helps me manage my online presence more efficiently, and I can easily access or share my links whenever I need to. Overall, it’s a very useful tool for anyone who wants to keep their social accounts organized and accessible in one place. I’d definitely recommend it for convenience and ease of use.",
+          publisher: { "@type": "Organization", name: "Google Business Profile & Trustpilot" } },
+      ],
+      offers: { "@type": "Offer", priceCurrency: "USD", price: "60.00", availability: "https://schema.org/InStock", url: `${site}/products/digital-business-card`, category: "Digital Goods", seller: provider, shippingDetails: shipping, hasMerchantReturnPolicy: returns },
+    },
+    {
+      "@type": "Product", "@id": `${url}#white-label-license`, name: "White Label Professional Brand License",
+      description: "Total ownership, IP rights, and independent scaling assets for custom projects.",
+      image: `${site}/asset/white-label-license-preview.jpg`, mainEntityOfPage: { "@id": `${url}#webpage` },
+      isRelatedTo: { "@id": `${url}#production-stack` }, brand: { "@type": "Brand", name: "Emmy STACK01" },
+      offers: { "@type": "Offer", priceCurrency: "USD", price: "100.00", availability: "https://schema.org/InStock", url, category: "Digital Goods", seller: provider, shippingDetails: shipping, hasMerchantReturnPolicy: returns },
+    },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/pricing-style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+
+    <meta property="og:site_name" content="Emmy STACK01 | Digital DNA">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content={url}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content="Explore production stacks and management plans designed for owned media ecosystems and independent digital entrepreneurship.">
+    <meta property="og:image" content={`${site}/asset/pricing.jpg`}>
+    <meta property="og:image:alt" content="Emmy STACK01 Pricing Hub - Production and Management Tiers">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content="Scale your professional brand with custom-coded core solutions, GSAP animations, and technical SEO management.">
+    <meta name="twitter:image" content={`${site}/asset/pricing.jpg`}>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <div id="loader" aria-hidden="true"><span class="spinner"></span><p>Building your website…</p></div>
+
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span> </a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="#project-modal" class="cta nav-cta trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <button class="cta project-btn trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></button>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <div id="project-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" id="close-modal" aria-label="Close"><i class="ri-close-line"></i></button>
+            <h3 class="modal-title" id="modal-title">Connect via WhatsApp</h3>
+            <p class="modal-text">Select how you’d like to get started with Emmy STACK01:</p>
+            <div class="modal-actions">
+                <a href="/thank-you?type=project" class="btn-modal btn-primary" target="_blank" rel="noopener"><i class="ri-rocket-2-line"></i> Start a Project</a>
+                <a href="/thank-you?type=inquiry" class="btn-modal btn-secondary" target="_blank" rel="noopener"><i class="ri-question-answer-line"></i> Make an Inquiry</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="page-hero">
+        <div class="page-hero-inner">
+            <h1>Pricing, management &amp; growth hub</h1>
+            <p>Simple per-page pricing. Technical deployment included.</p>
+            <nav class="jump" aria-label="On this page">
+                <a href="#custom">Custom project</a>
+                <a href="#product">Digital business card</a>
+                <a href="#white-label">White label</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="pricing-hub">
+        <!-- 1. Custom project: Production / Management -->
+        <section class="price-block" id="custom">
+            <div class="section price-grid">
+                <div class="price-copy">
+                    <span class="tile-icon"><i class="ri-code-s-slash-line" aria-hidden="true"></i></span>
+                    <h2 class="sec-title">Custom project</h2>
+                    <p class="lead">Production and management pricing</p>
+                </div>
+
+                <div class="price-card">
+                    <div class="tabs" role="tablist" aria-label="Custom project pricing">
+                        <button type="button" class="tab" role="tab" id="tab-production" aria-selected="true" aria-controls="panel-production">Production</button>
+                        <button type="button" class="tab" role="tab" id="tab-management" aria-selected="false" aria-controls="panel-management" tabindex="-1">Management</button>
+                    </div>
+
+                    <div role="tabpanel" id="panel-production" aria-labelledby="tab-production">
+                        <h3 class="group-title">Production stack</h3>
+                        {production.map((r, i) => (
+                            <div class="price-row">
+                                <div class="price-head">
+                                    <span class="price-name">{split(r.n)[0]}<span class="nw">{split(r.n)[1]}<button type="button" class="info-btn" aria-expanded="false" aria-controls={`note-p${i}`} aria-label={`What is included in ${r.n}`}><i class="ri-information-line" aria-hidden="true"></i></button></span></span>
+                                    <span class:list={["price-val", r.p.length > 1 && "stack"]}>{r.p.map((x) => <span>{x}</span>)}</span>
+                                </div>
+                                <div class="price-note" id={`note-p${i}`}><div><p>{r.d}</p></div></div>
+                            </div>
+                        ))}
+                        <p class="included"><strong>Included for free:</strong> {productionFree}</p>
+                        <a class="btn-white" href="/thank-you?type=project" target="_blank" rel="noopener">Start your project <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                    </div>
+
+                    <div role="tabpanel" id="panel-management" aria-labelledby="tab-management" hidden>
+                        <h3 class="group-title">Long-term management</h3>
+                        {management.map((r, i) => (
+                            <div class="price-row">
+                                <div class="price-head">
+                                    <span class="price-name">{split(r.n)[0]}<span class="nw">{split(r.n)[1]}<button type="button" class="info-btn" aria-expanded="false" aria-controls={`note-m${i}`} aria-label={`What is included in ${r.n}`}><i class="ri-information-line" aria-hidden="true"></i></button></span></span>
+                                    <span class="price-val">{r.p[0]}</span>
+                                </div>
+                                <div class="price-note" id={`note-m${i}`}><div><p>{r.d}</p></div></div>
+                            </div>
+                        ))}
+                        <p class="included alt"><strong>MGR includes:</strong> 6 Minor Updates, Security Audits, and Priority Support.</p>
+                        <a class="btn-white" href="/thank-you?type=maintenance" target="_blank" rel="noopener">Request a management plan <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Digital business card -->
+        <section class="price-block band reverse" id="product">
+            <div class="section price-grid">
+                <div class="price-copy">
+                    <span class="tile-icon"><i class="ri-id-card-line" aria-hidden="true"></i></span>
+                    <h2 class="sec-title">Digital business card</h2>
+                    <p class="lead">Flat rate product</p>
+                </div>
+
+                <div class="price-card">
+                    <span class="card-tag">Production and management</span>
+                    <h3 class="group-title">Digital business card</h3>
+                    <div class="price-row">
+                        <div class="price-head">
+                            <span class="price-name">Flat price</span>
+                            <span class="price-val">$60</span>
+                        </div>
+                    </div>
+                    <p class="included"><strong>Included for free:</strong> GitHub Hosting Setup, Domain Configuration, Google Search Console Integration and Basic CMS.</p>
+                    <a class="btn-white" href="/products/digital-business-card">View product <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. White label -->
+        <section class="price-block" id="white-label">
+            <div class="section price-grid">
+                <div class="price-copy">
+                    <span class="tile-icon"><i class="ri-shield-star-line" aria-hidden="true"></i></span>
+                    <h2 class="sec-title">White label</h2>
+                    <p class="lead">Professional brand license</p>
+                </div>
+
+                <div class="price-card">
+                    <span class="card-tag">The benefits</span>
+                    <h3 class="group-title">Professional brand license</h3>
+                    <ul class="benefits">
+                        {benefits.map((b) => (
+                            <li class="benefit">
+                                <i class="ri-checkbox-circle-fill" aria-hidden="true"></i>
+                                <div><strong>{b.n}</strong><p>{b.d}</p></div>
+                            </li>
+                        ))}
+                    </ul>
+                    <div class="price-row">
+                        <div class="price-head">
+                            <span class="price-name">License fee</span>
+                            <span class="price-val">$100</span>
+                        </div>
+                    </div>
+                    <p class="included"><strong>Note:</strong> Only available for custom projects.</p>
+                    <a class="btn-white" href="/thank-you?type=license" target="_blank" rel="noopener">Request license <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // Loader
+  const loader = $("#loader"), hide = () => loader && loader.classList.add("done");
+  window.addEventListener("load", hide); setTimeout(hide, 3000);
+
+  // Drawer
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+
+  // Desktop dropdown (click for touch, hover/focus via CSS)
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+
+  // Modal
+  const modal = $("#project-modal"), closeBtn = $("#close-modal"); let lastFocus;
+  const showModal = (open) => {
+    modal.classList.toggle("is-active", open); modal.setAttribute("aria-hidden", String(!open));
+    if (open) { lastFocus = document.activeElement; closeBtn.focus(); } else if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+  $$(".trigger-project-modal").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); setDrawer(false); showModal(true); }));
+  closeBtn.addEventListener("click", () => showModal(false));
+  modal.addEventListener("click", (e) => { if (e.target === modal) showModal(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (modal.classList.contains("is-active")) showModal(false);
+    else if (drawer.classList.contains("open")) setDrawer(false);
+  });
+
+  // Tabs: Production / Management (click, plus arrow keys / Home / End)
+  const tabs = $$(".tab");
+  const selectTab = (tab, focus) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1;
+      $("#" + t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => selectTab(tab));
+    tab.addEventListener("keydown", (e) => {
+      const k = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (k === undefined) return;
+      e.preventDefault(); selectTab(tabs[(k + tabs.length) % tabs.length], true);
+    });
+  });
+
+  // "What's included" notes: tap, click or keyboard
+  $$(".info-btn").forEach((btn) => btn.addEventListener("click", () => {
+    const row = btn.closest(".price-row"), open = row.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(open));
+  }));
+
+  // Animation: nothing is hidden in CSS, so the page stays visible if GSAP fails to load
+  if (!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+    gsap.timeline({ defaults: { ease: "power4.out" } })
+      .from(".page-hero h1", { y: 40, opacity: 0, duration: 0.9 })
+      .from(".page-hero p, .jump", { y: 16, opacity: 0, duration: 0.6, stagger: 0.1 }, "-=0.5");
+    $$(".price-block").forEach((block) => {
+      const reverse = block.classList.contains("reverse"), d = window.innerWidth < 768 ? 30 : 60;
+      gsap.timeline({ scrollTrigger: { trigger: block, start: "top 80%", once: true } })
+        .from($(".price-copy", block), { x: reverse ? d : -d, opacity: 0, duration: 0.8, ease: "power2.out" })
+        .from($(".price-card", block), { x: reverse ? -d : d, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.65")
+        .from($$("[role=tabpanel]:not([hidden]) .price-row, .price-card > .price-row, .benefit", block), { y: 15, opacity: 0, stagger: 0.07, duration: 0.4, ease: "power1.out" }, "-=0.4");
+    });
+  });
+});
+</script>
+<script src="/script/year.js" defer></script>
+</body>
+</html>

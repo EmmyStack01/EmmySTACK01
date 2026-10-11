@@ -1,0 +1,11 @@
+---
+// Social and contact icons for the footer and the mobile menu. Links come from the Keystatic "Social and Contact links"
+// settings (see src/lib/cms.ts). YouTube, LinkedIn and Instagram appear automatically once a link is added.
+import { getSiteLinks } from "../lib/cms";
+const links = await getSiteLinks();
+---
+<div class="socials">
+    {links.map((l) => (
+        <a href={l.href} aria-label={l.label} {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}><i class={l.icon} aria-hidden="true"></i></a>
+    ))}
+</div>

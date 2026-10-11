@@ -1,0 +1,84 @@
+---
+// One website-type section on /websites. Content comes from src/data/websites.ts.
+// Visual styles (.visual, .browser, .mk-*, .tile-icon, .btn-white) come from /style/index-style.css.
+import { visuals, type WebsiteType } from "../../data/websites";
+
+interface Props {
+  item: WebsiteType;
+  index: number;
+}
+const { item, index } = Astro.props;
+const headingId = `${item.id}-title`;
+// Digital business card links to its product page. Every other type opens the WhatsApp hand-off page in a new tab.
+const opensHandoff = !item.cta.href;
+const ctaHref = item.cta.href ?? `/thank-you?type=${item.cta.type}`;
+---
+<section class:list={["ws-type", { "ws-alt": index % 2 === 1 }]} id={item.id} aria-labelledby={headingId} style={`--i:${index}`}>
+  <div class="ws-wrap">
+    <header class="ws-type-head">
+      <div class="ws-type-intro">
+        <span class="tile-icon"><i class={item.icon} aria-hidden="true"></i></span>
+        <h2 class="ws-h2" id={headingId}>{item.title}</h2>
+        <p class="stack-for"><strong>For:</strong> {item.audience}</p>
+        <p class="ws-quick">{item.quick}</p>
+      </div>
+      <div class="visual" aria-hidden="true">
+        <div class="browser">
+          <div class="bar"><i></i><i></i><i></i><b></b></div>
+          <Fragment set:html={visuals[item.visual]} />
+        </div>
+      </div>
+    </header>
+
+    <div class="ws-grid">
+      <div class="ws-block">
+        <h3>The common problem</h3>
+        <p>{item.problem}</p>
+      </div>
+      <div class="ws-block">
+        <h3>How a website helps</h3>
+        <p>{item.help}</p>
+      </div>
+
+      <div class="ws-block ws-scenario">
+        <h3>A realistic scenario</h3>
+        <p>{item.scenario}</p>
+        {item.examples && (
+          <>
+            <p class="ws-more-label">{item.examplesLabel ?? "More examples"}</p>
+            <ul class="ws-examples">
+              {item.examples.map((e) => <li>{e}</li>)}
+            </ul>
+          </>
+        )}
+      </div>
+
+      <div class="ws-block">
+        <h3>Useful features</h3>
+        <ul class="ws-checks">
+          {item.features.map((f) => <li><i class="ri-check-line" aria-hidden="true"></i><span>{f}</span></li>)}
+        </ul>
+      </div>
+      <div class="ws-block">
+        <h3>How we approach it</h3>
+        <p>{item.approach}</p>
+        {item.caveat && <p class="ws-caveat"><i class="ri-information-line" aria-hidden="true"></i><span>{item.caveat}</span></p>}
+      </div>
+    </div>
+
+    <aside class="conversion-note" aria-labelledby={`${item.id}-note`}>
+      <div class="conversion-copy">
+        <h3 id={`${item.id}-note`}>In practice</h3>
+        <p>{item.note}</p>
+      </div>
+      {opensHandoff
+        ? <a class="btn-white" href={ctaHref} target="_blank" rel="noopener">{item.cta.label}<span class="sr-only"> (opens in a new tab)</span> <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+        : <a class="btn-white" href={ctaHref}>{item.cta.label} <i class="ri-arrow-right-line" aria-hidden="true"></i></a>}
+    </aside>
+
+    <div class="ws-links">
+      {item.resources?.map((r) => <a class="ws-link" href={r.href}>{r.label}</a>)}
+      <a class="ws-link" href="#website-types"><i class="ri-arrow-up-line" aria-hidden="true"></i> All website types</a>
+    </div>
+  </div>
+</section>

@@ -5,4 +5,11 @@ dist/
 .astro-indexnow-cache.json
 .vercel
 .env*
+!.env.example
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+partners*.csv
+import-partners*.sql
 EmmySTACK01_Website_Build_Summary.pdf

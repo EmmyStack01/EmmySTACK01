@@ -1,0 +1,44 @@
+---
+// One project from the Keystatic "Website Projects" collection, shown in the order:
+// name, website type, image, overview, the need, what we built, (strategy), View live website.
+import type { RecentProject } from "../../lib/cms";
+
+interface Props {
+  project: RecentProject;
+}
+const { project } = Astro.props;
+// Blank lines in a CMS text field become separate paragraphs.
+const paras = (t: string) => t.split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+const facts = [
+  { label: "The need", text: project.need },
+  { label: "What we built", text: project.built },
+  { label: "The strategy", text: project.strategy },
+].filter((f) => f.text);
+---
+<article class="ws-project">
+  <header class="ws-project-head">
+    <h3>{project.name}</h3>
+    <p class="ws-project-type">{project.websiteType}</p>
+  </header>
+  {project.image && (
+    <div class="ws-project-thumb">
+      <img src={project.image} alt={project.imageAlt} width="1200" height="750" loading="lazy" decoding="async">
+    </div>
+  )}
+  <div class="ws-project-body">
+    {paras(project.overview).map((p) => <p>{p}</p>)}
+    <dl class="ws-project-facts">
+      {facts.map((f) => (
+        <div>
+          <dt>{f.label}</dt>
+          <dd>{paras(f.text).map((p) => <p>{p}</p>)}</dd>
+        </div>
+      ))}
+    </dl>
+    {project.liveUrl && (
+      <div class="ws-project-links">
+        <a class="cta" href={project.liveUrl} target="_blank" rel="noopener noreferrer">View live website<span class="sr-only"> of {project.name} (opens in a new tab)</span> <i class="ri-arrow-right-up-line" aria-hidden="true"></i></a>
+      </div>
+    )}
+  </div>
+</article>

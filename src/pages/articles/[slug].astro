@@ -1,396 +1,312 @@
 ---
 export const prerender = true;
-// src/pages/articles/[slug].astro
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/articles/[slug].astro — template for every individual article (/articles/<slug>).
+// Styles: /style/index-style.css + /style/articles-style.css   Body renderer: src/components/ArticleRenderer.tsx
 import { keystaticReader } from '../../reader';
 import ArticleRenderer from '../../components/ArticleRenderer';
 
 export async function getStaticPaths() {
   const slugs = await keystaticReader.collections.articles.list();
-  return slugs.map(slug => ({ params: { slug } }));
+  return slugs.map((slug) => ({ params: { slug } }));
 }
+
+// Use the real domain, not Astro.url.origin: in a static build the origin can be "localhost",
+// which would put wrong canonical / og:image / JSON-LD URLs into every article.
+const site = "https://emmystack01.com";
+const org = `${site}/#organization`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
 
 const { slug } = Astro.params;
-
-const article = await keystaticReader.collections.articles.read(slug);
-
-if (!article) {
-  return Astro.redirect('/articles');
-}
+const article = await keystaticReader.collections.articles.read(slug!);
+if (!article) return Astro.redirect("/articles");
 
 const content = await article.content();
-const title = article.title;
-const description = article.description;
-const date = article.date;
-const category = article.category;
-const readingTime = article.readingTime;
+const { title, description, date, category, readingTime, author } = article;
 const image = article.coverImage;
-const author = article.author;
 
-const fullyQualifiedImage = image
-  ? (image.startsWith('http') ? image : `${Astro.url.origin}${image}`)
-  : `${Astro.url.origin}/asset/og-image4.jpg`;
+const url = `${site}/articles/${slug}`;
+const fmt = (d?: string) => d ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(d)) : "";
+const time = (d?: string) => (d ? new Date(d).getTime() : 0) || 0;
+const iso = date ? new Date(date).toISOString() : undefined;
 
-const articleSchema = {
+const ogImage = image ? (image.startsWith("http") ? image : `${site}${image.startsWith("/") ? "" : "/"}${image}`) : `${site}/asset/og-image4.jpg`;
+const pageTitle = `${title} | Emmy STACK01`;
+
+// "Read next": same category first, then newest
+const all = await keystaticReader.collections.articles.all();
+const related = all
+  .filter((a) => a.slug !== slug)
+  .sort((a, b) => (Number(b.entry.category === category) - Number(a.entry.category === category)) || (time(b.entry.date) - time(a.entry.date)))
+  .slice(0, 3)
+  .map((a) => ({ slug: a.slug, title: a.entry.title, description: a.entry.description, date: a.entry.date, readingTime: a.entry.readingTime, category: a.entry.category, image: a.entry.coverImage }));
+
+const schema = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": title,
-  "description": description,
-  "image": fullyQualifiedImage,
-  "datePublished": date ? new Date(date).toISOString() : new Date().toISOString(),
-  "dateModified": date ? new Date(date).toISOString() : new Date().toISOString(),
-  "url": Astro.url.href,
-  "author": {
-    "@type": "Person",
-    "name": author || "Emmy STACK01"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Emmy STACK01",
-    "logo": {
-      "@type": "ImageObject",
-      "url": `${Astro.url.origin}/asset/emmy-stack01-logo.png`
-    }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": Astro.url.href
-  }
+  "@graph": [
+    {
+      "@type": "BlogPosting", "@id": `${url}#article`, headline: title, description, image: ogImage, url,
+      ...(iso ? { datePublished: iso, dateModified: iso } : {}),
+      author: author ? { "@type": "Person", name: author } : { "@type": "Organization", "@id": org, name: "Emmy STACK01" },
+      publisher: { "@type": "Organization", "@id": org, name: "Emmy STACK01", logo: { "@type": "ImageObject", url: `${site}/asset/emmy-stack01-logo.png` } },
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
+      ...(category ? { articleSection: category } : {}),
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: site },
+        { "@type": "ListItem", position: 2, name: "Articles", item: `${site}/articles` },
+        { "@type": "ListItem", position: 3, name: title, item: url },
+      ],
+    },
+  ],
 };
 ---
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
 
-    <title>{title} | Emmy STACK01</title>
-    <meta name="description" content={description}>
-    <link rel="canonical" href={Astro.url.href}>
-
-    <meta property="og:type" content="article">
-    <meta property="og:title" content={title}>
-    <meta property="og:description" content={description}>
-    <meta property="og:url" content={Astro.url.href}>
-    <meta property="og:image" content={fullyQualifiedImage}>
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={fullyQualifiedImage}>
-
-    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/articles-style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
 
-    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description}>
+    <link rel="canonical" href={url}>
 
-    <style is:global>
-      /* ==========================================================================
-        1. Global Setup, Layouts & Reset Safeties
-        ========================================================================== */
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
+    <meta property="og:site_name" content="Emmy STACK01">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    {iso && <meta property="article:published_time" content={iso} />}
+    {category && <meta property="article:section" content={category} />}
+    {author && <meta property="article:author" content={author} />}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={ogImage}>
 
-      body {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Montserrat', sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.7;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-      }
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span> </a></li>
+            <li><a href="/articles" aria-current="page">Articles</a></li>
+        </ul>
+        <a href="/articles#newsletter" class="cta nav-cta">Join the Insider Log <i class="ri-arrow-right-line"></i></a>
+    </nav>
 
-      .title-font {
-        font-family: 'Orbitron', sans-serif;
-      }
-
-      .glass-card {
-        background: rgba(22, 27, 34, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px); /* Safari support */
-        border: 1px solid rgba(45, 102, 180, 0.2);
-        border-radius: 12px;
-      }
-
-      .back-btn {
-        color: #8b949e;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.9rem;
-        padding: 0.5rem 0; /* Enhanced mobile touch target */
-        transition: color 0.2s ease;
-      }
-
-      .back-btn:hover {
-        color: #00ccff;
-      }
-
-      /* ==========================================================================
-        2. Base Document / Rich-Text Typography
-        ========================================================================== */
-      .rich-text p {
-        margin-top: 0;
-        margin-bottom: 1.75rem;
-        /* Balanced clamp: min 1rem, dynamic scaling, max 1.125rem */
-        font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-        font-weight: 300;
-        color: #e6edf3;
-      }
-
-      .rich-text h2 {
-        font-family: 'Orbitron', sans-serif;
-        color: #fff;
-        /* Balanced clamp: min 1.4rem, dynamic scaling, max 2rem */
-        font-size: clamp(1.4rem, 1.2rem + 1vw, 2rem);
-        margin: 2.5rem 0 1rem 0;
-        letter-spacing: 0.5px;
-        line-height: 1.3;
-      }
-
-      .rich-text h3 {
-        font-family: 'Orbitron', sans-serif;
-        color: #fff;
-        /* Balanced clamp: min 1.2rem, dynamic scaling, max 1.5rem */
-        font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
-        margin: 2rem 0 0.75rem 0;
-        line-height: 1.3;
-      }
-
-      .rich-text ul,
-      .rich-text ol {
-        margin-bottom: 1.75rem;
-        padding-left: 1.25rem;
-        color: #e6edf3;
-      }
-
-      .rich-text li {
-        margin-bottom: 0.5rem;
-        font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-        font-weight: 300;
-      }
-
-      .rich-text a {
-        color: #00ccff;
-        text-decoration: none;
-        transition: opacity 0.2s ease;
-      }
-
-      .rich-text a:hover {
-        opacity: 0.85;
-      }
-
-      .rich-text strong {
-        color: #fff;
-        font-weight: 600;
-      }
-
-      /* ==========================================================================
-        3. Native Dash Quotes / Callouts (Tip & Warning Workspace)
-        ========================================================================== */
-      .rich-text blockquote {
-        margin: 2rem 0;
-        padding: 1.25rem 1.5rem;
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 0 8px 8px 0;
-        border-left: 3px solid #00ccff;
-        color: #e6edf3;
-      }
-
-      .rich-text blockquote p {
-        margin: 0 !important;
-        font-size: 0.95rem;
-        font-style: italic;
-        line-height: 1.6;
-      }
-
-      .rich-text blockquote strong {
-        color: #fff;
-      }
-
-      /* ==========================================================================
-        4. Code Block Layout Safeties
-        ========================================================================== */
-      .rich-text pre {
-        background: rgba(22, 27, 34, 0.8);
-        border: 1px solid rgba(45, 102, 180, 0.2);
-        padding: 1.25rem;
-        border-radius: 8px;
-        overflow-x: auto;
-        margin-bottom: 1.75rem;
-        /* Smooth scrolling on mobile devices */
-        -webkit-overflow-scrolling: touch; 
-      }
-
-      .rich-text pre code {
-        background: transparent;
-        color: #00ccff;
-        padding: 0;
-        border-radius: 0;
-        font-size: 0.9em;
-        white-space: pre;
-      }
-
-      .rich-text :not(pre) > code {
-        background: rgba(45, 102, 180, 0.15);
-        color: #00ccff;
-        padding: 0.15rem 0.4rem;
-        border-radius: 4px;
-        font-size: 0.9em;
-        word-break: break-word; /* Prevents long inline codes from breaking mobile layout */
-      }
-
-      /* ==========================================================================
-        5. Custom Built Utility Foundations
-        ========================================================================== */
-      .btn-glow {
-        background: linear-gradient(135deg, #2d66b4, #00ccff);
-        color: #fff !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        text-decoration: none;
-        font-weight: 600;
-        display: inline-block;
-        transition: box-shadow 0.2s ease, transform 0.1s ease;
-      }
-
-      .btn-glow:hover {
-        box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
-      }
-
-      .btn-glow:active {
-        transform: scale(0.98); /* Tactile feedback on mobile press */
-      }
-
-      /* ==========================================================================
-        6. Keystatic Custom Components
-        ========================================================================== */
-      /* --- CTA Block --- */
-      .keystatic-cta-block {
-        margin: 2.5rem 0;
-        padding: 1.5rem; /* Mobile first padding */
-        border: 1px solid rgba(0, 204, 255, 0.2);
-        text-align: left;
-        position: relative;
-      }
-
-      .keystatic-cta-block h4 {
-        color: #fff;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 1.2rem;
-        margin: 0 0 0.75rem 0;
-        letter-spacing: 0.5px;
-      }
-
-      .keystatic-cta-block p {
-        color: #8b949e !important;
-        font-size: 0.95rem !important;
-        margin: 0 0 1.5rem 0 !important;
-        line-height: 1.6 !important;
-      }
-
-      .keystatic-cta-block a {
-        display: inline-block;
-        width: 100%; /* Full width on mobile for better ergonomics */
-        text-align: center;
-        padding: 0.85rem 1.5rem; /* Generous touch target sizing */
-        border-radius: 4px;
-        font-size: 0.85rem;
-        text-decoration: none;
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 600;
-        color: #fff !important;
-      }
-
-      /* --- Alert Component Fallback Bounds --- */
-      .keystatic-alert-block {
-        margin: 2rem 0;
-        padding: 1.25rem 1.5rem;
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 0 8px 8px 0;
-      }
-
-      .rich-text .keystatic-alert-block p {
-        color: #e6edf3 !important;
-        font-size: 0.95rem !important;
-        font-style: italic !important;
-        margin: 0 !important;
-        line-height: 1.6 !important;
-        display: block !important;
-      }
-
-      .keystatic-alert-block.alert-tip {
-        border-left: 3px solid #00ccff;
-      }
-
-      .keystatic-alert-block.alert-warning {
-        border-left: 3px solid #ffcc00;
-        background: rgba(255, 204, 0, 0.04);
-      }
-
-      /* ==========================================================================
-        7. Desktop Media Query Enhancements (Break Upward)
-        ========================================================================== */
-      @media screen and (min-width: 768px) {
-        .keystatic-cta-block {
-          padding: 2.5rem; /* Roomier desktop layout */
-        }
-
-        .keystatic-cta-block a {
-          width: auto; /* Revert full-width to naturally sizing button on desktop */
-          padding: 0.65rem 1.5rem;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 0 1.5rem;">
-      <a href="/articles" class="back-btn">
-        <i class="ri-arrow-left-line"></i> Back to DNA Log
-      </a>
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
     </div>
 
-    <main style="max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 6rem 1.5rem;">
-      
-      <header style="margin-bottom: 2.5rem;">
-        <span style="display: inline-block; background: rgba(0, 204, 255, 0.1); color: #00ccff; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; border: 1px solid rgba(0, 204, 255, 0.2); margin-bottom: 1rem;">
-          {category}
-        </span>
-        
-        <h1 class="title-font" style="font-size: clamp(1.75rem, 5vw, 2.6rem); color: #fff; line-height: 1.3; margin: 0 0 1.25rem 0; letter-spacing: 0.5px;">
-          {title}
-        </h1>
-        
-        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; font-size: 0.85rem; color: #8b949e; border-bottom: 1px solid rgba(49, 56, 65, 0.6); padding-bottom: 1.5rem;">
-          <span><i class="ri-user-3-line" style="color: #2d66b4;"></i> By {author}</span>
-          <span><i class="ri-calendar-todo-line"></i> {date}</span>
-          <span><i class="ri-time-line"></i> {readingTime}</span>
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
         </div>
-      </header>
-
-      {image && (
-        <div style="width: 100%; height: clamp(200px, 45vw, 400px); overflow: hidden; border-radius: 12px; margin-bottom: 3rem; border: 1px solid rgba(49, 56, 65, 0.4);">
-          <img src={image} alt={title} style="width: 100%; height: 100%; object-fit: cover;" />
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link active" aria-current="page"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/articles#newsletter" class="cta project-btn">Join the Insider Log <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
         </div>
-      )}
+    </aside>
 
-      <article class="rich-text" style="margin-bottom: 5rem; color: #e6edf3; line-height: 1.8;">
-        <div style="max-width: 750px; margin: 0 auto; line-height: 1.8;">
-          <ArticleRenderer document={content} />
+    <header class="ar-hero post">
+        <div class="ar-hero-inner">
+            <nav aria-label="Breadcrumb">
+                <ol class="ar-crumbs">
+                    <li><a href="/"><i class="ri-home-line" aria-hidden="true"></i> Home</a></li>
+                    <li><a href="/articles"><i class="ri-arrow-left-line" aria-hidden="true"></i> Articles</a></li>
+                    <li aria-current="page">{title}</li>
+                </ol>
+            </nav>
+            {category && <span class="ar-cat">{category}</span>}
+            <h1>{title}</h1>
+            <div class="ar-meta">
+                {author && <span><i class="ri-user-3-line" aria-hidden="true"></i> By {author}</span>}
+                {date && <span><i class="ri-calendar-line" aria-hidden="true"></i> <time datetime={date}>{fmt(date)}</time></span>}
+                {readingTime && <span><i class="ri-time-line" aria-hidden="true"></i> {readingTime}</span>}
+            </div>
         </div>
-      </article>
+    </header>
 
+    <main>
+        {image && (
+            <div class="ar-cover">
+                <img src={image} alt={title} width="1200" height="675" fetchpriority="high" decoding="async">
+            </div>
+        )}
+
+        <div class="ar-body">
+            <article class="prose">
+                <ArticleRenderer document={content} />
+            </article>
+
+            <div class="ar-after">
+                <div class="ar-share">
+                    <span>Share</span>
+                    <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`} target="_blank" rel="noopener noreferrer" aria-label="Share on X (opens in a new tab)"><i class="ri-twitter-x-line" aria-hidden="true"></i> X</a>
+                    <a href={`https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`} target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp (opens in a new tab)"><i class="ri-whatsapp-line" aria-hidden="true"></i> WhatsApp</a>
+                    <button type="button" id="copyLink" data-url={url}><i class="ri-links-line" aria-hidden="true"></i> <span id="copyText">Copy link</span></button>
+                </div>
+                <a class="ar-back" href="/articles"><i class="ri-arrow-left-line" aria-hidden="true"></i> All articles</a>
+            </div>
+        </div>
+
+        {related.length > 0 && (
+            <section class="ar-section" style="padding-top:0" aria-labelledby="next">
+                <h2 class="ar-section-title" id="next">Read next</h2>
+                <div class="ar-grid">
+                    {related.map((a) => (
+                        <article class="ar-card">
+                            <div class="ar-thumb">
+                                {a.image
+                                    ? <img src={a.image} alt={a.title} width="800" height="500" loading="lazy" decoding="async">
+                                    : <div class="ar-ph" aria-hidden="true"><i class="ri-image-line"></i></div>}
+                                {a.category && <span class="ar-badge">{a.category}</span>}
+                            </div>
+                            <div class="ar-card-body">
+                                <div class="ar-card-meta">
+                                    <time datetime={a.date}>{fmt(a.date)}</time>
+                                    {a.readingTime && <span aria-hidden="true">•</span>}
+                                    {a.readingTime && <span>{a.readingTime}</span>}
+                                </div>
+                                <h3><a href={`/articles/${a.slug}`}>{a.title}</a></h3>
+                                <p>{a.description}</p>
+                                <span class="ar-more" aria-hidden="true">Explore entry <i class="ri-arrow-right-up-line"></i></span>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        <div class="ar-section" style="padding-top:0">
+            <section class="ar-news" aria-labelledby="news-title">
+                <span class="ar-eyebrow">The Emmy STACK01 Insider Log</span>
+                <h2 id="news-title">Get the next insight</h2>
+                <p>Early access to product releases, technical tips and partnership opportunities, straight to your inbox.</p>
+                <a class="btn-white" href="/articles#newsletter">Join the Insider Log <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            </section>
+        </div>
     </main>
-  </body>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // Drawer
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+
+  // Desktop dropdown (click for touch, hover/focus via CSS)
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+
+  // Copy link
+  const copy = $("#copyLink"), label = $("#copyText");
+  copy.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(copy.dataset.url); label.textContent = "Copied!"; }
+    catch (_) { label.textContent = "Press Ctrl+C on the address bar"; }
+    setTimeout(() => { label.textContent = "Copy link"; }, 2200);
+  });
+});
+</script>
+<script src="/script/year.js" defer></script>
+</body>
 </html>

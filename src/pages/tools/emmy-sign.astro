@@ -1,0 +1,292 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/tools/emmy-sign.astro — Styles: /style/index-style.css + /style/tool-pdf.css · Script: /script/tool-pdf.js
+const site = "https://emmystack01.com";
+const url = `${site}/tools/emmy-sign`;
+const title = "Emmy Sign | Free Online PDF Signature Tool (STACK01)";
+const desc = "Sign, move, and resize signatures on any PDF document for free with Emmy Sign. Private, in-browser PDF tool powered by the Emmy STACK01 framework.";
+const ogTitle = "Sign Any Document Online with Emmy Sign";
+const ogDesc = "The easiest way to add your signature to a PDF. Draw it, position it, resize it. Your file never leaves your browser.";
+const ogImage = `${site}/asset/emmy-sign-og.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const colors = [
+  { c: "#000000", n: "Black" },
+  { c: "#000075", n: "Navy" },
+  { c: "#750000", n: "Dark red" },
+];
+const steps = [
+  { t: "Open your PDF", d: "Choose a file or drop it on the page. It opens right here in your browser." },
+  { t: "Add your mark", d: "Draw a signature, or add text and today's date. Drag to position, resize with the round handle." },
+  { t: "Download", d: "Get your signed copy as a normal PDF. Nothing is sent to a server." },
+];
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication", "@id": `${url}#webapp`, url, name: "Emmy Sign",
+      alternateName: "Emmy Sign: Free Online PDF Signature Tool", description: desc,
+      applicationCategory: "BusinessApplication", operatingSystem: "All",
+      browserRequirements: "Requires JavaScript and HTML5 canvas support.",
+      isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      author: { "@id": `${site}/#organization` }, creator: { "@id": `${site}/#organization` },
+      keywords: "PDF signer, online signature tool, sign PDF free, digital signature, Emmy Sign, STACK01",
+      featureList: ["Draw custom signatures in several colors", "Add text and dates to PDF documents", "Drag and resize overlays", "Private client-side processing", "Page navigation and zoom controls"],
+      permissions: "No account or server upload required. Processing happens locally in the browser.",
+      screenshot: ogImage,
+    },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Tools", item: `${site}/tools` }, { "@type": "ListItem", position: 3, name: "Emmy Sign", item: url }] },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="keywords" content="PDF signer, online signature tool, sign PDF free, digital signature, Emmy Sign, STACK01, web development services">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/tool-pdf.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Emmy Sign by STACK01">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content="Emmy Sign: Professional PDF Signatures Made Simple">
+    <meta name="twitter:description" content="Securely sign your documents in seconds. No upload to a server required. Everything stays in your browser.">
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn is-current" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "emmy-sign" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/pricing" class="cta nav-cta">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn active" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "emmy-sign" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/pricing" class="cta project-btn">Start your project <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="sg-hero">
+        <div class="sg-hero-inner">
+            <span class="sg-eyebrow">Emmy Sign · PDF Signer</span>
+            <h1>Sign any PDF, <em>free</em></h1>
+            <p>Draw your signature, add text and the date, then download. It all happens in your browser.</p>
+            <ul class="sg-chips" aria-label="Highlights">
+                <li><i class="ri-lock-2-line" aria-hidden="true"></i> Files never leave your device</li>
+                <li><i class="ri-user-unfollow-line" aria-hidden="true"></i> No account</li>
+                <li><i class="ri-gift-line" aria-hidden="true"></i> Free</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section class="sg-app" aria-label="PDF signer">
+            <div class="sg-bar" role="toolbar" aria-label="Document">
+                <div class="sg-group">
+                    <input type="file" id="pdf-upload" class="sr-only" accept="application/pdf,.pdf">
+                    <label for="pdf-upload" class="sg-btn primary sg-filebtn"><i class="ri-file-upload-line" aria-hidden="true"></i> Choose PDF</label>
+                </div>
+                <span class="sg-fname" id="file-name"></span>
+                <div class="sg-group">
+                    <button type="button" class="sg-btn icon" id="prev-page" aria-label="Previous page" disabled><i class="ri-arrow-left-s-line" aria-hidden="true"></i></button>
+                    <span class="sg-pageinfo" aria-live="polite">Page <span id="current-page">0</span> / <span id="total-pages">0</span></span>
+                    <button type="button" class="sg-btn icon" id="next-page" aria-label="Next page" disabled><i class="ri-arrow-right-s-line" aria-hidden="true"></i></button>
+                </div>
+                <div class="sg-group">
+                    <button type="button" class="sg-btn icon" id="zoom-out" aria-label="Zoom out" disabled><i class="ri-zoom-out-line" aria-hidden="true"></i></button>
+                    <span class="sg-zoom" id="zoom-level" aria-live="polite">100%</span>
+                    <button type="button" class="sg-btn icon" id="zoom-in" aria-label="Zoom in" disabled><i class="ri-zoom-in-line" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <div class="sg-stage" id="stage" tabindex="-1">
+                <div class="sg-empty" id="empty-state">
+                    <span class="ico" aria-hidden="true"><i class="ri-quill-pen-line"></i></span>
+                    <h2>Drop a PDF here</h2>
+                    <p>or choose a file from your device. It opens locally and is never uploaded.</p>
+                    <label for="pdf-upload" class="cta">Choose PDF</label>
+                </div>
+                <div id="pdf-container" hidden>
+                    <canvas id="pdf-render-canvas" role="img" aria-label="Your PDF page"></canvas>
+                </div>
+            </div>
+
+            <div class="sg-tools" role="toolbar" aria-label="Add to document">
+                <button type="button" class="sg-btn" id="add-text-btn" disabled><i class="ri-text" aria-hidden="true"></i> Add text</button>
+                <button type="button" class="sg-btn" id="add-date-btn" disabled><i class="ri-calendar-line" aria-hidden="true"></i> Add date</button>
+                <button type="button" class="sg-btn" id="open-sig-btn" disabled><i class="ri-quill-pen-line" aria-hidden="true"></i> Create signature</button>
+                <div class="sg-swatches" role="group" aria-label="Colour">
+                    <span aria-hidden="true">Colour</span>
+                    {colors.map((k) => <button type="button" class="sg-sw" data-color={k.c} data-scope="bar" style={`--sw:${k.c}`} aria-label={k.n} aria-pressed="false" disabled></button>)}
+                </div>
+                <button type="button" class="sg-btn primary" id="download-btn" disabled><i class="ri-download-2-line" aria-hidden="true"></i> <span>Download signed PDF</span></button>
+                <p class="sg-tip">Tip: select a signature or text, then use the arrow keys to nudge it, or Delete to remove it.</p>
+            </div>
+            <p class="sg-msg" id="sg-msg" role="status" aria-live="polite"></p>
+        </section>
+
+        <dialog class="sg-dialog" id="sig-modal" aria-labelledby="sig-title">
+            <div class="sg-dialog-in">
+                <h2 id="sig-title">Draw your signature</h2>
+                <p class="sub">Use your finger, a stylus or your mouse.</p>
+                <canvas id="sig-pad" width="1000" height="400" aria-label="Signature drawing area"></canvas>
+                <p class="sg-padmsg" id="pad-msg" role="alert"></p>
+                <div class="sg-dialog-bar">
+                    <div class="sg-swatches" role="group" aria-label="Ink colour">
+                        <span aria-hidden="true">Ink</span>
+                        {colors.map((k) => <button type="button" class="sg-sw" data-color={k.c} data-scope="modal" style={`--sw:${k.c}`} aria-label={k.n} aria-pressed="false"></button>)}
+                    </div>
+                    <button type="button" class="sg-btn" id="clear-pad"><i class="ri-eraser-line" aria-hidden="true"></i> Clear</button>
+                </div>
+                <div class="sg-dialog-actions">
+                    <button type="button" class="sg-btn" id="close-modal">Cancel</button>
+                    <button type="button" class="sg-btn primary" id="save-sig-btn">Apply signature</button>
+                </div>
+            </div>
+        </dialog>
+
+        <section class="sg-section" aria-labelledby="how">
+            <h2 class="sg-title" id="how">How to sign a PDF</h2>
+            <ol class="sg-steps">
+                {steps.map((s) => <li><strong>{s.t}</strong><span>{s.d}</span></li>)}
+            </ol>
+            <p class="sg-privacy"><strong>Your privacy:</strong> Emmy Sign runs entirely in your browser. Your PDF and signature are never uploaded to Emmy STACK01 or anyone else. Close the tab and they are gone, so download your signed copy first.</p>
+        </section>
+
+        <section class="sg-section" aria-label="Support Emmy Sign">
+            <div class="sg-band">
+                <div>
+                    <h2>Enjoying Emmy Sign?</h2>
+                    <p>It's free to use. If it saved you time, you can buy Emmy a coffee.</p>
+                </div>
+                <a class="btn-white" href="/payment"><i class="ri-drinks-fill" aria-hidden="true"></i> Buy Emmy a coffee</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
+<script src="/script/tool-pdf.js" defer></script>
+<script src="/script/year.js" defer></script>
+</body>
+</html>

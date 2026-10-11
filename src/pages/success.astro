@@ -1,0 +1,113 @@
+---
+// Emmy STACK01 — payment success page. Reached from /payment as /success.html?ref=<Paystack reference>.
+const phone = "2349076991076";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful | Emmy STACK01</title>
+    <meta name="description" content="Your payment to Emmy STACK01 was received. A receipt has been sent to your email.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0b1020">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <style>
+        body { min-height: 100vh; min-height: 100dvh; background: var(--b-dark); color: var(--text-main); }
+        .done {
+            position: relative; isolation: isolate; overflow: hidden;
+            display: grid; place-items: center; min-height: inherit;
+            padding: clamp(2rem, 6vw, 4rem) var(--pad); text-align: center;
+            background:
+                radial-gradient(700px 420px at 85% 0%, color-mix(in srgb, var(--accent-color) 20%, transparent), transparent 70%),
+                radial-gradient(640px 400px at 5% 100%, color-mix(in srgb, var(--primary-color) 32%, transparent), transparent 70%),
+                var(--b-dark);
+        }
+        .done::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                linear-gradient(color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+        }
+        .done-inner { display: grid; justify-items: center; width: 100%; max-width: 34rem; animation: rise .7s ease-out both; }
+        .done .logo { color: var(--text-main); font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem); }
+        .tick {
+            display: grid; place-items: center; width: clamp(4.5rem, 3.5rem + 5vw, 6rem); aspect-ratio: 1; margin-top: clamp(1.5rem, 5vw, 2.5rem);
+            border-radius: 50%; background: var(--grad); color: var(--b-dark); font-size: clamp(2.2rem, 1.7rem + 2.5vw, 3.2rem);
+            box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent-color) 14%, transparent), 0 18px 40px color-mix(in srgb, var(--primary-color) 45%, transparent);
+            animation: pop .5s cubic-bezier(.175,.885,.32,1.275) both;
+        }
+        .done h1 { margin-top: 1.4rem; font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -.01em; font-size: clamp(2.2rem, 1.4rem + 3.6vw, 3.8rem); text-wrap: balance; }
+        .done .sub { margin-top: .9rem; max-width: 38ch; color: var(--text-muted); font-size: clamp(1rem, .94rem + .3vw, 1.15rem); text-wrap: pretty; }
+        .done .sub b { color: var(--text-main); }
+        .ref { width: 100%; max-width: 24rem; margin-top: clamp(1.5rem, 5vw, 2.25rem); padding: 1rem 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--accent-color) 35%, transparent); border-radius: 20px; background: color-mix(in srgb, var(--text-main) 6%, transparent); }
+        .ref[hidden] { display: none; }
+        .ref-label { font-size: var(--fs-small); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+        .ref-code { margin-top: .35rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(1rem, .9rem + .5vw, 1.2rem); font-weight: 700; color: var(--accent-color); overflow-wrap: anywhere; user-select: all; }
+        .copy { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; margin-top: .4rem; padding: 0 1rem; border: 1px solid color-mix(in srgb, var(--text-main) 24%, transparent); border-radius: 999px; background: none; font-family: inherit; font-size: var(--fs-small); font-weight: 700; color: var(--text-main); cursor: pointer; transition: background .2s, border-color .2s; }
+        .copy:hover { background: color-mix(in srgb, var(--text-main) 10%, transparent); border-color: var(--accent-color); }
+        .note { margin-top: 1.5rem; max-width: 42ch; font-size: var(--fs-small); line-height: 1.6; color: var(--text-muted); }
+        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: clamp(1.5rem, 4vw, 2rem); width: 100%; }
+        .actions .cta, .actions .btn-white { flex: 1 1 12rem; max-width: 18rem; }
+        .done :focus-visible { outline-color: var(--accent-color); }
+        @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <main class="done">
+        <div class="done-inner">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+
+            <div class="tick" aria-hidden="true"><i class="ri-check-line"></i></div>
+            <h1>Payment received!</h1>
+            <p class="sub">Thank you for choosing <b>Emmy STACK01</b>. Your transaction was processed successfully, and a receipt has been sent to your email address.</p>
+
+            <div class="ref" id="ref" hidden>
+                <p class="ref-label">Payment reference</p>
+                <p class="ref-code" id="ref-code"></p>
+                <button type="button" class="copy" id="copy"><i class="ri-file-copy-line" aria-hidden="true"></i><span id="copy-text">Copy reference</span></button>
+            </div>
+
+            <p class="note">International payments are processed through our secure gateway. Your bank statement will show the final conversion from USD to your local currency.</p>
+
+            <div class="actions">
+                <a href="/" class="cta">Return to home</a>
+                <a href={`https://wa.me/${phone}`} id="wa" class="btn-white" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line" aria-hidden="true"></i> Message Emmy</a>
+            </div>
+        </div>
+    </main>
+
+    <script is:inline define:vars={{ phone }}>
+        // Show the Paystack reference from ?ref= (letters, digits and - _ . = only; nothing else is ever written to the page).
+        const ref = (new URLSearchParams(location.search).get("ref") || "").replace(/[^A-Za-z0-9_.=-]/g, "").slice(0, 64);
+        if (ref) {
+            document.getElementById("ref-code").textContent = ref;
+            document.getElementById("ref").hidden = false;
+            const text = `Hi Emmy, I just made a payment. Reference: ${ref}`;
+            document.getElementById("wa").href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+
+            const btn = document.getElementById("copy"), label = document.getElementById("copy-text");
+            btn.addEventListener("click", async () => {
+                try { await navigator.clipboard.writeText(ref); label.textContent = "Copied!"; }
+                catch (_) {
+                    const r = document.createRange(); r.selectNodeContents(document.getElementById("ref-code"));
+                    const s = getSelection(); s.removeAllRanges(); s.addRange(r); label.textContent = "Press copy on your keyboard";
+                }
+                setTimeout(() => { label.textContent = "Copy reference"; }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

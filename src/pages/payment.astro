@@ -1,0 +1,160 @@
+---
+// Emmy STACK01 — payment page (Paystack). Logic lives in /script/payment.js.
+const site = "https://emmystack01.com";
+const ogImage = `${site}/asset/${encodeURIComponent("Emmy STACK01_Paystack.png")}`;
+const chips = [3, 5, 10, 20];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Payment | Emmy STACK01</title>
+    <meta name="description" content="Pay for an Emmy STACK01 project or support Emmy with a coffee. Secure checkout by Paystack.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0b1020">
+    <link rel="canonical" href={`${site}/payment`}>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Make a Payment | Emmy STACK01">
+    <meta property="og:description" content="Secure checkout by Paystack.">
+    <meta property="og:url" content={`${site}/payment`}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content={`${site}/payment`}>
+    <meta property="twitter:image" content={ogImage}>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <style>
+        body { min-height: 100vh; min-height: 100dvh; background: var(--b-dark); color: var(--text-main); }
+        .pay {
+            position: relative; isolation: isolate; overflow: hidden; min-height: inherit;
+            display: flex; flex-direction: column; align-items: center;
+            padding: clamp(1rem, 3vw, 1.75rem) var(--pad) clamp(2rem, 6vw, 4rem);
+            background:
+                radial-gradient(700px 420px at 85% 0%, color-mix(in srgb, var(--accent-color) 20%, transparent), transparent 70%),
+                radial-gradient(640px 400px at 5% 100%, color-mix(in srgb, var(--primary-color) 32%, transparent), transparent 70%),
+                var(--b-dark);
+        }
+        .pay::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                linear-gradient(color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 78%);
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 78%);
+        }
+        .pay-top { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 40rem; }
+        .pay .logo { color: var(--text-main); }
+        .back { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; padding: 0 1rem 0 .8rem; border: 1px solid color-mix(in srgb, var(--text-main) 24%, transparent); border-radius: 999px; font-size: var(--fs-small); font-weight: 700; color: var(--text-main); transition: background .2s, border-color .2s; }
+        .back:hover { background: color-mix(in srgb, var(--text-main) 10%, transparent); border-color: var(--accent-color); }
+
+        .pay-card {
+            width: 100%; max-width: 30rem; margin-top: clamp(1.5rem, 5vw, 3rem);
+            padding: clamp(1.25rem, 4vw, 2.25rem);
+            border: 1px solid color-mix(in srgb, var(--text-main) 14%, transparent); border-radius: clamp(22px, 3vw, 30px);
+            background: color-mix(in srgb, var(--text-main) 6%, transparent);
+            -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+            box-shadow: 0 24px 50px color-mix(in srgb, #000 40%, transparent);
+        }
+        .pay-card h1 { font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -.01em; font-size: clamp(2rem, 1.4rem + 2.8vw, 3rem); text-align: center; text-wrap: balance; }
+        .pay-card .lead { margin-top: .6rem; text-align: center; color: var(--text-muted); font-size: var(--fs-body); }
+
+        .seg { display: flex; gap: .35rem; margin: clamp(1.25rem, 4vw, 1.75rem) 0 1.25rem; padding: .35rem; border-radius: 14px; background: color-mix(in srgb, var(--text-main) 8%, transparent); }
+        .type-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 46px; padding: 0 .5rem; border: 0; border-radius: 10px; background: none; font-family: inherit; font-size: var(--fs-small); font-weight: 700; color: var(--text-muted); cursor: pointer; transition: background .25s, color .25s; }
+        .type-btn:hover { color: var(--text-main); }
+        .type-btn[aria-pressed="true"] { background: var(--primary-color); color: #fff; box-shadow: 0 6px 18px color-mix(in srgb, var(--primary-color) 45%, transparent); }
+
+        .field { display: grid; gap: .4rem; margin-bottom: 1.1rem; }
+        .field label { font-size: var(--fs-small); font-weight: 700; color: var(--text-main); }
+        .control { position: relative; }
+        .control input {
+            width: 100%; min-height: 50px; padding: .7rem 1rem; border: 1px solid color-mix(in srgb, var(--text-main) 22%, transparent); border-radius: 12px;
+            background: color-mix(in srgb, var(--text-main) 8%, transparent); color: var(--text-main);
+            font-family: inherit; font-size: 1rem; /* 16px+ stops iOS zooming on focus */
+        }
+        .control input::placeholder { color: color-mix(in srgb, var(--text-muted) 80%, transparent); }
+        .control input:focus-visible { outline: 3px solid var(--accent-color); outline-offset: 2px; border-color: transparent; }
+        .control input[aria-invalid="true"] { border-color: #ff6b6b; }
+        .control .prefix { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-weight: 800; color: var(--accent-color); pointer-events: none; }
+        .control.has-prefix input { padding-left: 2.1rem; }
+        .hint { font-size: var(--fs-small); color: var(--text-muted); line-height: 1.5; }
+
+        .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .1rem; }
+        .chips[hidden] { display: none; }
+        .chip { min-height: 44px; min-width: 3.5rem; padding: 0 1rem; border: 1px solid color-mix(in srgb, var(--text-main) 24%, transparent); border-radius: 999px; background: none; font-family: inherit; font-size: var(--fs-small); font-weight: 700; color: var(--text-main); cursor: pointer; transition: background .2s, border-color .2s; }
+        .chip:hover { background: color-mix(in srgb, var(--text-main) 10%, transparent); border-color: var(--accent-color); }
+
+        .error { margin: 0 0 1rem; padding: .75rem 1rem; border-left: 3px solid #ff6b6b; border-radius: 12px; background: color-mix(in srgb, #ff6b6b 14%, transparent); font-size: var(--fs-small); font-weight: 600; line-height: 1.5; }
+        .error[hidden] { display: none; }
+
+        #paystack-apple-pay { width: 100%; }
+        #paystack-apple-pay:not(:empty) { margin-bottom: .75rem; }
+        .pay-btn { width: 100%; min-height: 54px; margin-top: .25rem; font-size: var(--fs-btn); cursor: pointer; }
+        .pay-btn:disabled { opacity: .7; cursor: progress; transform: none; }
+        .spin { display: inline-block; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .secure { display: flex; align-items: center; justify-content: center; gap: .45rem; margin-top: 1rem; font-size: var(--fs-small); color: var(--text-muted); text-align: center; }
+        .secure i { color: var(--accent-color); font-size: 1.1rem; }
+        .pay :focus-visible { outline-color: var(--accent-color); }
+        @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+    </style>
+</head>
+<body>
+    <div class="pay">
+        <header class="pay-top">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+            <a class="back" href="/"><i class="ri-arrow-left-line" aria-hidden="true"></i> Back to home</a>
+        </header>
+
+        <main class="pay-card">
+            <h1>Secure payment</h1>
+            <p class="lead">Support Emmy or pay for a service.</p>
+
+            <div class="seg" role="group" aria-label="Payment type">
+                <button type="button" class="type-btn" data-type="coffee" aria-pressed="true">☕ Buy a coffee</button>
+                <button type="button" class="type-btn" data-type="project" aria-pressed="false">💻 Project payment</button>
+            </div>
+
+            <form id="paymentForm" novalidate>
+                <div class="field">
+                    <label for="email-address">Email address</label>
+                    <div class="control"><input type="email" id="email-address" name="email" autocomplete="email" inputmode="email" required placeholder="you@example.com"></div>
+                </div>
+
+                <div class="field">
+                    <label for="amount">Amount (USD)</label>
+                    <div class="control has-prefix">
+                        <span class="prefix" aria-hidden="true">$</span>
+                        <input type="number" id="amount" name="amount" inputmode="decimal" min="1" step="any" required value="5" placeholder="Any amount" aria-describedby="amount-hint">
+                    </div>
+                    <div class="chips" id="chips" role="group" aria-label="Quick amounts">
+                        {chips.map((n) => <button type="button" class="chip" data-amount={n}>${n}</button>)}
+                    </div>
+                    <p class="hint" id="amount-hint" aria-live="polite">Global payments are converted to naira at checkout.</p>
+                </div>
+
+                <p class="error" id="form-error" role="alert" hidden></p>
+
+                <div id="paystack-apple-pay"></div>
+
+                <button type="submit" class="cta pay-btn" id="paystack-other-channels">
+                    <i class="ri-secure-payment-fill" aria-hidden="true"></i> Pay with Paystack
+                </button>
+            </form>
+
+            <p class="secure"><i class="ri-lock-2-line" aria-hidden="true"></i><span>Payments are processed securely by Paystack.</span></p>
+        </main>
+    </div>
+
+    <script is:inline src="https://js.paystack.co/v2/inline.js"></script>
+    <script is:inline src="/script/payment.js" defer></script>
+</body>
+</html>

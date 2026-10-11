@@ -1,0 +1,337 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/tools/meeting_background_studio.astro — Styles: /style/index-style.css + /style/tool-meeting.css · Script: /script/tool-meeting.js
+const site = "https://emmystack01.com";
+const url = `${site}/tools/meeting_background_studio`;
+const title = "Meeting Background Studio | Branded Zoom, Meet & Teams Backgrounds | Emmy STACK01";
+const desc = "Create a professional meeting background with your logo and a scan-to-connect QR code. Free 1920x1080 download for Zoom, Google Meet and Microsoft Teams.";
+const ogTitle = "Create Your Branded Meeting Background | Emmy STACK01";
+const ogDesc = "Add your logo and a QR code to a professional background for Zoom, Teams and Google Meet. Free, in seconds.";
+const ogImage = `${site}/asset/meeting_background_studio-og.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const presets = [
+  { src: "/asset/The_Casual_Mid-Century_Living_Space.png", n: "Mid-century living space" },
+  { src: "/asset/The_Corporate_Executive_Library.png", n: "Executive library" },
+  { src: "/asset/The_Industrial_Coffee_Shop_Co-working.png", n: "Industrial coffee shop" },
+  { src: "/asset/The_New-York_Industrial_Loft.png", n: "New York industrial loft" },
+  { src: "/asset/The_Scandinavian_Loft_Office.png", n: "Scandinavian loft office" },
+  { src: "/asset/The_Scandinavian_Morning_Nook.png", n: "Scandinavian morning nook" },
+];
+const corners = [{ c: "tl", i: "ri-arrow-left-up-line", n: "Top left" }, { c: "tr", i: "ri-arrow-right-up-line", n: "Top right" }, { c: "bl", i: "ri-arrow-left-down-line", n: "Bottom left" }, { c: "br", i: "ri-arrow-right-down-line", n: "Bottom right" }];
+const features = [
+  { i: "ri-image-line", t: "Real rooms, your brand", d: "Pick a professional room or upload your own image or video, then place your logo exactly where you want it." },
+  { i: "ri-qr-code-line", t: "Scan-to-connect QR", d: "Add a QR code to your website, booking page or card. Clients can scan it straight from your video call." },
+  { i: "ri-shield-check-line", t: "Private by design", d: "Your logo and images are processed in your browser and never uploaded to our servers." },
+];
+const faqs = [
+  { q: "What size is the background?", a: "Every download is 1920 x 1080 pixels (16:9), which works for Zoom, Google Meet and Microsoft Teams. Open your meeting app\u2019s background settings and upload the image." },
+  { q: "Will people be able to scan the QR code?", a: "Yes, if it stays large and high-contrast. Keep it at about 220px or bigger in the editor, make sure nothing covers it, and test it with your phone. Video compression can blur small codes." },
+  { q: "Why use the \u201cwhere I\u2019ll sit\u201d guide?", a: "You will usually be in the centre of the frame. The guide shows that area so you can keep your logo and QR code on the sides where they stay visible." },
+  { q: "Why does my own view look mirrored?", a: "Some apps flip your self-view like a mirror, so text can look reversed to you. Other people on the call still see it the right way round." },
+  { q: "Can I use a video background?", a: "You can preview the animated background, but the download is a still image of the current frame. Video files for meetings are best prepared in a video editor." },
+];
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication", "@id": `${url}#webapp`, url, name: "Meeting Background Studio", description: desc,
+      applicationCategory: "MultimediaApplication", applicationSubCategory: "Virtual Background Generator", operatingSystem: "All", browserRequirements: "Requires JavaScript and HTML5 canvas support.",
+      isAccessibleForFree: true, offers: { "@type": "Offer", price: "0.00", priceCurrency: "USD", availability: "https://schema.org/InStock" },
+      featureList: [
+        "Professional room backgrounds or your own image",
+        "Custom logo upload with size and position controls",
+        "Scan-to-connect QR code generator",
+        "Zoom and Google Meet preview overlays",
+        "1920x1080 JPG or PNG download",
+        "Private: everything happens in your browser",
+      ],
+      author: { "@id": `${site}/#organization` }, creator: { "@id": `${site}/#organization` }, publisher: { "@id": `${site}/#organization` }, inLanguage: "en",
+    },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Tools", item: `${site}/tools` }, { "@type": "ListItem", position: 3, name: "Meeting Studio", item: url }] },
+    { "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="keywords" content="meeting backgrounds, virtual background generator, branded zoom background, qr code background, professional video call background, Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/tool-meeting.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Emmy STACK01 Meeting Studio">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content="Emmy STACK01 | Branded Background Generator">
+    <meta name="twitter:description" content="Create professional backgrounds for video calls with your logo and a QR code.">
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn is-current" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "meeting_background_studio" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/pricing" class="cta nav-cta">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn active" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "meeting_background_studio" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/pricing" class="cta project-btn">Start your project <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="ms-hero">
+        <div class="ms-hero-inner">
+            <span class="ms-eyebrow">Free tool · Meeting Studio</span>
+            <h1>Branded meeting <em>backgrounds</em></h1>
+            <p class="lead">Add your logo and a scan-to-connect QR code to a professional room. Download a 1920 &times; 1080 image for Zoom, Google Meet or Teams.</p>
+            <ul class="ms-badges">
+                <li><i class="ri-flashlight-line" aria-hidden="true"></i> Free</li>
+                <li><i class="ri-lock-line" aria-hidden="true"></i> Private: stays in your browser</li>
+                <li><i class="ri-qr-code-line" aria-hidden="true"></i> Built-in QR code</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="ms-wrap">
+            <div class="ms-app">
+                <section class="ms-stage-col" aria-labelledby="ms-prev-t">
+                    <h2 class="sr-only" id="ms-prev-t">Preview</h2>
+                    <div class="ms-toolbar">
+                        <div class="ms-seg" role="radiogroup" aria-label="Meeting app preview">
+                            <label><input type="radio" name="mock" value="none" checked><span>Plain</span></label>
+                            <label><input type="radio" name="mock" value="zoom"><span>Zoom</span></label>
+                            <label><input type="radio" name="mock" value="meet"><span>Meet</span></label>
+                        </div>
+                        <label class="ms-check"><input type="checkbox" id="ms-guide-on"> <span>Show where I&rsquo;ll sit</span></label>
+                    </div>
+
+                    <div class="ms-box" id="ms-box">
+                        <img class="ms-layer" id="ms-bg-img" src="/asset/The_Casual_Mid-Century_Living_Space.png" alt="">
+                        <video class="ms-layer" id="ms-bg-video" muted loop playsinline hidden aria-hidden="true"></video>
+                        <canvas class="ms-canvas" id="ms-canvas" width="1920" height="1080" tabindex="0" role="img" aria-label="Background preview. Drag your logo or QR code to move them, or select one and use the arrow keys."></canvas>
+                        <div class="ms-guide" id="ms-guide" hidden aria-hidden="true"><span>You</span></div>
+                        <div class="ms-mock" id="ms-mock-zoom" hidden aria-hidden="true"><div class="ms-zoom-bar"></div><div class="ms-zoom-name">Your Name</div></div>
+                        <div class="ms-mock" id="ms-mock-meet" hidden aria-hidden="true"><div class="ms-meet-bar"></div></div>
+                    </div>
+                    <p class="ms-help">Tip: drag your logo or QR code on the preview, or use the position buttons. With a canvas selected, the arrow keys nudge it.</p>
+
+                    <div class="ms-actions">
+                        <button type="button" class="cta ms-dl" id="ms-dl"><i class="ri-download-2-line" aria-hidden="true"></i> <span>Download background</span></button>
+                        <div class="ms-seg" role="radiogroup" aria-label="File format">
+                            <label><input type="radio" name="format" value="jpg" checked><span>JPG</span></label>
+                            <label><input type="radio" name="format" value="png"><span>PNG</span></label>
+                        </div>
+                    </div>
+                    <p class="ms-status" id="ms-status" role="status" aria-live="polite"></p>
+                </section>
+
+                <div class="ms-controls">
+                    <section class="ms-card" aria-labelledby="ms-bg-t">
+                        <h2 id="ms-bg-t">Background</h2>
+                        <label class="ms-file"><i class="ri-upload-2-line" aria-hidden="true"></i> <span>Upload your own</span><input type="file" id="ms-bg-up" accept="image/*,video/*"></label>
+                        <p class="ms-err" id="ms-bg-err" role="alert" hidden></p>
+                        <ul class="ms-thumbs">
+                            {presets.map((p, i) => <li><button type="button" class="ms-thumb" data-src={p.src} data-type="image" aria-pressed={i === 0 ? "true" : "false"} aria-label={p.n}><img src={p.src} alt="" loading="lazy" width="320" height="180"></button></li>)}
+                            <li><button type="button" class="ms-thumb vid" data-src="/asset/bg6.mp4" data-type="video" aria-pressed="false" aria-label="Animated background"><span><i class="ri-play-circle-line" aria-hidden="true"></i> Video</span></button></li>
+                        </ul>
+                    </section>
+
+                    <section class="ms-card" aria-labelledby="ms-logo-t">
+                        <h2 id="ms-logo-t">Your logo</h2>
+                        <label class="ms-file"><i class="ri-image-add-line" aria-hidden="true"></i> <span>Upload logo</span><input type="file" id="ms-logo" accept="image/*"></label>
+                        <p class="ms-err" id="ms-logo-err" role="alert" hidden></p>
+                        <div id="ms-logo-opts" hidden>
+                            <div class="ms-field">
+                                <label class="ms-lbl" for="ms-logo-size">Size</label>
+                                <div class="ms-range"><input type="range" id="ms-logo-size" min="80" max="800" step="10" value="300"><output id="ms-logo-size-out" for="ms-logo-size">300px</output></div>
+                            </div>
+                            <div class="ms-field">
+                                <span class="ms-lbl">Position</span>
+                                <div class="ms-pos" data-item="logo" role="group" aria-label="Logo position">
+                                    {corners.map((c) => <button type="button" data-c={c.c} aria-pressed="false" aria-label={c.n} title={c.n}><i class={c.i} aria-hidden="true"></i></button>)}
+                                </div>
+                            </div>
+                            <button type="button" class="ms-rm" id="ms-logo-rm">Remove logo</button>
+                        </div>
+                    </section>
+
+                    <section class="ms-card" aria-labelledby="ms-qr-t">
+                        <h2 id="ms-qr-t">QR code</h2>
+                        <div class="ms-field">
+                            <label class="ms-lbl" for="ms-qr-url">Link to share</label>
+                            <input class="ms-in" type="text" id="ms-qr-url" inputmode="url" placeholder="yourwebsite.com" autocomplete="url" autocapitalize="off" spellcheck="false" aria-describedby="ms-qr-err" aria-invalid="false">
+                            <p class="ms-err" id="ms-qr-err" role="alert" hidden></p>
+                        </div>
+                        <div id="ms-qr-opts" hidden>
+                            <div class="ms-field">
+                                <label class="ms-lbl" for="ms-qr-cap">Caption</label>
+                                <input class="ms-in" type="text" id="ms-qr-cap" maxlength="30" value="Scan to connect">
+                            </div>
+                            <div class="ms-field">
+                                <label class="ms-lbl" for="ms-qr-size">Size</label>
+                                <div class="ms-range"><input type="range" id="ms-qr-size" min="160" max="520" step="10" value="300"><output id="ms-qr-size-out" for="ms-qr-size">300px</output></div>
+                            </div>
+                            <div class="ms-field">
+                                <span class="ms-lbl">Position</span>
+                                <div class="ms-pos" data-item="qr" role="group" aria-label="QR code position">
+                                    {corners.map((c) => <button type="button" data-c={c.c} aria-pressed="false" aria-label={c.n} title={c.n}><i class={c.i} aria-hidden="true"></i></button>)}
+                                </div>
+                            </div>
+                            <button type="button" class="ms-rm" id="ms-qr-rm">Remove QR code</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <section class="ms-section" aria-labelledby="why">
+            <h2 id="why">Why Meeting Studio</h2>
+            <ul class="ms-cards">
+                {features.map((f) => <li class="ms-info"><i class={f.i} aria-hidden="true"></i><h3>{f.t}</h3><p>{f.d}</p></li>)}
+            </ul>
+        </section>
+
+        <section class="ms-section" aria-labelledby="faq">
+            <h2 id="faq">Questions</h2>
+            <div class="ms-faq">
+                {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+            </div>
+        </section>
+
+        <div class="ms-coffee">
+            <div class="ms-coffee-box">
+                <h2>Make your brand look as good as your call</h2>
+                <p>Your background is the first thing clients see. Let us build the website they land on next.</p>
+                <a href="/pricing" class="btn-white">See website packages <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".year, #year").forEach((e) => { e.textContent = new Date().getFullYear(); });
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
+<script src="/script/tool-meeting.js" defer></script>
+</body>
+</html>

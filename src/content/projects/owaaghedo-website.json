@@ -1,0 +1,13 @@
+{
+  "name": "Owaaghedo Website",
+  "websiteType": "Personal Brand & Creator Website",
+  "image": "/asset/projects/owaaghedo-website/image.png",
+  "imageAlt": "Homepage Hero section of the Owaaghedo Website",
+  "overview": "Owaaghedo is a Web3 writer and Key Opinion Leader (KOL) on X who shares educational content, industry updates, and insights with her audience.\n\nThe website brings her professional identity, services, articles, and community together in one place, giving visitors a clearer way to explore her work and connect with her beyond social media.",
+  "need": "Relying on social media alone can make it harder to present your work, services, and content in one organised place. Owaaghedo needed a central platform that could support her professional identity and make her content easier to discover.",
+  "built": "We created a personal brand website with a built-in blog for publishing Web3 articles and insights. Visitors can also share articles on X with their usernames included, helping encourage discussion and potentially extend the content's reach.",
+  "strategy": "Bring her identity, content, and services together while making it easier for visitors to explore her work, engage with her ideas, and connect with her beyond social media.",
+  "liveUrl": "https://owaaghedo.pages.dev/",
+  "order": 2,
+  "published": true
+}

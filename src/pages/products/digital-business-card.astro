@@ -1,872 +1,459 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+
+// Emmy STACK01 — Digital Business Card product page (/products/digital-business-card).
+// Styles: /style/index-style.css + /style/digital-business-card-style.css
+// Scripts: inline builder script below + /script/card.js (demo deck) + /script/year.js
+
+const site = "https://emmystack01.com";
+const url = `${site}/products/digital-business-card`;
+const org = `${site}/#organization`;
+const title = "Digital Business Card Website | Emmy STACK01";
+const desc = "Get a professional digital business card website for sharing your contact details, social links, work and services. Fast, mobile-friendly and easy to share.";
+const ogImage = `${site}/asset/Checkout-our-Demos.png`;
+const price = 60; // flat price in USD (also used by the builder summary)
+
+// Package preview (left card)
+const features = [
+  { i: "user-6-line",      t: "Identity Core",  d: "Image, Title, Bio & Tagline" },
+  { i: "flashlight-line",  t: "Action Hub",     d: "Custom Buttons & Social Icons" },
+  { i: "fingerprint-line", t: "VCard One-Tap",  d: "Save contact to phone instantly" },
+  { i: "qr-code-line",     t: "Smart Sharing",  d: "QR Code & Native Share Button" },
+  { i: "pulse-line",       t: "Dynamic Flow",   d: "Ticker Marquees & Video Embeds" },
+];
+const integrations = [
+  { label: "Newsletters", items: [["kit", "Kit"], ["beehiiv", "Beehiiv"], ["substack", "Substack"]] },
+  { label: "Bookings",    items: [["calcom", "Cal.com"], ["calendly", "Calendly"], ["setmore", "Setmore"]] },
+  { label: "Location",    items: [["gmaps", "Google Maps"]] },
+];
+const addons = [
+  { i: "ri-github-fill",       c: "#f5f5f5", t: "GitHub Deployment", d: "Live hosting on your own repository." },
+  { i: "ri-global-line",       c: "#00ccff", t: "Domain Config",     d: "Setting up your custom www.name.com." },
+  { i: "ri-google-fill",       c: "",        t: "Search Console",    d: "Index your site on Google instantly." },
+  { i: "ri-terminal-box-line", c: "#34d399", t: "Custom CMS",        d: "Edit your content without writing code." },
+];
+
+// Builder drawer
+const included = [["user-6-line", "Identity Core"], ["qr-code-line", "Smart Sharing"]];
+const extras = [
+  ["layout-grid-line", "Custom Buttons"], ["links-line", "Social Icons"], ["contacts-book-line", "vCard One-Tap"],
+  ["news-line", "Ticker Marquees"], ["video-line", "Video Embeds"],
+];
+const groups = [
+  { label: "Newsletter", items: ["Kit", "Beehiiv", "Substack"] },
+  { label: "Bookings",   items: ["Cal.com", "Calendly", "Setmore"] },
+  { label: "Location",   items: ["Google Maps"] },
+];
+
+// Demo deck (last card sits on top of the stack)
+const demos = [
+  { n: "Amara Okafor",   c: "#48cae4", u: "https://emmydemoweb3.netlify.app", img: "Amara_Okafor_wbgcpi" },
+  { n: "Aisha Patel",    c: "#d4af37", u: "https://emmydemoweb2.netlify.app", img: "Aisha_Patel_i1ec8j" },
+  { n: "Kofi Mensah",    c: "#ffb703", u: "https://emmydemoweb6.netlify.app", img: "Kofi_Mensah_gv4pel" },
+  { n: "Jordan Banks",   c: "#00f5d4", u: "https://emmydemoweb5.netlify.app", img: "Jordan_Banks_nhl3mj" },
+  { n: "Alex Rivera",    c: "#38bdf8", u: "https://emmydemoweb1.netlify.app", img: "Alex_Rivera_wvs50b" },
+  { n: "Chloe Sterling", c: "#ccff00", u: "https://emmydemoweb4.netlify.app", img: "Chloe_Sterling_zzlwrq" },
+];
+const cdn = "https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/";
+
+const tools = [
+  { s: "website-auditor", n: "Website Auditor" }, { s: "social-architect", n: "Social Architect" },
+  { s: "meeting_background_studio", n: "Meeting Studio" }, { s: "naira-wise", n: "Invoice Generator" }, { s: "emmy-sign", n: "PDF Signer" },
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage", "@id": `${url}#webpage`, url, name: title, description: desc,
+      isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
+    },
+    {
+      "@type": "Product", "@id": `${url}#product`, mainEntityOfPage: { "@id": `${url}#webpage` },
+      name: "Digital Business Card Website",
+      description: "A professional digital business card website built to share contact details, social links, work and services from one online profile.",
+      image: ogImage, brand: { "@type": "Brand", name: "Emmy STACK01" },
+      aggregateRating: { "@type": "AggregateRating", ratingValue: "4.5", reviewCount: "2", bestRating: "5", worstRating: "1" },
+      review: [
+        { "@type": "Review", author: { "@type": "Person", name: "Abbey" }, reviewRating: { "@type": "Rating", ratingValue: "4" },
+          reviewBody: "The website has been great for me. It makes people easily know what I’m about and how to reach me. It has mostly been useful for my WhatsApp community, creating an easy way to connect with new minds.",
+          publisher: { "@type": "Organization", name: "Google Business Profile" } },
+        { "@type": "Review", author: { "@type": "Person", name: "Prosper Zekeli" }, reviewRating: { "@type": "Rating", ratingValue: "5" },
+          reviewBody: "Honestly speaking I checked out Emmy Stack , it’s a neat and great tool for anyone looking to build an online presence quickly. The way it turns links into a searchable domain is clever you literally just click and Google can find it. Super simple to use, and it gives your project or profile a professional touch without overcomplicating things. It's really worth it 🔥 The setup was smooth and fast, and the interface is very user-friendly. It helps me manage my online presence more efficiently, and I can easily access or share my links whenever I need to. Overall, it’s a very useful tool for anyone who wants to keep their social accounts organized and accessible in one place. I’d definitely recommend it for convenience and ease of use.",
+          publisher: { "@type": "Organization", name: "Google Business Profile & Trustpilot" } },
+      ],
+      offers: {
+        "@type": "Offer", price: price.toFixed(2), priceCurrency: "USD", availability: "https://schema.org/InStock", url, category: "Digital Goods",
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingDestination: { "@type": "DefinedRegion", addressCountry: "US" },
+          shippingRate: { "@type": "MonetaryAmount", value: "0.00", currency: "USD" },
+          deliveryTime: {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+            transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
+          },
+        },
+        hasMerchantReturnPolicy: {
+          "@type": "MerchantReturnPolicy",
+          applicableCountry: [{ "@type": "Country", name: "NG" }, { "@type": "Country", name: "US" }],
+          returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted", returnPolicyType: "https://schema.org/NoReturns",
+        },
+        seller: { "@type": "Organization", "@id": org, name: "Emmy STACK01", url: site },
+      },
+    },
+  ],
+};
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="/script/meta-logic.js" is:inline></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card Website | Emmy STACK01</title>
-    <link rel="stylesheet" href="/style/digital-business-card-style.css">
-    <link rel="preload" href="/style/digital-business-card-style.css" as="style">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
-
-    <meta name="title" content="Digital Business Card Website | Emmy STACK01">
-    <meta name="description" content="Get a professional digital business card website for sharing your contact details, social links, work and services. Fast, mobile-friendly and easy to share.">
-    <link rel="canonical" href="https://emmystack01.com/products/digital-business-card">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
     <meta name="robots" content="index, follow">
     <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
 
     <meta property="og:site_name" content="Emmy STACK01 | Digital DNA">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emmystack01.com/products/digital-business-card">
-    <meta property="og:title" content="Digital Business Card Website | Emmy STACK01">
+    <meta property="og:url" content={url}>
+    <meta property="og:title" content={title}>
     <meta property="og:description" content="Create a professional digital business card website with contact sharing, social links, QR sharing and more.">
-    <meta property="og:image" content="https://emmystack01.com/asset/Checkout-our-Demos.png">
+    <meta property="og:image" content={ogImage}>
     <meta property="og:image:alt" content="Emmy STACK01 Digital Business Card Interface Demos">
-    <meta property="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@Emmy_STACK01">
-    <meta property="twitter:title" content="Digital Business Card Website | Emmy STACK01">
-    <meta property="twitter:description" content="A professional digital business card website with contact sharing, social links, QR sharing and more.">
-    <meta property="twitter:image" content="https://emmystack01.com/asset/Checkout-our-Demos.png">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content="A professional digital business card website with contact sharing, social links, QR sharing and more.">
+    <meta name="twitter:image" content={ogImage}>
 
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/digital-business-card-style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
 
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-            "@type": "WebPage",
-            "@id": "https://emmystack01.com/products/digital-business-card#webpage",
-            "url": "https://emmystack01.com/products/digital-business-card",
-            "name": "Digital Business Card Website | Emmy STACK01",
-            "description": "Get a professional digital business card website for sharing your contact details, social links, work and services. Fast, mobile-friendly and easy to share.",
-            "isPartOf": {
-                "@type": "WebSite",
-                "@id": "https://emmystack01.com/#website",
-                "name": "Emmy STACK01",
-                "url": "https://emmystack01.com"
-            }
-            },
-            {
-            "@type": "Product",
-            "@id": "https://emmystack01.com/products/digital-business-card#product",
-            "mainEntityOfPage": { 
-                "@id": "https://emmystack01.com/products/digital-business-card#webpage" 
-            },
-            "name": "Digital Business Card Website",
-            "description": "A professional digital business card website built to share contact details, social links, work and services from one online profile.",
-            "image": "https://emmystack01.com/asset/Checkout-our-Demos.png", 
-            "brand": {
-                "@type": "Brand",
-                "name": "Emmy STACK01"
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.5",
-                "reviewCount": "2",
-                "bestRating": "5",
-                "worstRating": "1"
-            },
-            "review": [
-                {
-                "@type": "Review",
-                "author": {
-                    "@type": "Person",
-                    "name": "Abbey"
-                },
-                "reviewRating": {
-                    "@type": "Rating",
-                    "ratingValue": "4"
-                },
-                "reviewBody": "The website has been great for me. It makes people easily know what I’m about and how to reach me. It has mostly been useful for my WhatsApp community, creating an easy way to connect with new minds.",
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Google Business Profile"
-                }
-                },
-                {
-                "@type": "Review",
-                "author": {
-                    "@type": "Person",
-                    "name": "Prosper Zekeli"
-                },
-                "reviewRating": {
-                    "@type": "Rating",
-                    "ratingValue": "5"
-                },
-                "reviewBody": "Honestly speaking I checked out Emmy Stack , it’s a neat and great tool for anyone looking to build an online presence quickly. The way it turns links into a searchable domain is clever you literally just click and Google can find it. Super simple to use, and it gives your project or profile a professional touch without overcomplicating things. It's really worth it 🔥 The setup was smooth and fast, and the interface is very user-friendly. It helps me manage my online presence more efficiently, and I can easily access or share my links whenever I need to. Overall, it’s a very useful tool for anyone who wants to keep their social accounts organized and accessible in one place. I’d definitely recommend it for convenience and ease of use.",
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Google Business Profile & Trustpilot"
-                }
-                }
-            ],
-            "offers": {
-                "@type": "Offer",
-                "price": "60.00",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock",
-                "url": "https://emmystack01.com/products/digital-business-card",
-                "category": "Digital Goods",
-                "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingDestination": {
-                    "@type": "DefinedRegion",
-                    "addressCountry": "US"
-                },
-                "shippingRate": {
-                    "@type": "MonetaryAmount",
-                    "value": "0.00",
-                    "currency": "USD"
-                },
-                "deliveryTime": {
-                    "@type": "ShippingDeliveryTime",
-                    "handlingTime": {
-                    "@type": "QuantitativeValue",
-                    "minValue": 0,
-                    "maxValue": 0,
-                    "unitCode": "DAY"
-                    },
-                    "transitTime": {
-                    "@type": "QuantitativeValue",
-                    "minValue": 0,
-                    "maxValue": 0,
-                    "unitCode": "DAY"
-                    }
-                }
-                },
-                "hasMerchantReturnPolicy": {
-                "@type": "MerchantReturnPolicy",
-                "applicableCountry": [
-                    {
-                    "@type": "Country",
-                    "name": "NG"
-                    },
-                    {
-                    "@type": "Country",
-                    "name": "US"
-                    }
-                ],
-                "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
-                "returnPolicyType": "https://schema.org/NoReturns"
-                },
-                "seller": {
-                "@type": "LocalBusiness",
-                "@id": "https://emmystack01.com/#organization",
-                "name": "Emmy STACK01",
-                "url": "https://emmystack01.com"
-                }
-            }
-            }
-        ]
-        }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </head>
 <body>
-    <header>
-        <a href="/products" class="back-btn" aria-label="Back to product page">
-            <i class="ri-arrow-left-line"></i>
-        </a>
-        <section class="product-hero hero-section">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1><span class="line-one">Digital Business Card</span><span class="line-two">Built for Your Professional Identity.</span></h1>
-                    <p class="content-p">Get a professional digital business card website to share your contact details, social links, work and services from one simple online profile.</p>
-                    <div class="cta-group">
-                        <button class="hero-cta" onclick="openDrawer()" aria-label="Open Stack Builder">Build Your Card</button>
-                        <a class="demo-hero-cta" href="/products/digital-business-card#demo">View Demos</a>
-                    </div>
+    <header class="ch-hero">
+        <div class="ch-top">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+            <a class="ch-back" href="/products"><i class="ri-arrow-left-line" aria-hidden="true"></i> All products</a>
+        </div>
+        <div class="ch-inner">
+            <div class="ch-copy">
+                <h1><span class="l1">Digital Business Card</span><span class="l2">Built for your professional identity.</span></h1>
+                <p>Get a professional digital business card website to share your contact details, social links, work and services from one simple online profile.</p>
+                <div class="ch-actions">
+                    <button type="button" class="hero-cta" data-open-builder>Build your card</button>
+                    <a class="btn-ghost" href="#demo">View demos</a>
                 </div>
+            </div>
 
-                <div class="phone-mockup-wrapper">
-                    <div class="phone-frame">
-                        <div class="phone-island">
-                            <div class="island-camera"></div>
-                        </div>
-
-                        <video autoplay muted loop playsinline class="phone-display-video">
+            <div class="ch-stage">
+                <div class="ch-float">
+                    <div class="ch-phone" id="phone">
+                        <div class="ch-bar" aria-hidden="true"></div>
+                        <video autoplay muted loop playsinline preload="metadata" aria-label="Preview of a digital business card website scrolling on a phone">
                             <source src="/asset/digital-business-card.webm" type="video/webm">
                         </video>
-                        <div class="phone-glare"></div>
+                        <div class="ch-glare" aria-hidden="true"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </header>
-    <main class="main-section">
-        <section id="launch-package" class="package-section">
-            <div class="section-header">
-                <h2 class="reveal-text">Build Your Digital Business Card</h2>
+
+    <main>
+        <section id="launch-package" class="package-section" aria-labelledby="pk-title">
+            <div class="pk-head">
+                <h2 class="sec-title" id="pk-title">Build your digital business card</h2>
                 <div class="accent-line"></div>
             </div>
 
-            <div class="package-grid">
-                <div class="feature-group card-animate">
-                    <div class="group-head">
-                        <i class="ri-stack-line"></i>
-                        <h3>Features</h3>
+            <div class="pk-grid">
+                <article class="pk-dark reveal">
+                    <div class="pk-head-row"><i class="ri-stack-line" aria-hidden="true"></i><h3>Features</h3></div>
+                    <ul class="pk-feats">
+                        {features.map((f) => (
+                            <li class="pk-feat">
+                                <span class="ico"><i class={`ri-${f.i}`} aria-hidden="true"></i></span>
+                                <span><strong>{f.t}</strong><span>{f.d}</span></span>
+                            </li>
+                        ))}
+                    </ul>
+                </article>
+
+                <article class="pk-dark reveal">
+                    <div class="pk-head-row"><i class="ri-apps-2-line" aria-hidden="true"></i><h3>Integrations</h3></div>
+                    {integrations.map((g) => (
+                        <div class="pk-sub">
+                            <p class="pk-label">{g.label}</p>
+                            <div class="pk-pills">{g.items.map(([c, n]) => <span class={`pill ${c}`}>{n}</span>)}</div>
+                        </div>
+                    ))}
+                </article>
+
+                <article class="pk-dark pk-wide reveal">
+                    <div class="pk-head-row"><i class="ri-gift-line" aria-hidden="true"></i><h3>Complimentary add-ons</h3></div>
+                    <div class="addons">
+                        {addons.map((a) => (
+                            <div class="addon">
+                                <i class={a.i} style={a.c ? `color:${a.c}` : undefined} aria-hidden="true"></i>
+                                <h4>{a.t}</h4>
+                                <p>{a.d}</p>
+                            </div>
+                        ))}
                     </div>
-                    
-                    <div class="standard-feature-grid">
-                        <div class="feature-chip-preview">
-                            <span class="chip-icon"><i class="ri-user-6-line"></i></span>
-                            <div class="chip-text">
-                                <span class="chip-title-preview">Identity Core</span>
-                                <span class="chip-desc">Image, Title, Bio & Tagline</span>
-                            </div>
-                        </div>
+                </article>
+            </div>
 
-                        <div class="feature-chip-preview">
-                            <span class="chip-icon"><i class="ri-flashlight-line"></i></span>
-                            <div class="chip-text">
-                                <span class="chip-title-preview">Action Hub</span>
-                                <span class="chip-desc">Custom Buttons & Social Icons</span>
-                            </div>
-                        </div>
-
-                        <div class="feature-chip-preview">
-                            <span class="chip-icon"><i class="ri-fingerprint-line"></i></span>
-                            <div class="chip-text">
-                                <span class="chip-title-preview">VCard One-Tap</span>
-                                <span class="chip-desc">Save contact to phone instantly</span>
-                            </div>
-                        </div>
-
-                        <div class="feature-chip-preview">
-                            <span class="chip-icon"><i class="ri-qr-code-line"></i></span>
-                            <div class="chip-text">
-                                <span class="chip-title-preview">Smart Sharing</span>
-                                <span class="chip-desc">QR Code & Native Share Button</span>
-                            </div>
-                        </div>
-
-                        <div class="feature-chip-preview">
-                            <span class="chip-icon"><i class="ri-pulse-line"></i></span>
-                            <div class="chip-text">
-                                <span class="chip-title-preview">Dynamic Flow</span>
-                                <span class="chip-desc">Ticker Marquees & Video Embeds</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="feature-group card-animate">
-                    <div class="group-head">
-                        <i class="ri-apps-2-line"></i>
-                        <h3>Integrations</h3>
-                    </div>
-                    <div class="integration-subgroups">
-                        <div class="sub-item">
-                            <span class="integration-label">Newsletters</span>
-                            <div class="icon-row">
-                                <!-- Kit -->
-                                <div class="brand kit">Kit</div>
-
-                                <!-- Beehiiv -->
-                                <div class="brand beehiiv">Beehiiv</div>
-
-                                <!-- Substack -->
-                                <div class="brand substack">Substack</div>
-                            </div>
-                        </div>
-                        <div class="sub-item">
-                            <span class="integration-label">Bookings</span>
-                            <div class="icon-row">
-                                <!-- Cal.com -->
-                                <div class="brand calcom">Cal.com</div> 
-
-                                <!-- Calendly -->
-                                <div class="brand calendly">Calendly</div>   
-
-                                <!-- Setmore -->
-                                <div class="brand setmore">Setmore</div>
-                            </div>
-                        </div>
-                        <div class="sub-item">
-                            <span class="integration-label">Location</span>
-                            <div class="icon-row">
-                                <!-- Google Maps -->
-                                <div class="brand google-maps">Google Maps</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="feature-group highlight card-animate">
-                    <div class="group-head">
-                        <i class="ri-gift-line"></i>
-                        <h3>Complimentary Add-ons</h3>
-                    </div>
-                    <div class="addon-grid">
-                        <div class="addon-item">
-                            <i class="ri-github-fill" style="color:#f5f5f5;"></i>
-                            <h4>GitHub Deployment</h4>
-                            <p>Live hosting on your own repository.</p>
-                        </div>
-                        <div class="addon-item">
-                            <i class="ri-global-line" style="color:#00ccff;"></i>
-                            <h4>Domain Config</h4>
-                            <p>Setting up your custom www.name.com.</p>
-                        </div>
-                        <div class="addon-item">
-                            <i class="ri-google-fill"></i>
-                            <h4>Search Console</h4>
-                            <p>Index your site on Google instantly.</p>
-                        </div>
-                        <div class="addon-item">
-                            <i class="ri-terminal-box-line" style="color:#34d399;"></i>
-                            <h4>Custom CMS</h4>
-                            <p>Edit your content without writing code.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="pk-cta">
+                <p>Pick your features. One flat price of ${price}.</p>
+                <button type="button" class="cta" data-open-builder>Build your stack</button>
             </div>
         </section>
 
-        <button class="cart-fab" id="cartTrigger" onclick="openDrawer()" aria-label="Open Stack Builder">
-            <div class="cart-badge">2</div>
-            <div class="floating-cart-icon">
-                <i class="ri-shopping-cart-2-line"></i>
+        <section class="dm" id="demo" aria-labelledby="dm-title">
+            <h2 id="dm-title">Digital business card demos</h2>
+            <p class="lead">Tap a card to bring it forward, then open the live demo.</p>
+
+            <div class="dm-deck" id="dmDeck" role="group" aria-label="Demo cards">
+                {demos.map((d, i) => (
+                    <div class="dm-card" style={`--i:${i};--c:${d.c}`}>
+                        <button type="button" class="dm-pick" aria-pressed="false">
+                            <img src={`${cdn}${d.img}`} alt={`Digital business card website demo for ${d.n}`} width="300" height="300" loading="lazy" decoding="async">
+                            <span class="dm-name">{d.n}</span>
+                        </button>
+                        <a class="dm-go" href={d.u} target="_blank" rel="noopener noreferrer">View demo<span class="visually-hidden"> for {d.n} (opens in a new tab)</span> <i class="ri-external-link-line" aria-hidden="true"></i></a>
+                    </div>
+                ))}
             </div>
-            <span class="fab-text">Build Your Stack</span>
-        </button>
 
-        <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-
-        <div class="cart-drawer" id="cartDrawer">
-            <div class="drawer-handle" onclick="closeDrawer()"></div>
-            
-            <button class="drawer-close" onclick="closeDrawer()" aria-label="Close cart">
-                <i class="ri-close-line"></i>
-            </button>
-
-            <div class="drawer-content">
-                <div class="drawer-header">
-                    <h3>Stack Your Features</h3>
-                    <p class="subtext">Customize your digital business card website</p>
-                </div>
-
-                <div id="selectionView">
-                    <div class="drawer-section">
-                        <h4>Recommended</h4>
-                        <div class="feature-chip locked">
-                            <i class="ri-user-6-line"></i>
-                            <span class="chip-title">Identity Core</span>
-                            <i class="ri-lock-fill"></i>
-                        </div>
-                        <div class="feature-chip locked">
-                            <i class="ri-qr-code-line"></i>
-                            <span class="chip-title">Smart Sharing</span>
-                            <i class="ri-lock-fill"></i>
-                        </div>
-                    </div>
-
-                    <div class="drawer-section">
-                        <h4>More Features</h4>
-                        <div class="feature-chip clickable" onclick="toggleFeature(this)">
-                            <i class="ri-layout-grid-line"></i>
-                            <span class="chip-title">Custom Buttons</span>
-                            <i class="ri-add-line"></i>
-                        </div>
-                        <div class="feature-chip clickable" onclick="toggleFeature(this)">
-                            <i class="ri-links-line"></i>
-                            <span class="chip-title">Social Icons</span>
-                            <i class="ri-add-line"></i>
-                        </div>
-                        <div class="feature-chip clickable" onclick="toggleFeature(this)">
-                            <i class="ri-contacts-book-line"></i>
-                            <span class="chip-title">vCard One-Tap</span>
-                            <i class="ri-add-line"></i>
-                        </div>
-                        <div class="feature-chip clickable" onclick="toggleFeature(this)">
-                            <i class="ri-news-line"></i>
-                            <span class="chip-title">Ticker Marquees</span>
-                            <i class="ri-add-line"></i>
-                        </div>
-                        <div class="feature-chip clickable" onclick="toggleFeature(this)">
-                            <i class="ri-video-line"></i>
-                            <span class="chip-title">Video Embeds</span>
-                            <i class="ri-add-line"></i>
-                        </div>
-                    </div>
-
-                    <div class="drawer-section">
-                        <h4>Integrations</h4>
-                        <div class="newsletter">
-                            <div class="integration-chip chip-title brand kit2" onclick="selectIntegration(this)">Kit <i class="ri-checkbox-circle-line"></i></div>
-                            <div class="integration-chip chip-title brand beehiiv2" onclick="selectIntegration(this)">Beehiiv <i class="ri-checkbox-circle-line"></i></div>
-                            <div class="integration-chip chip-title brand substack2" onclick="selectIntegration(this)">Substack <i class="ri-checkbox-circle-line"></i></div>
-                        </div>
-                        
-                        <div class="bookings">
-                            <div class="integration-chip chip-title brand cal.com2" onclick="selectIntegration(this)">Cal.com <i class="ri-checkbox-circle-line"></i></div>
-                            <div class="integration-chip chip-title brand calendly2" onclick="selectIntegration(this)">Calendly <i class="ri-checkbox-circle-line"></i></div>
-                            <div class="integration-chip chip-title brand setmore2" onclick="selectIntegration(this)">Setmore <i class="ri-checkbox-circle-line"></i></div>
-                        </div>
-                        
-                        <div class="location">
-                            <span class="integration-chip chip-title brand google-maps2" onclick="selectIntegration(this)">Google Maps <i class="ri-checkbox-circle-line"></i></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="summaryView" style="display: none;">
-                    <div class="summary-card">
-                        <p>Total Investment</p>
-                        <h4 class="summary-total">$60</h4>
-                    </div>
-                    <div class="trust-indicators">
-                        <div class="trust-item">
-                            <i class="ri-flashlight-line"></i>
-                            <span>Ready in 24-48 Hours</span>
-                        </div>
-                        <div class="trust-item">
-                            <i class="ri-shield-check-line"></i>
-                            <span>Pay after Site Ready</span>
-                        </div>
-                        <div class="trust-item">
-                            <i class="ri-loop-left-line"></i>
-                            <span>One-time payment • Lifetime access</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="drawer-footer">
-                    <button class="back-to-edit" id="backBtn" style="display: none;" onclick="goBackToSelection()">
-                        <i class="ri-arrow-left-s-line"></i> Edit My Stack
-                    </button>
-                    
-                    <button class="drawer-cta-btn" id="launchBtn" onclick="handleCardOrder()">
-                        <span class="btn-text">Review Stack</span>
-                        <i class="ri-arrow-right-line"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <section class="demo-section" id="demo">
-            <h2>Digital Business Card Demos</h2>
-            <div class="container">
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Amara_Okafor_wbgcpi" alt="Digital business card website demo for Amara Okafor"></div>
-                    <a href="https://emmydemoweb3.netlify.app" target="_blank" rel="noopener" class="cta-button amara">View Demo</a>
-                </div>
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Aisha_Patel_i1ec8j" alt="Digital business card website demo for Aisha Patel"></div>
-                    <a href="https://emmydemoweb2.netlify.app" target="_blank" rel="noopener" class="cta-button aisha">View Demo</a>
-                </div>
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Kofi_Mensah_gv4pel" alt="Digital business card website demo for Kofi Mensah"></div>
-                    <a href="https://emmydemoweb6.netlify.app" target="_blank" rel="noopener" class="cta-button kofi">View Demo</a>
-                </div>
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Jordan_Banks_nhl3mj" alt="Digital business card website demo for Jordan Banks"></div>
-                    <a href="https://emmydemoweb5.netlify.app" target="_blank" rel="noopener" class="cta-button jordan">View Demo</a>
-                </div>
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Alex_Rivera_wvs50b" alt="Digital business card website demo for Alex Rivera"></div>
-                    <a href="https://emmydemoweb1.netlify.app" target="_blank" rel="noopener" class="cta-button alex">View Demo</a>
-                </div>
-                <div class="card" onclick="bringToFront(this)">
-                    <div class="gif-area"><img src="https://res.cloudinary.com/dq7dwhxqn/image/upload/f_auto/q_auto/dpr_auto/w_300/Chloe_Sterling_zzlwrq" alt="Digital business card website demo for Chloe Sterling"></div>
-                    <a href="https://emmydemoweb4.netlify.app" target="_blank" rel="noopener" class="cta-button chloe">View Demo</a>
-                </div>
-            </div>
-            <div class="controls">
-                <i class="nav-btn ri-arrow-left-s-line" onclick="moveManual('prev')"></i>
-                <i class="nav-btn ri-arrow-right-s-line" onclick="moveManual('next')"></i>
+            <div class="dm-nav">
+                <button type="button" data-dm="prev" aria-label="Previous demo"><i class="ri-arrow-left-s-line" aria-hidden="true"></i></button>
+                <button type="button" data-dm="next" aria-label="Next demo"><i class="ri-arrow-right-s-line" aria-hidden="true"></i></button>
             </div>
         </section>
     </main>
-    <footer class="footer-section">
-        <div class="footer-container">
-            <!-- Column 1: Ecosystem Hub -->
-            <div class="footer-column">
-                <h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/pricing">Pricing</a></li> <!-- White-Label info located here -->
-                    <li><a href="/articles">Articles</a></li>
-                </ul>
+
+    <!-- Floating builder button -->
+    <button type="button" class="bd-fab" id="bdFab" data-open-builder aria-label="Open card builder, 2 features selected">
+        <span class="bd-badge" id="bdBadge" aria-hidden="true">2</span>
+        <i class="ri-shopping-cart-2-line" aria-hidden="true"></i>
+        <span class="txt">Build your stack</span>
+    </button>
+
+    <!-- Builder drawer -->
+    <div class="bd-overlay" id="bdOverlay"></div>
+    <aside class="bd-drawer" id="bdDrawer" role="dialog" aria-modal="true" aria-labelledby="bdTitle" data-step="select">
+        <div class="bd-handle" aria-hidden="true"></div>
+        <button type="button" class="bd-close" id="bdClose" aria-label="Close builder"><i class="ri-close-line" aria-hidden="true"></i></button>
+
+        <div class="bd-body" id="bdBody">
+            <h2 id="bdTitle">Stack your features</h2>
+            <p class="sub">Customize your digital business card website. Every feature you pick is included in the flat ${price}.</p>
+
+            <div class="bd-pick">
+                <div class="bd-sec">
+                    <h3>Included</h3>
+                    <div class="bd-list">
+                        {included.map(([i, n]) => (
+                            <div class="bd-chip locked"><i class={`ri-${i}`} aria-hidden="true"></i><span class="name">{n}</span><i class="ri-lock-fill state" aria-hidden="true"></i><span class="visually-hidden">included</span></div>
+                        ))}
+                    </div>
+                </div>
+
+                <div class="bd-sec">
+                    <h3>More features</h3>
+                    <div class="bd-list">
+                        {extras.map(([i, n]) => (
+                            <button type="button" class="bd-chip" data-name={n} aria-pressed="false"><i class={`ri-${i}`} aria-hidden="true"></i><span class="name">{n}</span><i class="ri-add-line state" aria-hidden="true"></i></button>
+                        ))}
+                    </div>
+                </div>
+
+                <div class="bd-sec">
+                    <h3>Integrations <span class="visually-hidden">(choose one per group)</span></h3>
+                    {groups.map((g) => (
+                        <div class="bd-int" role="group" aria-label={g.label}>
+                            {g.items.map((n) => (
+                                <button type="button" class="bd-chip" data-name={n} data-group={g.label} aria-pressed="false"><span class="name">{n}</span><i class="ri-add-line state" aria-hidden="true"></i></button>
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <!-- Column 2: Flagship Product -->
-            <div class="footer-column">
-                <h3><i class="ri-rocket-2-line"></i> Flagship Product</h3>
-                <ul>
-                    <li><a href="/products/digital-business-card">Digital Business Card</a></li>
-                    <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
-                    <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
-                    <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3: Technical Tools -->
-            <div class="footer-column">
-                <h3><i class="ri-tools-line"></i> Technical Tools</h3>
-                <ul>
-                    <li><a href="/tools/website-auditor">Website Auditor</a></li>
-                    <li><a href="/tools/social-architect">Social Architect</a></li>
-                    <li><a href="/tools/meeting_background_studio">Meeting Studio</a></li>
-                    <li><a href="/tools/naira-wise">Invoice Generator</a></li>
-                    <li><a href="/tools/emmy-sign">PDF Signer</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 4: Partnership -->
-            <div class="footer-column">
-                <h3><i class="ri-team-line"></i> Partnership</h3>
-                <ul>
-                    <li><a href="/partnership">Partnership Program</a></li>
-                    <li><a href="/partnership/affiliate">Affiliate Portal</a></li>
-                    <li><a href="/partnership/policy">Partner Policy</a></li>
+            <div class="bd-sum" aria-live="polite">
+                <div class="bd-total">
+                    <p>Total investment</p>
+                    <strong>${price}</strong>
+                    <small>One-time payment</small>
+                </div>
+                <ul class="bd-tags" id="bdTags" aria-label="Your selected features"></ul>
+                <ul class="bd-trust">
+                    <li><i class="ri-flashlight-line" aria-hidden="true"></i> Ready in 24–48 hours</li>
+                    <li><i class="ri-shield-check-line" aria-hidden="true"></i> Pay after your site is ready</li>
+                    <li><i class="ri-loop-left-line" aria-hidden="true"></i> One-time payment • Lifetime access</li>
                 </ul>
             </div>
         </div>
+
+        <div class="bd-foot">
+            <button type="button" class="bd-edit" id="bdEdit"><i class="ri-arrow-left-s-line" aria-hidden="true"></i> Edit my stack</button>
+            <button type="button" class="cta bd-go" id="bdGo"><span id="bdGoText">Review stack</span> <i class="ri-arrow-right-line" id="bdGoIcon" aria-hidden="true"></i></button>
+        </div>
+    </aside>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
         <div class="footer-bottom">
-            <hr class="footer-divider">
             <div class="footer-legal">
-                <div class="footer-cta-container">
-                    <div class="footer-socials-text">Socials & Contact</div>
-                    <div class="footer-socials">
-                        <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
-                        <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-line"></i></a>
-                        <a href="mailto:hello@emmystack01.com" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 Email Address"><i class="ri-mail-line"></i></a>  
-                    </div>
-                </div>
-                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
-    <script is:inline>
-        // 1. GLOBAL STATE
-        let featureCount = 2; 
 
-        // 2. UI HELPERS
-        function pingCart() {
-            const badge = document.querySelector(".cart-badge");
-            if(!badge) return;
-            gsap.fromTo(badge, { scale: 1 }, { 
-                scale: 1.5, duration: 0.2, yoyo: true, repeat: 1, ease: "back.out(2)"
-            });
+    <script is:inline define:vars={{ price }}>
+    (() => {
+      const THANK_YOU = "/thank-you";            // ?type=card&stack=… is appended
+      const BASE = ["Identity Core", "Smart Sharing"];
+      const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+      const drawer = $("#bdDrawer"), overlay = $("#bdOverlay"), fab = $("#bdFab"), badge = $("#bdBadge");
+      const go = $("#bdGo"), goText = $("#bdGoText"), goIcon = $("#bdGoIcon"), edit = $("#bdEdit"), tags = $("#bdTags"), body = $("#bdBody");
+      const root = document.documentElement;
+      let opener = null;
+
+      const chosen = () => $$(".bd-chip[aria-pressed='true']").map((b) => b.dataset.name);
+
+      function refresh() {
+        const n = BASE.length + chosen().length;
+        if (badge.textContent !== String(n)) {
+          badge.textContent = n; badge.classList.remove("ping"); void badge.offsetWidth; badge.classList.add("ping");
         }
+        fab.setAttribute("aria-label", `Open card builder, ${n} features selected`);
+      }
 
-        function updateCartState() {
-            // Select BOTH feature chips and integration chips
-            const selected = document.querySelectorAll('.feature-chip.is-selected, .integration-chip.is-selected');
-            const selectedCount = selected.length;
-            const badge = document.querySelector('.cart-badge');
-            const launchBtn = document.getElementById('launchBtn');
-            
-            const newTotal = 2 + selectedCount;
-            
-            if (newTotal !== featureCount) {
-                featureCount = newTotal;
-                badge.innerText = featureCount;
-                pingCart(); // Animate the badge on change
-            }
+      // Features toggle; integrations are one-per-group (tap again to clear).
+      $$(".bd-chip[data-name]").forEach((chip) => chip.addEventListener("click", () => {
+        const on = chip.getAttribute("aria-pressed") !== "true";
+        if (chip.dataset.group) $$(".bd-chip", chip.parentElement).forEach((c) => setChip(c, false));
+        setChip(chip, on);
+        refresh();
+      }));
+      function setChip(chip, on) {
+        chip.setAttribute("aria-pressed", String(on));
+        const s = $(".state", chip); if (s) s.className = `${on ? "ri-check-line" : "ri-add-line"} state`;
+      }
 
-            // Toggle button "active" look
-            if (selectedCount > 0) {
-                launchBtn.style.opacity = "1";
-                launchBtn.style.pointerEvents = "auto";
-            } else {
-                // Optional: make it look disabled if nothing is selected
-                launchBtn.style.opacity = "0.5";
-            }
+      function setStep(step) {
+        drawer.dataset.step = step;
+        const summary = step === "summary";
+        goText.textContent = summary ? "Continue on WhatsApp" : "Review stack";
+        goIcon.className = summary ? "ri-whatsapp-line" : "ri-arrow-right-line";
+        fab.classList.toggle("ready", summary);
+        if (summary) {
+          tags.replaceChildren(...[...BASE, ...chosen()].map((t) => Object.assign(document.createElement("li"), { textContent: t })));
         }
+        body.scrollTop = 0;
+      }
 
-        // 3. SELECTION LOGIC
-        function toggleFeature(element) {
-            element.classList.toggle('is-selected');
-            const icon = element.querySelector('.ri-add-line, .ri-check-line');
-            
-            if (element.classList.contains('is-selected')) {
-                if(icon) icon.classList.replace('ri-add-line', 'ri-check-line');
-            } else {
-                if(icon) icon.classList.replace('ri-check-line', 'ri-add-line');
-            }
-            updateCartState();
-        }
+      function open() {
+        opener = document.activeElement;
+        drawer.classList.add("open"); overlay.classList.add("open"); root.classList.add("bd-lock");
+        fab.classList.remove("show");
+        $("#bdClose").focus({ preventScroll: true });
+      }
+      function close() {
+        drawer.classList.remove("open"); overlay.classList.remove("open"); root.classList.remove("bd-lock");
+        syncFab();
+        if (opener && opener.focus) opener.focus({ preventScroll: true });
+      }
+      const isOpen = () => drawer.classList.contains("open");
 
-        function selectIntegration(element) {
-            const parentGroup = element.parentElement; 
-            const isAlreadySelected = element.classList.contains('is-selected');
+      $$("[data-open-builder]").forEach((b) => b.addEventListener("click", open));
+      $("#bdClose").addEventListener("click", close);
+      overlay.addEventListener("click", close);
+      edit.addEventListener("click", () => setStep("select"));
 
-            const siblings = parentGroup.querySelectorAll('.integration-chip');
-            siblings.forEach(chip => chip.classList.remove('is-selected'));
+      go.addEventListener("click", () => {
+        if (drawer.dataset.step !== "summary") return setStep("summary");
+        go.disabled = true; goText.textContent = "Connecting…";
+        const stack = encodeURIComponent([...BASE, ...chosen()].join(", "));
+        location.href = `${THANK_YOU}?type=card&stack=${stack}`;
+      });
+      // Coming back with the browser's Back button must not leave the button stuck on "Connecting…".
+      addEventListener("pageshow", () => { go.disabled = false; if (drawer.dataset.step === "summary") setStep("summary"); });
 
-            if (!isAlreadySelected) {
-                element.classList.add('is-selected');
-            }
-            updateCartState();
-        }
+      document.addEventListener("keydown", (e) => {
+        if (!isOpen()) return;
+        if (e.key === "Escape") return close();
+        if (e.key !== "Tab") return;
+        const f = $$("button:not([disabled]), a[href]", drawer).filter((el) => el.offsetParent !== null);
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
 
-        // 4. DRAWER CONTROLS
-        function openDrawer() {
-            document.body.classList.add("stop-scrolling");
-            gsap.to(".cart-fab", { scale: 0, opacity: 0, duration: 0.3 });
-            gsap.to("#cartDrawer", { x: 0, y: 0, duration: 1.2, ease: "expo.out" });
-            
-            const overlay = document.getElementById("drawerOverlay");
-            overlay.style.display = "block";
-            gsap.to(overlay, { opacity: 1, duration: 0.5 });
-        }
+      // The floating button shows only while the package section is on screen.
+      const section = $("#launch-package");
+      let inView = !("IntersectionObserver" in window);
+      function syncFab() { fab.classList.toggle("show", inView && !isOpen()); }
+      if (!inView) new IntersectionObserver(([en]) => { inView = en.isIntersecting; syncFab(); }, { rootMargin: "-10% 0px -10% 0px" }).observe(section);
+      syncFab();
 
-        function closeDrawer() {
-            document.body.classList.remove("stop-scrolling");
-            gsap.to("#cartDrawer", { x: "100%", y: "100%", duration: 0.8, ease: "power4.in" });
-            gsap.to("#drawerOverlay", { 
-                opacity: 0, 
-                duration: 0.5, 
-                onComplete: () => { document.getElementById("drawerOverlay").style.display = "none"; }
-            });
-            gsap.to(".cart-fab", { scale: 1, opacity: 1, duration: 0.5, delay: 0.3 });
-        }
+      // Phone tilt (fine pointers only) — pure CSS variables, no layout work.
+      const phone = $("#phone");
+      if (matchMedia("(hover:hover) and (pointer:fine) and (min-width:1024px) and (prefers-reduced-motion:no-preference)").matches) {
+        addEventListener("mousemove", (e) => {
+          phone.style.setProperty("--ry", `${(e.clientX / innerWidth - .5) * 22}deg`);
+          phone.style.setProperty("--rx", `${-(e.clientY / innerHeight - .5) * 22}deg`);
+        }, { passive: true });
+      }
+      if (matchMedia("(prefers-reduced-motion:reduce)").matches) { const v = $("video", phone); if (v) { v.removeAttribute("autoplay"); v.pause(); } }
 
-        // 5. ORDER HANDLING
-        function handleCardOrder() {
-            const btn = document.getElementById('launchBtn');
-            const btnText = btn.querySelector('.btn-text');
-            const backBtn = document.getElementById('backBtn'); // Ensure your HTML button has id="backBtn"
-
-            // Use 'is-processing' to prevent the selection logic from clashing with checkout
-            if (!btn.classList.contains('is-processing')) {
-                btn.classList.add('is-processing');
-                btnText.innerText = "Processing Stack...";
-                
-                gsap.to(btn, { backgroundColor: "#00ff88", color: "#000", duration: 0.5 });
-                
-                setTimeout(() => {
-                    btnText.innerText = "Launch via WhatsApp";
-                    document.querySelector(".cart-fab").classList.add("ready-state");
-
-                    // VIEW SWAP
-                    if(document.getElementById("selectionView")) document.getElementById("selectionView").style.display = "none";
-                    if(document.getElementById("summaryView")) document.getElementById("summaryView").style.display = "block";
-                    
-                    // SHOW THE BACK BUTTON
-                    if(backBtn) {
-                        backBtn.style.display = "flex";
-                        gsap.fromTo(backBtn, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3 });
-                    }
-                }, 1000);
-                return;
-            }
-
-            // FINAL REDIRECT logic inside handleCardOrder
-            btn.disabled = true;
-            btnText.innerText = "Connecting...";
-
-            // Inside handleCardOrder, replace your selection loop with this:
-            let selections = ["Identity Core", "Smart Sharing"];
-
-            // 1. Grab "More Features" (where text is inside a span.chip-title)
-            document.querySelectorAll('.feature-chip.is-selected .chip-title').forEach(span => {
-                selections.push(span.innerText.trim());
-            });
-
-            // 2. Grab "Integrations" (where text is directly in the chip)
-            document.querySelectorAll('.integration-chip.is-selected').forEach(chip => {
-                // Only grab the text, ignore the <i> icon
-                const cleanName = chip.childNodes[0].textContent.trim();
-                if(cleanName) selections.push(cleanName);
-            });
-
-            const stackData = encodeURIComponent(selections.join(", "));
-            
-            setTimeout(() => {
-                window.location.href = `/thank-you.html?type=card&stack=${stackData}`;
-            }, 1200); 
-        }
-
-        // NEW: FUNCTION FOR THE BACK BUTTON
-        function goBackToSelection() {
-            const btn = document.getElementById('launchBtn');
-            const btnText = btn.querySelector('.btn-text');
-            const backBtn = document.getElementById('backBtn');
-
-            // 1. CRITICAL: Re-enable the button so it can be clicked again
-            btn.disabled = false; 
-
-            // 2. Remove processing state and reset button text
-            btn.classList.remove('is-processing');
-            btnText.innerText = "Review Stack";
-
-            // 3. Reset the button color and clear GSAP overrides
-            // This returns it to your original blue CSS styling
-            gsap.to(btn, { 
-                backgroundColor: "", 
-                color: "", 
-                opacity: 1, 
-                duration: 0.3 
-            });
-
-            // 4. Reset the icon (if it changed to "Connecting...")
-            const icon = btn.querySelector('i');
-            if (icon) icon.className = "ri-arrow-right-line";
-
-            // 5. Hide Back Button
-            if(backBtn) backBtn.style.display = "none";
-
-            // 6. Switch Views back
-            if(document.getElementById("summaryView")) document.getElementById("summaryView").style.display = "none";
-            if(document.getElementById("selectionView")) document.getElementById("selectionView").style.display = "block";
-        }
-
-        // 2. Animations and ScrollTriggers
-        document.addEventListener("DOMContentLoaded", () => {
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.set(".line-one, .line-two, .content-p, .hero-cta, .demo-hero-cta, .card", { opacity: 1, visibility: "visible" });
-            
-            // Entrance Timeline
-            const heroTl = gsap.timeline();
-            heroTl.from(".line-one", { x: -50, opacity: 0, duration: 1.5, ease: "power4.out" })
-                .from(".line-two", { x: 50, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=1")
-                .from(".content-p", { y: 20, opacity: 0, duration: 0.8 }, "-=0.5")
-                .from(".hero-cta", { scale: 0, opacity: 0, stagger: 0.2, ease: "back.out(1.7)" }, "-=0.3")
-                .from(".demo-hero-cta", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.001");
-
-            // Initial state remains the same: Hidden
-            gsap.set(".cart-fab", { 
-                opacity: 0, 
-                scale: 0.5, 
-                y: 50, 
-                pointerEvents: "none" 
-            });
-
-            // New Reveal Logic: Locked to the Package Section
-            gsap.to(".cart-fab", {
-                scrollTrigger: {
-                    trigger: ".package-section", // Target the specific section
-                    start: "top 80%",           // Reveal when the top of the section is 80% down the screen
-                    end: "bottom 20%",          // Hide again when the bottom of the section reaches 20% from the top
-                    toggleActions: "play reverse play reverse", // Entry/Exit animations
-                    // markers: true,            // Uncomment this to see the trigger lines while testing
-                },
-                y: 0, 
-                opacity: 1,
-                visibility: "visible", 
-                scale: 1, 
-                pointerEvents: "auto", 
-                duration: 0.6, 
-                ease: "back.out(1.7)" 
-            });
-
-            const vCardVideo = document.querySelector(".phone-display-video");
-
-            // 1. Sync video to scroll
-            gsap.to(vCardVideo, {
-                scrollTrigger: {
-                    trigger: ".product-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                },
-                currentTime: vCardVideo.duration || 5
-            });
-
-            // 2. Continuous Floating Animation
-            gsap.to(".phone-frame", {
-                y: 20,
-                rotationY: 5,
-                rotationX: 2,
-                duration: 3,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-
-            // 3. Desktop Interactive Tilt & Grid Move
-            if (window.innerWidth > 1024) {
-                document.addEventListener("mousemove", (e) => {
-                    const xPos = (e.clientX / window.innerWidth) - 0.5;
-                    const yPos = (e.clientY / window.innerHeight) - 0.5;
-
-                    // Tilt Phone
-                    gsap.to(".phone-frame", {
-                        rotationY: xPos * 25,
-                        rotationX: -yPos * 25,
-                        duration: 1.2,
-                        ease: "power2.out"
-                    });
-
-                    // Move Grid
-                    gsap.to(".product-hero", {
-                        backgroundPosition: `${50 + xPos * 30}px ${50 + yPos * 30}px`,
-                        duration: 1.5,
-                        ease: "power2.out"
-                    });
-                });
-            }
-
-            // --- CREATE MATCHMEDIA INTERFACE ---
-            let mm = gsap.matchMedia();
-
-            // This block only runs when the viewport is WIDER than 480px
-            mm.add("(min-width: 481px)", () => {
-                
-                // Card Scroll Animations
-                const allCards = gsap.utils.toArray(".card-animate");
-                allCards.forEach((card) => {
-                    gsap.from(card, {
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 90%",
-                            toggleActions: "play none none none",
-                        },
-                        y: 60,
-                        opacity: 0,
-                        duration: 1.2,
-                        ease: "power3.out"
-                    });
-                });
-
-                // 5. DEMO SECTION: Entrance Animation
-                gsap.from(".card", {
-                    scrollTrigger: {
-                        trigger: ".container",
-                        start: "top 85%",
-                        toggleActions: "play none none none",
-                    },
-                    x: -800,
-                    rotation: -20,
-                    opacity: 0,
-                    stagger: 0.15,
-                    duration: 1.2,
-                    ease: "power4.out",
-                    onComplete: function() {
-                        gsap.set(".card", { clearProps: "x,opacity,rotation" });
-                    }
-                });
-            });
-            // --- END MATCHMEDIA ---
-            // 7. FOOTER: Smooth Fade
-            gsap.from(".footer", {
-                scrollTrigger: {
-                    trigger: ".footer-section",
-                    start: "top bottom",
-                },
-                opacity: 0,
-                duration: 1.5
-            });
+      // Entrance animations (GSAP optional: nothing is hidden in CSS, so the page works without it).
+      addEventListener("DOMContentLoaded", () => {
+        if (!window.gsap || !window.ScrollTrigger) return;
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+          gsap.from(".ch-copy > *", { y: 28, opacity: 0, duration: .9, ease: "power3.out", stagger: .12, clearProps: "all" });
+          gsap.from(".ch-stage", { scale: .85, opacity: 0, duration: 1.1, ease: "power3.out", delay: .2, clearProps: "all" });
+          gsap.utils.toArray(".reveal").forEach((el) => gsap.from(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 50, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }));
         });
-    </script>  
-<script src="/script/card.js" defer></script>
-<script src="/script/year.js" defer></script>    
+      });
+    })();
+    </script>
+    <script src="/script/card.js" defer></script>
+    <script src="/script/year.js" defer></script>
 </body>
 </html>

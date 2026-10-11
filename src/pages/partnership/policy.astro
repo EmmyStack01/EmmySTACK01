@@ -1,173 +1,270 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+
+// src/pages/partnership/policy.astro — Styles: /style/index-style.css + /style/partnership-style.css
+const site = "https://emmystack01.com";
+const url = `${site}/partnership/policy`;
+const title = 'Site Policy & Partnership Terms | Emmy STACK01';
+const desc = 'Explore the Emmy STACK01 Policy Framework. Learn about our Lifetime Attribution rules, recurring 16.67% commissions, and our commitment to your Digital DNA privacy.';
+const ogTitle = 'Site Policy & Partnership Terms | Emmy STACK01';
+const ogDesc = 'Transparent, tech-forward and partner-focused. Read the official terms governing the Emmy STACK01 ecosystem, crypto payments and affiliate rights.';
+const ogImage = `${site}/asset/og-image2.png`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const org = { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] };
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebPage", "@id": `${url}#webpage`, url, name: title, description: desc, isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, url: `${site}/`, name: "Emmy STACK01" }, about: { "@id": `${url}#document` }, inLanguage: "en-US" },
+    { "@type": "DigitalDocument", "@id": `${url}#document`, name: "Emmy STACK01 Site Policy & Partnership Terms", url, mainEntityOfPage: url, copyrightHolder: { "@id": `${site}/#organization` }, author: { "@id": `${site}/#organization` }, abstract: "How Emmy STACK01 manages user data, safeguards 'Digital DNA' privacy, and governs its Partnership and Affiliate Program, including the 16.67% lifetime attribution commission rules and cryptocurrency payout structure." },
+    org,
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Partnership", item: `${site}/partnership` }, { "@type": "ListItem", position: 3, name: "Policy", item: url }] },
+  ],
+};
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="/script/meta-logic.js" is:inline></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Policy | Emmy STACK01</title>
-
-    <meta name="title" content="Site Policy | Emmy STACK01">
-    <link rel="canonical" href="https://emmystack01.com/partnership/policy">
-    <meta name="description" content="Explore the Emmy STACK01 Policy Framework. Learn about our Lifetime Attribution rules, recurring 16.67% commissions, and our commitment to your Digital DNA privacy.">
+    <script src="/script/meta-logic.js" is:inline></script>
     <meta name="robots" content="index, follow">
     <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/partnership-style.css">
 
-    <meta property="og:site_name" content="Site Policy | Emmy STACK01">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Emmy STACK01">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emmystack01.com/partnership/policy">
-    <meta property="og:title" content="Emmy STACK01 | Digital Agency">
-    <meta property="og:description" content="Transparent, tech-forward, and partner-focused. Read the official terms governing the Emmy STACK01 ecosystem, crypto payments, and affiliate rights.">
-    <meta property="twitter:title" content="Emmy STACK01 | Digital Agency">
-    <meta property="twitter:description" content="Your Digital DNA, secured. Read the Emmy STACK01 Policy on recurring commissions, lifetime attribution, and data sovereignty.">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content={ogTitle}>
+    <meta name="twitter:description" content={ogDesc}>
+    <meta name="twitter:image" content={ogImage}>
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-    
-    <script type="application/ld+json">
-        {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-            "@type": "WebPage",
-            "@id": "https://emmystack01.com/partnership/policy#webpage",
-            "url": "https://emmystack01.com/partnership/policy",
-            "name": "Site Policy & Partnership Terms | Emmy STACK01",
-            "description": "Explore the Emmy STACK01 Policy Framework. Learn about our Lifetime Attribution rules, recurring 16.67% commissions, and our commitment to your Digital DNA privacy.",
-            "isPartOf": {
-                "@type": "WebSite",
-                "@id": "https://emmystack01.com/#website",
-                "url": "https://emmystack01.com/",
-                "name": "Emmy STACK01"
-            },
-            "about": {
-                "@id": "https://emmystack01.com/partnership/policy#document"
-            },
-            "inLanguage": "en-US"
-            },
-            {
-            "@type": "DigitalDocument",
-            "@id": "https://emmystack01.com/partnership/policy#document",
-            "name": "Emmy STACK01 Site Policy & Partnership Terms",
-            "url": "https://emmystack01.com/partnership/policy",
-            "mainEntityOfPage": "https://emmystack01.com/partnership/policy",
-            "copyrightHolder": {
-                "@id": "https://emmystack01.com/#organization"
-            },
-            "author": {
-                "@id": "https://emmystack01.com/#organization"
-            },
-            "abstract": "This document outlines how Emmy STACK01 manages user data, safeguards 'Digital DNA' privacy, and governs the legal framework of its Partnership and Affiliate Program—including the 16.67% lifetime attribution commission rules and cryptocurrency payout structures."
-            },
-            {
-            "@type": "Organization",
-            "@id": "https://emmystack01.com/#organization",
-            "name": "Emmy STACK01",
-            "url": "https://emmystack01.com/",
-            "logo": "https://emmystack01.com/asset/emmy-stack01-logo.png",
-            "sameAs": [
-                "https://x.com/Emmy_STACK01",
-                "https://wa.me/2349076991076"
-            ]
-            }
-        ]
-        }
-    </script>
-    
-    <style>
-        body { background-color: #000; color: #fff; font-family: 'Montserrat', sans-serif; line-height: 1.6; }
-        .policy-container { max-width: 900px; margin: 100px auto; padding: 40px; background: rgba(255, 255, 255, 0.02); border-radius: 20px; border: 1px solid rgba(0, 204, 255, 0.1); }
-        @media (max-width: 900px) { .policy-container {padding: 8px 20px;}}
-        h1, h2 { font-family: 'Orbitron', sans-serif; color: #00ccff; text-transform: uppercase; letter-spacing: 2px; }
-        h1 { border-bottom: 2px solid #00ccff; padding-bottom: 10px; margin-bottom: 40px; font-size: 1.8rem; }
-        h2 { font-size: 1.2rem; margin-top: 40px; display: flex; align-items: center; }
-        h2::before { content: '🧬'; margin-right: 10px; font-size: 1.5rem; }
-        .clause-box { background: rgba(0, 204, 255, 0.05); padding: 20px; border-left: 4px solid #00ccff; border-radius: 4px; margin: 20px 0; }
-        .warning { color: #ff4d4d; font-weight: bold; }
-        .highlight { color: #00ccff; font-weight: bold; }
-        footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #555; }
-        .back-btn { color: #00ccff; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 20px; transition: 0.3s; }
-        .back-btn:hover { text-shadow: 0 0 10px #00ccff; }
-    </style>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 </head>
 <body>
-    <div class="policy-container">
-        <a href="/partnership" class="back-btn">← Return to Ecosystem</a>
-        <h1>Emmy STACK01 | Site Policy & Partnership Terms</h1>
-        <p>Welcome to the Emmy STACK01 ecosystem. This document outlines how we manage your "Digital DNA," protect your data, and govern our Partnership Program. By using our services or joining our team, you agree to these terms.</p>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership" aria-current="page">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/partnership/affiliate" class="cta nav-cta">Become an Affiliate <i class="ri-arrow-right-line"></i></a>
+    </nav>
 
-        <section>
-            <h2>1. Privacy & Data Sovereignty</h2>
-            <ul>
-                <li><strong>Information Collection:</strong> We collect names, email addresses, and payment details (Bank or Crypto) specifically to manage the Partnership Program.</li>
-                <li><strong>Data Usage:</strong> Your data is used solely to generate unique referral codes and process commission payouts.</li>
-                <li><strong>Affiliate Support Channel:</strong> You have the right to request the modification or permanent deletion of your information at any time.</li>
-                <li><strong>How to Request Changes:</strong> Use the "Chat with Support" button on your dashboard to request data updates or account deletion.</li>
-                <li><strong>Deletion Impact:</strong> Requesting total data deletion results in the immediate termination of your affiliate status and future tracking.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>2. Partnership Program: Lifetime Attribution</h2>
-            <p>We believe in rewarding the people who help us grow our ecosystem.</p>
-            <div class="clause-box">
-                <strong>The "Locked-In" Rule:</strong> Once a customer uses your referral code for their first purchase, they are permanently linked to your profile in our database.
-            </div>
-            <ul>
-                <li><strong>Recurring Commissions:</strong> You earn a <span class="highlight">16.67% commission</span> on their initial order and every future order they place, even if they message us later without a code.</li>
-                <li><strong>Commission Calculation & Currency Conversion:</strong>
-                    <ul>
-                        <li><strong>Percentage-Based:</strong> Commissions are calculated as exactly 16.67% of the total gross sale, regardless of whether the customer chooses a full STACK or a customized service package (e.g., removing branding or ordering UI/UX only).</li>
-                        <li><strong>Base Currency:</strong> The commission is initially calculated in the currency used by the customer (e.g., USD).</li>
-                        <li><strong>Conversion:</strong> If your preferred payout method is in a different currency (e.g., receiving USDT for a Naira-based sale), Emmy STACK01 will perform the conversion based on the prevailing market exchange rate at the time of the payout.</li>
-                    </ul>
-                </li>
-                <li><strong>Notification System:</strong> You will receive automated emails when:
-                    <ul>
-                        <li>A lead is captured via your unique link.</li>
-                        <li>An order is completed and your commission is ready.</li>
-                        <li>A linked client returns for a new project in the future.</li>
-                    </ul>
-                </li>
-                <li><strong>Expiration of Commissions:</strong> Commissions only stop if you delete your data, if the customer uses a different affiliate's code, or if Emmy STACK01 undergoes a change in ownership.</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>3. Payments & Crypto Disclaimer</h2>
-            <ul>
-                <li><strong>Payout Structure:</strong> Commissions are issued after the referred client completes their order and payment is confirmed.
-                    <ul>
-                        <li><strong>Processing Timeline:</strong> Commission payouts are triggered upon the successful settlement of client funds to Emmy STACK01. As our processor settles transactions the following business day, partners will receive their funds within 24 hours of that settlement.</li>
-                        <li><strong>Reliability:</strong> This window ensures that the transaction is fully cleared and secured before the commission is transferred to the partner's wallet.</li>
-                    </ul>
-                </li>
-                <li><strong>Crypto Accuracy:</strong> When providing a Crypto Wallet Address, you must ensure the Address and Network are 100% accurate.</li>
-                <li><strong>Liability:</strong> Emmy STACK01 is not responsible for funds lost due to incorrect wallet entries; <span class="warning">blockchain transactions are irreversible.</span></li>
-            </ul>
-        </section>
-        <section>
-            <h2>4. Change of Ownership & Evolution</h2>
-            <ul>
-                <li><strong>Management Shifts:</strong> In the event that Emmy STACK01 undergoes a merger, acquisition, or change in ownership, the new management reserves the right to modify or terminate existing commission structures.</li>
-                <li><strong>Term Updates:</strong> We reserve the right to evolve these terms to protect the agency’s health. Active partners will be notified of significant changes via their registered email.</li>
-            </ul>
-        </section>
-        <section>
-            <h2>5. Affiliate Conduct</h2>
-            <ul>
-                <li><strong>Ethical Promotion:</strong> Affiliates must promote our Personal, Business, and Enterprise STACKS ethically.</li>
-                <li><strong>Termination:</strong> Spamming, misleading claims, or fraudulent activity will result in immediate removal from the program without payout.</li>
-            </ul>
-        </section>
-
-        <footer>
-            Built by Emmy STACK01 &copy; <span id="year"></span> | Digital DNA Secured.
-        </footer>
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
     </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link active" aria-current="page"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/partnership/affiliate" class="cta project-btn">Become an Affiliate <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="pt-hero">
+        <div class="pt-hero-inner">
+            <a class="pt-back" href="/partnership"><i class="ri-arrow-left-line" aria-hidden="true"></i> Partnership Program</a>
+            <span class="pt-eyebrow">Legal</span>
+            <h1>Site policy &amp; partnership terms</h1>
+            <p>How we handle your data, reward referrals and pay partners.</p>
+        </div>
+    </header>
+
+    <div class="pt-doc">
+        <nav class="pt-toc" aria-labelledby="toc-title">
+            <h2 id="toc-title">On this page</h2>
+            <ol>
+                <li><a href="#privacy">1. Privacy &amp; data</a></li>
+                <li><a href="#attribution">2. Lifetime attribution</a></li>
+                <li><a href="#payments">3. Payments &amp; crypto</a></li>
+                <li><a href="#ownership">4. Change of ownership</a></li>
+                <li><a href="#conduct">5. Affiliate conduct</a></li>
+            </ol>
+        </nav>
+
+        <main class="pt-policy">
+            <p class="pt-intro">Welcome to the Emmy STACK01 ecosystem. This document outlines how we manage your "Digital DNA," protect your data, and govern our Partnership Program. By using our services or joining our team, you agree to these terms.</p>
+
+            <section id="privacy" aria-labelledby="h-privacy">
+                <h2 id="h-privacy"><span class="n" aria-hidden="true">1</span>Privacy &amp; Data Sovereignty</h2>
+                <ul>
+                    <li><strong>Information Collection:</strong> We collect names, email addresses, and payment details (Bank or Crypto) specifically to manage the Partnership Program.</li>
+                    <li><strong>Data Usage:</strong> Your data is used solely to generate unique referral codes and process commission payouts.</li>
+                    <li><strong>Affiliate Support Channel:</strong> You have the right to request the modification or permanent deletion of your information at any time.</li>
+                    <li><strong>How to Request Changes:</strong> Use the "Chat with Support" button on your dashboard to request data updates or account deletion.</li>
+                    <li><strong>Deletion Impact:</strong> Requesting total data deletion results in the immediate termination of your affiliate status and future tracking.</li>
+                </ul>
+            </section>
+
+            <section id="attribution" aria-labelledby="h-attribution">
+                <h2 id="h-attribution"><span class="n" aria-hidden="true">2</span>Partnership Program: Lifetime Attribution</h2>
+                <p>We believe in rewarding the people who help us grow our ecosystem.</p>
+                <div class="pt-clause"><strong>The "Locked-In" Rule:</strong> Once a customer uses your referral code for their first purchase, they are permanently linked to your profile in our database.</div>
+                <ul>
+                    <li><strong>Recurring Commissions:</strong> You earn a <span class="pt-hl">16.67% commission</span> on their initial order and every future order they place, even if they message us later without a code.</li>
+                    <li><strong>Commission Calculation &amp; Currency Conversion:</strong>
+                        <ul>
+                            <li><strong>Percentage-Based:</strong> Commissions are calculated as exactly 16.67% of the total gross sale, regardless of whether the customer chooses a full STACK or a customized service package (e.g., removing branding or ordering UI/UX only).</li>
+                            <li><strong>Base Currency:</strong> The commission is initially calculated in the currency used by the customer (e.g., USD).</li>
+                            <li><strong>Conversion:</strong> If your preferred payout method is in a different currency (e.g., receiving USDT for a Naira-based sale), Emmy STACK01 will perform the conversion based on the prevailing market exchange rate at the time of the payout.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Notification System:</strong> You will receive automated emails when:
+                        <ul>
+                            <li>A lead is captured via your unique link.</li>
+                            <li>An order is completed and your commission is ready.</li>
+                            <li>A linked client returns for a new project in the future.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Expiration of Commissions:</strong> Commissions only stop if you delete your data, if the customer uses a different affiliate's code, or if Emmy STACK01 undergoes a change in ownership.</li>
+                </ul>
+            </section>
+
+            <section id="payments" aria-labelledby="h-payments">
+                <h2 id="h-payments"><span class="n" aria-hidden="true">3</span>Payments &amp; Crypto Disclaimer</h2>
+                <ul>
+                    <li><strong>Payout Structure:</strong> Commissions are issued after the referred client completes their order and payment is confirmed.
+                        <ul>
+                            <li><strong>Processing Timeline:</strong> Commission payouts are triggered upon the successful settlement of client funds to Emmy STACK01. As our processor settles transactions the following business day, partners will receive their funds within 24 hours of that settlement.</li>
+                            <li><strong>Reliability:</strong> This window ensures that the transaction is fully cleared and secured before the commission is transferred to the partner's wallet.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Crypto Accuracy:</strong> When providing a Crypto Wallet Address, you must ensure the Address and Network are 100% accurate.</li>
+                    <li><strong>Liability:</strong> Emmy STACK01 is not responsible for funds lost due to incorrect wallet entries; <span class="pt-warn">blockchain transactions are irreversible.</span></li>
+                </ul>
+            </section>
+
+            <section id="ownership" aria-labelledby="h-ownership">
+                <h2 id="h-ownership"><span class="n" aria-hidden="true">4</span>Change of Ownership &amp; Evolution</h2>
+                <ul>
+                    <li><strong>Management Shifts:</strong> In the event that Emmy STACK01 undergoes a merger, acquisition, or change in ownership, the new management reserves the right to modify or terminate existing commission structures.</li>
+                    <li><strong>Term Updates:</strong> We reserve the right to evolve these terms to protect the agency's health. Active partners will be notified of significant changes via their registered email.</li>
+                </ul>
+            </section>
+
+            <section id="conduct" aria-labelledby="h-conduct">
+                <h2 id="h-conduct"><span class="n" aria-hidden="true">5</span>Affiliate Conduct</h2>
+                <ul>
+                    <li><strong>Ethical Promotion:</strong> Affiliates must promote our Personal, Business, and Enterprise STACKS ethically.</li>
+                    <li><strong>Termination:</strong> Spamming, misleading claims, or fraudulent activity will result in immediate removal from the program without payout.</li>
+                </ul>
+            </section>
+
+            <div class="pt-contact">
+                <p>Questions about these terms, or want to change or delete your data?</p>
+                <a class="cta" href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer"><i class="ri-whatsapp-line"></i> Chat with Support</a>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
 <script src="/script/year.js" defer></script>
 </body>
 </html>

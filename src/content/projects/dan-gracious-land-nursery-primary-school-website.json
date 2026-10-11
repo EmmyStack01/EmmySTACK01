@@ -1,0 +1,13 @@
+{
+  "name": "Dan-Gracious Land Nursery & Primary School Website",
+  "websiteType": "School Website",
+  "image": "/asset/projects/dan-gracious-land-nursery-primary-school-website/image.png",
+  "imageAlt": "Homepage Hero section of the Dan-Gracious Land Nursery & Primary School Website",
+  "overview": "The Dan-Gracious Land Nursery & Primary School website was designed to showcase the school's learning environment, activities, and pupils' experiences while helping parents and prospective families learn more about the school.",
+  "need": "Choosing a school involves more than reading a list of facilities. Parents want to understand the environment their children will be part of, the activities they'll participate in, and the experiences that contribute to their growth.\n\nThe school needed a website that could communicate these things while making important school information accessible.",
+  "built": "We created a school website featuring class groups, school activities, pupils' participation, and academic distinctions, alongside information about the school and its learning environment.",
+  "strategy": "Put pupils' experiences at the centre of the website. By giving parents opportunities to explore and share school moments, the website can also help introduce the school to other families through word of mouth.",
+  "liveUrl": "https://dangraciousland.pages.dev/",
+  "order": 1,
+  "published": true
+}

@@ -1,0 +1,102 @@
+---
+// Emmy STACK01 — 404 page. Reuses the shared tokens, fonts and button styles from /style/index-style.css.
+const seconds = 10; // auto-redirect delay
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | Emmy STACK01</title>
+    <meta name="description" content="This link may be mistyped or no longer active. You'll be taken back to the Emmy STACK01 homepage shortly.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0b1020">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <noscript><meta http-equiv="refresh" content={`${seconds};url=/`}></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <style>
+        body { min-height: 100vh; min-height: 100dvh; background: var(--b-dark); color: var(--text-main); }
+        .lost {
+            position: relative; isolation: isolate; overflow: hidden;
+            display: grid; place-items: center; min-height: inherit;
+            padding: clamp(2rem, 6vw, 4rem) var(--pad);
+            text-align: center;
+            background:
+                radial-gradient(700px 420px at 85% 0%, color-mix(in srgb, var(--accent-color) 20%, transparent), transparent 70%),
+                radial-gradient(640px 400px at 5% 100%, color-mix(in srgb, var(--primary-color) 32%, transparent), transparent 70%),
+                var(--b-dark);
+        }
+        .lost::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                linear-gradient(color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+        }
+        .lost-inner { display: grid; justify-items: center; width: 100%; max-width: 34rem; }
+        .lost .logo { color: var(--text-main); font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem); }
+        .code {
+            margin-top: clamp(1.5rem, 5vw, 2.5rem);
+            font-family: var(--font-display); font-weight: 800; line-height: .85; letter-spacing: -.02em;
+            font-size: clamp(6rem, 3rem + 22vw, 13rem);
+            background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .lost h1 {
+            margin-top: .6rem;
+            font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -.01em;
+            font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3rem); text-wrap: balance;
+        }
+        .lost .sub { margin-top: .9rem; max-width: 36ch; color: var(--text-muted); font-size: clamp(1rem, .94rem + .3vw, 1.15rem); text-wrap: pretty; }
+        .status { width: 100%; max-width: 22rem; margin-top: clamp(1.75rem, 5vw, 2.5rem); }
+        .status-heading { font-size: var(--fs-small); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-color); }
+        .meter { height: 6px; margin: .8rem 0 .7rem; border-radius: 999px; overflow: hidden; background: color-mix(in srgb, var(--text-main) 12%, transparent); }
+        .meter-fill { height: 100%; width: 100%; border-radius: inherit; background: var(--grad); transform-origin: left center; animation: drain var(--secs, 10s) linear forwards; }
+        @keyframes drain { to { transform: scaleX(0); } }
+        .status-sub { font-size: var(--fs-small); color: var(--text-muted); }
+        .status-sub b { color: var(--text-main); font-variant-numeric: tabular-nums; }
+        .lost .cta { margin-top: clamp(1.5rem, 4vw, 2rem); }
+        .lost :focus-visible { outline-color: var(--accent-color); }
+        @media (prefers-reduced-motion: reduce) { .meter-fill { animation: none !important; transform: none; } }
+    </style>
+</head>
+<body>
+    <main class="lost">
+        <div class="lost-inner">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+
+            <p class="code" aria-hidden="true">404</p>
+            <h1>Page not found</h1>
+            <p class="sub">The link may be mistyped or the page is no longer active.</p>
+
+            <div class="status">
+                <p class="status-heading">Taking you back home</p>
+                <div class="meter" aria-hidden="true"><div class="meter-fill" style={`--secs:${seconds}s`}></div></div>
+                <p class="status-sub">Redirecting to the homepage in <b id="countdown">{seconds}</b>s</p>
+            </div>
+
+            <a href="/" class="cta">Return to Home</a>
+        </div>
+    </main>
+
+    <script define:vars={{ seconds }}>
+        // Auto-redirect home; the number counts down with the bar (timestamp-based, so background tabs stay accurate).
+        const el = document.getElementById("countdown");
+        const end = Date.now() + seconds * 1000;
+        const tick = () => {
+            const left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+            if (el) el.textContent = left;
+            if (left <= 0) { clearInterval(timer); location.replace("/"); }
+        };
+        const timer = setInterval(tick, 250);
+        tick();
+    </script>
+</body>
+</html>

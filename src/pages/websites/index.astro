@@ -1,0 +1,303 @@
+---
+export const prerender = true;
+// src/pages/websites/index.astro (/websites). Styles: /style/index-style.css + /style/websites-style.css
+import WebsiteSolution from "../../components/websites/WebsiteSolution.astro";
+import ProjectCard from "../../components/websites/ProjectCard.astro";
+import SocialLinks from "../../components/SocialLinks.astro";
+import { websiteTypes, faqs } from "../../data/websites";
+import { getRecentProjects } from "../../lib/cms";
+
+const site = "https://emmystack01.com";
+const url = `${site}/websites`;
+const title = "Website Design & Development Services | Emmy STACK01";
+const desc = "Explore website solutions for businesses, creators and professionals. Emmy STACK01 builds custom websites around your goals, audience and needs.";
+const ogImage = `${site}/asset/og-image.jpg`;
+const org = `${site}/#organization`;
+
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+
+// The Organization is already defined on the homepage, so it is referenced by @id here, not repeated.
+const schema = [
+  {
+    "@context": "https://schema.org", "@type": "WebPage", "@id": `${url}#webpage`, url, name: title, description: desc, inLanguage: "en",
+    isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
+    about: { "@id": org },
+    breadcrumb: { "@id": `${url}#breadcrumb` },
+  },
+  {
+    "@context": "https://schema.org", "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${site}/` },
+      { "@type": "ListItem", position: 2, name: "Websites", item: url },
+    ],
+  },
+];
+
+// Recent projects come from Keystatic. The section only shows while at least one project is ticked "Show on /websites".
+const recent = await getRecentProjects();
+const showProjects = recent.projects.length > 0;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/websites-style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+
+    <meta property="og:site_name" content="Emmy STACK01">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={desc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta property="og:image:alt" content="Emmy STACK01 Banner">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={desc}>
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites" class="nav-link-active" aria-current="page">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span> </a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="#project-modal" class="cta nav-cta trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link active" aria-current="page"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <button class="cta project-btn trigger-project-modal">Start your project <i class="ri-arrow-right-line"></i></button>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="ws-hero">
+        <div class="ws-hero-inner">
+            <span class="ws-eyebrow">Website solutions</span>
+            <h1>Website Solutions for Every Type of Brand</h1>
+            <p>Explore website solutions for your profession, business or next big idea.</p>
+            <div class="ws-actions">
+                <a class="btn-white trigger-project-modal" href="#project-modal">Start your project <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                <a class="ws-btn-ghost" href="#website-types">Explore website types <i class="ri-arrow-down-line" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section ws-pick" id="website-types" aria-labelledby="types-title">
+            <div class="ws-pick-head">
+                <h2 class="sec-title" id="types-title">Find the website that fits you</h2>
+                <p class="ws-lede">Eight website types, each built for a different job. Pick the one closest to yours and jump straight to it.</p>
+            </div>
+            <nav aria-label="Website types">
+                <ul class="ws-typelist">
+                    {websiteTypes.map((t) => (
+                        <li>
+                            <a href={`#${t.id}`}>
+                                <span class="tile-icon"><i class={t.icon} aria-hidden="true"></i></span>
+                                <span class="ws-type-text">
+                                    <span class="ws-type-name">{t.navLabel}</span>
+                                    <span class="ws-type-for">{t.navFor}</span>
+                                </span>
+                                <i class="ri-arrow-down-line ws-type-arrow" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        </section>
+
+        {websiteTypes.map((item, index) => <WebsiteSolution item={item} index={index} />)}
+
+        {showProjects && (
+            <section class="section ws-projects" id="recent-projects" aria-labelledby="projects-title">
+                <h2 class="sec-title" id="projects-title">{recent.heading}</h2>
+                <p class="ws-lede">{recent.description}</p>
+                <div class="ws-project-grid">
+                    {recent.projects.map((p) => <ProjectCard project={p} />)}
+                </div>
+            </section>
+        )}
+
+        <div class="band">
+            <section class="section faq" id="faq" aria-labelledby="faq-title">
+                <h2 class="sec-title" id="faq-title">Website design &amp; development FAQs</h2>
+                {faqs.map((f, i) => (
+                    <div class="faq-item">
+                        <h3><button type="button" class="faq-question" id={`faq-q-${i}`} aria-expanded="false" aria-controls={`faq-a-${i}`}>{f.q}<i class="ri-add-line" aria-hidden="true"></i></button></h3>
+                        <div class="faq-answer" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} inert>
+                            <div><p set:html={f.a} /></div>
+                        </div>
+                    </div>
+                ))}
+            </section>
+        </div>
+
+        <section class="section" aria-labelledby="final-title">
+            <div class="pricing">
+                <div class="pricing-copy">
+                    <h2 id="final-title">Ready to build your website?</h2>
+                    <p>Let's find the right website solution for your profession, business or next big idea.</p>
+                </div>
+                <div class="ws-actions">
+                    <a class="btn-white trigger-project-modal" href="#project-modal">Start your project <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                    <a class="ws-btn-ghost" href="/products/digital-business-card">Explore digital business cards <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="project-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" id="close-modal" aria-label="Close"><i class="ri-close-line"></i></button>
+            <h3 class="modal-title" id="modal-title">Connect via WhatsApp</h3>
+            <p class="modal-text">Select how you’d like to get started with Emmy STACK01:</p>
+            <div class="modal-actions">
+                <a href="/thank-you?type=project" class="btn-modal btn-primary" target="_blank" rel="noopener"><i class="ri-rocket-2-line"></i> Start a Project</a>
+                <a href="/thank-you?type=inquiry" class="btn-modal btn-secondary" target="_blank" rel="noopener"><i class="ri-question-answer-line"></i> Make an Inquiry</a>
+            </div>
+        </div>
+    </div>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // Drawer
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+
+  // Desktop dropdown (click for touch, hover/focus via CSS)
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+
+  // FAQ: closed answers are inert so their links cannot be reached by keyboard while hidden
+  $$(".faq-question").forEach((b) => b.addEventListener("click", () => {
+    const item = b.closest(".faq-item"), o = item.classList.toggle("open");
+    b.setAttribute("aria-expanded", String(o));
+    $("#" + b.getAttribute("aria-controls")).inert = !o;
+  }));
+
+  // Project-enquiry modal (same behaviour as the homepage)
+  const modal = $("#project-modal"), closeBtn = $("#close-modal"); let lastFocus;
+  const showModal = (open) => {
+    modal.classList.toggle("is-active", open); modal.setAttribute("aria-hidden", String(!open));
+    if (open) { lastFocus = document.activeElement; closeBtn.focus(); } else if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+  $$(".trigger-project-modal").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); setDrawer(false); showModal(true); }));
+  closeBtn.addEventListener("click", () => showModal(false));
+  modal.addEventListener("click", (e) => { if (e.target === modal) showModal(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (modal.classList.contains("is-active")) showModal(false);
+    else if (drawer.classList.contains("open")) setDrawer(false);
+  });
+});
+</script>
+<script src="/script/year.js" defer></script>
+</body>
+</html>

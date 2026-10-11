@@ -1,0 +1,311 @@
+---
+export const prerender = true;
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/tools/social-architect.astro — Styles: /style/index-style.css + /style/tool-social.css · Script: /script/tool-social.js
+const site = "https://emmystack01.com";
+const url = `${site}/tools/social-architect`;
+const title = "Social Architect | LinkedIn & X Hook Formatter and Mobile Preview | Emmy STACK01";
+const desc = "Format your LinkedIn and X posts for mobile and see exactly where \u201csee more\u201d cuts them off. Free hook formatter with Corporate and Chaos tones.";
+const ogTitle = "Social Architect | Preview & Optimize Your Hooks";
+const ogDesc = "Stop the scroll. See on a phone mock-up where your LinkedIn and X posts get cut off.";
+const ogImage = `${site}/asset/social-architect-og.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
+const features = [
+  { i: "ri-smartphone-line", t: "See the cut-off", d: "A phone preview marks where \u201csee more\u201d hides the rest of your post, so your best line is never buried." },
+  { i: "ri-magic-line", t: "Two tones", d: "Corporate gives a clean hook and bullet points. Chaos gives a loud, all-caps opener and spaced-out lines." },
+  { i: "ri-shield-check-line", t: "Private by design", d: "Your draft is formatted in your browser and is never sent to our servers." },
+];
+const faqs = [
+  { q: "Is Social Architect free?", a: "Yes. There is no account, no limit and no watermark." },
+  { q: "How accurate is the \u201csee more\u201d line?", a: "It is an estimate. LinkedIn on mobile usually shows around 3 lines (about 210 characters) and X around 280 characters, but both platforms change this and it varies by device, so treat it as a guide." },
+  { q: "Does it rewrite my post?", a: "No. It never adds or changes your words. It splits your text into sentences, can remove filler words such as \u201cbasically\u201d and \u201cjust\u201d, and sets out the lines for the tone you choose." },
+  { q: "Is my draft saved?", a: "Only in this browser, so you can pick up where you left off. It is not uploaded anywhere." },
+];
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication", "@id": `${url}#webapp`, url, name: "Social Architect", alternateName: "Mobile Hook Formatter", description: desc,
+      applicationCategory: "BusinessApplication", operatingSystem: "All", browserRequirements: "Requires JavaScript. Requires HTML5.",
+      isAccessibleForFree: true, offers: { "@type": "Offer", price: "0.00", priceCurrency: "USD" },
+      featureList: [
+        "Phone preview that marks where \u201csee more\u201d cuts your post off",
+        "LinkedIn and X modes with an estimated cut-off point",
+        "Corporate and Chaos tones",
+        "Optional filler-word removal",
+        "Hook checks and character counts",
+        "Private: your draft stays in your browser",
+      ],
+      author: { "@id": `${site}/#organization` }, creator: { "@id": `${site}/#organization` }, publisher: { "@id": `${site}/#organization` }, inLanguage: "en",
+    },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] },
+    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "Tools", item: `${site}/tools` }, { "@type": "ListItem", position: 3, name: "Social Architect", item: url }] },
+    { "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script/meta-logic.js" is:inline></script>
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="keywords" content="social media hook generator, mobile post previewer, LinkedIn hook formatter, X post preview, content optimization tool, Emmy STACK01, digital marketing tools Nigeria">
+    <meta name="theme-color" content="#0b1020">
+
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/tool-social.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Social Architect by Emmy STACK01">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={ogTitle}>
+    <meta property="og:description" content={ogDesc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content="Social Architect | Stop the Scroll">
+    <meta name="twitter:description" content="Precision hook formatting and a mobile preview for LinkedIn and X creators.">
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn is-current" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
+                <div class="dropdown-content">
+                    {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "social-architect" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+                </div>
+            </li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span></a></li>
+            <li><a href="/articles">Articles</a></li>
+        </ul>
+        <a href="/pricing" class="cta nav-cta">Start your project <i class="ri-arrow-right-line"></i></a>
+    </nav>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
+        <div class="drawer-header">
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn active" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
+            </button>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`} aria-current={t.s === "social-architect" ? "page" : undefined}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link"><i class="ri-article-line"></i> Articles</a>
+        </nav>
+        <a href="/pricing" class="cta project-btn">Start your project <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <div class="socials">
+                <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" aria-label="Emmy STACK01 on X"><i class="ri-twitter-x-line"></i></a>
+                <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" aria-label="Emmy STACK01 on WhatsApp"><i class="ri-whatsapp-line"></i></a>
+                <a href="mailto:hello@emmystack01.com" aria-label="Email Emmy STACK01"><i class="ri-mail-line"></i></a>
+            </div>
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
+    </aside>
+
+    <header class="sa-hero">
+        <div class="sa-hero-inner">
+            <span class="sa-eyebrow">Free tool · Social Architect</span>
+            <h1>Hook formatter &amp; <em>mobile preview</em></h1>
+            <p class="lead">Paste a rough draft. Get a scannable LinkedIn or X post, and see exactly where &ldquo;see more&rdquo; cuts it off on a phone.</p>
+            <ul class="sa-badges">
+                <li><i class="ri-flashlight-line" aria-hidden="true"></i> Free</li>
+                <li><i class="ri-lock-line" aria-hidden="true"></i> Private: stays in your browser</li>
+                <li><i class="ri-smartphone-line" aria-hidden="true"></i> Live phone preview</li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <div class="sa-wrap">
+            <div class="sa-app">
+                <div class="sa-col">
+                    <section class="sa-card" aria-labelledby="sa-edit-t">
+                        <h2 id="sa-edit-t">Your draft</h2>
+                        <label class="sa-lbl" for="sa-in">Paste your raw thoughts</label>
+                        <textarea class="sa-ta" id="sa-in" maxlength="5000" placeholder="Paste a paragraph here. We will split it into short, scannable lines." spellcheck="true"></textarea>
+                        <div class="sa-meta">
+                            <span id="sa-count">0 characters · 0 words</span>
+                            <span>
+                                <button type="button" class="sa-link" id="sa-sample">Try an example</button>
+                                <button type="button" class="sa-link" id="sa-clear" hidden>Clear</button>
+                            </span>
+                        </div>
+                    </section>
+
+                    <section class="sa-card" aria-labelledby="sa-opt-t">
+                        <h2 id="sa-opt-t">Options</h2>
+                        <div class="sa-opts">
+                            <div>
+                                <span class="sa-lbl" id="sa-l-plat">Platform</span>
+                                <div class="sa-seg" role="radiogroup" aria-labelledby="sa-l-plat">
+                                    <label><input type="radio" name="platform" value="linkedin" checked><span><i class="ri-linkedin-box-fill" aria-hidden="true"></i> LinkedIn</span></label>
+                                    <label><input type="radio" name="platform" value="x"><span><i class="ri-twitter-x-line" aria-hidden="true"></i> X</span></label>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="sa-lbl" id="sa-l-tone">Tone</span>
+                                <div class="sa-seg" role="radiogroup" aria-labelledby="sa-l-tone">
+                                    <label><input type="radio" name="tone" value="corporate" checked><span><i class="ri-briefcase-4-line" aria-hidden="true"></i> Corporate</span></label>
+                                    <label><input type="radio" name="tone" value="chaos"><span><i class="ri-flashlight-line" aria-hidden="true"></i> Chaos</span></label>
+                                </div>
+                            </div>
+                            <label class="sa-check"><input type="checkbox" id="sa-fillers" checked> <span>Remove filler words (just, really, basically&hellip;)</span></label>
+                            <div>
+                                <span class="sa-lbl" id="sa-l-theme">Phone preview</span>
+                                <div class="sa-seg" role="radiogroup" aria-labelledby="sa-l-theme">
+                                    <label><input type="radio" name="theme" value="light" checked><span><i class="ri-sun-line" aria-hidden="true"></i> Light</span></label>
+                                    <label><input type="radio" name="theme" value="dark"><span><i class="ri-moon-line" aria-hidden="true"></i> Dark</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="sa-card" aria-labelledby="sa-chk-t">
+                        <h2 id="sa-chk-t">Hook check</h2>
+                        <ul class="sa-checks" id="sa-checks"></ul>
+                    </section>
+                </div>
+
+                <section class="sa-phone-col" aria-labelledby="sa-prev-t">
+                    <h2 class="sr-only" id="sa-prev-t">Mobile preview</h2>
+                    <div class="sa-phone" id="sa-phone" data-theme="light">
+                        <div class="sa-notch" aria-hidden="true"></div>
+                        <div class="sa-screen" id="sa-screen" tabindex="0" role="region" aria-label="Phone preview of your post. Scroll to read the whole post.">
+                            <div class="sa-who" aria-hidden="true"><b></b><div><span></span><span></span></div></div>
+                            <p class="sa-post empty" id="sa-post">Your formatted post will appear here as you type.</p>
+                            <span class="sa-more" id="sa-more" hidden>&hellip; see more</span>
+                            <div class="sa-rest" id="sa-rest" hidden></div>
+                        </div>
+                    </div>
+                    <button type="button" class="cta sa-copy" id="sa-copy" disabled><i class="ri-file-copy-line" aria-hidden="true"></i> <span>Copy post</span></button>
+                    <p class="sa-status" id="sa-status" role="status" aria-live="polite"></p>
+                    <p class="sa-note" id="sa-note"></p>
+                </section>
+            </div>
+        </div>
+
+        <section class="sa-section" aria-labelledby="why">
+            <h2 id="why">Why Social Architect</h2>
+            <ul class="sa-cards">
+                {features.map((f) => <li class="sa-info"><i class={f.i} aria-hidden="true"></i><h3>{f.t}</h3><p>{f.d}</p></li>)}
+            </ul>
+        </section>
+
+        <section class="sa-section" aria-labelledby="faq">
+            <h2 id="faq">Questions</h2>
+            <div class="sa-faq">
+                {faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+            </div>
+        </section>
+
+        <div class="sa-coffee">
+            <div class="sa-coffee-box">
+                <h2>Great posts need a great website</h2>
+                <p>When your hook lands, people click through. Make sure they find a fast, trustworthy site that turns them into customers.</p>
+                <a href="/pricing" class="btn-white">See website packages <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-legal">
+                <div class="socials">
+                    <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" aria-label="Emmy STACK01 on X"><i class="ri-twitter-x-line"></i></a>
+                    <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" aria-label="Emmy STACK01 on WhatsApp"><i class="ri-whatsapp-line"></i></a>
+                    <a href="mailto:hello@emmystack01.com" aria-label="Email Emmy STACK01"><i class="ri-mail-line"></i></a>
+                </div>
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".year, #year").forEach((e) => { e.textContent = new Date().getFullYear(); });
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drawer.classList.contains("open")) setDrawer(false); });
+});
+</script>
+<script src="/script/tool-social.js" defer></script>
+</body>
+</html>

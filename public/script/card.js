@@ -1,31 +1,35 @@
-// Keep these global so your HTML onclick attributes can find them
-let cardIndex = -1; 
+/**
+ * Emmy STACK01 — demo card deck (Digital Business Card page).
+ * No globals and no inline onclick handlers: it finds the deck by id and wires its own buttons.
+ *   • click a card  → bring it to the front (click again to put it back)
+ *   • ‹ / › buttons → step through the cards (also ←/→ while focus is inside the deck)
+ */
+(() => {
+  const deck = document.getElementById("dmDeck");
+  if (!deck) return;
 
-function bringToFront(element) {
-    const cards = document.querySelectorAll('.card');
-    const index = Array.from(cards).indexOf(element);
+  const cards = [...deck.querySelectorAll(".dm-card")];
+  let index = -1; // -1 = nothing popped out
 
-    if (element.classList.contains('active')) {
-        element.classList.remove('active');
-        cardIndex = -1;
-    } else {
-        cards.forEach(card => card.classList.remove('active'));
-        element.classList.add('active');
-        cardIndex = index;
-    }
-}
+  function show(n) {
+    index = n;
+    cards.forEach((card, k) => {
+      const on = k === n;
+      card.classList.toggle("active", on);
+      card.querySelector(".dm-pick").setAttribute("aria-pressed", String(on));
+    });
+  }
 
-function moveManual(direction) {
-    const cards = document.querySelectorAll('.card');
-    if (cards.length === 0) return;
+  cards.forEach((card, k) =>
+    card.querySelector(".dm-pick").addEventListener("click", () => show(index === k ? -1 : k))
+  );
 
-    cards.forEach(card => card.classList.remove('active'));
+  const step = (dir) => show(dir === "next" ? (index + 1) % cards.length : index <= 0 ? cards.length - 1 : index - 1);
+  document.querySelectorAll("[data-dm]").forEach((btn) => btn.addEventListener("click", () => step(btn.dataset.dm)));
 
-    if (direction === 'next') {
-        cardIndex = (cardIndex + 1) % cards.length;
-    } else {
-        cardIndex = (cardIndex <= 0) ? cards.length - 1 : cardIndex - 1;
-    }
-
-    cards[cardIndex].classList.add('active');
-}
+  deck.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); step("next"); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); step("prev"); }
+    else if (e.key === "Escape") show(-1);
+  });
+})();

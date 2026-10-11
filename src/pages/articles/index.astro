@@ -1,1550 +1,319 @@
 ---
 export const prerender = true;
-// src/pages/articles/index.astro
+import SocialLinks from "../../components/SocialLinks.astro";
+// src/pages/articles/index.astro — the articles list (/articles). Styles: /style/index-style.css + /style/articles-style.css
 import { keystaticReader } from '../../reader';
 
-// 1. Fetch all live entries from your Keystatic collection
-const rawArticles = await keystaticReader.collections.articles.all();
+const site = "https://emmystack01.com";
+const url = `${site}/articles`;
+const title = "Digital Marketing, SEO & Website Insights | Emmy STACK01";
+const desc = "Explore Emmy STACK01 articles on SEO, websites, digital identity, branding and growing your online presence.";
+const ogImage = `${site}/asset/og-image4.jpg`;
+const tools = [
+  { n: "Website Auditor", s: "website-auditor", i: "ri-shield-check-line" },
+  { n: "Social Architect", s: "social-architect", i: "ri-node-tree" },
+  { n: "Meeting Studio", s: "meeting_background_studio", i: "ri-vidicon-line" },
+  { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
+  { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
+];
 
-// 2. Sort them by date descending (Newest first) so your absolute freshest insight is always featured
-const sortedArticles = rawArticles.sort((a, b) => {
-  return new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime();
-});
+// Dates are stored as YYYY-MM-DD; format them the same on the server and in every article.
+const fmt = (d?: string) => d ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(d)) : "";
+const time = (d?: string) => (d ? new Date(d).getTime() : 0) || 0;
 
-// 3. Map the Keystatic structure into clean, flat objects that match your exact design markup variables
-const articles = sortedArticles.map(article => ({
-  title: article.entry.title,
-  description: article.entry.description,
-  slug: article.slug,
-  date: article.entry.date,
-  readingTime: article.entry.readingTime,
-  category: article.entry.category,
-  image: article.entry.coverImage
-}));
+// 1. Read every entry from the Keystatic collection, newest first
+const raw = await keystaticReader.collections.articles.all();
+const articles = raw
+  .map((a) => ({
+    slug: a.slug,
+    title: a.entry.title,
+    description: a.entry.description,
+    date: a.entry.date,
+    readingTime: a.entry.readingTime,
+    category: a.entry.category,
+    image: a.entry.coverImage,
+  }))
+  .sort((a, b) => time(b.date) - time(a.date));
 
-// Create the clean schema object on the server side
-const schemaData = {
+// 2. The newest article is featured; the rest fill the grid
+const [featured, ...others] = articles;
+
+const schema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "The Digital DNA Log | Emmy STACK01 Articles",
-  "description": "Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026.",
-  "url": Astro.url.href,
-  "mainEntity": {
+  name: "The Digital DNA Log | Emmy STACK01 Articles",
+  description: "Explore insights on digital identity, SEO personal portfolios, and the future of networking in 2026.",
+  url,
+  isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
+  mainEntity: {
     "@type": "ItemList",
-    "numberOfItems": articles.length,
-    "itemListElement": articles.map((article, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "url": `${Astro.url.origin}/articles/${article.slug}`,
-      "name": article.title
-    }))
-  }
+    numberOfItems: articles.length,
+    itemListElement: articles.map((a, i) => ({ "@type": "ListItem", position: i + 1, url: `${site}/articles/${a.slug}`, name: a.title })),
+  },
 };
-
-// 4. Safely extract your featured banner and grid items using your original pattern
-const [featuredArticle, ...otherArticles] = articles;
 ---
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/script/meta-logic.js" is:inline></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Emmy STACK01">
+    <meta name="theme-color" content="#0b1020">
 
-    <title>Digital Marketing, SEO & Website Insights | Emmy STACK01</title>
-    <meta name="description" content="Explore Emmy STACK01 articles on SEO, websites, digital identity, branding and growing your online presence.">
-    
-    <link rel="canonical" href={Astro.url.href}>
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Digital Marketing, SEO & Website Insights | Emmy STACK01">
-    <meta property="og:description" content="Explore Emmy STACK01 articles on SEO, websites, digital identity, branding and growing your online presence.">
-    <meta property="og:url" content={Astro.url.href}>
-    <meta property="og:image" content="https://emmystack01.com/asset/og-image4.jpg">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Digital Marketing, SEO & Website Insights | Emmy STACK01">
-    <meta name="twitter:description" content="Explore Emmy STACK01 articles on SEO, websites, digital identity, branding and growing your online presence.">
-    <meta name="twitter:image" content="https://emmystack01.com/asset/og-image4.jpg">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="https://emmystack01.com/favicon_io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://emmystack01.com/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://emmystack01.com/favicon_io/favicon-16x16.png">
-    <link rel="manifest" href="https://emmystack01.com/favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <link rel="stylesheet" href="/style/articles-style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Montserrat:wght@300..700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet"/>
-
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    
-    <!-- JSON-LD Structured Data Fix -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
-
-    <style>
-        :root {
-        /* Brand Colors */
-        --primary-color: #2d66b4;
-        --secondary-color: #22386e;
-        --accent-color: #00ccff;
-
-        /* Backgrounds */
-        --bg-dark: #000000;
-        --bg-light: #0a111f;
-
-        /* Typography */
-        --text-main: #ffffff;
-        --text-muted: #a0aec0;
-        --white: #ffffff;
-        }
-
-        *::selection {background-color: var(--accent-color); color: var(--bg-dark);}
-
-        *{
-            -webkit-tap-highlight-color: transparent;
-            -moz-tap-highlight-color: transparent;
-            box-sizing: border-box;
-            font-family: 'Montserrat';
-        }
-
-
-        /*NAV SECTION — shared globals*/
-
-        /* Dropdown arrow rotation (shared) */
-        .ri-arrow-down-s-line {
-            display: inline-block;
-            transition: transform 0.3s ease;
-        }
-
-
-
-        /*FLAT NAV*/
-        @media screen and (min-width: 1070.01px){
-            .navbar, .drawer, .overlay { display: none; }
-
-            .nav {
-                z-index: 1000;
-                padding: 0 28px;
-                top: 0;
-                left: 0;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                background-color: rgba(0, 0, 0, 0.326);
-                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-                -webkit-backdrop-filter: blur(10px);
-                backdrop-filter: blur(10px);
-                position: fixed;
-                width: 100%;
-                height: 68px;
-                box-sizing: border-box;
-            }
-
-            .logo {
-                display: flex;
-                align-items: center;
-            }
-
-            /* ── Links list ── */
-            .nav-links {
-                display: flex;
-                align-items: center;
-                list-style: none;
-                gap: 4px;
-                margin: 0;
-                padding: 0;
-            }
-
-            .nav-list {
-                list-style: none;
-                padding: 0;
-                position: relative;
-            }
-
-            /* Base link style — matches drawer's font/weight */
-            .nav-links a,
-            .nav-links .dropbtn {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                padding: 8px 14px;
-                border-radius: 10px;
-                text-decoration: none;
-                color: rgba(255, 255, 255, 0.85);
-                font-size: 14px;
-                font-family: 'Montserrat', sans-serif;
-                font-weight: 500;
-                background: transparent;
-                border: none;
-                cursor: pointer;
-                transition: background 0.2s, color 0.2s;
-                white-space: nowrap;
-            }
-
-            /* Hover — same cyan tint as drawer */
-            .nav-links a:hover,
-            .nav-links .dropbtn:hover {
-                background: rgba(0, 204, 255, 0.08);
-                color: white;
-            }
-
-            /* Active page indicator — matches drawer's left-border style via bottom underline */
-            .nav-links a.nav-link-active {
-                color: white;
-                background: rgba(0, 204, 255, 0.08);
-                box-shadow: inset 0 -2px 0 var(--accent-color);
-            }
-
-            /* Scrolled state — consistent with mobile (muted, not jarring) */
-            .nav-links a.nav-link-scrolled,
-            .nav-links button.nav-link-scrolled {
-                color: rgba(255, 255, 255, 0.6);
-            }
-            .nav-links a.nav-link-scrolled:hover,
-            .nav-links button.nav-link-scrolled:hover {
-                color: white;
-            }
-
-            /* ── Desktop dropdown panel — matches drawer submenu aesthetic ── */
-            .dropdown-content {
-                display: block;
-                position: absolute;
-                top: calc(100% + 8px);
-                left: 50%;
-                transform: translateX(-50%) translateY(-8px);
-                background: rgba(5, 10, 25, 0.97);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                min-width: 200px;
-                border: 1px solid rgba(0, 204, 255, 0.15);
-                border-radius: 14px;
-                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-                padding: 8px;
-                z-index: 1100;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                max-height: 0;
-                overflow: hidden;
-                transition: opacity 0.25s ease, transform 0.25s ease, max-height 0.3s ease, visibility 0.25s;
-            }
-
-            .dropdown-content a {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px 12px;
-                border-radius: 10px;
-                color: var(--text-muted);
-                font-size: 14px;
-                font-family: 'Montserrat', sans-serif;
-                font-weight: 500;
-                text-decoration: none;
-                transition: background 0.18s, color 0.18s;
-                background: transparent;
-                box-shadow: none;
-            }
-
-            .dropdown-content a:hover {
-                background: rgba(255, 255, 255, 0.05);
-                color: white;
-            }
-
-            .dropdown.active .dropdown-content {
-                opacity: 1;
-                visibility: visible;
-                pointer-events: auto;
-                transform: translateX(-50%) translateY(0);
-                max-height: 400px;
-            }
-
-            /* Rotate arrow when open */
-            .dropdown.active .dropbtn .ri-arrow-down-s-line {
-                transform: rotate(180deg);
-                transition: transform 0.3s ease;
-            }
-
-            /* ── Desktop EARN badge — unified with drawer .earn-badge ── */
-            .badge-earn {
-                padding: 3px 8px;
-                border-radius: 6px;
-                font-size: 10px;
-                font-weight: 700;
-                color: var(--accent-color);
-                border: 1px solid rgba(0, 204, 255, 0.5);
-                letter-spacing: 0.05em;
-                background: rgba(0, 204, 255, 0.06);
-                vertical-align: middle;
-                margin-left: 6px;
-                text-transform: uppercase;
-                transition: background 0.2s, color 0.2s;
-            }
-
-            /* ── Desktop CTA button — matches drawer project-btn ── */
-            .nav-cta {
-                display: inline-flex;
-                align-items: center;
-                padding: 9px 18px;
-                border-radius: 10px;
-                font-family: 'Orbitron', sans-serif;
-                font-size: 12px;
-                font-weight: 600;
-                color: white !important;
-                background: var(--primary-color) !important;
-                text-decoration: none;
-                letter-spacing: 0.04em;
-                border: none;
-                cursor: pointer;
-                transition: opacity 0.2s, transform 0.15s !important;
-                box-shadow: none !important;
-            }
-            .nav-cta:hover {
-                opacity: 0.88;
-                transform: translateY(-1px);
-                background: var(--primary-color) !important;
-                color: white !important;
-            }
-        }
-
-
-        /* ── MOBILE NAVBAR BAR (≤ 1070px) ─────────────────────── */
-        @media screen and (max-width: 1070px) {
-            .nav { display: none; }
-
-            .navbar {
-                z-index: 1001;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 70px;
-                padding: 10px 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background-color: rgba(0, 0, 0, 0.326);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-                box-sizing: border-box;
-            }
-
-            /* Burger — circular container matching close-btn */
-            .nav-toggle {
-                width: 40px;
-                height: 40px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 5px;
-                background: rgba(0, 0, 0, 0.326);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 50%;
-                cursor: pointer;
-                padding: 0;
-                transition: background 0.2s, border-color 0.2s;
-                z-index: 1002;
-            }
-            .nav-toggle:hover {
-                background: rgba(0, 204, 255, 0.1);
-                border-color: rgba(0, 204, 255, 0.3);
-            }
-
-            .nav-toggle .line {
-                display: block;
-                width: 18px;
-                height: 2px;
-                background-color: var(--white);
-                border-radius: 2px;
-                transition: all 0.3s ease-in-out;
-            }
-
-            /* X transformation when drawer is open */
-            .nav-toggle.open .line:nth-child(1) {
-                transform: translateY(7px) rotate(45deg);
-            }
-            .nav-toggle.open .line:nth-child(2) {
-                opacity: 0;
-                transform: scaleX(0);
-            }
-            .nav-toggle.open .line:nth-child(3) {
-                transform: translateY(-7px) rotate(-45deg);
-            }
-        }
-
-        /* ── DRAWER OVERLAY ──────────────────────────────────── */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 1200;
-        }
-        .overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* ── DRAWER PANEL ────────────────────────────────────── */
-        .drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 88%;
-            max-width: 360px;
-            height: 100vh;
-            padding: 24px 22px 28px;
-            background: rgba(5, 10, 25, 0.97);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(0, 204, 255, 0.15);
-            box-shadow: -12px 0 48px rgba(0, 0, 0, 0.6);
-            transform: translateX(100%);
-            transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            z-index: 1300;
-        }
-        .drawer.open {
-            transform: translateX(0);
-        }
-        .drawer::-webkit-scrollbar { width: 5px; }
-        .drawer::-webkit-scrollbar-track { background: rgba(0, 204, 255, 0.05); }
-        .drawer::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #2d66b4, #00ccff);
-            border-radius: 10px;
-        }
-
-        /* ── DRAWER HEADER ───────────────────────────────────── */
-        .drawer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 26px;
-        }
-        .close-btn {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* ── DRAWER NAV LINKS ────────────────────────────────── */
-        .drawer nav {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-        .drawer .nav-link,
-        .dropdown-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 14px;
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-size: 15px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            width: 100%;
-            text-align: left;
-        }
-        .nav-link-inner {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-        .nav-icon {
-            font-size: 17px;
-            width: 22px;
-            text-align: center;
-            opacity: 0.8;
-        }
-        .drawer .nav-link:hover,
-        .dropdown-btn:hover {
-            background: rgba(0, 204, 255, 0.08);
-            color: white;
-        }
-        .drawer .nav-link.active {
-            background: rgba(0, 204, 255, 0.10);
-            border-left: 3px solid var(--accent-color);
-            padding-left: 11px;
-            color: white;
-        }
-
-        /* ── EARN BADGE (drawer version) ─────────────────────── */
-        .earn-badge {
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--accent-color);
-            border: 1px solid rgba(0, 204, 255, 0.5);
-            letter-spacing: 0.05em;
-            background: rgba(0, 204, 255, 0.06);
-            flex-shrink: 0;
-        }
-
-        /* ── DROPDOWN ARROW ──────────────────────────────────── */
-        .arrow {
-            display: inline-block;
-            font-size: 18px;
-            color: var(--text-muted);
-            transition: transform 0.3s ease;
-            line-height: 1;
-        }
-        .arrow.rotate { transform: rotate(180deg); }
-
-        /* ── SUBMENU ─────────────────────────────────────────── */
-        .submenu {
-            height: 0;
-            overflow: hidden;
-            transition: height 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-            display: flex;
-            flex-direction: column;
-            margin-left: 36px;
-        }
-        .submenu-inner {
-            padding: 6px 0 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .submenu a {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 9px 12px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.18s, color 0.18s;
-        }
-        .submenu a:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* ── DIVIDER (drawer) ────────────────────────────────── */
-        .drawer .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.07);
-            margin: 8px 0;
-        }
-
-        /* ── PROJECT CTA BUTTON ──────────────────────────────── */
-        .insider-btn {
-            width: 100%;
-            margin-top: 20px;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            background: var(--primary-color);
-            letter-spacing: 0.03em;
-            transition: opacity 0.2s, transform 0.15s;
-        }
-        .insider-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
-        .insider-btn:active { transform: translateY(0); }
-
-        body, html {
-            scroll-behavior: smooth;
-        }
-
-      /* Base Styling Integration to match your theme */
-      body {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Montserrat';
-        margin: 0;
-        padding: 0;
-      }
-      .title-font {
-        font-family: 'Orbitron';
-      }
-      .glass-card {
-        background: rgba(22, 27, 34, 0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(45, 102, 180, 0.2);
-        border-radius: 12px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .glass-card:hover {
-        transform: translateY(-4px);
-        border-color: #00ccff;
-        box-shadow: 0 8px 30px rgba(0, 204, 255, 0.1);
-      }
-      .btn-glow {
-        background: linear-gradient(135deg, #2d66b4, #00ccff);
-        color: #fff;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-      }
-      .btn-glow:hover {
-        box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
-      }
-      /*FOOTER-SECTION*/
-        .footer-section{
-            background-color: var(--bg-dark);
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            height: auto;
-            padding-top: 20px;
-            padding: 60px 20px 20px;
-        }
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-        }
-
-        .footer-column h3 {
-            color: var(--white);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-        }
-        .footer-column h3 i{
-            color: var(--accent-color);
-            font-size: 1rem;
-        }
-
-        .footer-column ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-column ul li a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column ul li a:hover {
-            color: var(--accent-color);
-        }
-
-        .ri-verified-badge-fill {
-            font-style: normal;
-            font-size: 0.8rem;
-            color: #4CAF50; /* Trust Green */
-            margin-left: 4px;
-        }
-
-        .footer-divider {
-            border: 0;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-            margin: 40px 0 20px;
-        }
-
-        .footer-legal {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            gap: 20px; /* Prevents text from crashing into each other on smaller screens */
-            flex-wrap: wrap; /* Allows stacking on mobile devices */
-        }
-
-        .footer-cta-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            gap: 8px; /* Adds clean spacing between "Contact Emmy..." and the pill container */
-        }
-
-        .footer-socials-text {
-            font-weight: 500; /* Replaced the invalid 5px */
-        }
-
-        .footer-socials {
-            background: var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin: 5px;
-            display: flex; /* Added flex to make gap work */
-            gap: 14px;    /* Perfectly spaces your icons inside the pill */
-        }
-
-        .footer-socials a {
-            text-decoration: none;
-            color: var(--bg-dark);
-            display: flex; 
-            align-items: center;
-        }
-
-        .footer-socials a i {
-            font-size: 20px;
-            display: inline-block;
-            transition: transform 0.3s ease, color 0.3s ease; /* Transition both transform and color */
-        }
-
-        .footer-socials a i:hover {
-            transform: scale(1.2);
-            /* Optional: Add a slight opacity change or color shift on hover if desired */
-        }
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: clamp(0.75rem, 1vw, 0.88rem);
-            white-space: nowrap; /* Keeps the copyright on one line if space permits */
-        }
-
-        /* Responsive Logic */
-        @media (max-width: 900px) {
-            .footer-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 500px) {
-            .footer-container {
-                grid-template-columns: 1fr;
-            }
-            .footer-legal {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-        }
-
-        /* ── MAIN CONTENT ── */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 1.5rem;
-        }
-
-        /* Page Header */
-        .main-header {
-            margin-top: clamp(5rem, 10vw, 7rem);
-            margin-bottom: clamp(3rem, 6vw, 5rem);
-            text-align: center;
-        }
-        .main-header-eyebrow {
-            display: block;
-            font-size: 0.8rem;
-            color: #00ccff;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .main-header h1 {
-            font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-            color: #fff;
-            margin: 0 0 0.75rem 0;
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
-        .main-header p {
-            color: #8b949e;
-            max-width: 630px;
-            margin: 0 auto;
-            font-size: clamp(0.9rem, 2.2vw, 1rem);
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        /* Featured Article Section */
-        .featured-section {
-            margin-bottom: 4rem;
-        }
-        .featured-card {
-            display: flex;
-            flex-wrap: wrap;
-            overflow: hidden;
-        }
-        .featured-image-wrap {
-            flex: 1 1 500px;
-            max-height: 400px;
-            overflow: hidden;
-            position: relative;
-        }
-        .featured-image-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .featured-image-placeholder {
-            width: 100%;
-            height: 100%;
-            min-height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #161b22;
-            color: #313841;
-        }
-        .featured-image-placeholder i {
-            font-size: 3rem;
-        }
-        .featured-badge {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: #2d66b4;
-            color: #fff;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .featured-body {
-            flex: 1 1 400px;
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .featured-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.8rem;
-            color: #8b949e;
-            margin-bottom: 1rem;
-        }
-        .featured-body h2 {
-            font-size: 1.75rem;
-            color: #fff;
-            margin: 0 0 1rem 0;
-            line-height: 1.3;
-        }
-        .featured-body h2 a {
-            color: inherit;
-            text-decoration: none;
-        }
-        .featured-body p {
-            color: #8b949e;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin: 0 0 2rem 0;
-        }
-        .featured-cta {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .featured-cta i {
-            vertical-align: middle;
-            margin-left: 4px;
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 6rem 2rem;
-            border: 1px dashed rgba(49, 56, 65, 0.5);
-            border-radius: 12px;
-            margin-bottom: 4rem;
-        }
-        .empty-state i {
-            font-size: 3rem;
-            color: #2d66b4;
-            display: block;
-            margin-bottom: 1.25rem;
-        }
-        .empty-state h3 {
-            color: #fff;
-            margin: 0 0 0.5rem 0;
-            font-size: 1.4rem;
-        }
-        .empty-state p {
-            color: #8b949e;
-            margin: 0;
-            font-size: 0.95rem;
-        }
-
-        /* Newsletter Section */
-        .newsletter-section {
-            padding: 3rem 2rem;
-            margin-bottom: 4rem;
-            text-align: center;
-            border-color: rgba(45, 102, 180, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .newsletter-accent-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--accent-color);
-        }
-        .newsletter-eyebrow {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--accent-color);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .newsletter-section h2 {
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
-            color: #fff;
-            margin: 0 0 0.75rem 0;
-            letter-spacing: 0.5px;
-        }
-        .newsletter-section p {
-            color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 2rem auto;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .newsletter-form {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-        .newsletter-form input[type="email"] {
-            flex: 1 1 300px;
-            background: rgba(10, 15, 30, 0.8);
-            border: 1px solid rgba(45, 102, 180, 0.4);
-            border-radius: 6px;
-            padding: 0.85rem 1.25rem;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .newsletter-form input[type="email"]:focus {
-            border-color: #00ccff;
-        }
-        .newsletter-form button {
-            flex: 1 1 auto;
-            padding: 0.85rem 1.75rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Orbitron';
-        }
-
-        /* Modal */
-        .success-modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(5, 7, 15, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        .success-modal-box {
-            position: relative;
-            width: 90%;
-            max-width: 450px;
-            padding: 3rem 2rem;
-            text-align: center;
-            background: rgba(10, 15, 30, 0.95);
-            border: 1px solid rgba(45, 102, 180, 0.4);
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            font-family: inherit;
-        }
-        .modal-top-bar {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 4px;
-            background: var(--accent-color, #00ccff);
-        }
-        .modal-close-btn {
-            position: absolute;
-            top: 1rem; right: 1.25rem;
-            background: none;
-            border: none;
-            color: var(--text-muted, #a0aec0);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
-            z-index: 10;
-        }
-        .modal-close-btn:hover { color: #fff; }
-        .modal-icon {
-            margin: 0 auto 1.25rem auto;
-            width: 50px; height: 50px;
-            line-height: 50px;
-            border-radius: 50px;
-            background: rgba(0, 204, 255, 0.1);
-            color: var(--accent-color, #00ccff);
-            font-size: 1.5rem;
-            font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-        }
-        .modal-subtitle {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--accent-color, #00ccff);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            font-family: 'Orbitron', sans-serif;
-        }
-        .modal-title {
-            font-size: 1.6rem;
-            color: #fff;
-            margin: 0 0 1rem 0;
-            letter-spacing: 0.5px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-        }
-        .modal-desc {
-            color: var(--text-muted, #a0aec0);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 0;
-        }
-
-        /* Latest Entries Grid */
-        .latest-section-title {
-            font-size: 1.25rem;
-            color: #fff;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
-            border-left: 3px solid #00ccff;
-            padding-left: 0.75rem;
-        }
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .article-card {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 100%;
-        }
-        .article-image-wrap {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            background: #161b22;
-        }
-        .article-image-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .article-image-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #313841;
-        }
-        .article-image-placeholder i { font-size: 2rem; }
-        .article-category-badge {
-            position: absolute;
-            top: 1rem; left: 1rem;
-            background: rgba(13, 17, 23, 0.85);
-            color: #00ccff;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            border: 1px solid rgba(0, 204, 255, 0.3);
-        }
-        .article-body {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .article-meta {
-            display: flex;
-            gap: 0.75rem;
-            font-size: 0.75rem;
-            color: #8b949e;
-            margin-bottom: 0.75rem;
-        }
-        .article-body h4 {
-            font-size: 1.2rem;
-            color: #fff;
-            margin: 0 0 0.75rem 0;
-            line-height: 1.4;
-        }
-        .article-body h4 a {
-            color: inherit;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .article-body p {
-            color: #8b949e;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin: 0 0 1.5rem 0;
-            flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .article-footer { margin-top: auto; }
-        .article-read-link {
-            color: #00ccff;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* ── MOBILE OPTIMIZATIONS (max-width: 768px) ── */
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 2rem 1rem;
-            }
-            .featured-image-wrap {
-                flex: 1 1 100%;
-                max-height: 240px;
-            }
-            .featured-body {
-                flex: 1 1 100%;
-                padding: 1.5rem;
-            }
-            .featured-body h2 { font-size: 1.4rem; }
-            .featured-body p  { margin-bottom: 1.25rem; }
-            .newsletter-section {
-                padding: 2rem 1.25rem;
-            }
-            .newsletter-form {
-                flex-direction: column;
-            }
-            .newsletter-form input[type="email"],
-            .newsletter-form button {
-                flex: unset;
-                width: 100%;
-            }
-            .articles-grid {
-                grid-template-columns: 1fr;
-                gap: 1.25rem;
-            }
-            .empty-state { padding: 3rem 1rem; }
-        }
-
-        /* ── SMALL MOBILE (max-width: 480px) ── */
-        @media (max-width: 480px) {
-            .main-content { padding: 1.5rem 0.875rem; }
-            .featured-image-wrap { max-height: 200px; }
-            .featured-body { padding: 1.25rem; }
-            .featured-body h2 { font-size: 1.2rem; }
-            .success-modal-box { padding: 2.5rem 1.25rem; }
-            .modal-title { font-size: 1.3rem; }
-        }
-    </style>
-  </head>
-  
-  <body>
-    <nav class="nav">
-        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href={`${site}/favicon_io/apple-touch-icon.png`}>
+    <link rel="icon" type="image/png" sizes="32x32" href={`${site}/favicon_io/favicon-32x32.png`}>
+    <link rel="icon" type="image/png" sizes="16x16" href={`${site}/favicon_io/favicon-16x16.png`}>
+    <link rel="manifest" href={`${site}/favicon_io/site.webmanifest`}>
+    <title>{title}</title>
+    <meta name="description" content={desc}>
+    <link rel="canonical" href={url}>
+
+    <meta property="og:site_name" content="Emmy STACK01">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={desc}>
+    <meta property="og:url" content={url}>
+    <meta property="og:image" content={ogImage}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Emmy_STACK01">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={desc}>
+    <meta name="twitter:image" content={ogImage}>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+</head>
+<body>
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Main">
+        <a class="logo" href="/">Emmy STACK01</a>
         <ul class="nav-links">
-            <li class="nav-list"><a href="/" class="nav-link-active">Home</a></li>
-            <li class="nav-list"><a href="/products">Product</a></li>
-            <li class="nav-list dropdown js-dropdown">
-                <button type="button" class="dropbtn">Tools <i class="ri-arrow-down-s-line"></i></button>
+            <li><a href="/">Home</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/products">Product</a></li>
+            <li class="dropdown js-dropdown">
+                <button type="button" class="dropbtn" aria-expanded="false">Tools <i class="ri-arrow-down-s-line"></i></button>
                 <div class="dropdown-content">
-                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
-                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
-                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
-                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
-                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
+                    {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
                 </div>
             </li>
-            <li class="nav-list"><a href="/partnership" class="navi" target="_blank">Partnership Program<span class="badge-earn">EARN</span></a></li>
-            <li class="nav-list"><a href="/articles">Articles</a></li>
-            <li class="nav-list"><a href="/articles#newsletter" class="nav-cta">Join the Insider Log <i class="ri-arrow-right-line"></i></a></li>
+            <li><a href="/partnership">Partnership Program <span class="earn-pill">EARN</span> </a></li>
+            <li><a href="/articles" aria-current="page">Articles</a></li>
         </ul>
+        <a href="/articles#newsletter" class="cta nav-cta">Join the Insider Log <i class="ri-arrow-right-line"></i></a>
     </nav>
-    <nav class="navbar">
-        <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-        <button class="nav-toggle" id="openMenu" aria-label="Toggle Navigation">
-            <span class="line"></span>
-            <span class="line"></span>
-            <span class="line"></span>
+
+    <!-- Mobile bar -->
+    <div class="navbar">
+        <a class="logo" href="/">Emmy STACK01</a>
+        <button class="nav-toggle" id="openMenu" aria-label="Open navigation" aria-controls="drawer" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
         </button>
-    </nav>
+    </div>
 
-    <!-- OVERLAY -->
-    <div class="overlay" id="overlay" role="presentation"></div>
-
-    <!-- DRAWER -->
-    <aside class="drawer" id="drawer" role="navigation" aria-label="Site navigation">
-
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Site navigation" aria-hidden="true">
         <div class="drawer-header">
-            <div class="logo"><img src="/asset/emmy-stack01-logo.png" alt="Emmy STACK01 logo" height="50px" width="125px"></div>
-            <button id="closeMenu" class="close-btn" aria-label="Close navigation">✕</button>
+            <a class="logo" href="/">Emmy STACK01</a>
+            <button id="closeMenu" class="close-btn" aria-label="Close navigation"><i class="ri-close-line"></i></button>
         </div>
-
-        <nav>
-            <a href="/" class="nav-link">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-home-line"></i></span> Home</span>
-            </a>
-            <a href="/products" class="nav-link">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-rocket-2-line"></i></span> Product</span>
-            </a>
-
-            <button class="dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-tools-line"></i></span> Tools</span>
-                <span class="arrow" id="toolsArrow"><i class="ri-arrow-down-s-line"></i></span>
+        <nav class="drawer-nav">
+            <a href="/" class="drawer-link"><i class="ri-home-line"></i> Home</a>
+            <a href="/websites" class="drawer-link"><i class="ri-layout-4-line"></i> Websites</a>
+            <a href="/products" class="drawer-link"><i class="ri-box-3-line"></i> Product</a>
+            <button class="drawer-link dropdown-btn" id="toolsBtn" aria-expanded="false" aria-controls="toolsMenu">
+                <i class="ri-tools-line"></i> Tools <i class="ri-arrow-down-s-line chev"></i>
             </button>
-            <div class="submenu" id="toolsMenu" role="region">
-                <div class="submenu-inner">
-                    <a href="/tools/website-auditor"><i class="ri-shield-check-line"></i> Website Auditor</a>
-                    <a href="/tools/social-architect"><i class="ri-node-tree"></i> Social Architect</a>
-                    <a href="/tools/meeting_background_studio"><i class="ri-vidicon-line"></i> Meeting Studio</a>
-                    <a href="/tools/emmy-sign"><i class="ri-file-pdf-2-line"></i> PDF Signer</a>
-                    <a href="/tools/naira-wise"><i class="ri-bill-line"></i> Invoice Generator</a>
-                </div>
-            </div>
-
-            <a href="/partnership" class="nav-link" target="_blank">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-team-line"></i></span> Partnership Program</span>
-                <span class="earn-badge">EARN</span>
-            </a>
-            <a href="/articles" class="nav-link active">
-                <span class="nav-link-inner"><span class="nav-icon"><i class="ri-article-line"></i></span> Articles</span>
-            </a>
-
-            <div class="divider"></div>
+            <div class="submenu" id="toolsMenu"><div class="submenu-inner">
+                {tools.map((t) => <a href={`/tools/${t.s}`}><i class={t.i}></i> {t.n}</a>)}
+            </div></div>
+            <a href="/partnership" class="drawer-link"><i class="ri-team-line"></i> Partnership Program <span class="earn-pill">EARN</span></a>
+            <a href="/articles" class="drawer-link active" aria-current="page"><i class="ri-article-line"></i> Articles</a>
         </nav>
-
-        <button class="insider-btn" onclick="window.open('/articles#newsletter','_blank')">Join the Insider Log <i class="ri-arrow-right-line"></i></button>
+        <a href="/articles#newsletter" class="cta project-btn">Join the Insider Log <i class="ri-arrow-right-line"></i></a>
+        <div class="drawer-foot">
+            <SocialLinks />
+            <p>&copy; <span class="year"></span> Emmy STACK01. All rights reserved.</p>
+        </div>
     </aside>
-    <main class="main-content">
-      
-        <header class="main-header">
-            <span class="title-font main-header-eyebrow">
-                The Digital DNA Log
-            </span>
-            
-            <h1 class="title-font">
-                DIGITAL GROWTH INSIGHTS
-            </h1>
-            
-            <p>
-                Practical insights on SEO, websites, digital identity, branding and online growth.
-            </p>
-        </header>
 
-        {featuredArticle ? (
-            <section class="featured-section">
-            <div class="glass-card featured-card">
-                <div class="featured-image-wrap">
-                {featuredArticle.image ? (
-                    <img src={featuredArticle.image} alt={featuredArticle.title} />
-                ) : (
-                    <div class="featured-image-placeholder"><i class="ri-image-line"></i></div>
-                )}
-                <span class="featured-badge">
-                    Featured
-                </span>
-                </div>
-                <div class="featured-body">
-                <div class="featured-meta">
-                    <span><i class="ri-calendar-line"></i> {featuredArticle.date}</span>
-                    <span><i class="ri-time-line"></i> {featuredArticle.readingTime}</span>
-                </div>
-                <h2 class="title-font">
-                    <a href={`/articles/${featuredArticle.slug}`}>{featuredArticle.title}</a>
-                </h2>
-                <p>
-                    {featuredArticle.description}
-                </p>
-                <div>
-                    <a href={`/articles/${featuredArticle.slug}`} class="btn-glow featured-cta">
-                    Read Strategy <i class="ri-arrow-right-line"></i>
-                    </a>
-                </div>
-                </div>
-            </div>
-            </section>
-        ) : (
-            <div class="empty-state">
-            <i class="ri-terminal-window-line"></i>
-            <h3 class="title-font">DNA Log Workspace Clear</h3>
-            <p>Publish records via Keystatic to populate your network workspace streams.</p>
-            </div>
-        )}
-
-        <!-- ================= KIT NEWSLETTER INTEGRATION ================= -->
-        <section class="glass-card newsletter-section" id="newsletter">
-          <div class="newsletter-accent-bar"></div>
-          
-          <span class="title-font newsletter-eyebrow">
-            The Emmy STACK01 Insider Log
-          </span>
-          <h2 class="title-font">
-            STAY AHEAD OF THE ECOSYSTEM
-          </h2>
-          <p>
-            Get early access to premium product releases, exclusive discount deals, hidden technical tips, and open tracking opportunities in our 16.67% Partnership Program.
-          </p>
-
-          <!-- Raw Zero-Bloat Form pointing directly to Kit -->
-          <form 
-            action="https://app.kit.com/forms/9527987/subscriptions" 
-            method="post" 
-            class="newsletter-form"
-          >
-            <input 
-              type="email" 
-              name="email_address" 
-              required 
-              placeholder="Enter your professional email..." 
-            />
-            <button 
-              type="submit" 
-              class="btn-glow"
-            >
-              SUBSCRIBE
-            </button>
-          </form>
-        </section>
-        <!-- ================= STACK01 DUAL-STATUS MODAL ================= -->
-        <div id="successModal" class="success-modal-overlay">
-        
-        <!-- Modal Content Box -->
-        <div class="glass-card success-modal-box">
-            
-            <!-- Top Accent Bar -->
-            <div class="modal-top-bar"></div>
-            
-            <!-- Close Button -->
-            <button onclick="closeSuccessModal()" class="modal-close-btn">&times;</button>
-            
-            <!-- Dynamic Icon -->
-            <div id="modalIcon" class="title-font modal-icon">
-            ✓
-            </div>
-
-            <!-- Dynamic Subtitle -->
-            <span id="modalSubtitle" class="title-font modal-subtitle">
-            Transmission Successful
-            </span>
-            
-            <!-- Dynamic Title -->
-            <h2 id="modalTitle" class="title-font modal-title">
-            ACCESS INITIATED
-            </h2>
-            
-            <!-- Dynamic Description -->
-            <p id="modalDescription" class="modal-desc">
-            You're almost in. We just sent a verification link to your inbox. Check your email to confirm your subscription and unlock the STACK01 Ecosystem.
-            </p>
+    <header class="ar-hero list">
+        <div class="ar-hero-inner">
+            <span class="ar-eyebrow">The Digital DNA Log</span>
+            <h1>Digital growth insights</h1>
+            <p>Practical insights on SEO, websites, digital identity, branding and online growth.</p>
         </div>
-        </div>
+    </header>
 
-        <script>
-        function checkSubscriptionStatus() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status');
-            
-            if (status === 'success' || status === 'confirmed') {
-            const modal = document.getElementById('successModal');
-            
-            // If the user clicked the link in their email and is fully confirmed:
-            if (status === 'confirmed') {
-                document.getElementById('modalSubtitle').innerText = "Verification Complete";
-                document.getElementById('modalTitle').innerText = "INTEGRATION COMPLETE";
-                document.getElementById('modalDescription').innerHTML = "Welcome to the <strong>STACK01 Ecosystem</strong>. Your insider access is officially active. Prepare for upcoming premium drops, hidden technical documentation, and tracking updates sent straight to your inbox.";
-                // Optional: Change icon to something cooler for full verification
-                document.getElementById('modalIcon').innerText = "✦"; 
-            }
-            
-            // Reveal the pop-up
-            modal.style.display = 'flex';
-            
-            // Polish the browser URL bar so the parameters vanish
-            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.history.replaceState({path: cleanUrl}, '', cleanUrl);
-            }
-        }
-
-        window.closeSuccessModal = function() {
-            document.getElementById('successModal').style.display = 'none';
-        }
-
-        window.addEventListener('DOMContentLoaded', checkSubscriptionStatus);
-        </script>
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-
-        {otherArticles.length > 0 && (
-            <section>
-            <h3 class="title-font latest-section-title">
-                LATEST ENTRIES
-            </h3>
-            
-            <div class="articles-grid">
-                {otherArticles.map(article => (
-                <article class="glass-card article-card">
-                    <div class="article-image-wrap">
-                    {article.image ? (
-                        <img src={article.image} alt={article.title} />
-                    ) : (
-                        <div class="article-image-placeholder"><i class="ri-image-line"></i></div>
-                    )}
-                    <span class="article-category-badge">
-                        {article.category}
-                    </span>
+    <main>
+        <div class="ar-section">
+            {featured ? (
+                <article class="ar-featured" aria-label="Featured article">
+                    <div class="ar-thumb">
+                        {featured.image
+                            ? <img src={featured.image} alt={featured.title} width="1200" height="750" fetchpriority="high" decoding="async">
+                            : <div class="ar-ph" aria-hidden="true"><i class="ri-image-line"></i></div>}
+                        <span class="ar-flag">Featured</span>
                     </div>
-                    
-                    <div class="article-body">
-                    <div class="article-meta">
-                        <span>{article.date}</span>
-                        <span>•</span>
-                        <span>{article.readingTime}</span>
-                    </div>
-                    <h4 class="title-font">
-                        <a href={`/articles/${article.slug}`}>{article.title}</a>
-                    </h4>
-                    <p>
-                        {article.description}
-                    </p>
-                    <div class="article-footer">
-                        <a href={`/articles/${article.slug}`} class="article-read-link">
-                        Explore Entry <i class="ri-arrow-right-up-line"></i>
-                        </a>
-                    </div>
+                    <div class="ar-featured-body">
+                        <div class="ar-card-meta">
+                            {featured.category && <span>{featured.category}</span>}
+                            {featured.category && <span aria-hidden="true">•</span>}
+                            <time datetime={featured.date}>{fmt(featured.date)}</time>
+                            {featured.readingTime && <span aria-hidden="true">•</span>}
+                            {featured.readingTime && <span>{featured.readingTime}</span>}
+                        </div>
+                        <h2><a href={`/articles/${featured.slug}`}>{featured.title}</a></h2>
+                        <p class="desc">{featured.description}</p>
+                        <a href={`/articles/${featured.slug}`} class="btn-white">Read the article <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
                     </div>
                 </article>
-                ))}
-            </div>
+            ) : (
+                <div class="ar-empty">
+                    <i class="ri-article-line" aria-hidden="true"></i>
+                    <h2>No articles yet</h2>
+                    <p>New insights are on the way. Join the Insider Log below to hear when they land.</p>
+                </div>
+            )}
+        </div>
+
+        {others.length > 0 && (
+            <section class="ar-section" style="padding-top:0" aria-labelledby="latest">
+                <h2 class="ar-section-title" id="latest">Latest entries</h2>
+                <div class="ar-grid">
+                    {others.map((a) => (
+                        <article class="ar-card">
+                            <div class="ar-thumb">
+                                {a.image
+                                    ? <img src={a.image} alt={a.title} width="800" height="500" loading="lazy" decoding="async">
+                                    : <div class="ar-ph" aria-hidden="true"><i class="ri-image-line"></i></div>}
+                                {a.category && <span class="ar-badge">{a.category}</span>}
+                            </div>
+                            <div class="ar-card-body">
+                                <div class="ar-card-meta">
+                                    <time datetime={a.date}>{fmt(a.date)}</time>
+                                    {a.readingTime && <span aria-hidden="true">•</span>}
+                                    {a.readingTime && <span>{a.readingTime}</span>}
+                                </div>
+                                <h3><a href={`/articles/${a.slug}`}>{a.title}</a></h3>
+                                <p>{a.description}</p>
+                                <span class="ar-more" aria-hidden="true">Explore entry <i class="ri-arrow-right-up-line"></i></span>
+                            </div>
+                        </article>
+                    ))}
+                </div>
             </section>
-        )}  
+        )}
+
+        <div class="ar-section" style="padding-top:0">
+            <section class="ar-news" id="newsletter" aria-labelledby="news-title">
+                <span class="ar-eyebrow">The Emmy STACK01 Insider Log</span>
+                <h2 id="news-title">Stay ahead of the ecosystem</h2>
+                <p>Get early access to premium product releases, exclusive discount deals, hidden technical tips, and open tracking opportunities in our 16.67% Partnership Program.</p>
+                <form action="https://app.kit.com/forms/9527987/subscriptions" method="post" class="ar-form">
+                    <label for="email" class="sr-only">Email address</label>
+                    <input type="email" id="email" name="email_address" required autocomplete="email" placeholder="Enter your professional email…">
+                    <button type="submit" class="cta">Subscribe</button>
+                </form>
+            </section>
+        </div>
     </main>
-    <footer class="footer-section">
+
+    <!-- Shown after the Kit form redirects back with ?status=success or ?status=confirmed -->
+    <div id="successModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+            <button type="button" class="modal-close" id="closeSuccess" aria-label="Close"><i class="ri-close-line"></i></button>
+            <p class="ar-eyebrow" id="modalSubtitle" style="color:var(--primary-color)">Transmission successful</p>
+            <h3 class="modal-title" id="modalTitle">Access initiated</h3>
+            <p class="modal-text" id="modalDescription" style="margin-bottom:0">You're almost in. We just sent a verification link to your inbox. Check your email to confirm your subscription and unlock the STACK01 Ecosystem.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
         <div class="footer-container">
-            <!-- Column 1: Ecosystem Hub -->
-            <div class="footer-column">
-                <h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/pricing">Pricing</a></li> <!-- White-Label info located here -->
-                    <li><a href="/articles">Articles</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 2: Flagship Product -->
-            <div class="footer-column">
-                <h3><i class="ri-rocket-2-line"></i> Flagship Product</h3>
-                <ul>
-                    <li><a href="/products/digital-business-card">Digital Business Card</a></li>
-                    <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
-                    <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
-                    <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li>
-                </ul>
-            </div>
-
-            <!-- Column 3: Technical Tools -->
-            <div class="footer-column">
-                <h3><i class="ri-tools-line"></i> Technical Tools</h3>
-                <ul>
-                    <li><a href="/tools/website-auditor">Website Auditor</a></li>
-                    <li><a href="/tools/social-architect">Social Architect</a></li>
-                    <li><a href="/tools/meeting_background_studio">Meeting Studio</a></li>
-                    <li><a href="/tools/naira-wise">Invoice Generator</a></li>
-                    <li><a href="/tools/emmy-sign">PDF Signer</a></li>
-                </ul>
-            </div>
-
-            <!-- Column 4: Partnership -->
-            <div class="footer-column">
-                <h3><i class="ri-team-line"></i> Partnership</h3>
-                <ul>
-                    <li><a href="/partnership">Partnership Program</a></li>
-                    <li><a href="/partnership/affiliate">Affiliate Portal</a></li>
-                    <li><a href="/partnership/policy">Partner Policy</a></li>
-                </ul>
-            </div>
+            <div class="footer-column"><h3><i class="ri-share-forward-box-line"></i> Ecosystem Hub</h3><ul>
+                <li><a href="/">Home</a></li><li><a href="/websites">Websites</a></li><li><a href="/products">Products</a></li><li><a href="/pricing">Pricing</a></li><li><a href="/articles">Articles</a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-rocket-2-line"></i> Flagship Product</h3><ul>
+                <li><a href="/products/digital-business-card">Digital Business Card</a></li>
+                <li><a href="/products/digital-business-card#demo">Live Demos</a></li>
+                <li><a href="/products/digital-business-card#launch-package">Build Your Card</a></li>
+                <li><a href="/payment" rel="nofollow">Payment <i class="ri-verified-badge-fill"></i></a></li></ul></div>
+            <div class="footer-column"><h3><i class="ri-tools-line"></i> Technical Tools</h3><ul>
+                {tools.map((t) => <li><a href={`/tools/${t.s}`}>{t.n}</a></li>)}</ul></div>
+            <div class="footer-column"><h3><i class="ri-team-line"></i> Partnership</h3><ul>
+                <li><a href="/partnership">Partnership Program</a></li><li><a href="/partnership/affiliate">Affiliate Portal</a></li><li><a href="/partnership/policy">Partner Policy</a></li></ul></div>
         </div>
         <div class="footer-bottom">
-            <hr class="footer-divider">
             <div class="footer-legal">
-                <div class="footer-cta-container">
-                    <div class="footer-socials-text">Socials & Contact</div>
-                    <div class="footer-socials">
-                        <a href="https://x.com/Emmy_STACK01" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 X Profile"><i class="ri-twitter-x-line"></i></a>
-                        <a href="https://wa.me/2349076991076" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 WhatsApp Number"><i class="ri-whatsapp-line"></i></a>
-                        <a href="mailto:hello@emmystack01.com" target="_blank" rel="noopener noreferrer" title="Emmy STACK01 Email Address"><i class="ri-mail-line"></i></a>  
-                    </div>
-                </div>
-                <p class="copyright">&copy; <span id="year"></span> Emmy STACK01. All Rights Reserved.</p>
+                <SocialLinks />
+                <p>&copy; <span class="year"></span> Emmy STACK01. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
-    <script src="/script/navbar.js" defer></script>
-    <script src="/script/year.js" defer></script>
-  </body>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // Drawer
+  const drawer = $("#drawer"), overlay = $("#overlay"), openBtn = $("#openMenu");
+  const setDrawer = (open) => {
+    drawer.classList.toggle("open", open); overlay.classList.toggle("open", open);
+    drawer.setAttribute("aria-hidden", String(!open)); openBtn.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("no-scroll", open);
+    if (open) $("#closeMenu").focus(); else openBtn.focus({ preventScroll: true });
+  };
+  openBtn.addEventListener("click", () => setDrawer(true));
+  $("#closeMenu").addEventListener("click", () => setDrawer(false));
+  overlay.addEventListener("click", () => setDrawer(false));
+  $$("#drawer a").forEach((a) => a.addEventListener("click", () => setDrawer(false)));
+  const toolsBtn = $("#toolsBtn");
+  toolsBtn.addEventListener("click", () => {
+    const o = $("#toolsMenu").classList.toggle("open");
+    toolsBtn.classList.toggle("open", o); toolsBtn.setAttribute("aria-expanded", String(o));
+  });
+
+  // Desktop dropdown (click for touch, hover/focus via CSS)
+  const dd = $(".js-dropdown"), ddBtn = $(".dropbtn", dd);
+  ddBtn.addEventListener("click", (e) => { e.stopPropagation(); ddBtn.setAttribute("aria-expanded", String(dd.classList.toggle("open"))); });
+  document.addEventListener("click", () => { dd.classList.remove("open"); ddBtn.setAttribute("aria-expanded", "false"); });
+
+  // Subscription result modal (Kit redirects back with ?status=success or ?status=confirmed)
+  const modal = $("#successModal"), closeBtn = $("#closeSuccess");
+  let lastFocus;
+  const showModal = (open) => {
+    modal.classList.toggle("is-active", open); modal.setAttribute("aria-hidden", String(!open));
+    if (open) { lastFocus = document.activeElement; closeBtn.focus(); } else if (lastFocus) lastFocus.focus({ preventScroll: true });
+  };
+  closeBtn.addEventListener("click", () => showModal(false));
+  modal.addEventListener("click", (e) => { if (e.target === modal) showModal(false); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (modal.classList.contains("is-active")) showModal(false);
+    else if (drawer.classList.contains("open")) setDrawer(false);
+  });
+
+  const status = new URLSearchParams(location.search).get("status");
+  if (status === "success" || status === "confirmed") {
+    if (status === "confirmed") {
+      $("#modalSubtitle").textContent = "Verification complete";
+      $("#modalTitle").textContent = "Integration complete";
+      $("#modalDescription").innerHTML = "Welcome to the <strong>STACK01 Ecosystem</strong>. Your insider access is officially active. Prepare for upcoming premium drops, hidden technical documentation, and tracking updates sent straight to your inbox.";
+    }
+    showModal(true);
+    history.replaceState(null, "", location.pathname + location.hash); // tidy the URL
+  }
+});
+</script>
+<script src="/script/year.js" defer></script>
+</body>
 </html>
-
-
-
-
