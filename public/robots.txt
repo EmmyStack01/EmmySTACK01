@@ -4,10 +4,10 @@ User-agent: *
 Disallow: /style/*.map
 Disallow: /README.md
 Disallow: /LICENSE
-Disallow: /thank-you.html
-Disallow: /404.html
-Disallow: /success.html
-Disallow: /preview.html
+Disallow: /thank-you
+Disallow: /404
+Disallow: /success
+Disallow: /preview
 Disallow: /go/
 Allow: /
 
