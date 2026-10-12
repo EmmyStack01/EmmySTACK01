@@ -4,8 +4,8 @@ import SocialLinks from "../../../components/SocialLinks.astro";
 // src/pages/partnership/affiliate/partner-kit.astro — Styles: /style/index-style.css + /style/affiliate-style.css
 const site = "https://emmystack01.com";
 const url = `${site}/partnership/affiliate/partner-kit`;
-const title = 'Partner Toolkit | Emmy STACK01 Digital DNA';
-const desc = 'Access official Emmy STACK01 marketing assets. Download high-performance visuals and copy to promote Digital DNA profiles and vCard websites.';
+const title = 'Partner Kit | Emmy STACK01 Affiliate Program';
+const desc = 'Official Emmy STACK01 partner kit. Choose a kit for websites, digital business cards or creator websites, then download assets and copy ready-made captions.';
 const ogTitle = 'Emmy STACK01 Partner Toolkit';
 const ogDesc = 'Official promotional assets and swipe copy for Emmy STACK01 affiliate partners.';
 const ogImage = `${site}/asset/og-partner-kit.png`;
@@ -16,29 +16,93 @@ const tools = [
   { n: "PDF Signer", s: "emmy-sign", i: "ri-file-pdf-2-line" },
   { n: "Invoice Generator", s: "naira-wise", i: "ri-bill-line" },
 ];
-const org = { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.png`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] };
-const media = [
-  { kind: "image", title: "Digital DNA solution", src: "/asset/Emmy%20STACK01_The_solution.png", file: "Emmy_STACK01_Solution.png", alt: "Digital DNA solution graphic", btn: "Download image",
-    caption: "First impressions are everything in 2026. Get a professional Digital DNA profile + SEO for 5% off using my link. 🚀 #EmmySTACK01 #DigitalIdentity" },
-  { kind: "video", title: "Fastest way to exchange info", src: "/asset/The%20fastest%20way%20to%20exchange%20info.mp4", file: "Emmy_Exchange_Demo.mp4", btn: "Download video",
-    caption: "Stop carrying paper cards. Claim your digital territory with Emmy STACK01. Get a full portfolio site, SEO, and contact integration for just $60. Use code [Partner Code] for 5% off!" },
-  { kind: "image", title: "Business card package", src: "/asset/Emmy%20STACK01_Business_Card_Package.png", file: "Emmy_STACK01_Business_Card_Package.png", alt: "Emmy STACK01 digital business card package", btn: "Download image" },
-  { kind: "image", title: "Check out our demos", src: "/asset/Checkout-our-Demos.png", file: "Emmy_Demos.png", alt: "Emmy STACK01 demo websites", btn: "Download image" },
-  { kind: "image", style: "logo", title: "Logo", src: "/asset/emmy-stack01-logo.png", file: "EmmySTACK01_Logo.png", alt: "Emmy STACK01 logo", btn: "Download logo" },
-  { kind: "image", style: "icon", title: "Favicon", src: "/favicon_io/android-chrome-192x192.png", file: "EmmySTACK01_Favicon.png", alt: "Emmy STACK01 favicon", btn: "Download favicon" },
+const org = { "@type": "Organization", "@id": `${site}/#organization`, name: "Emmy STACK01", url: `${site}/`, logo: `${site}/asset/emmy-stack01-logo.svg`, image: ogImage, sameAs: ["https://x.com/Emmy_STACK01", "https://wa.me/2349076991076"] };
+
+// Each kit = one audience + one purpose. "assets" are downloadable files, "copy" are captions.
+// [Insert ShortLink] is the partner's affiliate link: it opens a WhatsApp chat with Emmy STACK01 (prefilled message) and gives 5% off.
+// It is filled in automatically for logged-in partners (see script at the bottom).
+const LINK = "[Insert ShortLink]";
+const kits = [
+  {
+    id: "websites", title: "Website Solutions", promo: true,
+    audience: "Business owners, founders, consultants, service providers and professionals.",
+    purpose: "Generate referrals for website design and development.",
+    page: { href: "/websites", label: "View the Websites page" },
+    assets: [
+      // TODO: add a website solutions graphic when available
+    ],
+    copy: [
+      { icon: "ri-whatsapp-line", title: "WhatsApp status caption", text: `A lot of businesses rely on social media to show what they do. But where can people go to see your work, learn about your services and contact you? A professional website brings it all together.\n\nI'm partnering with Emmy STACK01, who build websites for businesses, professionals and creators. Tap my link to chat with them on WhatsApp and get 5% off: ${LINK}` },
+      { icon: "ri-twitter-x-line", title: "X post", text: `Your social profile introduces your business. A website lets people explore your services, see your work and get in touch. I'm a partner of @Emmy_STACK01. Chat with them on WhatsApp for 5% off: ${LINK}` },
+      { icon: "ri-chat-quote-line", title: "Longer personal recommendation", text: `A lot of businesses rely on social media to show people what they do. But what happens when someone wants to learn more about your services, see your work, or find the right way to contact you?\n\nA professional website gives your business a place to bring all of that together.\n\nI'm partnering with Emmy STACK01, which builds websites for businesses, professionals, and creators.\n\nMessage them on WhatsApp through my link and get 5% off: ${LINK}` },
+    ],
+  },
+  {
+    id: "digital-business-card", title: "Digital Business Card", promo: true,
+    audience: "Entrepreneurs, consultants, freelancers, creators and professionals who regularly meet new people.",
+    purpose: "Promote the flagship Digital Business Card product.",
+    page: { href: "/products/digital-business-card", label: "View the Digital Business Card page" },
+    assets: [
+      { kind: "image", title: "Digital Business Card graphic", src: "/asset/product-card-design-1920x1080.png", file: "product-card-design-1920x1080.png", alt: "Emmy STACK01 digital business card graphic", btn: "Download image" },
+      // TODO: add a short demo video when available
+    ],
+    copy: [
+      { icon: "ri-whatsapp-line", title: "WhatsApp status caption", text: `How many times have you met someone, exchanged contacts, and then struggled to find their details later?\n\nA digital business card gives people one simple place to find your contact information, social links, work, and services.\n\nEmmy STACK01 builds professional digital business card websites that are easy to share.\n\nMessage them on WhatsApp through my link and get 5% off: ${LINK}` },
+      { icon: "ri-twitter-x-line", title: "X post", text: `Met someone, swapped contacts, then couldn't find their details later? A digital business card puts your contact info, links, work and services in one place. I'm a partner of @Emmy_STACK01. Get 5% off via WhatsApp: ${LINK}` },
+      { icon: "ri-list-check-2", title: "Feature highlights", text: `One link for your contact information, social links, work and services.\nEasy to share with anyone you meet.\nBuilt as a professional website by Emmy STACK01.\n\nMessage them on WhatsApp for 5% off: ${LINK}` },
+    ],
+  },
+  {
+    id: "creators", title: "Creator & Personal Brand Websites", promo: true,
+    audience: "Writers, photographers, musicians, influencers and other creators.",
+    purpose: "Attract people who need a portfolio or a central place to showcase their work.",
+    page: { href: "/websites", label: "View website solutions" },
+    assets: [
+      // TODO: add creator website graphic, portfolio screenshots and a blog website example when available
+    ],
+    copy: [
+      { icon: "ri-whatsapp-line", title: "WhatsApp status caption", text: `If you're a creator, your social media profile can introduce you to people. But where can they go to explore your work, understand what you offer, and find out how to work with you?\n\nA personal website or portfolio gives you more room to tell your story and showcase what you do.\n\nEmmy STACK01 builds websites for creators and professionals who want a stronger online presence.\n\nMessage them on WhatsApp through my link and get 5% off: ${LINK}` },
+      { icon: "ri-twitter-x-line", title: "X post", text: `Social media introduces you. A portfolio website shows your work, explains what you offer and tells people how to hire you. I'm a partner of @Emmy_STACK01. Chat with them on WhatsApp for 5% off: ${LINK}` },
+    ],
+  },
+  {
+    id: "demos", title: "Website Demos & Projects", promo: true,
+    audience: "People who want to see examples before considering a service.",
+    purpose: "Build confidence by showing real work.",
+    page: { href: "/websites", label: "View the Websites page" },
+    assets: [
+      // TODO: add real website screenshots, mobile screenshots, project descriptions and live project links.
+      // Only list projects that are live and viewable.
+    ],
+    copy: [
+      { icon: "ri-share-forward-line", title: "Caption partners can personalise", text: `Before choosing someone to build your website, it's worth seeing the kind of work they do.\n\nHere are a few projects built by Emmy STACK01, from a Web3 creator's website to a nursery and primary school website. See them here: ${site}/websites\n\nWhen you're ready, message Emmy STACK01 on WhatsApp through my link and get 5% off: ${LINK}` },
+    ],
+  },
+  {
+    id: "brand", title: "General Brand Assets", promo: false,
+    audience: "Any partner, whichever service they promote.",
+    purpose: "The logo and basic brand information for use alongside any kit.",
+    page: { href: "/", label: "Official website" },
+    assets: [
+      { kind: "image", style: "logo", title: "Logo", src: "/favicon_io/android-chrome-512x512.png", file: "EmmySTACK01_Logo.png", alt: "Emmy STACK01 logo", btn: "Download logo" },
+      // TODO: add transparent logo, optional profile/promo graphics, and brand colours + usage guidelines
+    ],
+    copy: [
+      { icon: "ri-information-line", title: "Short brand description", text: "Emmy STACK01 is a Nigerian digital agency that builds websites for businesses, professionals and creators, including a flagship Digital Business Card product." },
+      { icon: "ri-global-line", title: "Official website", text: "Emmy STACK01: https://emmystack01.com" },
+    ],
+  },
 ];
-const swipes = [
-  { icon: "ri-whatsapp-line", title: "WhatsApp status swipe", text: "If your business isn't on Google yet, you're invisible. 🕵️‍♂️ I'm partnering with Emmy STACK01 to get you a professional website + SEO + Digital Card for a steal. Use my link for a 5% discount! [Insert ShortLink]" },
-  { icon: "ri-twitter-x-line", title: "X (Twitter) swipe", text: "Stop building on rented land. Own your identity. 🌐 Just partnered with @EmmySTACK01 to bring 'Digital DNA' profiles to my network. DM for the 5% off code. #Web3 #PersonalBranding" },
-];
+const allAssets = kits.flatMap((k) => k.assets);
+
 const abs = (p) => (p.startsWith("http") ? p : `${site}${p}`);
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
     { "@type": "WebPage", "@id": `${url}#webpage`, url, name: title, description: desc, isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, url: `${site}/`, name: "Emmy STACK01" }, inLanguage: "en-US",
-      mainEntity: { "@type": "ItemList", name: "Emmy STACK01 affiliate marketing assets", description: "Promotional images, motion video and social swipe copy for registered partners.",
-        itemListElement: media.map((m, i) => ({ "@type": "ListItem", position: i + 1, item: m.kind === "video"
-          ? { "@type": "VideoObject", name: m.title, contentUrl: abs(m.src), description: m.caption, thumbnailUrl: ogImage, uploadDate: "2026-01-01T00:00:00Z" }
+      mainEntity: { "@type": "ItemList", name: "Emmy STACK01 affiliate marketing assets", description: "Promotional images, video and social captions for registered partners.",
+        itemListElement: allAssets.map((m, i) => ({ "@type": "ListItem", position: i + 1, item: m.kind === "video"
+          ? { "@type": "VideoObject", name: m.title, contentUrl: abs(m.src), description: m.desc || m.title, thumbnailUrl: ogImage, uploadDate: "2026-01-01T00:00:00Z" }
           : { "@type": "ImageObject", name: m.title, contentUrl: abs(m.src), description: m.alt } })) } },
     org,
   ],
@@ -141,52 +205,92 @@ const schema = {
     <header class="af-hero">
         <div class="af-hero-inner">
             <a class="af-back" href="/partnership/affiliate"><i class="ri-arrow-left-line" aria-hidden="true"></i> Affiliate dashboard</a>
-            <span class="af-eyebrow">Partner toolkit</span>
-            <h1>Promotional <em>assets</em></h1>
-            <p>Download graphics and video, or copy ready-made captions. Your code and link are filled in for you.</p>
+            <span class="af-eyebrow">Partner kit</span>
+            <h1>Promote with <em>confidence</em></h1>
+            <p>Pick the kit that matches who you're talking to, then download an asset or copy a caption. Your code and link are filled in for you once you're logged in.</p>
         </div>
     </header>
 
     <main>
-        <section class="af-wrap" aria-label="Promotional assets">
+        <section class="af-wrap kt-start" aria-labelledby="startHere">
+            <h2 id="startHere"><i class="ri-flag-line" aria-hidden="true"></i> Start here</h2>
+            <ol>
+                <li>Choose the kit that fits the person you're talking to.</li>
+                <li>Download an asset or copy a caption.</li>
+                <li>Add your affiliate link. It opens a WhatsApp chat with Emmy STACK01 with a prefilled message and gives the person 5% off. It's filled in automatically when you're logged in.</li>
+                <li>Share it with a relevant audience.</li>
+                <li>Track referrals in the <a href="/partnership/affiliate">affiliate dashboard</a>.</li>
+            </ol>
+            <p class="kt-disclose"><i class="ri-information-line" aria-hidden="true"></i> Always disclose that you're an Emmy STACK01 partner and follow the rules of the platform you share on. See the <a href="/partnership/policy">Partner Policy</a>.</p>
+            <nav class="kt-jump" aria-label="Jump to a kit">
+                {kits.map((k, i) => <a href={`#${k.id}`}>{i + 1}. {k.title}</a>)}
+            </nav>
+        </section>
+
+        <section class="af-wrap" aria-label="Partner kits">
             <p class="kt-note" id="ktNote">
                 <i class="ri-user-star-line" aria-hidden="true"></i>
                 <span id="ktNoteText">Log in on the <a href="/partnership/affiliate">affiliate page</a> to fill in your own code and link automatically.</span>
             </p>
 
-            <div class="kt-grid">
-                {media.map((m) => (
-                    <article class="kt-card">
-                        <div class={`kt-media ${m.style || ""}`}>
-                            {m.kind === "video"
-                                ? <video src={m.src} muted loop playsinline autoplay preload="metadata" controls aria-label={m.title}></video>
-                                : <img src={m.src} alt={m.alt} loading="lazy" decoding="async">}
+            {kits.map((k, i) => (
+                <section class="kt-kit" id={k.id} aria-labelledby={`${k.id}-h`}>
+                    <div class="kt-kit-head">
+                        <span class="kt-kit-num">Kit {i + 1}</span>
+                        <h2 id={`${k.id}-h`}>{k.title}</h2>
+                        <p><strong>Audience:</strong> {k.audience}</p>
+                        <p><strong>Purpose:</strong> {k.purpose}</p>
+                        <div class="kt-kit-actions">
+                            {k.page && <a class="cta" href={k.page.href}>{k.page.label} <i class="ri-arrow-right-line" aria-hidden="true"></i></a>}
+                            {k.promo && <button type="button" class="cta kt-linkbtn"><i class="ri-link" aria-hidden="true"></i> <span>Get affiliate link</span></button>}
                         </div>
-                        <h3>{m.title}</h3>
-                        <a class="cta kt-dl" href={m.src} download={m.file}><i class="ri-download-2-line" aria-hidden="true"></i> {m.btn}</a>
-                        {m.caption && (
-                            <div class="kt-copybox">
-                                <p class="kt-text" data-template={m.caption}>{m.caption}</p>
-                                <button type="button" class="kt-copybtn" aria-label={`Copy caption for ${m.title}`}><i class="ri-file-copy-line" aria-hidden="true"></i></button>
-                            </div>
-                        )}
-                    </article>
-                ))}
+                    </div>
 
-                {swipes.map((s) => (
-                    <article class="kt-card">
-                        <span class="kt-icon"><i class={s.icon} aria-hidden="true"></i></span>
-                        <h3>{s.title}</h3>
-                        <div class="kt-copybox">
-                            <p class="kt-text" data-template={s.text}>{s.text}</p>
-                            <button type="button" class="kt-copybtn" aria-label={`Copy ${s.title}`}><i class="ri-file-copy-line" aria-hidden="true"></i></button>
-                        </div>
-                    </article>
-                ))}
-            </div>
+                    <div class="kt-grid">
+                        {k.assets.map((m) => (
+                            <article class="kt-card">
+                                <div class={`kt-media ${m.style || ""}`}>
+                                    {m.kind === "video"
+                                        ? <video src={m.src} muted loop playsinline preload="metadata" controls aria-label={m.title}></video>
+                                        : <img src={m.src} alt={m.alt} loading="lazy" decoding="async">}
+                                </div>
+                                <h3>{m.title}</h3>
+                                <a class="cta kt-dl" href={m.src} download={m.file}><i class="ri-download-2-line" aria-hidden="true"></i> {m.btn}</a>
+                            </article>
+                        ))}
+
+                        {k.copy.map((s) => (
+                            <article class="kt-card">
+                                <span class="kt-icon"><i class={s.icon} aria-hidden="true"></i></span>
+                                <h3>{s.title}</h3>
+                                <div class="kt-copybox">
+                                    <p class="kt-text" data-template={s.text}>{s.text}</p>
+                                    <button type="button" class="kt-copybtn" aria-label={`Copy ${s.title}`}><i class="ri-file-copy-line" aria-hidden="true"></i></button>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            ))}
             <p class="kt-live" id="ktLive" role="status" aria-live="polite"></p>
         </section>
     </main>
+
+    <style>
+        .kt-start, .kt-kit { margin-bottom: 2.5rem; }
+        .kt-start h2 { display: flex; align-items: center; gap: .5rem; }
+        .kt-start ol { padding-left: 1.25rem; display: grid; gap: .35rem; }
+        .kt-disclose { display: flex; gap: .5rem; align-items: flex-start; margin-top: 1rem; padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; font-size: .95rem; }
+        .kt-jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+        .kt-jump a { padding: .4rem .8rem; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; font-size: .9rem; text-decoration: none; }
+        .kt-kit { scroll-margin-top: 5rem; }
+        .kt-kit-head { margin-bottom: 1.25rem; }
+        .kt-kit-head h2 { margin: .25rem 0 .5rem; }
+        .kt-kit-head p { margin: .2rem 0; }
+        .kt-kit-num { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+        .kt-kit-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+        .kt-text { white-space: pre-line; }
+    </style>
 
     <footer class="footer">
         <div class="footer-container">
@@ -237,37 +341,55 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <script is:inline>
 (() => {
+  const AFFILIATE_PAGE = "/partnership/affiliate";
+  let partnerLink = null;
+  const live = document.getElementById("ktLive");
+
+  const say = (msg) => { live.textContent = msg; setTimeout(() => { live.textContent = ""; }, 3500); };
+  const flash = (btn, ok) => {
+    const icon = btn.querySelector("i"), prev = icon.className;
+    if (ok) { icon.className = "ri-check-line"; btn.classList.add("done"); }
+    setTimeout(() => { icon.className = prev; btn.classList.remove("done"); }, 2000);
+  };
+  const copy = async (text, btn, okMsg) => {
+    try { await navigator.clipboard.writeText(text); flash(btn, true); say(okMsg); }
+    catch (e) { say("Copy failed. Select the text and copy it manually."); }
+  };
+
   // Personalise captions with the partner's own code and link (fetched with the signed-in session cookie)
   const personalise = (code) => {
     const link = `https://emmystack01.com/go/?id=${code}`;
+    partnerLink = link;
     document.querySelectorAll(".kt-text").forEach((p) => {
       p.textContent = p.dataset.template.split("[Partner Code]").join(code).split("[Insert ShortLink]").join(link);
     });
     document.getElementById("ktNoteText").innerHTML = "Captions are filled in with your code <strong></strong> and your referral link.";
     document.querySelector("#ktNoteText strong").textContent = code;
+    document.querySelectorAll(".kt-linkbtn span").forEach((s) => { s.textContent = "Copy my affiliate link"; });
   };
   fetch("/api/partner/me", { credentials: "same-origin" })
     .then((r) => (r.ok ? r.json() : null))
     .then((d) => { if (d && d.partner && d.partner.code) personalise(d.partner.code); })
     .catch(() => {});
 
-  // Copy buttons
-  const live = document.getElementById("ktLive");
-  document.querySelectorAll(".kt-copybtn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const text = btn.parentElement.querySelector(".kt-text").textContent;
-      const icon = btn.querySelector("i");
-      try {
-        await navigator.clipboard.writeText(text);
-        icon.className = "ri-check-line"; btn.classList.add("done"); live.textContent = "Copied to clipboard.";
-      } catch (e) {
-        live.textContent = "Copy failed. Select the text and copy it manually.";
-      }
-      setTimeout(() => { icon.className = "ri-file-copy-line"; btn.classList.remove("done"); live.textContent = ""; }, 2000);
+  // Get / copy affiliate link (sends logged-out visitors to the affiliate page)
+  document.querySelectorAll(".kt-linkbtn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (!partnerLink) { window.location.href = AFFILIATE_PAGE; return; }
+      copy(partnerLink, btn, "Affiliate link copied.");
     });
   });
 
-  // Respect reduced motion: don't autoplay the demo video
+  // Copy caption buttons
+  document.querySelectorAll(".kt-copybtn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const text = btn.parentElement.querySelector(".kt-text").textContent;
+      const needsFill = text.includes("[Insert ShortLink]") || text.includes("[Partner Code]");
+      copy(text, btn, needsFill ? "Copied. Replace [Insert ShortLink] with your link, or log in to fill it in automatically." : "Copied to clipboard.");
+    });
+  });
+
+  // Respect reduced motion
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.querySelectorAll("video").forEach((v) => { v.removeAttribute("autoplay"); v.pause(); });
   }
