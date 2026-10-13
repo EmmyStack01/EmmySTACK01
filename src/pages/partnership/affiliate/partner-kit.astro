@@ -221,7 +221,7 @@ const schema = {
                 <li>Share it with a relevant audience.</li>
                 <li>Track referrals in the <a href="/partnership/affiliate">affiliate dashboard</a>.</li>
             </ol>
-            <p class="kt-disclose"><i class="ri-information-line" aria-hidden="true"></i> Always disclose that you're an Emmy STACK01 partner and follow the rules of the platform you share on. See the <a href="/partnership/policy">Partner Policy</a>.</p>
+            <p class="kt-disclose"><i class="ri-information-line" aria-hidden="true"></i><span>Always tell your audience you're an Emmy STACK01 partner (for example, "I'm partnering with Emmy STACK01"), and follow the rules of the platform you share on. See the <a href="/partnership/policy">Partner Policy</a>.</span></p>
             <nav class="kt-jump" aria-label="Jump to a kit">
                 {kits.map((k, i) => <a href={`#${k.id}`}>{i + 1}. {k.title}</a>)}
             </nav>
@@ -280,8 +280,10 @@ const schema = {
         .kt-start, .kt-kit { margin-bottom: 2.5rem; }
         .kt-start h2 { display: flex; align-items: center; gap: .5rem; }
         .kt-start ol { padding-left: 1.25rem; display: grid; gap: .35rem; }
-        .kt-disclose { display: flex; gap: .5rem; align-items: flex-start; margin-top: 1rem; padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; font-size: .95rem; }
+        .kt-disclose { display: flex; gap: .6rem; align-items: flex-start; line-height: 1.5; margin-top: 1rem; padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.15); border-radius: 12px; font-size: .95rem; }
         .kt-jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+        .kt-disclose i { flex: none; margin-top: .2rem; }
+        .kt-disclose span { min-width: 0; overflow-wrap: anywhere; }
         .kt-jump a { padding: .4rem .8rem; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; font-size: .9rem; text-decoration: none; }
         .kt-kit { scroll-margin-top: 5rem; }
         .kt-kit-head { margin-bottom: 1.25rem; }

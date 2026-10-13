@@ -54,7 +54,7 @@ const schema = {
       "@type": "BlogPosting", "@id": `${url}#article`, headline: title, description, image: ogImage, url,
       ...(iso ? { datePublished: iso, dateModified: iso } : {}),
       author: author ? { "@type": "Person", name: author } : { "@type": "Organization", "@id": org, name: "Emmy STACK01" },
-      publisher: { "@type": "Organization", "@id": org, name: "Emmy STACK01", logo: { "@type": "ImageObject", url: `${site}/asset/emmy-stack01-logo.png` } },
+      publisher: { "@type": "Organization", "@id": org, name: "Emmy STACK01", logo: { "@type": "ImageObject", url: `${site}/asset/emmy-stack01-logo.svg` } },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
       ...(category ? { articleSection: category } : {}),
