@@ -40,6 +40,7 @@ export default defineConfig({
         !page.includes('/go') &&
         !page.includes('/.well-known') &&
         !page.includes('/payment') &&
+        !page.includes('/launchpad') &&
         !page.includes('/preview'),
       serialize(item) {
         item.url = item.url.replace(/\/$/, '');

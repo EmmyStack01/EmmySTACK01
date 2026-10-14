@@ -1,0 +1,156 @@
+---
+// Emmy STACK01 — Project Launchpad (internal handoff page for the team).
+// Route: /launchpad   Place at: src/pages/launchpad/index.astro
+// The QR image lives at public/asset/qr-code.png and points to the production URL below.
+const prodUrl = "https://emmystack01.com";
+const editUrl = "https://emmystack01.com/keystatic";
+const devUrl = "https://dev.emmystack01.com";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Launchpad | Emmy STACK01</title>
+    <meta name="description" content="Internal handoff page for the Emmy STACK01 team.">
+    <!-- Internal handoff page, not public content: keep it out of search results. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="theme-color" content="#0b1020">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/index-style.css">
+    <style>
+        body { min-height: 100vh; min-height: 100dvh; background: var(--b-dark); color: var(--text-main); }
+        .lp {
+            position: relative; isolation: isolate; overflow: hidden;
+            display: grid; place-items: center; min-height: inherit;
+            padding: clamp(2rem, 6vw, 4rem) var(--pad);
+            background:
+                radial-gradient(700px 420px at 85% 0%, color-mix(in srgb, var(--accent-color) 20%, transparent), transparent 70%),
+                radial-gradient(640px 400px at 5% 100%, color-mix(in srgb, var(--primary-color) 32%, transparent), transparent 70%),
+                var(--b-dark);
+        }
+        .lp::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background:
+                linear-gradient(color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, color-mix(in srgb, var(--primary-color) 18%, transparent) 1px, transparent 1px) 0 0 / 48px 48px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+        }
+        .lp-inner { width: 100%; max-width: 30rem; }
+        .lp .logo { display: inline-block; color: var(--text-main); font-size: clamp(1.4rem, 1.2rem + 1vw, 1.8rem); }
+        .lp h1 {
+            margin: clamp(1.2rem, 4vw, 2rem) 0 .4rem;
+            font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -.01em;
+            font-size: clamp(2.2rem, 1.5rem + 3.2vw, 3.4rem);
+        }
+        .lp .sub { margin: 0 0 clamp(1.4rem, 4vw, 2rem); color: var(--text-muted); font-size: var(--fs-small); }
+
+        .lp-card {
+            margin-bottom: 1.1rem; padding: clamp(1.2rem, 4vw, 1.6rem);
+            border: 1px solid color-mix(in srgb, var(--accent-color) 28%, transparent); border-radius: 22px;
+            background: color-mix(in srgb, var(--text-main) 6%, transparent);
+            -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+        }
+        .lp-eyebrow { margin: 0 0 .9rem; font-size: var(--fs-small); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-color); }
+
+        .lp-btn {
+            display: flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; min-height: 52px; padding: 0 1.2rem;
+            border: 1px solid color-mix(in srgb, var(--text-main) 22%, transparent); border-radius: 14px;
+            font-family: var(--font-body); font-size: var(--fs-btn); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; text-decoration: none;
+            color: var(--text-main); background: transparent; cursor: pointer;
+            transition: transform .15s ease, border-color .15s ease, background .15s ease, filter .15s ease;
+        }
+        .lp-btn:active { transform: scale(.985); }
+        .lp-btn.primary { border-color: transparent; background: var(--grad); color: #04101f; }
+        .lp-btn.primary:hover { filter: brightness(1.08); }
+        .lp-btn.ghost:hover { border-color: var(--accent-color); background: color-mix(in srgb, var(--accent-color) 10%, transparent); }
+
+        .lp-url { display: flex; align-items: stretch; gap: .5rem; margin-top: .9rem; }
+        .lp-url code {
+            flex: 1; min-width: 0; display: flex; align-items: center; padding: .55rem .8rem; overflow-wrap: anywhere;
+            border: 1px solid color-mix(in srgb, var(--text-main) 14%, transparent); border-radius: 10px;
+            background: color-mix(in srgb, var(--b-dark) 70%, transparent);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .85rem; color: var(--text-main);
+        }
+        .lp-copy {
+            flex: none; display: grid; place-items: center; width: 46px; min-height: 46px;
+            border: 1px solid color-mix(in srgb, var(--text-main) 14%, transparent); border-radius: 10px; background: transparent;
+            color: var(--text-muted); font-size: 1.15rem; cursor: pointer; transition: border-color .15s, color .15s;
+        }
+        .lp-copy:hover, .lp-copy.done { border-color: var(--accent-color); color: var(--accent-color); }
+
+        .lp-qr { display: flex; align-items: center; gap: 1rem; margin-top: 1.1rem; }
+        .lp-qr img { flex: none; width: 104px; height: 104px; padding: 6px; border-radius: 12px; background: #fff; display: block; }
+        .lp-qr p { margin: 0; font-size: var(--fs-small); line-height: 1.55; color: var(--text-muted); }
+        .lp-qr a { color: var(--accent-color); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+        .lp-foot { margin: 1.4rem 0 0; text-align: center; font-size: var(--fs-small); color: var(--text-muted); }
+        .lp-foot a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent-color); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+        .lp :focus-visible { outline: 2px solid var(--accent-color); outline-offset: 3px; }
+        @media (max-width: 380px) { .lp-qr { flex-direction: column; align-items: flex-start; } }
+        @media (prefers-reduced-motion: reduce) { .lp-btn, .lp-copy { transition: none; } }
+    </style>
+</head>
+<body>
+    <main class="lp">
+        <div class="lp-inner">
+            <a class="logo" href="/" aria-label="Emmy STACK01 home">Emmy STACK01</a>
+            <h1>Project launchpad</h1>
+            <p class="sub">Quick links for the Emmy STACK01 team.</p>
+
+            <section class="lp-card" aria-labelledby="lp-prod">
+                <p class="lp-eyebrow" id="lp-prod">Production</p>
+                <a class="lp-btn primary" href={prodUrl} target="_blank" rel="noopener"><i class="ri-external-link-line" aria-hidden="true"></i> View live site</a>
+
+                <div class="lp-url">
+                    <code id="prod-url">{prodUrl}</code>
+                    <button type="button" class="lp-copy" id="copy-btn" aria-label="Copy production URL"><i class="ri-file-copy-line" aria-hidden="true"></i></button>
+                </div>
+
+                <div class="lp-qr">
+                    <img src="/asset/qr-code.png" width="104" height="104" alt="QR code linking to the live site" loading="lazy">
+                    <p>Scan to open on mobile, or <a href="/asset/qr-code.png" download="emmystack01-qr.png">download the QR</a>.</p>
+                </div>
+            </section>
+
+            <section class="lp-card" aria-labelledby="lp-manage">
+                <p class="lp-eyebrow" id="lp-manage">Management</p>
+                <a class="lp-btn ghost" href={editUrl} target="_blank" rel="noopener"><i class="ri-edit-box-line" aria-hidden="true"></i> Edit live site</a>
+            </section>
+
+            <p class="lp-foot">Page for Emmy STACK01 team &mdash; <a href={devUrl}>Open dev tools</a></p>
+        </div>
+    </main>
+
+    <script is:inline>
+        (function () {
+            var btn = document.getElementById("copy-btn"), icon = btn.querySelector("i");
+            function done(ok) {
+                icon.className = ok ? "ri-check-line" : "ri-error-warning-line";
+                btn.classList.toggle("done", ok);
+                setTimeout(function () { icon.className = "ri-file-copy-line"; btn.classList.remove("done"); }, 1400);
+            }
+            btn.addEventListener("click", function () {
+                var text = document.getElementById("prod-url").textContent.trim();
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () { done(true); }, function () { fallback(text); });
+                } else fallback(text);
+            });
+            function fallback(text) {
+                var ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+                document.body.appendChild(ta); ta.select(); var ok = false;
+                try { ok = document.execCommand("copy"); } catch (e) {}
+                ta.remove(); done(ok);
+            }
+        })();
+    </script>
+</body>
+</html>

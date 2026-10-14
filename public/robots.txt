@@ -8,6 +8,7 @@ Disallow: /thank-you
 Disallow: /404
 Disallow: /success
 Disallow: /preview
+Disallow: /launchpad
 Disallow: /go/
 Allow: /
 
