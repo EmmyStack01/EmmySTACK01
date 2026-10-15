@@ -278,6 +278,14 @@ const schema = {
                         <button type="button" id="logoutBtn" class="af-out">Sign out</button>
                     </div>
                 </div>
+                <section class="af-devices" id="devicesBox" aria-labelledby="devTitle" hidden>
+                    <div class="af-dev-head">
+                        <h3 id="devTitle">Signed-in devices</h3>
+                        <button type="button" class="af-dev-all" id="devOthersBtn" hidden>Sign out all other devices</button>
+                    </div>
+                    <p class="af-dev-sub" id="devSub">Where your partner account is open right now.</p>
+                    <ul class="af-dev-list" id="devList"></ul>
+                </section>
                 <p class="af-dash-msg" id="dashMsg" role="status" aria-live="polite"></p>
             </div>
         </section>
@@ -383,6 +391,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $("dashClicks").textContent = p.clicks ?? 0; $("dashLeads").textContent = p.leads ?? 0; $("dashOrders").textContent = p.orders ?? 0;
     $("shortLink").value = `https://emmystack01.com/go/?id=${code}`;
     $("supportLink").href = `https://wa.me/${WA}?text=${encodeURIComponent(`Hey Emmy, I'm an affiliate (Code: ${code}). I need help.`)}`;
+
+    loadDevices();
   };
   const showGuest = (name = "email") => { partner = null; hint(false); root.classList.remove("af-session"); step(name, false); };
 
@@ -474,6 +484,88 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
   $("refreshBtn").addEventListener("click", () => load(true));
+
+  /* 7b. Signed-in devices. Everything from the server is shown with textContent, never as HTML. */
+  const parseUA = (ua) => {
+    ua = String(ua || "");
+    if (!ua) return { title: "Unknown device", kind: "desktop" };
+    const os = /Windows/i.test(ua) ? "Windows" : /iPhone/i.test(ua) ? "iPhone" : /iPad/i.test(ua) ? "iPad" : /Android/i.test(ua) ? "Android" : /CrOS/i.test(ua) ? "ChromeOS" : /Mac OS X|Macintosh/i.test(ua) ? "Mac" : /Linux/i.test(ua) ? "Linux" : "";
+    const br = /Edg(e|A|iOS)?\//i.test(ua) ? "Edge" : /OPR\/|Opera/i.test(ua) ? "Opera" : /SamsungBrowser/i.test(ua) ? "Samsung Internet" : /Firefox\/|FxiOS/i.test(ua) ? "Firefox" : /Chrome\/|CriOS/i.test(ua) ? "Chrome" : /Safari\//i.test(ua) ? "Safari" : "";
+    const kind = /iPad|Tablet/i.test(ua) || (/Android/i.test(ua) && !/Mobile/i.test(ua)) ? "tablet" : /iPhone|Android|Mobile/i.test(ua) ? "mobile" : "desktop";
+    return { title: br && os ? `${br} on ${os}` : br || os || "Unknown device", kind };
+  };
+  const ICON = { mobile: "ri-smartphone-line", tablet: "ri-tablet-line", desktop: "ri-computer-line" };
+  const placeOf = (d) => {
+    let country = "";
+    try { if (d.country) { const n = new Intl.DisplayNames(["en"], { type: "region" }).of(d.country); country = n && !/unknown/i.test(n) ? n : ""; } } catch (e) { country = ""; }
+    return [d.city, country].filter(Boolean).join(", ") || "Location unknown";
+  };
+  const agoOf = (iso) => {
+    const secs = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (!isFinite(secs) || secs < 120) return "Active now";
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+    const [n, unit] = secs < 3600 ? [Math.round(secs / 60), "minute"] : secs < 86400 ? [Math.round(secs / 3600), "hour"] : [Math.round(secs / 86400), "day"];
+    return "Active " + rtf.format(-n, unit);
+  };
+  const devBusy = (on) => { document.querySelectorAll(".af-dev-out, .af-dev-all").forEach((b) => { b.disabled = on; }); };
+
+  const renderDevices = (list) => {
+    const ul = $("devList"); ul.textContent = "";
+    list.forEach((d) => {
+      const info = parseUA(d.user_agent), li = document.createElement("li");
+      li.className = "af-dev" + (d.current ? " current" : "");
+      const ic = document.createElement("i"); ic.className = ICON[info.kind]; ic.setAttribute("aria-hidden", "true");
+      const main = document.createElement("div"); main.className = "af-dev-main";
+      const t = document.createElement("div"); t.className = "af-dev-title";
+      const name = document.createElement("span"); name.textContent = info.title; t.appendChild(name);
+      if (d.current) { const tag = document.createElement("span"); tag.className = "af-tag"; tag.textContent = "This device"; t.appendChild(tag); }
+      const meta = document.createElement("div"); meta.className = "af-dev-meta";
+      meta.textContent = `${placeOf(d)} \u00b7 ${d.current ? "Active now" : agoOf(d.last_active)}`;
+      meta.title = "Signed in " + new Date(d.signed_in).toLocaleString();
+      main.append(t, meta); li.append(ic, main);
+      if (!d.current) {
+        const b = document.createElement("button"); b.type = "button"; b.className = "af-dev-out"; b.textContent = "Sign out";
+        b.setAttribute("aria-label", "Sign out " + info.title + ", " + placeOf(d));
+        b.addEventListener("click", () => revokeDevice(d.id, info.title));
+        li.appendChild(b);
+      }
+      ul.appendChild(li);
+    });
+    const others = list.filter((d) => !d.current).length;
+    $("devOthersBtn").hidden = others === 0;
+    $("devSub").textContent = others === 0 ? "This is the only device signed in to your partner account." : "Not you? Sign out a device you don't recognise, then sign back in here with a fresh email code.";
+    $("devicesBox").hidden = false;
+  };
+
+  const loadDevices = async () => {
+    try {
+      const r = await api("/api/partner/devices");
+      if (r.status === 401) { showGuest("email"); return; }
+      if (!r.ok || !Array.isArray(r.data.devices)) { $("devicesBox").hidden = true; return; }   // e.g. database step not run yet: hide quietly
+      renderDevices(r.data.devices);
+    } catch (x) { /* keep whatever is showing */ }
+  };
+
+  const revokeDevice = async (id, title) => {
+    if (!confirm(`Sign out ${title}? It will need a new email code to get back in.`)) return;
+    const msg = $("dashMsg"); devBusy(true); say(msg, "");
+    try {
+      const r = await api("/api/partner/devices", { action: "revoke", id });
+      if (r.status === 401) { showGuest("email"); return say($("emailMsg"), "Please sign in again.", "err"); }
+      say(msg, r.ok ? "Device signed out." : (r.data.error || "We couldn't sign that device out."), r.ok ? "" : "err");
+    } catch (x) { say(msg, "Connection problem. Check your internet and try again.", "err"); }
+    finally { devBusy(false); loadDevices(); setTimeout(() => say(msg, ""), 4000); }
+  };
+  $("devOthersBtn").addEventListener("click", async () => {
+    if (!confirm("Sign out of all other devices? You will stay signed in on this one.")) return;
+    const msg = $("dashMsg"); devBusy(true); say(msg, "");
+    try {
+      const r = await api("/api/partner/devices", { action: "others" });
+      if (r.status === 401) { showGuest("email"); return say($("emailMsg"), "Please sign in again.", "err"); }
+      say(msg, r.ok ? "All other devices signed out." : (r.data.error || "We couldn't sign the other devices out."), r.ok ? "" : "err");
+    } catch (x) { say(msg, "Connection problem. Check your internet and try again.", "err"); }
+    finally { devBusy(false); loadDevices(); setTimeout(() => say(msg, ""), 4000); }
+  });
 
   /* 8. Copy + sign out */
   const copy = async (text, btn, done) => {

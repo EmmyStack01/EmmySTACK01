@@ -124,6 +124,13 @@ export async function getSession(req, res) {
   return null;
 }
 
+// What we remember about a device: browser text from the request, and the city/country Vercel works out from the IP.
+// The IP address itself is never stored. Outside Vercel the geo headers are simply absent.
+export function deviceInfo(req) {
+  const h = req.headers, dec = (v) => { try { return decodeURIComponent(String(v || "")); } catch { return String(v || ""); } };
+  return { p_user_agent: text(h["user-agent"], 300), p_city: text(dec(h["x-vercel-ip-city"]), 80), p_country: text(h["x-vercel-ip-country"], 2) };
+}
+
 export const hashVisitor = (...parts) => createHash("sha256").update([process.env.CLICK_SALT || "", ...parts].join("|")).digest("hex");
 
 /* ---------- optional "new partner" email ---------- */

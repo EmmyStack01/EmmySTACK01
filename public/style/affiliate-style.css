@@ -145,6 +145,24 @@
 .kt-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--tint); font-size: 1.6rem; color: var(--primary-color); }
 .kt-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
+/* ---------- Signed-in devices (inside the dashboard card) ---------- */
+.af-devices { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, .12); }
+.af-dev-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; }
+.af-dev-head h3 { font-family: var(--font-display); font-weight: 700; line-height: 1; text-transform: uppercase; font-size: var(--fs-h3); }
+.af-dev-sub { margin: .4rem 0 1rem; font-size: var(--fs-small); line-height: 1.6; color: var(--text-muted); }
+.af-dev-list { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.af-dev { display: flex; align-items: center; gap: .85rem; padding: .8rem 1rem; border: 1px solid rgba(255, 255, 255, .14); border-radius: 16px; background: color-mix(in srgb, var(--accent-color) 5%, transparent); }
+.af-dev.current { border-color: color-mix(in srgb, var(--accent-color) 45%, transparent); }
+.af-dev > i { flex: none; font-size: 1.5rem; color: var(--accent-color); }
+.af-dev-main { flex: 1; min-width: 0; }
+.af-dev-title { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .6rem; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.af-tag { padding: .15rem .6rem; border: 1px solid rgba(0, 255, 157, .35); border-radius: 999px; background: rgba(0, 255, 157, .1); font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #5dffb8; }
+.af-dev-meta { margin-top: .15rem; font-size: var(--fs-small); color: var(--text-muted); overflow-wrap: anywhere; }
+.af-dev-out, .af-dev-all { flex: none; min-height: 44px; padding: 0 1rem; border: 1px solid rgba(255, 112, 112, .4); border-radius: 12px; background: transparent; font: inherit; font-size: var(--fs-small); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #ff8a8a; cursor: pointer; transition: background .2s; }
+.af-dev-out:hover, .af-dev-all:hover { background: rgba(255, 77, 77, .12); }
+.af-dev-out:disabled, .af-dev-all:disabled { opacity: .55; cursor: progress; }
+@media (max-width: 520px) { .af-dev { flex-wrap: wrap; } .af-dev-out, .af-dev-all { width: 100%; } }
+
 @media (prefers-reduced-motion: reduce) { .af-act, .af-icon-btn.spin i, .af-tip .tipbox { transition: none; animation: none; } .af-act:hover { transform: none; } }
 
 /* One-time code field */

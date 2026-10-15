@@ -1,5 +1,5 @@
 // POST /api/partner/verify  { email, code }  ->  signs the partner in (httpOnly cookies) and returns their profile, if any.
-import { guardPost, send, throttle, clientIp, normEmail, normCode, auth, db, setSession } from "../_lib/partner.js";
+import { guardPost, send, throttle, clientIp, normEmail, normCode, auth, db, setSession, deviceInfo } from "../_lib/partner.js";
 
 export default async function handler(req, res) {
   const body = guardPost(req, res); if (!body) return;
@@ -16,6 +16,9 @@ export default async function handler(req, res) {
       return send(res, 401, { error: "That code is incorrect or has expired. Check it or ask for a new one." });
     }
     setSession(req, res, v.data);
+
+    // Remember this device for the "signed-in devices" list. Never blocks the login (it also works before devices.sql is run).
+    try { const t = await db("/rpc/touch_device", { method: "POST", body: deviceInfo(req), token: v.data.access_token }); if (t.status >= 400) console.error("touch_device", t.status, t.data); } catch (e) { console.error("touch_device failed", e); }
 
     // Links an imported partner (matched on the verified email) to this login and returns the partner, or null for new people.
     const c = await db("/rpc/claim_partner", { method: "POST", body: {}, token: v.data.access_token });
