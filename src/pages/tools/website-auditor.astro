@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 export const prerender = true;
 import SocialLinks from "../../components/SocialLinks.astro";
 // src/pages/tools/website-auditor.astro — Styles: /style/index-style.css + /style/tool-audit.css · Script: /script/tool-audit.js · API: /api/audit
@@ -80,6 +81,7 @@ const schema = {
     <meta name="twitter:image" content={ogImage}>
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+    <Analytics />
 </head>
 <body>
     <!-- Desktop nav -->

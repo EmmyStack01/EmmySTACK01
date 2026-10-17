@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 // Emmy STACK01 — single thank-you / WhatsApp hand-off page.
 // Replaces thank-you.html AND thank_you.html. Pick the flow with ?type=…
 //   ?type=card&stack=Feature A, Feature B   Digital Business Card ($60 conversion)
@@ -119,6 +120,7 @@ const card = { intro: "Hi Emmy! 👋 I want to build my Digital Business Card.",
         .thanks :focus-visible { outline-color: var(--accent-color); }
         @media (prefers-reduced-motion: reduce) { .meter-fill { animation: none !important; transform: none; } }
     </style>
+    <Analytics />
 </head>
 <body>
     <main class="thanks">

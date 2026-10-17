@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 // Emmy STACK01 — partner / affiliate landing at /go?id=CODE (or ?partner=CODE).
 // Shows the visitor's referral code, logs the click through /api/partner/click, then hands off to WhatsApp.
 const phone = "2349076991076";
@@ -69,6 +70,7 @@ const discount = "5%";
         .go [hidden] { display: none !important; }
         .go :focus-visible { outline-color: var(--accent-color); }
     </style>
+    <Analytics />
 </head>
 <body>
     <main class="go">

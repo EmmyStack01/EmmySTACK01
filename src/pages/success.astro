@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 // Emmy STACK01 — payment success page. Reached from /payment as /success.html?ref=<Paystack reference>.
 const phone = "2349076991076";
 ---
@@ -64,6 +65,7 @@ const phone = "2349076991076";
         @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
         @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
     </style>
+    <Analytics />
 </head>
 <body>
     <main class="done">

@@ -1,4 +1,5 @@
 ---
+import Analytics from '@vercel/analytics/astro';
 export const prerender = true;
 import SocialLinks from "../../../components/SocialLinks.astro";
 // src/pages/partnership/affiliate/index.astro — Styles: /style/index-style.css + /style/affiliate-style.css
@@ -73,6 +74,7 @@ const schema = {
     <meta name="twitter:image" content={ogImage}>
 
     <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+    <Analytics />
 </head>
 <body>
     <!-- Desktop nav -->
