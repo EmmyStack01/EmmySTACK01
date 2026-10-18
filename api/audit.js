@@ -25,13 +25,69 @@ const KEYS = {
 const METRICS = ["first-contentful-paint", "largest-contentful-paint", "total-blocking-time", "cumulative-layout-shift", "speed-index"];
 const PASS = 0.9;
 
+// --- RATE LIMITER (in-memory, free, no deps) ---
+// Vercel reuses warm lambdas, so this Map survives between requests on the same instance. It is a best-effort guard:
+// each instance keeps its own counts. For a hard global limit, add a Vercel Firewall rate-limit rule or Upstash Redis.
+const ipStore = new Map(); // ip -> { minute: {count, start}, hour: {count, start} }
+
+const LIMITS = {
+  MINUTE_WINDOW: 60 * 1000,
+  MINUTE_MAX: 5,
+  HOUR_WINDOW: 60 * 60 * 1000,
+  HOUR_MAX: 20,
+  MAX_TRACKED_IPS: 5000, // safety cap so the Map can never grow without bound
+};
+
+function getClientIp(req) {
+  // Vercel sets these itself and overwrites any value the visitor sends, so they are safe to trust here.
+  const v = req.headers["x-vercel-forwarded-for"] || req.headers["x-forwarded-for"];
+  if (typeof v === "string" && v.length > 0) return v.split(",")[0].trim();
+  return req.headers["x-real-ip"] || req.socket?.remoteAddress || "unknown";
+}
+
+// Counts a request only when it is allowed. Blocked requests do not use up the visitor's quota.
+function checkRateLimit(ip) {
+  const now = Date.now();
+  let entry = ipStore.get(ip);
+  if (!entry) {
+    if (ipStore.size >= LIMITS.MAX_TRACKED_IPS) pruneStore(now, true);
+    entry = { minute: { count: 0, start: now }, hour: { count: 0, start: now } };
+  }
+
+  // Start a fresh window once the old one has expired
+  if (now - entry.minute.start >= LIMITS.MINUTE_WINDOW) entry.minute = { count: 0, start: now };
+  if (now - entry.hour.start >= LIMITS.HOUR_WINDOW) entry.hour = { count: 0, start: now };
+
+  if (entry.minute.count >= LIMITS.MINUTE_MAX) {
+    ipStore.set(ip, entry);
+    return { ok: false, type: "minute", retryAfter: Math.max(1, Math.ceil((LIMITS.MINUTE_WINDOW - (now - entry.minute.start)) / 1000)) };
+  }
+  if (entry.hour.count >= LIMITS.HOUR_MAX) {
+    ipStore.set(ip, entry);
+    return { ok: false, type: "hour", retryAfter: Math.max(1, Math.ceil((LIMITS.HOUR_WINDOW - (now - entry.hour.start)) / 1000)) };
+  }
+
+  entry.minute.count++;
+  entry.hour.count++;
+  ipStore.set(ip, entry);
+  return { ok: true };
+}
+
+function pruneStore(now = Date.now(), force = false) {
+  for (const [ip, entry] of ipStore.entries()) {
+    if (now - entry.hour.start >= LIMITS.HOUR_WINDOW) ipStore.delete(ip);
+  }
+  if (force && ipStore.size >= LIMITS.MAX_TRACKED_IPS) ipStore.clear(); // last resort under a flood of unique IPs
+}
+setInterval(pruneStore, 10 * 60 * 1000).unref?.();
+// --- END RATE LIMITER ---
+
 const json = (res, status, body, cache) => {
   if (cache) res.setHeader("Cache-Control", cache);
   else res.setHeader("Cache-Control", "no-store");
   return res.status(status).json(body);
 };
 
-// Accept only public http(s) websites. Google fetches the page, not this server, but there is no point spending quota on junk.
 function cleanUrl(raw) {
   if (typeof raw !== "string" || raw.length > 2048) return null;
   let u;
@@ -40,15 +96,14 @@ function cleanUrl(raw) {
   if (u.username || u.password) return null;
   const h = u.hostname.toLowerCase();
   if (!h.includes(".") || h.endsWith(".local") || h.endsWith(".internal") || h.endsWith(".localhost")) return null;
-  if (/^(\d{1,3}\.){3}\d{1,3}$/.test(h) || h.includes(":")) return null;   // IP addresses
+  if (/^(\d{1,3}\.){3}\d{1,3}$/.test(h) || h.includes(":")) return null;
   return u.href;
 }
 
-// "Reduce unused JavaScript. [Learn more](https://web.dev/...)." -> { text: "Reduce unused JavaScript.", link: "https://web.dev/..." }
 function describe(desc = "") {
   const m = desc.match(/\[[^\]]*\]\((https:\/\/[^)\s]+)\)/);
   const plain = desc.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/`/g, "").replace(/\s+/g, " ").trim();
-  const first = plain.match(/^.*?(?<!\be\.g|\bi\.e|\betc|\bvs)[.!?](?=\s+[A-Z]|$)/);   // first sentence, not fooled by "e.g."
+  const first = plain.match(/^.*?(?<!\be\.g|\bi\.e|\betc|\bvs)[.!?](?=\s+[A-Z]|$)/);
   let text = (first ? first[0] : plain).replace(/\s*Learn more\.?$/i, "").trim();
   if (text.length > 220) text = text.slice(0, 217).trimEnd() + "…";
   return { text, link: m ? m[1] : null };
@@ -63,6 +118,17 @@ export default async function handler(req, res) {
   const url = cleanUrl(req.query.url);
   if (!url) return json(res, 400, { error: "Please enter a valid public website address, like example.com." });
   const strategy = req.query.strategy === "desktop" ? "desktop" : "mobile";
+
+  // Rate limit right before the expensive Google call (bad input above does not use up the quota)
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(ip);
+  if (!rl.ok) {
+    res.setHeader("Retry-After", String(rl.retryAfter));
+    if (rl.type === "minute") {
+      return json(res, 429, { error: `Whoa, slow down. You did ${LIMITS.MINUTE_MAX} audits in the last minute. Try again in ${rl.retryAfter}s.` });
+    }
+    return json(res, 429, { error: `You've hit the limit: ${LIMITS.HOUR_MAX} audits per hour. Try again in ${Math.ceil(rl.retryAfter / 60)} min to let others use the tool too.` });
+  }
 
   const API_KEY = process.env.PAGESPEED_API_KEY;
   if (!API_KEY) {
@@ -123,7 +189,6 @@ export default async function handler(req, res) {
     const metrics = METRICS.map((id) => audits[id]).filter(Boolean)
       .map((a) => ({ id: a.id, title: a.title, displayValue: a.displayValue || "", score: typeof a.score === "number" ? a.score : null }));
 
-    // Identical audits can be reused for an hour, which saves PageSpeed quota.
     return json(res, 200, {
       url,
       finalUrl: lh.finalDisplayedUrl || lh.finalUrl || url,
@@ -140,3 +205,4 @@ export default async function handler(req, res) {
     clearTimeout(timer);
   }
 }
+
