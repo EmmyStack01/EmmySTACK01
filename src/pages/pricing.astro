@@ -142,6 +142,10 @@ const schema = {
 
     <link rel="stylesheet" href="/style/index-style.css">
     <link rel="stylesheet" href="/style/pricing-style.css">
+    <style>
+        /* Safety net: nothing inside the page can ever push it wider than the screen (clip does not break sticky headers) */
+        main { overflow-x: clip; }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -458,10 +462,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .from(".page-hero h1", { y: 40, opacity: 0, duration: 0.9 })
       .from(".page-hero p, .jump", { y: 16, opacity: 0, duration: 0.6, stagger: 0.1 }, "-=0.5");
     $$(".price-block").forEach((block) => {
-      const reverse = block.classList.contains("reverse"), d = window.innerWidth < 768 ? 30 : 60;
+      // Phones slide up instead of sideways: a sideways slide pushed the card past the screen edge on load
+      // and made mobile browsers zoom the whole page out. Wider screens keep the sideways slide.
+      const reverse = block.classList.contains("reverse"), wide = window.innerWidth >= 768, d = wide ? 60 : 0, dy = wide ? 0 : 24;
       gsap.timeline({ scrollTrigger: { trigger: block, start: "top 80%", once: true } })
-        .from($(".price-copy", block), { x: reverse ? d : -d, opacity: 0, duration: 0.8, ease: "power2.out" })
-        .from($(".price-card", block), { x: reverse ? -d : d, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.65")
+        .from($(".price-copy", block), { x: reverse ? d : -d, y: dy, opacity: 0, duration: 0.8, ease: "power2.out" })
+        .from($(".price-card", block), { x: reverse ? -d : d, y: dy, opacity: 0, duration: 0.8, ease: "power2.out" }, "-=0.65")
         .from($$("[role=tabpanel]:not([hidden]) .price-row, .price-card > .price-row, .benefit", block), { y: 15, opacity: 0, stagger: 0.07, duration: 0.4, ease: "power1.out" }, "-=0.4");
     });
   });

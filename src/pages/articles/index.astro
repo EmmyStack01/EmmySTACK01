@@ -65,6 +65,18 @@ const schema = {
 
     <link rel="stylesheet" href="/style/index-style.css">
     <link rel="stylesheet" href="/style/articles-style.css">
+    <style>
+        /* Latest entries: Back / Next pager */
+        .ar-card[hidden] { display: none; }
+        .ar-pager { display: flex; align-items: center; justify-content: center; gap: clamp(.6rem, 3vw, 1.25rem); margin-top: clamp(1.75rem, 5vw, 2.75rem); }
+        .ar-pager[hidden] { display: none; }
+        .ar-pg-btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 46px; padding: 0 1.25rem; border-radius: 999px; border: 1px solid var(--line, #d9e0ee); background: #fff; color: var(--primary-color, #2d66b4); font: 800 .95rem/1 "Manrope", sans-serif; cursor: pointer; transition: border-color .2s, background .2s, color .2s, transform .2s; }
+        .ar-pg-btn:hover:not(:disabled) { border-color: var(--primary-color, #2d66b4); background: var(--primary-color, #2d66b4); color: #fff; transform: translateY(-1px); }
+        .ar-pg-btn:focus-visible { outline: 3px solid var(--accent-color, #00ccff); outline-offset: 2px; }
+        .ar-pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+        .ar-pg-status { min-width: 7.5rem; text-align: center; font: 700 .9rem/1.2 "Manrope", sans-serif; color: var(--secondary-color, #22386e); }
+        @media (max-width: 420px) { .ar-pg-btn { padding: 0 1rem; } .ar-pg-status { min-width: 0; } }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -191,7 +203,7 @@ const schema = {
         {others.length > 0 && (
             <section class="ar-section" style="padding-top:0" aria-labelledby="latest">
                 <h2 class="ar-section-title" id="latest">Latest entries</h2>
-                <div class="ar-grid">
+                <div class="ar-grid" id="latestGrid">
                     {others.map((a) => (
                         <article class="ar-card">
                             <div class="ar-thumb">
@@ -213,6 +225,12 @@ const schema = {
                         </article>
                     ))}
                 </div>
+                <!-- Back / Next. Hidden until the script runs, so without JavaScript every entry simply shows. -->
+                <nav class="ar-pager" id="arPager" aria-label="Latest entries pages" hidden>
+                    <button type="button" class="ar-pg-btn" id="pgPrev"><i class="ri-arrow-left-line" aria-hidden="true"></i> Back</button>
+                    <span class="ar-pg-status" id="pgStatus" aria-live="polite"></span>
+                    <button type="button" class="ar-pg-btn" id="pgNext">Next <i class="ri-arrow-right-line" aria-hidden="true"></i></button>
+                </nav>
             </section>
         )}
 
@@ -315,6 +333,44 @@ document.addEventListener("DOMContentLoaded", () => {
     history.replaceState(null, "", location.pathname + location.hash); // tidy the URL
   }
 });
+</script>
+<script is:inline>
+// Latest entries: show two rows at a time (2, 4 or 6 cards depending on screen width), then Back / Next.
+// All cards stay in the page HTML for search engines; this only hides the ones outside the current page.
+(() => {
+  const grid = document.getElementById("latestGrid"), pager = document.getElementById("arPager");
+  if (!grid || !pager) return;
+  const cards = [...grid.children], prev = document.getElementById("pgPrev"), next = document.getElementById("pgNext"), status = document.getElementById("pgStatus");
+  const ROWS = 2;
+  const perPage = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(" ").length) * ROWS;
+  let page = Math.max(1, parseInt(new URLSearchParams(location.search).get("page"), 10) || 1);
+
+  const render = (scroll) => {
+    const size = perPage(), pages = Math.max(1, Math.ceil(cards.length / size));
+    page = Math.min(Math.max(page, 1), pages);
+    cards.forEach((c, i) => { c.hidden = Math.floor(i / size) !== page - 1; });
+    pager.hidden = pages <= 1;
+    prev.disabled = page <= 1; next.disabled = page >= pages;
+    status.textContent = `Page ${page} of ${pages}`;
+    const u = new URL(location.href);
+    if (page > 1) u.searchParams.set("page", page); else u.searchParams.delete("page");
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+    if (scroll) document.getElementById("latest").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  };
+  prev.addEventListener("click", () => { page--; render(true); });
+  next.addEventListener("click", () => { page++; render(true); });
+
+  // Keep the same entries in view when the screen size (and so the page size) changes.
+  let lastSize = perPage(), t;
+  addEventListener("resize", () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const size = perPage();
+      if (size !== lastSize) { page = Math.floor(((page - 1) * lastSize) / size) + 1; lastSize = size; render(false); }
+    }, 120);
+  });
+  render(false);
+})();
 </script>
 <script src="/script/year.js" defer></script>
 </body>
