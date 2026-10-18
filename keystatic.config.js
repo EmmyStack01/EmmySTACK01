@@ -74,6 +74,7 @@ export default config({
           formatting: true,
           dividers: true,
           links: true,
+          tables: true,
           images: {
             directory: 'public/asset/blog-inline',
             publicPath: '/asset/blog-inline/',
