@@ -132,20 +132,24 @@
     pick(); if (synth.addEventListener) synth.addEventListener("voiceschanged", pick);
 
     // 3. Play from paragraph i. "gen" makes sure late events from a cancelled sentence are ignored.
-    let idx = 0, chunk = 0, gen = 0, playing = false, timer = 0;
+    let idx = 0, chunk = 0, gen = 0, playing = false, timer = 0, useDefault = false;   // useDefault: the chosen voice failed on this device, so use the system default
     const mark = (i) => { items.forEach((it) => it.node && it.node.classList.remove("ar-reading")); const n = items[i] && items[i].node; if (n) { n.classList.add("ar-reading"); const r = n.getBoundingClientRect(); if (follow && (r.top < 70 || r.bottom > innerHeight - 90)) n.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } };
     const stopSpeech = () => { gen++; clearTimeout(timer); try { synth.cancel(); } catch (e) { /* ignore */ } };
     const finish = () => { playing = false; setPlaying(false); mark(-1); idx = 0; chunk = 0; showPos(0); };
     const speak = () => {
       if (!playing) return; const my = ++gen; mark(idx); showPos(idx);
       const text = items[idx].chunks[chunk]; const u = new SpeechSynthesisUtterance(text);
-      if (voice) { u.voice = voice; u.lang = voice.lang; } u.rate = SPEEDS[speedIdx];
+      if (voice && !useDefault) { u.voice = voice; u.lang = voice.lang; } else u.lang = document.documentElement.lang || "en"; u.rate = SPEEDS[speedIdx];
       u.onend = () => {
         if (my !== gen || !playing) return;
         if (++chunk >= items[idx].chunks.length) { chunk = 0; idx++; }
         if (idx >= items.length) return finish(); speak();
       };
-      u.onerror = (e) => { if (my !== gen) return; if (e && (e.error === "interrupted" || e.error === "canceled")) return; playing = false; setPlaying(false); note("Your device could not read this aloud."); };
+      u.onerror = (e) => {
+        if (my !== gen) return; if (e && (e.error === "interrupted" || e.error === "canceled")) return;
+        if (voice && !useDefault) { useDefault = true; speak(); return; }   // first failure: retry this sentence with the default voice
+        playing = false; setPlaying(false); note("Your device could not read this aloud" + (e && e.error ? " (" + e.error + ")" : "") + ".");
+      };
       synth.speak(u);
     };
     const start = () => { stopSpeech(); playing = true; setPlaying(true); note(""); timer = setTimeout(speak, 60); };   // short gap after cancel: some browsers drop the next sentence without it
