@@ -69,6 +69,15 @@ export default config({
           publicPath: '/asset/',
         }),
 
+        // Optional recording of the article. When a file is uploaded the article shows an audio player;
+        // when empty, readers can still use the free "read aloud" voice on their own device.
+        audio: fields.file({
+          label: 'Audio version (MP3, optional)',
+          description: 'Upload a recording of this article as an MP3. Leave empty to let readers use the free read-aloud voice on their device.',
+          directory: 'public/asset/audio',
+          publicPath: '/asset/audio/',
+        }),
+
         content: fields.document({
           label: 'Content',
           formatting: true,

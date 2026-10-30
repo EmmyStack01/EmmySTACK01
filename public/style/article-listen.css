@@ -1,0 +1,33 @@
+/* Listen to this article.  Put this file at public/style/article-listen.css
+   Uses the same colours as the rest of the site (index-style.css variables) with safe fallbacks. */
+.ar-listen { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "play main" "ctl ctl" "note note"; gap: .75rem 1rem; align-items: center; margin: 0 0 clamp(1.4rem, 4vw, 2.2rem); padding: clamp(.9rem, 3vw, 1.25rem); border: 1px solid color-mix(in srgb, var(--text-main, #fff) 10%, transparent); border-radius: clamp(18px, 3vw, 24px); background: var(--b-dark, #0b1020); color: var(--text-main, #fff); box-shadow: 0 18px 40px color-mix(in srgb, var(--b-dark, #0b1020) 28%, transparent); position: relative; overflow: hidden; isolation: isolate; }
+.ar-listen[hidden] { display: none; }
+.ar-listen::before { content: ""; position: absolute; z-index: -1; right: -18%; top: -60%; width: 60%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--primary-color, #2d66b4) 45%, transparent), transparent 68%); pointer-events: none; }
+.ar-l-play { grid-area: play; display: grid; place-items: center; width: 58px; height: 58px; padding: 0; border: 0; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color, #2d66b4), var(--accent-color, #00ccff)); color: #04101f; font-size: 1.9rem; cursor: pointer; box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color, #00ccff) 30%, transparent); transition: transform .15s; }
+.ar-l-play:active { transform: scale(.94); }
+.ar-l-main { grid-area: main; min-width: 0; display: grid; gap: .35rem; }
+.ar-l-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .7rem; }
+.ar-l-top strong { font-family: var(--font-display, "Barlow Condensed", sans-serif); font-size: 1.35rem; font-weight: 700; letter-spacing: .01em; text-transform: uppercase; line-height: 1.05; }
+.ar-l-meta { font-size: .8rem; font-weight: 600; color: var(--text-muted, #a0aec0); }
+.ar-l-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .6rem; font-size: .78rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--text-muted, #a0aec0); }
+.ar-l-bar span:empty { display: none; }
+.ar-l-bar:has(span:empty:last-child) { grid-template-columns: auto minmax(0, 1fr); }
+.ar-listen input[type="range"] { width: 100%; height: 36px; margin: 0; background: transparent; accent-color: var(--accent-color, #00ccff); cursor: pointer; }
+.ar-listen input[type="range"]:disabled { opacity: .45; cursor: default; }
+.ar-l-ctl { grid-area: ctl; display: flex; align-items: center; justify-content: flex-end; gap: .5rem; }
+.ar-l-ctl button { display: inline-grid; place-items: center; min-width: 46px; min-height: 46px; padding: 0 .8rem; border: 1px solid color-mix(in srgb, var(--text-main, #fff) 22%, transparent); border-radius: 999px; background: transparent; color: var(--text-main, #fff); font: inherit; font-size: 1.3rem; font-weight: 800; cursor: pointer; transition: background .2s, border-color .2s; }
+.ar-l-ctl button:hover { background: color-mix(in srgb, var(--text-main, #fff) 10%, transparent); border-color: var(--accent-color, #00ccff); }
+.ar-l-ctl .ar-l-speed { font-size: .9rem; }
+.ar-listen :focus-visible { outline: 2px solid var(--accent-color, #00ccff); outline-offset: 2px; }
+.ar-l-note { grid-area: note; margin: 0; min-height: 0; font-size: .82rem; font-weight: 600; color: #ffd166; }
+.ar-l-note:empty { display: none; }
+@media (min-width: 640px) {
+  .ar-listen { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "play main ctl" "note note note"; }
+  .ar-l-ctl { justify-content: flex-start; }
+}
+/* The paragraph (or table row) being read aloud */
+.prose tr.ar-reading { background: transparent; box-shadow: none; }
+.prose tr.ar-reading > td, .prose tr.ar-reading > th { background: color-mix(in srgb, var(--accent-color, #00ccff) 26%, #fff) !important; transition: background .25s; }
+.prose .ar-reading { background: color-mix(in srgb, var(--accent-color, #00ccff) 14%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-color, #00ccff) 14%, transparent); border-radius: 6px; transition: background .25s, box-shadow .25s; }
+@media (prefers-reduced-motion: reduce) { .ar-l-play, .prose .ar-reading { transition: none; } }
+@media print { .ar-listen { display: none !important; } }

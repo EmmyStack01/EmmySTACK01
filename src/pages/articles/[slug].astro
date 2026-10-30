@@ -31,6 +31,7 @@ if (!article) return Astro.redirect("/articles");
 const content = await article.content();
 const { title, description, date, category, readingTime, author } = article;
 const image = article.coverImage;
+const audio = article.audio || "";   // optional uploaded MP3, e.g. /asset/audio/my-article.mp3
 
 const url = `${site}/articles/${slug}`;
 const fmt = (d?: string) => d ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(d)) : "";
@@ -39,6 +40,7 @@ const iso = date ? new Date(date).toISOString() : undefined;
 
 const ogImage = image ? (image.startsWith("http") ? image : `${site}${image.startsWith("/") ? "" : "/"}${image}`) : `${site}/asset/og-image4.jpg`;
 const pageTitle = `${title} | Emmy STACK01`;
+const audioUrl = audio ? (audio.startsWith("http") ? audio : `${site}${audio.startsWith("/") ? "" : "/"}${audio}`) : "";
 
 // "Read next": same category first, then newest
 const all = await keystaticReader.collections.articles.all();
@@ -59,6 +61,7 @@ const schema = {
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       isPartOf: { "@type": "WebSite", "@id": `${site}/#website`, name: "Emmy STACK01", url: site },
       ...(category ? { articleSection: category } : {}),
+      ...(audioUrl ? { audio: { "@type": "AudioObject", name: `${title} (audio version)`, contentUrl: audioUrl, encodingFormat: "audio/mpeg" } } : {}),
     },
     {
       "@type": "BreadcrumbList",
@@ -83,6 +86,7 @@ const schema = {
 
     <link rel="stylesheet" href="/style/index-style.css">
     <link rel="stylesheet" href="/style/articles-style.css">
+    <link rel="stylesheet" href="/style/article-listen.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -196,6 +200,21 @@ const schema = {
         )}
 
         <div class="ar-body">
+            <!-- Listen: MP3 player when an audio file is uploaded, otherwise the reader's device voice. Hidden until the script confirms it can work. -->
+            <section class="ar-listen" id="arListen" hidden aria-label="Listen to this article" data-audio={audio} data-title={title} data-author={author || "Emmy STACK01"} data-cover={ogImage}>
+                <button type="button" class="ar-l-play" data-play aria-label="Play" aria-pressed="false"><i class="ri-play-fill" aria-hidden="true"></i></button>
+                <div class="ar-l-main">
+                    <div class="ar-l-top"><strong>Listen to this article</strong><span class="ar-l-meta" data-meta></span></div>
+                    <div class="ar-l-bar"><span data-cur>0:00</span><input type="range" data-range min="0" max="100" step="1" value="0" aria-label="Position"><span data-dur></span></div>
+                </div>
+                <div class="ar-l-ctl">
+                    <button type="button" data-back aria-label="Back"><i class="ri-replay-15-line" aria-hidden="true"></i></button>
+                    <button type="button" data-fwd aria-label="Forward"><i class="ri-forward-15-line" aria-hidden="true"></i></button>
+                    <button type="button" class="ar-l-speed" data-speed aria-label="Speed">1×</button>
+                </div>
+                <p class="ar-l-note" data-note role="status" aria-live="polite"></p>
+            </section>
+
             <article class="prose">
                 <ArticleRenderer document={content} />
             </article>
@@ -310,5 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script src="/script/year.js" defer></script>
+<script src="/script/article-listen.js" defer></script>
 </body>
 </html>
