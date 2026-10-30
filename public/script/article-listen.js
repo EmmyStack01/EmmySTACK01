@@ -16,6 +16,11 @@
   let speedIdx = 1;
   try { const s = parseFloat(localStorage.getItem(KEY)); const k = SPEEDS.indexOf(s); if (k >= 0) speedIdx = k; } catch (e) { /* private mode */ }
 
+  // "Follow along": when on (default), the page scrolls to keep the paragraph being read in view. Voice mode only.
+  const FKEY = "emmy-listen-follow";
+  let follow = true, onFollowOn = () => {};
+  try { if (localStorage.getItem(FKEY) === "off") follow = false; } catch (e) { /* private mode */ }
+
   const synth = window.speechSynthesis, canSpeak = !!(synth && window.SpeechSynthesisUtterance);
   const audioUrl = (root.dataset.audio || "").trim();
   const fmtT = (s) => { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
@@ -128,7 +133,7 @@
 
     // 3. Play from paragraph i. "gen" makes sure late events from a cancelled sentence are ignored.
     let idx = 0, chunk = 0, gen = 0, playing = false, timer = 0;
-    const mark = (i) => { items.forEach((it) => it.node && it.node.classList.remove("ar-reading")); const n = items[i] && items[i].node; if (n) { n.classList.add("ar-reading"); const r = n.getBoundingClientRect(); if (r.top < 70 || r.bottom > innerHeight - 90) n.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } };
+    const mark = (i) => { items.forEach((it) => it.node && it.node.classList.remove("ar-reading")); const n = items[i] && items[i].node; if (n) { n.classList.add("ar-reading"); const r = n.getBoundingClientRect(); if (follow && (r.top < 70 || r.bottom > innerHeight - 90)) n.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); } };
     const stopSpeech = () => { gen++; clearTimeout(timer); try { synth.cancel(); } catch (e) { /* ignore */ } };
     const finish = () => { playing = false; setPlaying(false); mark(-1); idx = 0; chunk = 0; showPos(0); };
     const speak = () => {
@@ -146,6 +151,7 @@
     const start = () => { stopSpeech(); playing = true; setPlaying(true); note(""); timer = setTimeout(speak, 60); };   // short gap after cancel: some browsers drop the next sentence without it
     const pause = () => { playing = false; stopSpeech(); setPlaying(false); };
     const jump = (i) => { idx = Math.max(0, Math.min(items.length - 1, i)); chunk = 0; mark(idx); showPos(idx); if (playing) start(); };
+    onFollowOn = () => mark(idx);
     el.play.onclick = () => (playing ? pause() : start());
     el.back.onclick = () => jump(idx - (chunk > 0 ? 0 : 1));
     el.fwd.onclick = () => jump(idx + 1);
@@ -156,4 +162,86 @@
 
   if (audioUrl) startAudio(true);
   else if (canSpeak) startVoice();
+
+  /* ------------------------------------------------ floating controls (play/pause, speed, follow along)
+     Appear bottom-right once the reader has pressed play and the main player has scrolled off screen.
+     Wide screens: the dock sits in the empty margin beside the article, so it never covers text.
+     Narrow screens: only the round play button shows; the speed and follow buttons open from a small
+     controls button and close again by themselves, and the page gets spare room at the bottom. */
+  (() => {
+    if (!("IntersectionObserver" in window)) return;
+
+    // Follow-along toggle in the main player (voice mode only)
+    const ctl = $(".ar-l-ctl");
+    let mainFollow = null;
+    if (ctl) {
+      mainFollow = document.createElement("button");
+      mainFollow.type = "button"; mainFollow.className = "ar-l-follow";
+      mainFollow.innerHTML = '<i class="ri-focus-3-line" aria-hidden="true"></i>';
+      ctl.appendChild(mainFollow);
+    }
+
+    const dock = document.createElement("div");
+    dock.className = "ar-l-dock"; dock.setAttribute("role", "group"); dock.setAttribute("aria-label", "Audio controls"); dock.inert = true;
+    dock.innerHTML =
+      '<div class="ar-l-chips" id="arChips">' +
+        '<button type="button" class="ar-l-chip" data-dfollow><i class="ri-focus-3-line" aria-hidden="true"></i></button>' +
+        '<button type="button" class="ar-l-chip" data-dspeed></button>' +
+      '</div>' +
+      '<button type="button" class="ar-l-more" aria-label="More controls" aria-expanded="false" aria-controls="arChips"><i class="ri-equalizer-line" aria-hidden="true"></i></button>' +
+      '<button type="button" class="ar-l-float" aria-label="Play"><i class="ri-play-fill" aria-hidden="true"></i></button>';
+    document.body.appendChild(dock);
+    const q = (s) => dock.querySelector(s);
+    const dPlay = q(".ar-l-float"), dIcon = q(".ar-l-float i"), dMore = q(".ar-l-more"), dSpeed = q("[data-dspeed]"), dFollow = q("[data-dfollow]");
+
+    let started = false, inView = true, open = false, closeTimer = 0;
+
+    const paintFollow = () => {
+      const t = "Follow along: " + (follow ? "on" : "off") + ". Tap to turn " + (follow ? "off" : "on");
+      [mainFollow, dFollow].forEach((b) => { if (!b) return; b.setAttribute("aria-pressed", String(follow)); b.setAttribute("aria-label", t); b.title = t; });
+    };
+    const setFollow = (v) => {
+      follow = v; try { localStorage.setItem(FKEY, v ? "on" : "off"); } catch (e) { /* ignore */ } paintFollow();
+      if (v) onFollowOn();
+    };
+    if (mainFollow) mainFollow.onclick = () => setFollow(!follow);
+    dFollow.onclick = () => setFollow(!follow);
+    paintFollow();
+
+    const setOpen = (v) => { open = v; dock.classList.toggle("is-open", v); dMore.setAttribute("aria-expanded", String(v)); };
+    const bump = () => { clearTimeout(closeTimer); if (open) closeTimer = setTimeout(() => setOpen(false), 5000); };
+    dMore.onclick = () => { setOpen(!open); bump(); };
+    dock.addEventListener("pointerdown", bump); dock.addEventListener("focusin", bump);
+    document.addEventListener("pointerdown", (e) => { if (open && !dock.contains(e.target)) setOpen(false); });
+
+    dPlay.onclick = () => el.play.click();
+    dSpeed.onclick = () => el.speed.click();
+
+    const layout = () => {
+      const gap = innerWidth - prose.getBoundingClientRect().right;     // empty margin to the right of the article
+      const gutter = gap >= 96;
+      dock.classList.toggle("is-gutter", gutter);
+      document.body.classList.toggle("ar-l-pad", dock.classList.contains("is-on") && !gutter);
+    };
+    const sync = () => {
+      const playing = root.classList.contains("is-playing");
+      if (playing) started = true;
+      dIcon.className = playing ? "ri-pause-fill" : "ri-play-fill";
+      dPlay.setAttribute("aria-label", playing ? "Pause" : "Play");
+      dPlay.classList.toggle("is-playing", playing);
+      dSpeed.textContent = el.speed.textContent;
+      dSpeed.setAttribute("aria-label", el.speed.getAttribute("aria-label") || "Speed");
+      const voice = root.dataset.mode === "voice";
+      dFollow.hidden = !voice; if (mainFollow) mainFollow.hidden = !voice;
+      const show = started && !inView && !root.hidden;
+      dock.classList.toggle("is-on", show); dock.inert = !show; dock.setAttribute("aria-hidden", String(!show));
+      if (!show) setOpen(false);
+      layout();
+    };
+    new IntersectionObserver((entries) => { inView = entries[entries.length - 1].isIntersecting; sync(); }).observe(root);
+    new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ["class", "hidden", "data-mode"] });
+    new MutationObserver(sync).observe(el.speed, { childList: true, characterData: true, subtree: true });
+    addEventListener("resize", layout);
+    sync();
+  })();
 })();

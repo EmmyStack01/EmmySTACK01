@@ -30,4 +30,22 @@
 .prose tr.ar-reading > td, .prose tr.ar-reading > th { background: color-mix(in srgb, var(--accent-color, #00ccff) 26%, #fff) !important; transition: background .25s; }
 .prose .ar-reading { background: color-mix(in srgb, var(--accent-color, #00ccff) 14%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-color, #00ccff) 14%, transparent); border-radius: 6px; transition: background .25s, box-shadow .25s; }
 @media (prefers-reduced-motion: reduce) { .ar-l-play, .prose .ar-reading { transition: none; } }
-@media print { .ar-listen { display: none !important; } }
+
+/* Floating controls: play/pause, speed and follow along. Shown bottom-right once playback has started and the main player is off screen. */
+.ar-l-dock { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 90; display: flex; flex-direction: column; align-items: center; gap: .5rem; opacity: 0; visibility: hidden; transform: translateY(12px) scale(.9); pointer-events: none; transition: opacity .2s, transform .2s, visibility 0s .2s; }
+.ar-l-dock.is-on { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition: opacity .2s, transform .2s, visibility 0s; }
+.ar-l-float { display: grid; place-items: center; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color, #2d66b4), var(--accent-color, #00ccff)); color: #04101f; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 22px color-mix(in srgb, var(--b-dark, #0b1020) 45%, transparent); }
+.ar-l-float:active { transform: scale(.94); }
+.ar-l-dock.is-on .ar-l-float.is-playing { animation: ar-pulse 1.8s ease-out infinite; }
+.ar-l-more, .ar-l-chip { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid color-mix(in srgb, var(--text-main, #fff) 22%, transparent); border-radius: 50%; background: var(--b-dark, #0b1020); color: var(--text-main, #fff); font: inherit; font-size: 1.15rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 16px color-mix(in srgb, var(--b-dark, #0b1020) 40%, transparent); }
+.ar-l-chip[data-dspeed] { font-size: .8rem; }
+.ar-l-chips { display: none; flex-direction: column; gap: .5rem; }
+.ar-l-dock.is-open .ar-l-chips, .ar-l-dock.is-gutter .ar-l-chips { display: flex; }
+.ar-l-dock.is-gutter .ar-l-more { display: none; }
+.ar-l-follow[hidden], .ar-l-chip[hidden] { display: none !important; }
+.ar-l-follow[aria-pressed="true"], .ar-l-chip[aria-pressed="true"] { background: color-mix(in srgb, var(--accent-color, #00ccff) 30%, var(--b-dark, #0b1020)); border-color: var(--accent-color, #00ccff); }
+.ar-l-dock button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+body.ar-l-pad { padding-bottom: 5.5rem; }
+@keyframes ar-pulse { 0% { box-shadow: 0 8px 22px color-mix(in srgb, var(--b-dark, #0b1020) 45%, transparent), 0 0 0 0 color-mix(in srgb, var(--accent-color, #00ccff) 55%, transparent); } 70%, 100% { box-shadow: 0 8px 22px color-mix(in srgb, var(--b-dark, #0b1020) 45%, transparent), 0 0 0 16px transparent; } }
+@media (prefers-reduced-motion: reduce) { .ar-l-dock, .ar-l-dock.is-on { transition: none; } .ar-l-dock.is-on .ar-l-float.is-playing { animation: none; } }
+@media print { .ar-listen, .ar-l-dock { display: none !important; } }
