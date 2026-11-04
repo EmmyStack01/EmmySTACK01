@@ -1,0 +1,420 @@
+---
+{
+  "title": "How to Get Your New Website on Google",
+  "author": "Wisdom Ezuduemoih",
+  "description": "Just launched a website but can't find it on Google? Learn how to set up Google Search Console, submit your sitemap, request indexing, and help Google discover your new website.",
+  "date": "2026-11-04",
+  "category": "Technical SEO",
+  "readingTime": "15 min read",
+  "coverImage": "/asset/how-to-get-your-new-website-on-google/coverImage.webp"
+}
+---
+# How to Get Your New Website on Google
+
+You've finally launched your website.
+
+Your business has a new online home, your pages are ready, and everything looks good. Naturally, you open Google, type your business name, and expect to see your website.
+
+But nothing appears.
+
+You try again with your website address. Still nothing.
+
+Does this mean something is wrong with your website?
+
+Not necessarily.
+
+A newly launched website does not automatically appear in Google Search immediately. Google first needs to discover your pages, crawl them, understand their content, and decide whether they should be added to its search index.
+
+The good news is that you can take practical steps to help this process along.
+
+In this guide, you'll learn how to get your new website on Google using tools such as Google Search Console, how to submit your sitemap, how to request indexing, and what to check if your website still isn't appearing.
+
+## First, Understand How Google Finds Your Website
+
+Before submitting anything, it's helpful to understand what happens when Google discovers a website.
+
+There are three important stages:
+
+**1. Crawling**
+
+Google uses automated programs called crawlers, including Googlebot, to discover and visit publicly accessible web pages.
+
+**2. Indexing**
+
+After crawling a page, Google processes its content and may add it to its search index. This is what makes the page eligible to appear in Google Search.
+
+**3. Ranking**
+
+When someone searches for something, Google determines which indexed pages are relevant and how they should appear in the search results.
+
+These are different processes.
+
+Getting your website indexed does not automatically mean it will rank highly or appear whenever someone searches for your business.
+
+Now, let's get your website ready.
+
+## Step 1: Make Sure Your Website Is Live and Accessible
+
+This sounds obvious, but it's one of the first things to check.
+
+Open your website in a browser, preferably using a different device or network. Confirm that the pages load correctly without requiring visitors to log in.
+
+Check that:
+
+- Your domain name works correctly.
+- Your website loads over HTTPS.
+- Your homepage is accessible.
+- Important pages are not showing errors.
+- Your website is not accidentally restricted from public access.
+- Your website works properly on mobile devices.
+
+Google needs to be able to access your website before it can crawl and index its pages.
+
+If your website is still under construction, password-protected, or returning server errors, resolve those issues first.
+
+## Step 2: Set Up Google Search Console
+
+One of the most important things you can do after launching a website is connect it to Google Search Console.
+
+Google Search Console is a free tool that helps website owners understand how their websites perform in Google Search.
+
+It allows you to:
+
+- Submit your website's sitemap.
+- Check whether Google has indexed your pages.
+- Identify indexing problems.
+- Inspect individual URLs.
+- Monitor search impressions and clicks.
+- Understand which search queries bring visitors to your website.
+
+### How to set it up
+
+1. Visit Google Search Console.
+1. Sign in with your Google account.
+1. Click the option to add a property.
+1. Choose between Domain and URL prefix verification.
+1. Enter your website information.
+1. Complete the ownership verification process.
+
+**Which verification method should you choose?**
+
+Google offers two main property types.
+
+**Domain property:** Covers all subdomains and URL variations of your domain, including HTTP, HTTPS, www, and non-www versions. It generally requires DNS verification.
+
+**URL-prefix property:** Covers only the specific URL prefix you enter. For example, verifying `https://example.com/` does not automatically cover `http://example.com/` or `https://www.example.com/`.
+
+For most website owners, a Domain property is a good choice because it gives a broader view of the domain.
+
+Once verification is complete, Google Search Console can start collecting information about your website.
+
+## Step 3: Create and Submit Your XML Sitemap
+
+A sitemap is a file that tells search engines about important URLs on your website.
+
+Think of it as a map that helps Google discover the pages you want it to know about.
+
+For example, a website sitemap might contain:
+
+- Homepage
+- About page
+- Services page
+- Contact page
+- Blog articles
+- Product pages
+
+Most modern website platforms and content management systems can generate XML sitemaps automatically.
+
+A common sitemap address looks like this:
+
+`https://example.com/sitemap.xml`
+
+However, the actual location depends on how your website was built.
+
+### How to find your sitemap
+
+1. Open your website's sitemap address in a browser.
+1. Check whether the sitemap loads correctly.
+1. Confirm that it contains the important pages you want Google to discover.
+1. Make sure the URLs use the correct domain and HTTPS version.
+
+If you cannot find your sitemap, check your website platform's documentation or ask your developer.
+
+### How to submit your sitemap to Google
+
+1. Open Google Search Console.
+1. Select your website property.
+1. Find the Sitemaps section in the navigation.
+1. Enter your sitemap URL.
+1. Click Submit.
+
+Google will attempt to read the sitemap and use it to discover your website's URLs.
+
+**Important:** Submitting a sitemap does not guarantee that every page will be crawled or indexed. It simply helps Google discover your pages.
+
+## Step 4: Request Indexing for Your Homepage
+
+Submitting a sitemap is useful, but you can also ask Google to crawl specific pages.
+
+For a new website, your homepage is a sensible place to start.
+
+Google Search Console has a feature called URL Inspection that lets you check what Google knows about a particular URL.
+
+### How to request indexing
+
+1. Open Google Search Console.
+1. Select your website property.
+1. Copy your complete homepage URL.
+1. Paste it into the URL Inspection search bar at the top.
+1. Wait for Google to inspect the URL.
+1. If the page is not indexed and is eligible for indexing, select Request Indexing.
+
+Google will then add the URL to its crawling queue.
+
+You can repeat this process for other important pages, such as:
+
+- About page
+- Services page
+- Contact page
+- Main product pages
+- Important landing pages
+
+You don't need to submit every URL individually if your website has many pages. A sitemap is more suitable for helping Google discover multiple URLs.
+
+Also, avoid repeatedly requesting indexing for the same page. Sending multiple requests does not make Google crawl it faster.
+
+## Step 5: Make Sure Google Is Allowed to Index Your Website
+
+Imagine submitting your website to Google, only to discover that you've accidentally told search engines not to index it.
+
+It happens.
+
+Websites can contain instructions that prevent search engines from indexing certain pages.
+
+Two important things to check are:
+
+### 1. The noindex directive
+
+A `noindex` instruction tells search engines not to include a page in their search index.
+
+It can be added through a meta robots tag or an HTTP response header.
+
+For example:
+
+`<meta name="robots" content="noindex">`
+
+This instruction is useful for private or intentionally excluded pages, but it should not accidentally appear on your homepage or important public pages.
+
+### 2. The robots.txt file
+
+A robots.txt file gives search engine crawlers instructions about which parts of a website they can access.
+
+You can often find it at:
+
+`https://example.com/robots.txt`
+
+Check that your website is not accidentally blocking Googlebot from crawling important pages or resources.
+
+One important distinction: robots.txt controls crawling, not indexing. Blocking a URL in robots.txt does not reliably prevent that URL from appearing in Google's index.
+
+If you're unsure about these settings, ask your developer to check them before making changes.
+
+## Step 6: Make Your Important Pages Easy to Discover
+
+Google doesn't rely on your sitemap alone.
+
+It also discovers pages by following links from other pages.
+
+This is why your website should have a clear internal linking structure.
+
+For example:
+
+- Your homepage should link to important sections of your website.
+- Your navigation menu should make key pages easy to reach.
+- Your articles should link to relevant articles and service pages.
+- Your product pages should be accessible through your website's navigation or other relevant pages.
+
+Avoid creating important pages that have no internal links pointing to them.
+
+These are sometimes called orphan pages.
+
+A well-structured website helps both visitors and search engines understand how its pages relate to one another.
+
+## Step 7: Give Your Pages Clear Titles and Useful Content
+
+Getting your website indexed is one thing. Giving Google enough information to understand what each page is about is another.
+
+Every important page should have a clear purpose.
+
+Start with these basics:
+
+**Page titles**
+
+Give every important page a descriptive title that explains what visitors can expect.
+
+For example:
+
+Instead of:
+
+`Home | Website`
+
+Use something more meaningful:
+
+`Professional Website Design for Small Businesses | Emmy STACK01`
+
+**Meta descriptions**
+
+Write a short, relevant description for each important page. This can help searchers understand what the page offers when Google chooses to use it in search results.
+
+Google may generate its own search snippet instead, so your description is not guaranteed to appear exactly as written.
+
+**Headings**
+
+Use clear headings to organise your content.
+
+Your main page heading should describe the page's central topic, while supporting headings should introduce relevant sections.
+
+**Useful content**
+
+Don't publish empty pages or copy generic text simply to fill space.
+
+Explain what your business does, who you serve, what you offer, and how visitors can contact you.
+
+Google's goal is to provide useful results to people searching for information. Your content should serve that purpose too.
+
+## Step 8: Connect Your Website to Other Relevant Online Platforms
+
+Your website shouldn't exist in isolation.
+
+Make it easier for people to discover your website by including its link in relevant places.
+
+For example:
+
+- Add your website to your social media profiles.
+- Include it in your business email signature.
+- Add it to relevant business directories.
+- Link to it from your professional profiles.
+- Share useful website pages with your audience.
+- Where appropriate, get relevant websites to reference your content.
+
+These links can help people discover your website and may help search engines find your pages.
+
+However, don't buy random backlinks or spam directories just to increase the number of links pointing to your website.
+
+Focus on relevant, trustworthy sources.
+
+If your business serves customers in a particular location, you should also consider setting up a Google Business Profile where eligible. This can help your business establish a presence on Google Maps and local search results.
+
+## Step 9: Monitor Your Website's Indexing Progress
+
+After completing the steps above, don't just submit your website and forget about it.
+
+Return to Google Search Console to monitor its progress.
+
+Pay attention to two useful features:
+
+**URL Inspection Tool**
+
+Use this to check the indexing status of individual pages and understand whether Google has encountered problems accessing or indexing them.
+
+**Page Indexing Report**
+
+This report gives you an overview of URLs Google has indexed and URLs it hasn't indexed, alongside reasons for some exclusions.
+
+Not every URL needs to be indexed.
+
+For example, duplicate pages, redirected URLs, private pages, and pages intentionally marked as noindex may correctly remain outside Google's index.
+
+Your priority should be making sure the important pages are accessible and eligible for indexing.
+
+## How Long Does It Take for a New Website to Appear on Google?
+
+This is one of the most common questions website owners ask.
+
+Unfortunately, there is no guaranteed timeline.
+
+Google may discover and crawl some pages within days, while others may take longer. In some cases, pages may not be indexed at all until technical or content-related problems are resolved.
+
+Requesting indexing does not guarantee immediate inclusion in search results.
+
+It is also important to understand that indexing and ranking are different.
+
+Your website may be indexed but still not appear near the top when someone searches for your business or services.
+
+Ranking depends on many factors, including the relevance and usefulness of your content, competition, and the searcher's query.
+
+Getting indexed is an important first step, not the finish line.
+
+## Quick Checklist: Getting Your New Website on Google
+
+Before considering your website launch complete, go through this checklist:
+
+- Website is live and publicly accessible.
+- HTTPS is working correctly.
+- Google Search Console is set up.
+- Website ownership has been verified.
+- XML sitemap has been created.
+- Sitemap has been submitted to Google Search Console.
+- Homepage has been inspected using URL Inspection.
+- Indexing has been requested for important pages where appropriate.
+- Important pages are not accidentally blocked by noindex or robots.txt.
+- Website has clear navigation and internal links.
+- Important pages have descriptive titles and useful content.
+- Website works properly on mobile devices.
+- Search Console is being monitored for indexing issues.
+
+You don't need to complete every SEO activity before launching a website, but these steps give Google a better opportunity to discover and understand it.
+
+## Frequently Asked Questions
+
+### 1. Do I have to pay Google to put my website on Google Search?
+
+No. You don't have to pay Google to crawl or index your website in its organic search results.
+
+Google Search Console is also free to use.
+
+Paid Google Ads are different. They allow businesses to advertise in sponsored placements, but paying for ads does not automatically improve organic search rankings.
+
+### 2. Can I submit my website to Google myself?
+
+Yes. You can set up Google Search Console, verify your website, submit your sitemap, and request indexing for important pages.
+
+You don't necessarily need an SEO professional to complete these basic steps.
+
+### 3. Will submitting my sitemap make my website rank on Google?
+
+No. A sitemap helps Google discover your website's pages, but it does not guarantee indexing or improve rankings by itself.
+
+You still need useful content, accessible pages, and a website that provides a good experience.
+
+### 4. Why is my website still not appearing after requesting indexing?
+
+There could be several reasons.
+
+Google may not have crawled the page yet, the page may be blocked from indexing, the server may be returning errors, or Google may have decided not to index the page.
+
+Use URL Inspection to investigate the specific issue rather than repeatedly submitting the same URL.
+
+### 5. Does every page on my website need to be indexed?
+
+No. Your priority should be the pages that provide value to visitors and deserve to appear in search results.
+
+Some pages, such as duplicate URLs, private pages, and certain system-generated pages, may not need indexing.
+
+## Final Thoughts
+
+Launching your website is only the beginning.
+
+If you want people to discover it through Google, you need to make sure search engines can access your pages, understand their content, and discover the important sections of your website.
+
+Start with Google Search Console, submit your sitemap, request indexing for your homepage, and monitor your progress.
+
+Once your website is indexed, continue improving your content, technical SEO, and overall user experience.
+
+And remember, getting your website on Google is not the same as getting it to rank. Visibility takes ongoing work.
+
+**Need a website built with discoverability in mind?**
+
+At Emmy STACK01, we build websites with clear structure, responsive design, performance, and SEO fundamentals in mind.
+
+Whether you're starting from scratch or improving an existing website, explore our [website development services](/websites) or check our [pricing](/pricing).
